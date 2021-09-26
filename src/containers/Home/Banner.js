@@ -54,7 +54,7 @@ class Banner extends Component {
       infinite: true, // 무한으로 반복
       speed: 500,
       autoplay: true,
-      autoplaySpeed: 2000, // 넘어가는 속도
+      autoplaySpeed: 4000, // 넘어가는 속도
       slidesToShow: 1, // 4장씩 보이게
       slidesToScroll: 1, // 1장씩 뒤로 넘어가게
       centerMode: true,
