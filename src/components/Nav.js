@@ -26,9 +26,18 @@ class Nav extends Component {
               <Link to="/tutor">과외찾기</Link>
               <Link to="/tutee">학생찾기</Link>
               <Link to="/community">커뮤니티</Link>
-              <Link to="/myclass">내강의실</Link>
-              <Img src={personImg} alt="마이페이지" />
+              <Link to="/myclass" style={{ marginRight: '0px' }}>
+                내강의실
+              </Link>
+
               {/* <img src={personImg} alt="마이페이지" /> */}
+            </Menu>
+            <Menu
+              style={{ width: '20%', justifyContent: 'right', float: 'right' }}
+            >
+              <Link to="/login" style={{ width: '20%', marginLeft: '0px' }}>
+                <Img src={personImg} alt="마이페이지" />
+              </Link>
             </Menu>
           </Item>
         </InnerContainer>
@@ -45,9 +54,15 @@ const Link = styled(Connection)`
   font-size: 18px;
   font-family: RobotoBlack;
   //   margin-right: 72px;
-  width: 100%;
+  // width: 100%;
   font-weight: bold;
-  //   border: 3px solid red;
+  // border: 3px solid red;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  // padding: 4px 8px;
+  // margin: 0 auto;
+  text-align: center;
 `;
 
 // const Container = styled.div`
@@ -69,7 +84,7 @@ const Item = styled.nav`
 `;
 
 const Logo = styled.div`
-  //   border: 3px solid orange;
+  // border: 3px solid orange;
   width: 30%;
 
   > span {
@@ -82,11 +97,17 @@ const Logo = styled.div`
 `;
 const Menu = styled.div`
   display: flex;
-  //   border: 3px solid green;
+  // justify-content: space-around;
+  // border: 3px solid blue;
   width: 70%;
+
+  // padding: 10px;
 `;
 
 const Img = styled.img`
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
+  // margin: 0 100px;
+  float: right;
+  // border: 3px solid green;
 `;
