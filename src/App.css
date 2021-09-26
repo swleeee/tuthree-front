@@ -50,3 +50,17 @@
   /* font-weight: normal; */
   /* font-style: normal; */
 }
+
+@font-face {
+  font-family: 'RobotoLight';
+  src: url('../src/static/fonts/Roboto-Light.ttf') format('woff');
+  /* font-weight: normal; */
+  /* font-style: normal; */
+}
+
+@font-face {
+  font-family: 'RobotoMedium';
+  src: url('../src/static/fonts/Roboto-Medium.ttf') format('woff');
+  /* font-weight: normal; */
+  /* font-style: normal; */
+}
