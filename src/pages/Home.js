@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import HomeContainer from '../containers/Home';
 // import PropTypes from 'prop-types';
 
 class Home extends Component {
@@ -7,7 +8,11 @@ class Home extends Component {
   //   }
 
   render() {
-    return <div>Main Home Page</div>;
+    return (
+      <div>
+        <HomeContainer />
+      </div>
+    );
   }
 }
 
