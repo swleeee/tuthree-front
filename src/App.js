@@ -9,6 +9,7 @@
 import React from 'react';
 import { Home, Signup } from './pages';
 import { BrowserRouter, Route } from 'react-router-dom';
+import './App.css';
 
 class App extends React.Component {
   render() {

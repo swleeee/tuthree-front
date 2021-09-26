@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: 'GongGothicBold';
+  src: url('../src/static/fonts/esamanru Bold.ttf') format('woff');
+  /* font-weight: normal; */
+  /* font-style: normal; */
+}
+
+@font-face {
+  font-family: 'RobotoBlack';
+  src: url('../src/static/fonts/Roboto-Black.ttf') format('woff');
+  /* font-weight: normal; */
+  /* font-style: normal; */
+}

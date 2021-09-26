@@ -3,7 +3,12 @@ import styled from 'styled-components';
 
 class Footer extends Component {
   render() {
-    return <Container>Footer</Container>;
+    return (
+      <Container>
+        Footer
+        <font>이사만루체 Copyright ⓒ (주)공게임즈. All Rights Reserved.</font>
+      </Container>
+    );
   }
 }
 
