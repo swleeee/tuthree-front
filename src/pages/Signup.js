@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import SignupContainer from '../containers/Signup';
+import NavContainer from '../components/Nav.js';
+import Footer from '../components/Footer';
 
 class Signup extends Component {
-  //   constructor(props) {
-  //     super(props);
-  //   }
-
   render() {
-    return <div>Register Page</div>;
+    return (
+      <>
+        <NavContainer />
+        <SignupContainer />
+        <Footer />
+      </>
+    );
   }
 }
 
