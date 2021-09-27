@@ -21,12 +21,13 @@ class Step1Container extends Component {
       <Provider Auth={authStore}>
         <Container>
           <Name>회원가입</Name>
-          <ProgressContainer />
+          <ProgressContainer step="1" />
 
           <CardContainer>
             <CardItem
               onClick={() => {
                 authStore.step = 2;
+                authStore.userType = 1;
                 console.log(authStore.step);
               }}
             >
@@ -37,7 +38,8 @@ class Step1Container extends Component {
 
             <CardItem
               onClick={() => {
-                // authStore.step = 2;
+                authStore.step = 2;
+                authStore.userType = 2;
                 console.log(authStore.step);
               }}
             >

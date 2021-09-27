@@ -12,16 +12,18 @@ import writingImg from '../../static/images/Signup/writing.png';
 import detailWritingImg from '../../static/images/Signup/detailwriting.png';
 import completionImg from '../../static/images/Signup/completion.png';
 
-class Step1Container extends Component {
+class ProgressContainer extends Component {
   render() {
+    const { step } = this.props;
+    console.log(step);
     return (
       <>
         <Container>
-          <ProgressItem choice={true}>
+          <ProgressItem choice={step === '1'}>
             <img src={choiceImg} />
             <span>회원가입 선택</span>
           </ProgressItem>
-          <ProgressItem>
+          <ProgressItem choice={step === '2'}>
             <img src={writingImg} />
             <span>기본정보 입력</span>
           </ProgressItem>
@@ -39,7 +41,7 @@ class Step1Container extends Component {
   }
 }
 
-export default Step1Container;
+export default ProgressContainer;
 
 const Container = styled.div`
   width: 100%;
