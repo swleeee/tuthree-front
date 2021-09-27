@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { inject, observer, Provider } from 'mobx-react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,30 +11,43 @@ import ProgressContainer from './ProgressContainer';
 
 import teacherImg from '../../static/images/Signup/teacher.png';
 import studentImg from '../../static/images/Signup/student.png';
+import authStore from '../../stores/Account/Auth';
 
+// @inject('authStore')
+@observer
 class Step1Container extends Component {
   render() {
     return (
-      <>
+      <Provider Auth={authStore}>
         <Container>
           <Name>회원가입</Name>
           <ProgressContainer />
 
           <CardContainer>
-            <CardItem>
+            <CardItem
+              onClick={() => {
+                authStore.step = 2;
+                console.log(authStore.step);
+              }}
+            >
               <div>과외 선생님</div>
               <img src={teacherImg} />
               <div>학생을 찾고 있어요!</div>
             </CardItem>
 
-            <CardItem>
+            <CardItem
+              onClick={() => {
+                // authStore.step = 2;
+                console.log(authStore.step);
+              }}
+            >
               <div>학생/학부모</div>
               <img src={studentImg} />
               <div>과외 선생님을 찾고 있어요!</div>
             </CardItem>
           </CardContainer>
         </Container>
-      </>
+      </Provider>
     );
   }
 }
