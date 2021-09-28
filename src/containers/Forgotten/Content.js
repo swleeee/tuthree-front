@@ -12,6 +12,7 @@ import FindIdContainer from './FindId/FindId';
 import CompletionId from './FindId/Completion';
 
 import FindPasswordContainer from './FindPassword/FindPassword';
+import FindPasswordContainer2 from './FindPassword/Phone2';
 import CompletionPassword from './FindPassword/Completion';
 
 import Auth from '../../stores/Account/Auth';
@@ -31,9 +32,11 @@ class Content extends Component {
     switch (type) {
       case 'id':
         Auth.forgottenType = 1;
+        Auth.idStep = 1;
         break;
       case 'password':
         Auth.forgottenType = 2;
+        Auth.passwordStep = 1;
         break;
       default:
         break;
@@ -68,8 +71,11 @@ class Content extends Component {
 
         {Auth.forgottenType === 1 && Auth.idStep === 1 && <FindId />}
         {Auth.forgottenType === 1 && Auth.idStep === 2 && <CompletionId />}
-        {Auth.forgottonType === 2 && Auth.idStep === 1 && <FindPassword />}
-        {Auth.forgottenType === 2 && Auth.idStep === 2 && (
+        {Auth.forgottenType === 2 &&
+          (Auth.passwordStep === 1 || Auth.passwordStep === 2) && (
+            <FindPassword />
+          )}
+        {Auth.forgottenType === 2 && Auth.passwordStep === 3 && (
           <CompletionPassword />
         )}
       </Container>
@@ -140,3 +146,4 @@ const Link = styled(Connection)`
 
 const FindId = styled(FindIdContainer)``;
 const FindPassword = styled(FindPasswordContainer)``;
+const FindPassword2 = styled(FindPasswordContainer2)``;

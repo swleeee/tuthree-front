@@ -38,11 +38,17 @@ class Completion extends Component {
                 </Button>
               </Link>
 
-              <Link to="/login" style={{ marginBottom: '30px' }}>
-                <Button backgroundColor="rgb(235, 114,82)" color="#ffffff">
-                  <div>비밀번호 찾기</div>
-                </Button>
-              </Link>
+              <Button
+                backgroundColor="rgb(235, 114,82)"
+                color="#ffffff"
+                onClick={() => {
+                  Auth.idStep = 1;
+                  Auth.forgottenType = 2;
+                  Auth.passwordStep = 1;
+                }}
+              >
+                <div>비밀번호 찾기</div>
+              </Button>
             </ButtonBox>
           </Card>
         </Container>

@@ -40,6 +40,7 @@ class Auth {
   @observable signupCertification = '';
   @observable signupGender = 0;
   @observable signupBirth = '';
+  @observable signupType = 0;
 
   @observable locationIndex = 0;
   @observable selectedUpperLocation = '';
@@ -55,6 +56,7 @@ class Auth {
   @observable forgottenType = 1;
   @observable certificationType = 1;
   @observable idStep = 1;
+  @observable passwordStep = 1;
 
   getStep = () => {
     console.log(this.step);

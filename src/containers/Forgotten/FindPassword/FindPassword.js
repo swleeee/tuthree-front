@@ -4,6 +4,7 @@ import { inject, observer, Provider } from 'mobx-react';
 import Auth from '../../../stores/Account/Auth';
 import EmailContainer from './Email';
 import PhoneContainer from './Phone';
+import PhoneContainer2 from './Phone2';
 
 import emailImg from '../../../static/images/Forgotten/email.png';
 import phoneImg from '../../../static/images/Forgotten/smartphone.png';
@@ -16,9 +17,11 @@ class FindId extends Component {
     switch (type) {
       case 'email':
         Auth.certificationType = 1;
+        Auth.passwordStep = 1;
         break;
       case 'phone':
         Auth.certificationType = 2;
+        Auth.passwordStep = 1;
         break;
       default:
         break;
@@ -53,11 +56,20 @@ class FindId extends Component {
             </Tab>
           </TabBox>
 
-          {Auth.certificationType && Auth.certificationType === 1 ? (
+          {Auth.certificationType === 1 && Auth.passwordStep === 1 && (
             <EmailContainer />
-          ) : (
+          )}
+          {Auth.certificationType === 2 && Auth.passwordStep === 1 && (
             <PhoneContainer />
           )}
+
+          {Auth.certificationType === 1 && Auth.passwordStep === 2 && (
+            <PhoneContainer2 />
+          )}
+          {Auth.certificationType === 2 && Auth.passwordStep === 2 && (
+            <PhoneContainer2 />
+          )}
+
           {/* <MainContent>ㅇㄴㄹㄴㅇ</MainContent> */}
         </MainBox>
       </>

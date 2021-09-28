@@ -14,6 +14,15 @@ class Phone extends Component {
       <Container>
         <ItemBox>
           <Input
+            placeholder="아이디를 입력하세요."
+            // onChange={this.onIdHandler}
+            width={445}
+            onFocus={(e) => (e.target.placeholder = '')}
+            onBlur={(e) => (e.target.placeholder = '아이디를 입력하세요.')}
+          />
+        </ItemBox>
+        <ItemBox>
+          <Input
             placeholder="-없이 입력하세요."
             // onChange={this.onIdHandler}
             onFocus={(e) => (e.target.placeholder = '')}
@@ -32,10 +41,10 @@ class Phone extends Component {
         </ItemBox>
         <Button
           onClick={() => {
-            Auth.idStep = 2;
+            Auth.passwordStep = 2;
           }}
         >
-          <div>아이디 찾기</div>
+          <div>비밀번호 찾기</div>
         </Button>
       </Container>
     );
@@ -102,14 +111,14 @@ const Input = styled.input`
   }
 
   @media (min-width: 1300px) {
-    width: 300px;
+    width: ${(props) => (props.width ? props.width : '300')}px;
     height: 60px;
   }
 `;
 
 const Button = styled.div`
   margin-top: 30px;
-  width: 300px;
+  width: 445px;
   height: 60px;
   border-radius: 3px;
   background-color: rgba(235, 114, 82, 0.7);

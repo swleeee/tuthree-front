@@ -19,7 +19,9 @@ class Nav extends Component {
         <InnerContainer>
           <Item>
             <Logo>
-              <span>Tuthree</span>
+              <Link to="/" style={{ width: '30%' }}>
+                <span>Tuthree</span>
+              </Link>
             </Logo>
             <Menu>
               <Link to="/notice">공지사항</Link>
@@ -63,6 +65,13 @@ const Link = styled(Connection)`
   // padding: 4px 8px;
   // margin: 0 auto;
   text-align: center;
+  > span {
+    font-family: GongGothicBold;
+    font-size: 30px;
+    font-weight: bold;
+    // color: #eb7252;
+    color: #000000;
+  }
 `;
 
 // const Container = styled.div`

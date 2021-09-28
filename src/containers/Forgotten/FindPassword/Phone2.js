@@ -8,41 +8,44 @@ import phoneImg from '../../../static/images/Forgotten/smartphone.png';
 
 @inject('Auth')
 @observer
-class Phone extends Component {
+class Phone2 extends Component {
   render() {
     return (
       <Container>
         <ItemBox>
           <Input
-            placeholder="-없이 입력하세요."
+            placeholder="새 비밀번호를 입력하세요."
             // onChange={this.onIdHandler}
+            width={445}
             onFocus={(e) => (e.target.placeholder = '')}
-            onBlur={(e) => (e.target.placeholder = '-없이 입력하세요.')}
+            onBlur={(e) => (e.target.placeholder = '새 비밀번호를 입력하세요.')}
           />
-          <OverlapBtn>인증번호 요청</OverlapBtn>
         </ItemBox>
         <ItemBox>
           <Input
-            placeholder="인증번호를 입력하세요."
+            placeholder="새 비밀번호를 다시 입력하세요."
             // onChange={this.onIdHandler}
+            width={445}
             onFocus={(e) => (e.target.placeholder = '')}
-            onBlur={(e) => (e.target.placeholder = '인증번호를 입력하세요.')}
+            onBlur={(e) =>
+              (e.target.placeholder = '새 비밀번호를 다시 입력하세요.')
+            }
           />
-          <OverlapBtn>확인</OverlapBtn>
         </ItemBox>
+
         <Button
           onClick={() => {
-            Auth.idStep = 2;
+            Auth.passwordStep = 3;
           }}
         >
-          <div>아이디 찾기</div>
+          <div>비밀번호 변경</div>
         </Button>
       </Container>
     );
   }
 }
 
-export default Phone;
+export default Phone2;
 
 const Container = styled.div`
   width: 100%;
@@ -102,7 +105,7 @@ const Input = styled.input`
   }
 
   @media (min-width: 1300px) {
-    width: 300px;
+    width: ${(props) => (props.width ? props.width : '300')}px;
     height: 60px;
   }
 `;

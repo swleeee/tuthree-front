@@ -10,33 +10,38 @@ import Step3StudentContainer from './Step3StudentContainer';
 import Step4Container from './Step4Container';
 
 import { inject, observer, Provider } from 'mobx-react';
-import authStore from '../../stores/Account/Auth';
+import Auth from '../../stores/Account/Auth';
 
+@inject('Auth')
 @observer
 class index extends Component {
+  componentDidMount = () => {
+    Auth.step = 1;
+    Auth.userType = 1;
+  };
   render() {
-    console.log(authStore.step);
+    console.log(Auth.step);
     return (
-      <Provider Auth={authStore}>
+      <Provider Auth={Auth}>
         <OuterContainer>
           <InnerContainer>
-            {authStore.step && authStore.step === 1 && <Step1Container />}
+            {Auth.step && Auth.step === 1 && <Step1Container />}
 
-            {authStore.step &&
-              authStore.step === 2 &&
-              authStore.userType === 1 && <Step2TeacherContainer />}
-            {authStore.step &&
-              authStore.step === 2 &&
-              authStore.userType === 2 && <Step2StudentContainer />}
+            {Auth.step && Auth.step === 2 && Auth.userType === 1 && (
+              <Step2TeacherContainer />
+            )}
+            {Auth.step && Auth.step === 2 && Auth.userType === 2 && (
+              <Step2StudentContainer />
+            )}
 
-            {authStore.step &&
-              authStore.step === 3 &&
-              authStore.userType === 1 && <Step3TeacherContainer />}
-            {authStore.step &&
-              authStore.step === 3 &&
-              authStore.userType === 2 && <Step3StudentContainer />}
+            {Auth.step && Auth.step === 3 && Auth.userType === 1 && (
+              <Step3TeacherContainer />
+            )}
+            {Auth.step && Auth.step === 3 && Auth.userType === 2 && (
+              <Step3StudentContainer />
+            )}
 
-            {authStore.step && authStore.step === 4 && <Step4Container />}
+            {Auth.step && Auth.step === 4 && <Step4Container />}
           </InnerContainer>
         </OuterContainer>
       </Provider>

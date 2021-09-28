@@ -10,7 +10,7 @@ import {
 import ProgressContainer from './ProgressContainer';
 import SelectComponent from '../../components/Select';
 
-import authStore from '../../stores/Account/Auth';
+import Auth from '../../stores/Account/Auth';
 
 const birthAry = [];
 const emailAry = [
@@ -59,6 +59,7 @@ const customStyles = {
   },
 };
 
+@inject('Auth')
 @observer
 class Step2TeacherContainer extends Component {
   componentDidMount = () => {
@@ -74,9 +75,9 @@ class Step2TeacherContainer extends Component {
     switch (type) {
       case 'email':
         if (e.value === 'direct') {
-          authStore.domainType = 2;
+          Auth.domainType = 2;
         } else {
-          authStore.domainType = 1;
+          Auth.domainType = 1;
         }
         break;
       case 'birth':
@@ -124,162 +125,158 @@ class Step2TeacherContainer extends Component {
   };
   render() {
     return (
-      <Provider Auth={authStore}>
-        <Container>
-          <Name>과외선생님 회원가입</Name>
-          <ProgressContainer step="2" />
-          <MainBox>
-            <ItemBox>
-              <div>아이디</div>
-              <WrapperBox>
-                <Input
-                  placeholder="아이디"
-                  onChange={(e) => this.inputHandler(e.target, 'id')}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '아이디')}
-                />
-                <OverlapBtn>중복확인</OverlapBtn>
-              </WrapperBox>
-            </ItemBox>
-            <ItemBox>
-              <div>비밀번호</div>
+      <Container>
+        <Name>과외선생님 회원가입</Name>
+        <ProgressContainer step="2" />
+        <MainBox>
+          <ItemBox>
+            <div>아이디</div>
+            <WrapperBox>
               <Input
-                placeholder="비밀번호"
-                onChange={(e) => this.inputHandler(e.target, 'password')}
+                placeholder="아이디"
+                onChange={(e) => this.inputHandler(e.target, 'id')}
                 onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) => (e.target.placeholder = '비밀번호')}
+                onBlur={(e) => (e.target.placeholder = '아이디')}
               />
-            </ItemBox>
-            <ItemBox>
-              <div>비밀번호 확인</div>
+              <OverlapBtn>중복확인</OverlapBtn>
+            </WrapperBox>
+          </ItemBox>
+          <ItemBox>
+            <div>비밀번호</div>
+            <Input
+              placeholder="비밀번호"
+              onChange={(e) => this.inputHandler(e.target, 'password')}
+              onFocus={(e) => (e.target.placeholder = '')}
+              onBlur={(e) => (e.target.placeholder = '비밀번호')}
+            />
+          </ItemBox>
+          <ItemBox>
+            <div>비밀번호 확인</div>
+            <Input
+              placeholder="비밀번호 확인"
+              onChange={(e) => this.inputHandler(e.target, 'password_confirm')}
+              onFocus={(e) => (e.target.placeholder = '')}
+              onBlur={(e) => (e.target.placeholder = '비밀번호 확인')}
+            />
+          </ItemBox>
+          <ItemBox>
+            <div>이름</div>
+            <Input
+              placeholder="이름"
+              // onChange={this.onIdHandler}
+              onFocus={(e) => (e.target.placeholder = '')}
+              onBlur={(e) => (e.target.placeholder = '이름')}
+            />
+          </ItemBox>
+          <ItemBox>
+            <div>이메일</div>
+            <WrapperBox>
               <Input
-                placeholder="비밀번호 확인"
-                onChange={(e) =>
-                  this.inputHandler(e.target, 'password_confirm')
-                }
-                onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) => (e.target.placeholder = '비밀번호 확인')}
-              />
-            </ItemBox>
-            <ItemBox>
-              <div>이름</div>
-              <Input
-                placeholder="이름"
+                placeholder="이메일"
                 // onChange={this.onIdHandler}
                 onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) => (e.target.placeholder = '이름')}
+                onBlur={(e) => (e.target.placeholder = '이메일')}
               />
-            </ItemBox>
-            <ItemBox>
-              <div>이메일</div>
-              <WrapperBox>
-                <Input
-                  placeholder="이메일"
-                  // onChange={this.onIdHandler}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '이메일')}
-                />
-                <span>@</span>
-                <Select
-                  //  id={this.props.id}
-                  //  className={this.props.className}
-                  styles={customStyles}
-                  //  value={value}
-                  onChange={(e) => this.handleChange(e, 'email')}
-                  getOptionLabel={(option) => option.label}
-                  options={emailAry}
-                  //  isSearchable={false}
-                  placeholder="선택하세요."
-                  ml="15"
-                  domainType={authStore.domainType}
-                />
-                {/* <OverlapBtn>중복확인</OverlapBtn> */}
-                <Input
-                  placeholder="직접 입력"
-                  // onChange={this.onIdHandler}
-                  domainType={authStore.domainType}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '직접 입력')}
-                />
-              </WrapperBox>
-            </ItemBox>
-            <ItemBox>
-              <div>휴대폰 번호</div>
-              <WrapperBox>
-                <Input
-                  placeholder="-없이 입력하세요."
-                  // onChange={this.onIdHandler}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '-없이 입력하세요.')}
-                />
-                <OverlapBtn>인증번호 요청</OverlapBtn>
-              </WrapperBox>
-            </ItemBox>
-            <ItemBox>
-              <div>인증번호</div>
-              <WrapperBox>
-                <Input
-                  placeholder="인증번호를 입력하세요."
-                  // onChange={this.onIdHandler}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) =>
-                    (e.target.placeholder = '인증번호를 입력하세요.')
-                  }
-                />
-                <OverlapBtn>확인</OverlapBtn>
-              </WrapperBox>
-            </ItemBox>
-            <ItemBox>
-              <div>성별</div>
-              <Radiobox
-                type={authStore.signupGender === 0}
-                onClick={() => {
-                  authStore.signupGender = 0;
-                }}
-              >
-                <div>
-                  <div></div>
-                </div>
-                <span>남자</span>
-              </Radiobox>
-              <Radiobox
-                type={authStore.signupGender === 1}
-                onClick={() => {
-                  authStore.signupGender = 1;
-                }}
-              >
-                <div>
-                  <div></div>
-                </div>
-                <span>여자</span>
-              </Radiobox>
-            </ItemBox>
-            <ItemBox>
-              <div>출생년도</div>
+              <span>@</span>
               <Select
                 //  id={this.props.id}
                 //  className={this.props.className}
                 styles={customStyles}
                 //  value={value}
-                onChange={(e) => this.handleChange(e, 'birth')}
+                onChange={(e) => this.handleChange(e, 'email')}
                 getOptionLabel={(option) => option.label}
-                options={birthAry}
+                options={emailAry}
                 //  isSearchable={false}
                 placeholder="선택하세요."
-                domainType={1}
+                ml="15"
+                domainType={Auth.domainType}
               />
-            </ItemBox>
-          </MainBox>
-          <NextBtn
-            onClick={() => {
-              authStore.step = 3;
-              authStore.userType = 1;
-            }}
-          >
-            <div>다음</div>
-          </NextBtn>
-        </Container>
-      </Provider>
+              {/* <OverlapBtn>중복확인</OverlapBtn> */}
+              <Input
+                placeholder="직접 입력"
+                // onChange={this.onIdHandler}
+                domainType={Auth.domainType}
+                onFocus={(e) => (e.target.placeholder = '')}
+                onBlur={(e) => (e.target.placeholder = '직접 입력')}
+              />
+            </WrapperBox>
+          </ItemBox>
+          <ItemBox>
+            <div>휴대폰 번호</div>
+            <WrapperBox>
+              <Input
+                placeholder="-없이 입력하세요."
+                // onChange={this.onIdHandler}
+                onFocus={(e) => (e.target.placeholder = '')}
+                onBlur={(e) => (e.target.placeholder = '-없이 입력하세요.')}
+              />
+              <OverlapBtn>인증번호 요청</OverlapBtn>
+            </WrapperBox>
+          </ItemBox>
+          <ItemBox>
+            <div>인증번호</div>
+            <WrapperBox>
+              <Input
+                placeholder="인증번호를 입력하세요."
+                // onChange={this.onIdHandler}
+                onFocus={(e) => (e.target.placeholder = '')}
+                onBlur={(e) =>
+                  (e.target.placeholder = '인증번호를 입력하세요.')
+                }
+              />
+              <OverlapBtn>확인</OverlapBtn>
+            </WrapperBox>
+          </ItemBox>
+          <ItemBox>
+            <div>성별</div>
+            <Radiobox
+              type={Auth.signupGender === 0}
+              onClick={() => {
+                Auth.signupGender = 0;
+              }}
+            >
+              <div>
+                <div></div>
+              </div>
+              <span>남자</span>
+            </Radiobox>
+            <Radiobox
+              type={Auth.signupGender === 1}
+              onClick={() => {
+                Auth.signupGender = 1;
+              }}
+            >
+              <div>
+                <div></div>
+              </div>
+              <span>여자</span>
+            </Radiobox>
+          </ItemBox>
+          <ItemBox>
+            <div>출생년도</div>
+            <Select
+              //  id={this.props.id}
+              //  className={this.props.className}
+              styles={customStyles}
+              //  value={value}
+              onChange={(e) => this.handleChange(e, 'birth')}
+              getOptionLabel={(option) => option.label}
+              options={birthAry}
+              //  isSearchable={false}
+              placeholder="선택하세요."
+              domainType={1}
+            />
+          </ItemBox>
+        </MainBox>
+        <NextBtn
+          onClick={() => {
+            Auth.step = 3;
+            Auth.userType = 1;
+          }}
+        >
+          <div>다음</div>
+        </NextBtn>
+      </Container>
     );
   }
 }

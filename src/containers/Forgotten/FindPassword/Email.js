@@ -13,6 +13,15 @@ class Email extends Component {
     return (
       <Container>
         <Input
+          mb={15}
+          placeholder="아이디를 입력해주세요."
+          onChange={this.onChangeHandler}
+          onFocus={(e) => (e.target.placeholder = '')}
+          onBlur={(e) => (e.target.placeholder = '아이디를 입력해주세요.')}
+        />
+
+        <Input
+          mb={50}
           placeholder="이메일을 입력해주세요."
           onChange={this.onChangeHandler}
           onFocus={(e) => (e.target.placeholder = '')}
@@ -21,10 +30,10 @@ class Email extends Component {
 
         <Button
           onClick={() => {
-            Auth.idStep = 2;
+            Auth.passwordStep = 2;
           }}
         >
-          <div>아이디 찾기</div>
+          <div>비밀번호 찾기</div>
         </Button>
       </Container>
     );
@@ -44,7 +53,7 @@ const Container = styled.div`
 `;
 
 const Input = styled.input`
-  margin-bottom: 50px;
+  margin-bottom: ${(props) => (props.mb ? props.mb : '0')}px;
   border: none;
   border: 1px solid #c7c7c7;
   // padding-bottom: 18px;

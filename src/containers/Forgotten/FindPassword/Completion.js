@@ -8,6 +8,8 @@ import {
   Link as Connection,
 } from 'react-router-dom';
 import Auth from '../../../stores/Account/Auth';
+import homeImg from '../../../static/images/Signup/home.png';
+import loginImg from '../../../static/images/Signup/login.png';
 
 @inject('Auth')
 @observer
@@ -18,29 +20,28 @@ class Completion extends Component {
         <Container>
           <Card>
             <div>
-              <span>아이디</span>찾기가 <span>완료</span>되었습니다!
+              <span>비밀번호 변경</span>이 <span>완료</span>되었습니다!
             </div>
             {/* <img src={teacherImg} /> */}
             <Content>
-              <div>
-                <span>아이디 : </span>
-                sdfsdfsdfsdf
-              </div>
+              <div>서비스를 이용해주셔서 감사합니다.</div>
             </Content>
             <ButtonBox>
-              <Link to="/login" style={{ marginBottom: '30px' }}>
+              <Link to="/" style={{ marginBottom: '30px' }}>
                 <Button
                   backgroundColor="#ffffff"
                   color="rgb(235, 114,82)"
                   border="rgb(235, 114,82)"
                 >
-                  <div>로그인</div>
+                  <img src={homeImg} />
+                  <div>홈으로 가기</div>
                 </Button>
               </Link>
 
               <Link to="/login" style={{ marginBottom: '30px' }}>
                 <Button backgroundColor="rgb(235, 114,82)" color="#ffffff">
-                  <div>비밀번호 찾기</div>
+                  <img src={loginImg} />
+                  <div>로그인하기</div>
                 </Button>
               </Link>
             </ButtonBox>

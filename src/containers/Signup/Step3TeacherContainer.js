@@ -15,7 +15,7 @@ import TextAreaContainer from '../../components/TextareaContainer';
 
 import makeAnimated from 'react-select/animated';
 
-import authStore from '../../stores/Account/Auth';
+import Auth from '../../stores/Account/Auth';
 const animatedComponents = makeAnimated();
 
 const stateSchoolAry = [
@@ -172,6 +172,7 @@ const customStyles = {
   },
 };
 
+@inject('Auth')
 @observer
 class Step3TeacherContainer extends Component {
   state = {
@@ -194,25 +195,25 @@ class Step3TeacherContainer extends Component {
     switch (type) {
       case 'upperLocation':
         console.info('upperLocation');
-        authStore.locationIndex = e.id;
-        authStore.setUpperLocation(e);
-        authStore.lowerLocationAry = [];
-        console.info(authStore.locationIndex);
-        // console.info(emailAry[authStore.locationIndex].value);
-        // authStore.temp = '선택';
+        Auth.locationIndex = e.id;
+        Auth.setUpperLocation(e);
+        Auth.lowerLocationAry = [];
+        console.info(Auth.locationIndex);
+        // console.info(emailAry[Auth.locationIndex].value);
+        // Auth.temp = '선택';
         // this.setState({
         //   lowerLocationAry: this.state.lowerLocationAry.push(e.value),
         // });
-        // authStore.lowerLocationAry.push(e)
+        // Auth.lowerLocationAry.push(e)
         // console.info(e.value);
         e.value.map((item, idx) => {
           console.info(item);
-          authStore.lowerLocationAry.push(item);
+          Auth.lowerLocationAry.push(item);
         });
         // for(let i=0; i<e.value.length < i++){
-        //     authStore.lowerLocationAry.pu
+        //     Auth.lowerLocationAry.pu
         // }
-        console.info(toJS(authStore.lowerLocationAry));
+        console.info(toJS(Auth.lowerLocationAry));
 
         // let lowerN = document.getElementById('lowerLocation');
         // lowerN.append('');
@@ -236,11 +237,11 @@ class Step3TeacherContainer extends Component {
       case 'lowerLocation':
         console.info('lowerLocation');
         console.info(e);
-        // authStore.setLowerLocation(e);
+        // Auth.setLowerLocation(e);
         console.info(e.label);
         // e.label = '선택';
-        authStore.temp = e.label;
-        console.info(authStore.temp);
+        Auth.temp = e.label;
+        console.info(Auth.temp);
         break;
       default:
         break;
@@ -288,32 +289,31 @@ class Step3TeacherContainer extends Component {
   render() {
     console.log(emailAry[1]);
     console.info('======================================');
-    // console.info(emailAry[authStore.locationIndex].value[0].label);
-    console.info(authStore.selectedLowerLocation);
+    // console.info(emailAry[Auth.locationIndex].value[0].label);
+    console.info(Auth.selectedLowerLocation);
     return (
-      <Provider Auth={authStore}>
-        <Container>
-          <Name>과외선생님 회원가입</Name>
-          <ProgressContainer step="3" />
-          <MainBox>
-            <ItemBox>
-              <div>지역</div>
+      <Container>
+        <Name>과외선생님 회원가입</Name>
+        <ProgressContainer step="3" />
+        <MainBox>
+          <ItemBox>
+            <div>지역</div>
 
-              <Select
-                //  id={this.props.id}
-                //  className={this.props.className}
-                styles={customStyles}
-                //  value={value}
-                onChange={(e) => this.handleChange(e, 'upperLocation')}
-                getOptionLabel={(option) => option.label}
-                options={emailAry}
-                //  isSearchable={false}
-                placeholder="시/도"
-                // ml="15"
-                domainType={authStore.domainType}
-              />
+            <Select
+              //  id={this.props.id}
+              //  className={this.props.className}
+              styles={customStyles}
+              //  value={value}
+              onChange={(e) => this.handleChange(e, 'upperLocation')}
+              getOptionLabel={(option) => option.label}
+              options={emailAry}
+              //  isSearchable={false}
+              placeholder="시/도"
+              // ml="15"
+              domainType={Auth.domainType}
+            />
 
-              {/* <select name="language" onChange={(e) => this.changeHandler(e)}>
+            {/* <select name="language" onChange={(e) => this.changeHandler(e)}>
                 {emailAry.map((item, idx) => {
                   return (
                     <>
@@ -333,115 +333,84 @@ class Step3TeacherContainer extends Component {
                 })}
               </select> */}
 
-              <Select
-                width={330}
-                isDisabled
-                isMulti={true}
-                defaultValue={authStore.selectedLowerLocation}
-                id="lowerLocation"
-                //  className={this.props.className}
-                styles={customStyles}
-                // value=""
-                // value="1"
-                // value={(option) => {
-                //   console.info(option);
-                // }}
-                temp={authStore.selectedLowerLocation}
-                onChange={(e) => this.handleChange(e, 'lowerLocation')}
-                getOptionLabel={(option) => option.label}
-                //options={emailAry[authStore.locationIndex].value}
-                options={authStore.lowerLocationAry}
-                //  isSearchable={false}
-                placeholder={authStore.selectedLowerLocation}
-                // placeholder={`ㅣㅣ`}
-                // onFocus={() => (this.placeholder = '')}
-                ml="15"
-                domainType={authStore.domainType}
-              />
-            </ItemBox>
-            <ItemBox>
-              <div>과목</div>
+            <Select
+              width={330}
+              isDisabled
+              isMulti={true}
+              defaultValue={Auth.selectedLowerLocation}
+              id="lowerLocation"
+              //  className={this.props.className}
+              styles={customStyles}
+              // value=""
+              // value="1"
+              // value={(option) => {
+              //   console.info(option);
+              // }}
+              temp={Auth.selectedLowerLocation}
+              onChange={(e) => this.handleChange(e, 'lowerLocation')}
+              getOptionLabel={(option) => option.label}
+              //options={emailAry[Auth.locationIndex].value}
+              options={Auth.lowerLocationAry}
+              //  isSearchable={false}
+              placeholder={Auth.selectedLowerLocation}
+              // placeholder={`ㅣㅣ`}
+              // onFocus={() => (this.placeholder = '')}
+              ml="15"
+              domainType={Auth.domainType}
+            />
+          </ItemBox>
+          <ItemBox>
+            <div>과목</div>
 
-              <Select
-                //  id={this.props.id}
-                //  className={this.props.className}
-                styles={customStyles}
-                //  value={value}
-                onChange={(e) => this.handleChange(e, 'upperLocation')}
-                getOptionLabel={(option) => option.label}
-                options={emailAry}
-                //  isSearchable={false}
-                placeholder="시/도"
-                // ml="15"
-                domainType={authStore.domainType}
-              />
+            <Select
+              //  id={this.props.id}
+              //  className={this.props.className}
+              styles={customStyles}
+              //  value={value}
+              onChange={(e) => this.handleChange(e, 'upperLocation')}
+              getOptionLabel={(option) => option.label}
+              options={emailAry}
+              //  isSearchable={false}
+              placeholder="시/도"
+              // ml="15"
+              domainType={Auth.domainType}
+            />
 
-              <Select
-                width={330}
-                isDisabled
-                isMulti={true}
-                defaultValue={authStore.selectedLowerLocation}
-                id="lowerLocation"
-                //  className={this.props.className}
-                styles={customStyles}
-                // value=""
-                // value="1"
-                // value={(option) => {
-                //   console.info(option);
-                // }}
-                temp={authStore.selectedLowerLocation}
-                onChange={(e) => this.handleChange(e, 'lowerLocation')}
-                getOptionLabel={(option) => option.label}
-                //options={emailAry[authStore.locationIndex].value}
-                options={authStore.lowerLocationAry}
-                //  isSearchable={false}
-                placeholder={authStore.selectedLowerLocation}
-                // placeholder={`ㅣㅣ`}
-                // onFocus={() => (this.placeholder = '')}
-                ml="15"
-                domainType={authStore.domainType}
-              />
-            </ItemBox>
-            <ItemBox>
-              <div>학교</div>
-              <WrapperBox>
-                <Input
-                  placeholder="학교"
-                  // onChange={this.onIdHandler}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '학교')}
-                />
-                <Select
-                  //  id={this.props.id}
-                  //  className={this.props.className}
-                  styles={customStyles}
-                  //  value={value}
-                  onChange={(e) => this.handleChange(e, 'email')}
-                  getOptionLabel={(option) => option.label}
-                  options={stateSchoolAry}
-                  //  isSearchable={false}
-                  placeholder="선택하세요."
-                  ml="15"
-                  domainType={authStore.domainType}
-                />
-                {/* <OverlapBtn>중복확인</OverlapBtn> */}
-              </WrapperBox>
-            </ItemBox>
-            <ItemBox>
-              <div>학과</div>
+            <Select
+              width={330}
+              isDisabled
+              isMulti={true}
+              defaultValue={Auth.selectedLowerLocation}
+              id="lowerLocation"
+              //  className={this.props.className}
+              styles={customStyles}
+              // value=""
+              // value="1"
+              // value={(option) => {
+              //   console.info(option);
+              // }}
+              temp={Auth.selectedLowerLocation}
+              onChange={(e) => this.handleChange(e, 'lowerLocation')}
+              getOptionLabel={(option) => option.label}
+              //options={emailAry[Auth.locationIndex].value}
+              options={Auth.lowerLocationAry}
+              //  isSearchable={false}
+              placeholder={Auth.selectedLowerLocation}
+              // placeholder={`ㅣㅣ`}
+              // onFocus={() => (this.placeholder = '')}
+              ml="15"
+              domainType={Auth.domainType}
+            />
+          </ItemBox>
+          <ItemBox>
+            <div>학교</div>
+            <WrapperBox>
               <Input
-                placeholder="학과"
+                placeholder="학교"
                 // onChange={this.onIdHandler}
                 onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) => (e.target.placeholder = '학과')}
+                onBlur={(e) => (e.target.placeholder = '학교')}
               />
-            </ItemBox>
-            <ItemBox>
-              <div>재학증명서</div>
-              <FileUpload file={true} />
-            </ItemBox>
-            <ItemBox>
-              <div>급여</div>
               <Select
                 //  id={this.props.id}
                 //  className={this.props.className}
@@ -449,28 +418,58 @@ class Step3TeacherContainer extends Component {
                 //  value={value}
                 onChange={(e) => this.handleChange(e, 'email')}
                 getOptionLabel={(option) => option.label}
-                options={budgetAry}
+                options={stateSchoolAry}
                 //  isSearchable={false}
                 placeholder="선택하세요."
-                // ml="15"
-                domainType={authStore.domainType}
+                ml="15"
+                domainType={Auth.domainType}
               />
-            </ItemBox>
-            <ItemBox height="100%">
-              <div>소개</div>
-              <TextArea />
-            </ItemBox>
-          </MainBox>
-          <NextBtn
-            onClick={() => {
-              authStore.step = 4;
-              authStore.userType = 1;
-            }}
-          >
-            <div>회원가입</div>
-          </NextBtn>
-        </Container>
-      </Provider>
+              {/* <OverlapBtn>중복확인</OverlapBtn> */}
+            </WrapperBox>
+          </ItemBox>
+          <ItemBox>
+            <div>학과</div>
+            <Input
+              placeholder="학과"
+              // onChange={this.onIdHandler}
+              onFocus={(e) => (e.target.placeholder = '')}
+              onBlur={(e) => (e.target.placeholder = '학과')}
+            />
+          </ItemBox>
+          <ItemBox>
+            <div>재학증명서</div>
+            <FileUpload file={true} />
+          </ItemBox>
+          <ItemBox>
+            <div>급여</div>
+            <Select
+              //  id={this.props.id}
+              //  className={this.props.className}
+              styles={customStyles}
+              //  value={value}
+              onChange={(e) => this.handleChange(e, 'email')}
+              getOptionLabel={(option) => option.label}
+              options={budgetAry}
+              //  isSearchable={false}
+              placeholder="선택하세요."
+              // ml="15"
+              domainType={Auth.domainType}
+            />
+          </ItemBox>
+          <ItemBox height="100%">
+            <div>소개</div>
+            <TextArea />
+          </ItemBox>
+        </MainBox>
+        <NextBtn
+          onClick={() => {
+            Auth.step = 4;
+            Auth.userType = 1;
+          }}
+        >
+          <div>회원가입</div>
+        </NextBtn>
+      </Container>
     );
   }
 }
