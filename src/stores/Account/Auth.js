@@ -52,7 +52,9 @@ class Auth {
 
   @observable introductionValue = '';
 
-  @observable forgottonType = 1;
+  @observable forgottenType = 1;
+  @observable certificationType = 1;
+  @observable idStep = 1;
 
   getStep = () => {
     console.log(this.step);

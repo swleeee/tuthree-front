@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { inject, observer, Provider } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link as Connection,
 } from 'react-router-dom';
+
+import FindIdContainer from './FindId/FindId';
+import CompletionId from './FindId/Completion';
+
+import FindPasswordContainer from './FindPassword/FindPassword';
+import CompletionPassword from './FindPassword/Completion';
 
 import Auth from '../../stores/Account/Auth';
 
@@ -24,50 +30,48 @@ class Content extends Component {
     console.info(type);
     switch (type) {
       case 'id':
-        Auth.forgottonType = 1;
+        Auth.forgottenType = 1;
         break;
       case 'password':
-        Auth.forgottonType = 2;
+        Auth.forgottenType = 2;
         break;
       default:
         break;
     }
     // this.setState({ g: 3 });
 
-    console.info(Auth.forgottonType);
+    console.info(Auth.forgottenType);
   };
   render() {
     console.info('render');
+    console.info(Auth.forgottenType);
+    console.info(Auth.idStep);
+
     return (
       // <Provider Auth={Auth}>
       <Container>
-        <Name>아이디/비밀번호 찾기</Name>
-        <span>{Auth.forgottonType}</span>
+        {/* <Name>아이디/비밀번호 찾기</Name> */}
         <NavBox>
           <Nav
-            active={Auth.forgottonType === 1 ? true : false}
+            active={Auth.forgottenType === 1 ? true : false}
             onClick={() => this.onClickNavHandler('id')}
           >
             <div>아이디 찾기</div>
           </Nav>
           <Nav
-            active={Auth.forgottonType === 2 ? true : false}
+            active={Auth.forgottenType === 2 ? true : false}
             onClick={() => this.onClickNavHandler('password')}
           >
             <div>비밀번호 찾기</div>
           </Nav>
         </NavBox>
-        <MainBox>
-          <TabBox>
-            <Tab>
-              <div>이메일 인증</div>
-            </Tab>
-            <Tab>
-              <div>휴대전화 인증</div>
-            </Tab>
-          </TabBox>
-          <MainContent>ㅇㄴㄹㄴㅇ</MainContent>
-        </MainBox>
+
+        {Auth.forgottenType === 1 && Auth.idStep === 1 && <FindId />}
+        {Auth.forgottenType === 1 && Auth.idStep === 2 && <CompletionId />}
+        {Auth.forgottonType === 2 && Auth.idStep === 1 && <FindPassword />}
+        {Auth.forgottenType === 2 && Auth.idStep === 2 && (
+          <CompletionPassword />
+        )}
       </Container>
       // </Provider>
     );
@@ -78,7 +82,7 @@ export default observer(Content);
 
 const Container = styled.div`
   width: 100%;
-  height: 1000px;
+  // height: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -96,39 +100,30 @@ const NavBox = styled.div`
   width: 100%;
   display: flex;
   height: 50px;
-  border: 2px solid black;
-  margin-bottom: 50px;
+  // border: 2px solid black;
+  padding-bottom: 10px;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #aaaaaa;
+  margin: 50px 0;
 `;
 const Nav = styled.div`
+  cursor: pointer;
   width: 150px;
   height: 100%;
-  border: 2px solid blue;
+  border: ${(props) =>
+    props.active ? '1px solid transparent' : '1px solid black'};
+  // border-radius: 3px;
   background-color: ${(props) =>
     props.active ? 'rgb(235, 114, 82)' : '#ffffff'};
-`;
-const MainBox = styled.div`
+
   display: flex;
-  width: 100%;
-  height: 800px;
-`;
-const MainContent = styled.div`
-  width: 100%;
-  height: 500px;
-  border: 2px solid green;
-`;
-const TabBox = styled.div`
-  width: 300px;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  background-color: rgba(0, 0, 0, 0.6);
-  margin-right: 50px;
-`;
-const Tab = styled.div`
-  width: 250px;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  > div {
+    color: ${(props) => (props.active ? '#ffffff' : '#000000')};
+    font-weight: bold;
+    font-size: 16px;
+  }
 `;
 
 const Link = styled(Connection)`
@@ -142,3 +137,6 @@ const Link = styled(Connection)`
   display: block;
   text-align: center;
 `;
+
+const FindId = styled(FindIdContainer)``;
+const FindPassword = styled(FindPasswordContainer)``;
