@@ -17,6 +17,17 @@ class Auth {
       signupGender: observable,
       signupBirth: observable,
 
+      locationIndex: observable,
+      selectedUpperLocation: observable,
+      selectedLowerLocation: observable,
+      lowerLocationAry: observable,
+      temp: observable,
+
+      fileAry: observable,
+      fileName: observable,
+
+      introductionValue: observable,
+
       getStep: action,
     });
   }
@@ -34,8 +45,36 @@ class Auth {
   signupGender = 0;
   signupBirth = '';
 
+  locationIndex = 0;
+  selectedUpperLocation = '';
+  selectedLowerLocation = '';
+  lowerLocationAry = [];
+  temp = '';
+
+  fileAry = [];
+  fileName = '';
+
+  introductionValue = '';
+
   getStep = () => {
     console.log(this.step);
+  };
+
+  @action setUpperLocation = (e) => {
+    console.info(e[0]);
+    this.selectedUpperLocation = e.label;
+    // this.midCategorySet = e.detail;
+    console.info(toJS(e[0]));
+    console.info(toJS(this.selectedUpperLocation));
+    this.selectedLowerLocation = e.value[0].label;
+  };
+
+  @action setLowerLocation = (e) => {
+    this.selectedLowerLocation = e.label;
+    // this.midCategorySet = e.detail;
+    console.info(toJS(e));
+    console.info(toJS(this.selectedUpperLocation));
+    // this.selectedLowerLocation = e.value[0].label;
   };
 }
 

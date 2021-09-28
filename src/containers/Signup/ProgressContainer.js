@@ -27,7 +27,7 @@ class ProgressContainer extends Component {
             <img src={writingImg} />
             <span>기본정보 입력</span>
           </ProgressItem>
-          <ProgressItem>
+          <ProgressItem choice={step === '3'}>
             <img src={detailWritingImg} />
             <span>추가정보 입력</span>
           </ProgressItem>

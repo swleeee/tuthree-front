@@ -38,7 +38,11 @@ const customStyles = {
 
 class SelectComp extends React.Component {
   handleChange = (selectedOption) => {
+    console.info(selectedOption);
+    console.info(this.props.temp);
     this.props.onChange(selectedOption);
+
+    console.info(this.props.getOptionLabel);
   };
   handleClick = (click) => {
     this.props.onClick(click);
@@ -54,7 +58,9 @@ class SelectComp extends React.Component {
       getOptionLabel,
       defaultValue,
       value,
+      isMulti,
     } = this.props;
+
     return (
       <Select
         id={this.props.id}
@@ -69,6 +75,7 @@ class SelectComp extends React.Component {
         isSearchable={false}
         placeholder={placeholder}
         defaultValue={defaultValue}
+        // isMulti={isMulti}
       />
     );
   }

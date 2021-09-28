@@ -5,6 +5,8 @@ import OuterContainer from '../../components/OuterContainer';
 import Step1Container from './Step1Container';
 import Step2TeacherContainer from './Step2TeacherContainer';
 import Step2StudentContainer from './Step2StudentContainer';
+import Step3TeacherContainer from './Step3TeacherContainer';
+import Step3StudentContainer from './Step3StudentContainer';
 
 import { inject, observer, Provider } from 'mobx-react';
 import authStore from '../../stores/Account/Auth';
@@ -25,6 +27,13 @@ class index extends Component {
             {authStore.step &&
               authStore.step === 2 &&
               authStore.userType === 2 && <Step2StudentContainer />}
+
+            {authStore.step &&
+              authStore.step === 3 &&
+              authStore.userType === 1 && <Step3TeacherContainer />}
+            {authStore.step &&
+              authStore.step === 3 &&
+              authStore.userType === 2 && <Step3StudentContainer />}
           </InnerContainer>
         </OuterContainer>
       </Provider>

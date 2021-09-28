@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer, Provider } from 'mobx-react';
+import { toJS } from 'mobx';
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,18 +10,130 @@ import {
 } from 'react-router-dom';
 import ProgressContainer from './ProgressContainer';
 import SelectComponent from '../../components/Select';
+import FileUploadContainer from '../../components/FileUpload';
+import TextAreaContainer from '../../components/TextareaContainer';
+
+import makeAnimated from 'react-select/animated';
 
 import authStore from '../../stores/Account/Auth';
+const animatedComponents = makeAnimated();
 
-const birthAry = [];
+const stateSchoolAry = [
+  {
+    label: '재학상태',
+    value: '재학상태',
+  },
+  {
+    label: '졸업상태',
+    value: '졸업상태',
+  },
+  {
+    label: '휴학상태',
+    value: '휴학상태',
+  },
+];
+
+const budgetAry = [
+  {
+    label: '10만원',
+    value: 100000,
+  },
+  {
+    label: '20만원',
+    value: 200000,
+  },
+  {
+    label: '30만원',
+    value: 300000,
+  },
+  {
+    label: '40만원',
+    value: 400000,
+  },
+  {
+    label: '50만원',
+    value: 500000,
+  },
+  {
+    label: '60만원',
+    value: 600000,
+  },
+  {
+    label: '70만원',
+    value: 700000,
+  },
+  {
+    label: '80만원',
+    value: 800000,
+  },
+  {
+    label: '90만원',
+    value: 900000,
+  },
+  {
+    label: '100만원 이상',
+    value: 1000000,
+  },
+];
 const emailAry = [
-  { label: 'naver.com', value: 1 },
-  { label: 'hanmail.net', value: 2 },
-  { label: 'hotmail.com', value: 3 },
-  { label: 'nate.com', value: 4 },
-  { label: 'yahoo.co.kr', value: 5 },
-  { label: 'gmail.com', value: 6 },
-  { label: '직접 입력', value: 'direct' },
+  {
+    id: 0,
+    label: '경기도',
+    value: [
+      {
+        label: '안양시',
+        value: 1,
+      },
+      {
+        label: '수원시',
+        value: 2,
+      },
+      {
+        label: '의왕시',
+        value: 3,
+      },
+    ],
+  },
+  {
+    id: 1,
+    label: '강원도',
+    value: [
+      {
+        label: '강릉시',
+        value: 1,
+      },
+      {
+        label: '원주시',
+        value: 2,
+      },
+      {
+        label: '속초시',
+        value: 3,
+      },
+    ],
+  },
+  {
+    id: 2,
+    label: '서울특별시',
+    value: [
+      {
+        label: '강남구',
+        value: 1,
+      },
+      {
+        label: '노원구',
+        value: 2,
+      },
+      {
+        label: '도봉구',
+        value: 3,
+      },
+      {
+        label: '송파구',
+        value: 4,
+      },
+    ],
+  },
 ];
 
 const customStyles = {
@@ -60,27 +173,74 @@ const customStyles = {
 };
 
 @observer
-class Step2TeacherContainer extends Component {
+class Step3TeacherContainer extends Component {
+  state = {
+    locationIndex: 0,
+    lowerLocationAry: [],
+    // fileArray: [],
+    // fileName: '',
+    // file: '',
+    // checkFileUpload: false,
+  };
   componentDidMount = () => {
-    for (let i = 2021; i > 1900; i--) {
-      birthAry.push({ label: i, value: i });
-    }
-
-    console.log(birthAry);
+    // for (let i = 2021; i > 1900; i--) {
+    //   birthAry.push({ label: i, value: i });
+    // }
+    // console.log(birthAry);
   };
 
   handleChange = (e, type) => {
-    console.log(e);
+    console.info(e);
     switch (type) {
-      case 'email':
-        if (e.value === 'direct') {
-          authStore.domainType = 2;
-        } else {
-          authStore.domainType = 1;
-        }
+      case 'upperLocation':
+        console.info('upperLocation');
+        authStore.locationIndex = e.id;
+        authStore.setUpperLocation(e);
+        authStore.lowerLocationAry = [];
+        console.info(authStore.locationIndex);
+        // console.info(emailAry[authStore.locationIndex].value);
+        // authStore.temp = '선택';
+        // this.setState({
+        //   lowerLocationAry: this.state.lowerLocationAry.push(e.value),
+        // });
+        // authStore.lowerLocationAry.push(e)
+        // console.info(e.value);
+        e.value.map((item, idx) => {
+          console.info(item);
+          authStore.lowerLocationAry.push(item);
+        });
+        // for(let i=0; i<e.value.length < i++){
+        //     authStore.lowerLocationAry.pu
+        // }
+        console.info(toJS(authStore.lowerLocationAry));
+
+        // let lowerN = document.getElementById('lowerLocation');
+        // lowerN.append('');
+        // lowerN.innerHTML = '';
+        //   .getElementsByClassName('css-319lph-ValueContainer');
+        //   .getElementsByClassName('css-14e12xx-placeholder');
+        // console.info(lowerN);
+        // console.info(lowerN.placeholder);
+        // console.info(lowerN.value);
+
+        // lowerN.value = 'sdf';
+        // console.info(lowerN[0].outerText);
+        // console.info(lowerN[0]);
+        // console.info(lowerN.value);
+        // lowerN.value
+        // console.info(lowerN[0].getOptionLabel);
+        // console.info(lowerN.target);
+
+        // lowerN = 'sdf';
         break;
-      case 'birth':
-        console.log('birth');
+      case 'lowerLocation':
+        console.info('lowerLocation');
+        console.info(e);
+        // authStore.setLowerLocation(e);
+        console.info(e.label);
+        // e.label = '선택';
+        authStore.temp = e.label;
+        console.info(authStore.temp);
         break;
       default:
         break;
@@ -122,64 +282,135 @@ class Step2TeacherContainer extends Component {
         console.log('default');
     }
   };
+  changeHandler = (e) => {
+    console.info(e.target);
+  };
   render() {
+    console.log(emailAry[1]);
+    console.info('======================================');
+    // console.info(emailAry[authStore.locationIndex].value[0].label);
+    console.info(authStore.selectedLowerLocation);
     return (
       <Provider Auth={authStore}>
         <Container>
           <Name>과외선생님 회원가입</Name>
-          <ProgressContainer step="2" />
+          <ProgressContainer step="3" />
           <MainBox>
             <ItemBox>
-              <div>아이디</div>
+              <div>지역</div>
+
+              <Select
+                //  id={this.props.id}
+                //  className={this.props.className}
+                styles={customStyles}
+                //  value={value}
+                onChange={(e) => this.handleChange(e, 'upperLocation')}
+                getOptionLabel={(option) => option.label}
+                options={emailAry}
+                //  isSearchable={false}
+                placeholder="시/도"
+                // ml="15"
+                domainType={authStore.domainType}
+              />
+
+              {/* <select name="language" onChange={(e) => this.changeHandler(e)}>
+                {emailAry.map((item, idx) => {
+                  return (
+                    <>
+                      <option value={item.label}>{item.label}</option>
+                    </>
+                  );
+                })}
+              </select>
+
+              <select name="language">
+                {emailAry.map((item, idx) => {
+                  return (
+                    <>
+                      <option value={item.value}>{item.label}</option>
+                    </>
+                  );
+                })}
+              </select> */}
+
+              <Select
+                width={330}
+                isDisabled
+                isMulti={true}
+                defaultValue={authStore.selectedLowerLocation}
+                id="lowerLocation"
+                //  className={this.props.className}
+                styles={customStyles}
+                // value=""
+                // value="1"
+                // value={(option) => {
+                //   console.info(option);
+                // }}
+                temp={authStore.selectedLowerLocation}
+                onChange={(e) => this.handleChange(e, 'lowerLocation')}
+                getOptionLabel={(option) => option.label}
+                //options={emailAry[authStore.locationIndex].value}
+                options={authStore.lowerLocationAry}
+                //  isSearchable={false}
+                placeholder={authStore.selectedLowerLocation}
+                // placeholder={`ㅣㅣ`}
+                // onFocus={() => (this.placeholder = '')}
+                ml="15"
+                domainType={authStore.domainType}
+              />
+            </ItemBox>
+            <ItemBox>
+              <div>과목</div>
+
+              <Select
+                //  id={this.props.id}
+                //  className={this.props.className}
+                styles={customStyles}
+                //  value={value}
+                onChange={(e) => this.handleChange(e, 'upperLocation')}
+                getOptionLabel={(option) => option.label}
+                options={emailAry}
+                //  isSearchable={false}
+                placeholder="시/도"
+                // ml="15"
+                domainType={authStore.domainType}
+              />
+
+              <Select
+                width={330}
+                isDisabled
+                isMulti={true}
+                defaultValue={authStore.selectedLowerLocation}
+                id="lowerLocation"
+                //  className={this.props.className}
+                styles={customStyles}
+                // value=""
+                // value="1"
+                // value={(option) => {
+                //   console.info(option);
+                // }}
+                temp={authStore.selectedLowerLocation}
+                onChange={(e) => this.handleChange(e, 'lowerLocation')}
+                getOptionLabel={(option) => option.label}
+                //options={emailAry[authStore.locationIndex].value}
+                options={authStore.lowerLocationAry}
+                //  isSearchable={false}
+                placeholder={authStore.selectedLowerLocation}
+                // placeholder={`ㅣㅣ`}
+                // onFocus={() => (this.placeholder = '')}
+                ml="15"
+                domainType={authStore.domainType}
+              />
+            </ItemBox>
+            <ItemBox>
+              <div>학교</div>
               <WrapperBox>
                 <Input
-                  placeholder="아이디"
-                  onChange={(e) => this.inputHandler(e.target, 'id')}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '아이디')}
-                />
-                <OverlapBtn>중복확인</OverlapBtn>
-              </WrapperBox>
-            </ItemBox>
-            <ItemBox>
-              <div>비밀번호</div>
-              <Input
-                placeholder="비밀번호"
-                onChange={(e) => this.inputHandler(e.target, 'password')}
-                onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) => (e.target.placeholder = '비밀번호')}
-              />
-            </ItemBox>
-            <ItemBox>
-              <div>비밀번호 확인</div>
-              <Input
-                placeholder="비밀번호 확인"
-                onChange={(e) =>
-                  this.inputHandler(e.target, 'password_confirm')
-                }
-                onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) => (e.target.placeholder = '비밀번호 확인')}
-              />
-            </ItemBox>
-            <ItemBox>
-              <div>이름</div>
-              <Input
-                placeholder="이름"
-                // onChange={this.onIdHandler}
-                onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) => (e.target.placeholder = '이름')}
-              />
-            </ItemBox>
-            <ItemBox>
-              <div>이메일</div>
-              <WrapperBox>
-                <Input
-                  placeholder="이메일"
+                  placeholder="학교"
                   // onChange={this.onIdHandler}
                   onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '이메일')}
+                  onBlur={(e) => (e.target.placeholder = '학교')}
                 />
-                <span>@</span>
                 <Select
                   //  id={this.props.id}
                   //  className={this.props.className}
@@ -187,96 +418,56 @@ class Step2TeacherContainer extends Component {
                   //  value={value}
                   onChange={(e) => this.handleChange(e, 'email')}
                   getOptionLabel={(option) => option.label}
-                  options={emailAry}
+                  options={stateSchoolAry}
                   //  isSearchable={false}
                   placeholder="선택하세요."
                   ml="15"
                   domainType={authStore.domainType}
                 />
                 {/* <OverlapBtn>중복확인</OverlapBtn> */}
-                <Input
-                  placeholder="직접 입력"
-                  // onChange={this.onIdHandler}
-                  domainType={authStore.domainType}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '직접 입력')}
-                />
               </WrapperBox>
             </ItemBox>
             <ItemBox>
-              <div>휴대폰 번호</div>
-              <WrapperBox>
-                <Input
-                  placeholder="-없이 입력하세요."
-                  // onChange={this.onIdHandler}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '-없이 입력하세요.')}
-                />
-                <OverlapBtn>인증번호 요청</OverlapBtn>
-              </WrapperBox>
+              <div>학과</div>
+              <Input
+                placeholder="학과"
+                // onChange={this.onIdHandler}
+                onFocus={(e) => (e.target.placeholder = '')}
+                onBlur={(e) => (e.target.placeholder = '학과')}
+              />
             </ItemBox>
             <ItemBox>
-              <div>인증번호</div>
-              <WrapperBox>
-                <Input
-                  placeholder="인증번호를 입력하세요."
-                  // onChange={this.onIdHandler}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) =>
-                    (e.target.placeholder = '인증번호를 입력하세요.')
-                  }
-                />
-                <OverlapBtn>확인</OverlapBtn>
-              </WrapperBox>
+              <div>재학증명서</div>
+              <FileUpload file={true} />
             </ItemBox>
             <ItemBox>
-              <div>성별</div>
-              <Radiobox
-                type={authStore.signupGender === 0}
-                onClick={() => {
-                  authStore.signupGender = 0;
-                }}
-              >
-                <div>
-                  <div></div>
-                </div>
-                <span>남자</span>
-              </Radiobox>
-              <Radiobox
-                type={authStore.signupGender === 1}
-                onClick={() => {
-                  authStore.signupGender = 1;
-                }}
-              >
-                <div>
-                  <div></div>
-                </div>
-                <span>여자</span>
-              </Radiobox>
-            </ItemBox>
-            <ItemBox>
-              <div>출생년도</div>
+              <div>급여</div>
               <Select
                 //  id={this.props.id}
                 //  className={this.props.className}
                 styles={customStyles}
                 //  value={value}
-                onChange={(e) => this.handleChange(e, 'birth')}
+                onChange={(e) => this.handleChange(e, 'email')}
                 getOptionLabel={(option) => option.label}
-                options={birthAry}
+                options={budgetAry}
                 //  isSearchable={false}
                 placeholder="선택하세요."
-                domainType={1}
+                // ml="15"
+                domainType={authStore.domainType}
               />
+            </ItemBox>
+            <ItemBox height="100%">
+              <div>소개</div>
+              <TextArea />
             </ItemBox>
           </MainBox>
           <NextBtn
             onClick={() => {
-              authStore.step = 3;
-              authStore.userType = 2;
+              authStore.step = 4;
+              authStore.userType = 1;
             }}
           >
-            <div>다음</div>
+            <div>회원가입</div>
           </NextBtn>
         </Container>
       </Provider>
@@ -284,7 +475,7 @@ class Step2TeacherContainer extends Component {
   }
 }
 
-export default Step2TeacherContainer;
+export default Step3TeacherContainer;
 
 const Container = styled.div`
   width: 100%;
@@ -324,7 +515,7 @@ const ItemBox = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 60px;
+  height: ${(props) => (props.height ? props.height : '60px')};
   margin-bottom: 20px;
   // justify-content: space-around;
   > div:nth-of-type(1) {
@@ -386,7 +577,7 @@ const Input = styled.input`
 `;
 
 const Select = styled(SelectComponent)`
-  width: 170px;
+  width: ${(props) => (props.width ? props.width : '170')}px;
   height: 60px;
   margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
   display: ${(props) => (props.domainType === 1 ? 'block' : 'none')};
@@ -434,4 +625,14 @@ const NextBtn = styled.div`
     font-size: 20px;
     font-weight: bold;
   }
+`;
+
+const FileUpload = styled(FileUploadContainer)`
+  width: 100%;
+`;
+
+const TextArea = styled(TextAreaContainer)`
+  width: 100%;
+  border: 3px solid red;
+  height: 300px;
 `;

@@ -273,7 +273,7 @@ class Step2TeacherContainer extends Component {
           <NextBtn
             onClick={() => {
               authStore.step = 3;
-              authStore.userType = 2;
+              authStore.userType = 1;
             }}
           >
             <div>다음</div>
