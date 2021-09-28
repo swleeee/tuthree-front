@@ -17,6 +17,7 @@ import authStore from '../../stores/Account/Auth';
 @observer
 class Step1Container extends Component {
   render() {
+    console.info(authStore.forgottonType);
     return (
       <Provider Auth={authStore}>
         <Container>

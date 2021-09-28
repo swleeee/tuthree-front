@@ -56,6 +56,8 @@ class Auth {
 
   introductionValue = '';
 
+  @observable forgottonType = 1;
+
   getStep = () => {
     console.log(this.step);
   };
@@ -78,5 +80,4 @@ class Auth {
   };
 }
 
-const authStore = new Auth();
-export default authStore;
+export default new Auth();

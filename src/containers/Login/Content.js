@@ -37,7 +37,7 @@ class Content extends Component {
             />
           </InputBox>
           <Forgotten>
-            <Link to="/forgotton">
+            <Link to="/forgotten">
               <span>아이디/비밀번호 찾기</span>
             </Link>
           </Forgotten>
