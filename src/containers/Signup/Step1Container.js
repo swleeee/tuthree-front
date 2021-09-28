@@ -78,6 +78,7 @@ const CardContainer = styled.div`
   width: 100%;
 `;
 const CardItem = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
