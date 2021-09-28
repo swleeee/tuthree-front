@@ -7,7 +7,7 @@ class Signup extends Component {
   render() {
     return (
       <>
-        <NavContainer />
+        {/* <NavContainer /> */}
         <SignupContainer />
         <Footer />
       </>

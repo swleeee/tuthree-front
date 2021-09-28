@@ -7,7 +7,7 @@ class Forgotten extends Component {
   render() {
     return (
       <>
-        <NavContainer />
+        {/* <NavContainer /> */}
         <ForgottenContainer />
         <Footer />
       </>

@@ -172,4 +172,36 @@ const Item = styled.div`
       font-family: RobotoLight;
     }
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      span:nth-of-type(1) {
+        font-size: 28px;
+      }
+      span:nth-of-type(2) {
+        font-size: 18px;
+      }
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      span:nth-of-type(1) {
+        font-size: 36px;
+      }
+      span:nth-of-type(2) {
+        font-size: 20px;
+      }
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      span:nth-of-type(1) {
+        font-size: 40px;
+      }
+      span:nth-of-type(2) {
+        font-size: 22px;
+      }
+    }
+  }
 `;

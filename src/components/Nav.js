@@ -72,6 +72,20 @@ const Link = styled(Connection)`
     // color: #eb7252;
     color: #000000;
   }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 14px;
+    > span {
+      font-size: 22px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 16px;
+    > span {
+      font-size: 26px;
+    }
+  }
 `;
 
 // const Container = styled.div`

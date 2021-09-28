@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { inject, observer } from 'mobx-react';
+
 import InnerContainer from '../../components/InnerContainer';
 import OuterContainer from '../../components/OuterContainer';
 
@@ -8,8 +10,15 @@ import reportImg from '../../static/images/Home/report.png';
 import videoConferenceImg from '../../static/images/Home/video-conference.png';
 import gradingImg from '../../static/images/Home/grading.png';
 
+import Common from '../../stores/Common/Common';
+
+@inject('Common')
+@observer
 class ContentContainer extends Component {
   render() {
+    {
+      console.info(Common.width);
+    }
     const chapter_one = [
       {
         step: 'step1',
@@ -90,7 +99,7 @@ class ContentContainer extends Component {
               <Item>
                 {chapter_two.map((item) => {
                   return (
-                    <Card service="two">
+                    <Card service="two" theight={300} mheight={300}>
                       <Wrapper>
                         <Img service="two" src={item.image}></Img>
                       </Wrapper>
@@ -113,7 +122,7 @@ class ContentContainer extends Component {
 export default ContentContainer;
 
 const Container = styled.div`
-  width: 1200px;
+  width: 100%;
   // height: 100px;
   height: 100%;
   // border: 3px solid red;
@@ -130,17 +139,58 @@ const SubContainer = styled.div`
     margin-bottom: 30px;
     padding-bottom: 15px;
   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > span {
+      font-size: 20px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > span {
+      font-size: 22px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > span {
+      font-size: 24px;
+    }
+  }
+  @media (min-width: 1300px) {
+  }
 `;
 
 const Item = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-direction: column;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    flex-direction: column;
+    // align-items: center;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+  }
+  @media (min-width: 1300px) {
+  }
 `;
 const Img = styled.img`
   width: 100%;
-  height: ${(props) => (props.service === 'one' ? '70%' : '100%')};
+  height: ${(props) => (props.service === 'one' ? '65%' : '100%')};
   object-fit: cover;
   background-color: ${(props) => (props.background ? props.background : '')};
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    height: 50%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    height: 60%;
+  }
 `;
 
 const Card = styled.div`
@@ -154,6 +204,23 @@ const Card = styled.div`
   // position: relative;
   display: ${(props) => (props.service === 'one' ? 'block' : 'flex')};
   flex-direction: column;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 100%;
+    margin-bottom: 50px;
+    height: ${(props) => (props.mheight ? props.mheight : '400')}px;
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 100%;
+    margin-bottom: 20px;
+    height: ${(props) => (props.theight ? props.theight : '500')}px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 300px;
+    height: 400px;
+  }
 `;
 const Content = styled.div`
   padding: 10px;

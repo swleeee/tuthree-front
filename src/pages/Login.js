@@ -7,7 +7,7 @@ class Login extends Component {
   render() {
     return (
       <>
-        <NavContainer />
+        {/* <NavContainer /> */}
         <LoginContainer />
         <Footer />
       </>

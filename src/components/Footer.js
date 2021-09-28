@@ -47,6 +47,17 @@ class Footer extends Component {
               www.flaticon.com
             </a>
           </div>
+
+          <div>
+            Icons made by{' '}
+            <a href="http://www.google.com" title="Google">
+              Google
+            </a>{' '}
+            from{' '}
+            <a href="https://www.flaticon.com/" title="Flaticon">
+              www.flaticon.com
+            </a>
+          </div>
           {/* <a href="https://www.freepik.com/vectors/idea">
             Idea vector created by stories - www.freepik.com
           </a> */}

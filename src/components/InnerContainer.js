@@ -6,10 +6,14 @@ const InnerContainer = styled.div`
   @media (min-width: 0px) and (max-width: 767.98px) {
     width: calc(100% - 28px);
   }
-  @media (min-width: 768px) and (max-width: 1279.98px) {
+  @media (min-width: 768px) and (max-width: 991.98px) {
     width: 720px;
   }
-  @media (min-width: 1280px) {
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 900px;
+  }
+  @media (min-width: 1300px) {
     width: 1200px;
   }
 `;

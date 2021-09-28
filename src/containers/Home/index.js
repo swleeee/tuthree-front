@@ -10,7 +10,7 @@ class index extends Component {
     return (
       <>
         {/* <NavBox> */}
-        <NavContainer />
+        {/* <NavContainer /> */}
         <Banner />
         <MainContainer />
         {/* </NavBox> */}
