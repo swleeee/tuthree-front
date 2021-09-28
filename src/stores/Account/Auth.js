@@ -2,59 +2,55 @@ import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 
 class Auth {
   constructor() {
-    makeObservable(this, {
-      step: observable,
-      userType: observable,
-      domainType: observable,
-
-      signupId: observable,
-      signupPassword: observable,
-      signupPasswordConfirm: observable,
-      signupName: observable,
-      signupEmail: observable,
-      signupPhone: observable,
-      signupCertification: observable,
-      signupGender: observable,
-      signupBirth: observable,
-
-      locationIndex: observable,
-      selectedUpperLocation: observable,
-      selectedLowerLocation: observable,
-      lowerLocationAry: observable,
-      temp: observable,
-
-      fileAry: observable,
-      fileName: observable,
-
-      introductionValue: observable,
-
-      getStep: action,
-    });
+    makeObservable(this);
+    // makeObservable(this, {
+    //   step: observable,
+    //   userType: observable,
+    //   domainType: observable,
+    //   signupId: observable,
+    //   signupPassword: observable,
+    //   signupPasswordConfirm: observable,
+    //   signupName: observable,
+    //   signupEmail: observable,
+    //   signupPhone: observable,
+    //   signupCertification: observable,
+    //   signupGender: observable,
+    //   signupBirth: observable,
+    //   locationIndex: observable,
+    //   selectedUpperLocation: observable,
+    //   selectedLowerLocation: observable,
+    //   lowerLocationAry: observable,
+    //   temp: observable,
+    //   fileAry: observable,
+    //   fileName: observable,
+    //   introductionValue: observable,
+    //   getStep: action,
+    // });
   }
-  step = 1;
-  userType = 0;
-  domainType = 1;
+  @observable step = 1;
+  @observable userType = 0;
+  @observable domainType = 1;
 
-  signupId = '';
-  signupPassword = '';
-  signupPasswordConfirm = '';
-  signupName = '';
-  signupEmail = '';
-  signupPhone = '';
-  signupCertification = '';
-  signupGender = 0;
-  signupBirth = '';
+  @observable signupId = '';
+  @observable signupPassword = '';
+  @observable signupPasswordConfirm = '';
+  @observable signupName = '';
+  @observable signupEmail = '';
+  @observable signupPhone = '';
+  @observable signupCertification = '';
+  @observable signupGender = 0;
+  @observable signupBirth = '';
 
-  locationIndex = 0;
-  selectedUpperLocation = '';
-  selectedLowerLocation = '';
-  lowerLocationAry = [];
-  temp = '';
+  @observable locationIndex = 0;
+  @observable selectedUpperLocation = '';
+  @observable selectedLowerLocation = '';
+  @observable lowerLocationAry = [];
+  @observable temp = '';
 
-  fileAry = [];
-  fileName = '';
+  @observable fileAry = [];
+  @observable fileName = '';
 
-  introductionValue = '';
+  @observable introductionValue = '';
 
   @observable forgottonType = 1;
 

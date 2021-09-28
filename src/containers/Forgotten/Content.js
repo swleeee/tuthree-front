@@ -8,8 +8,9 @@ import {
   Link as Connection,
 } from 'react-router-dom';
 
-import authStore from '../../stores/Account/Auth';
+import Auth from '../../stores/Account/Auth';
 
+@inject('Auth')
 @observer
 class Content extends Component {
   onIdHandler = (e) => {
@@ -19,56 +20,56 @@ class Content extends Component {
   onPasswordHandler = (e) => {
     console.log(e.target.value);
   };
-  o0nClickNavHandler = (type) => {
+  onClickNavHandler = (type) => {
     console.info(type);
     switch (type) {
       case 'id':
-        authStore.forgottonType = 1;
+        Auth.forgottonType = 1;
         break;
       case 'password':
-        authStore.forgottonType = 2;
+        Auth.forgottonType = 2;
         break;
       default:
         break;
     }
     // this.setState({ g: 3 });
 
-    console.info(authStore.forgottonType);
+    console.info(Auth.forgottonType);
   };
   render() {
     console.info('render');
     return (
-      <Provider Auth={authStore}>
-        <Container>
-          <Name>아이디/비밀번호 찾기</Name>
-          <span>{authStore.forgottonType}</span>
-          <NavBox>
-            <Nav
-              active={authStore.forgottonType === 1 ? true : false}
-              onClick={() => this.onClickNavHandler('id')}
-            >
-              <div>아이디 찾기</div>
-            </Nav>
-            <Nav
-              active={authStore.forgottonType === 2 ? true : false}
-              onClick={() => this.onClickNavHandler('password')}
-            >
-              <div>비밀번호 찾기</div>
-            </Nav>
-          </NavBox>
-          <MainBox>
-            <TabBox>
-              <Tab>
-                <div>이메일 인증</div>
-              </Tab>
-              <Tab>
-                <div>휴대전화 인증</div>
-              </Tab>
-            </TabBox>
-            <MainContent>ㅇㄴㄹㄴㅇ</MainContent>
-          </MainBox>
-        </Container>
-      </Provider>
+      // <Provider Auth={Auth}>
+      <Container>
+        <Name>아이디/비밀번호 찾기</Name>
+        <span>{Auth.forgottonType}</span>
+        <NavBox>
+          <Nav
+            active={Auth.forgottonType === 1 ? true : false}
+            onClick={() => this.onClickNavHandler('id')}
+          >
+            <div>아이디 찾기</div>
+          </Nav>
+          <Nav
+            active={Auth.forgottonType === 2 ? true : false}
+            onClick={() => this.onClickNavHandler('password')}
+          >
+            <div>비밀번호 찾기</div>
+          </Nav>
+        </NavBox>
+        <MainBox>
+          <TabBox>
+            <Tab>
+              <div>이메일 인증</div>
+            </Tab>
+            <Tab>
+              <div>휴대전화 인증</div>
+            </Tab>
+          </TabBox>
+          <MainContent>ㅇㄴㄹㄴㅇ</MainContent>
+        </MainBox>
+      </Container>
+      // </Provider>
     );
   }
 }
