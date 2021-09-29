@@ -46,11 +46,15 @@ class Auth {
   @observable selectedUpperLocation = '';
   @observable selectedLowerLocation = '';
   @observable lowerLocationAry = [];
+  @observable selectedLocation = [];
 
   @observable subjectIndex = 0;
   @observable selectedUpperSubject = '';
   @observable selectedLowerSubject = '';
   @observable lowerSubjectAry = [];
+  @observable selectedSubject = [];
+
+  @observable budget = 0;
 
   @observable fileAry = [];
   @observable fileName = '';
@@ -116,6 +120,13 @@ class Auth {
       case 'lowerLocation':
         console.info('lowerLocation');
         this.setLowerLocation(e);
+        console.info(
+          `${this.selectedUpperLocation} ${this.selectedLowerLocation}`
+        );
+        this.selectedLocation.push(
+          `${this.selectedUpperLocation} ${this.selectedLowerLocation}`
+        );
+        console.info(toJS(this.selectedLocation));
         break;
 
       case 'upperSubject':
@@ -131,9 +142,15 @@ class Auth {
         break;
       case 'lowerSubject':
         this.setLowerSubject(e);
+        this.selectedSubject.push(
+          `${this.selectedUpperSubject} ${this.selectedLowerSubject}`
+        );
         console.info(e.label);
 
         break;
+      case 'budget':
+        this.budget = e.value;
+
       default:
         break;
     }

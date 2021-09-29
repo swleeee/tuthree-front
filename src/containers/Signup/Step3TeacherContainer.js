@@ -14,6 +14,7 @@ import FileUploadContainer from '../../components/FileUpload';
 import TextAreaContainer from '../../components/TextareaContainer';
 
 import makeAnimated from 'react-select/animated';
+import deleteImg from '../../static/images/Signup/delete.png';
 
 import Auth from '../../stores/Account/Auth';
 const animatedComponents = makeAnimated();
@@ -323,6 +324,24 @@ class Step3TeacherContainer extends Component {
               domainType={Auth.domainType}
             />
           </ItemBox>
+          <ItemBox width="100%" height="100%">
+            <div />
+            <SelectArea>
+              {Auth.selectedLocation.map((item, idx) => {
+                return (
+                  <div
+                    onClick={() => {
+                      console.info('sdf');
+                      Auth.selectedLocation.splice(idx, 1);
+                    }}
+                  >
+                    <div>{item}</div>
+                    <img src={deleteImg} />
+                  </div>
+                );
+              })}
+            </SelectArea>
+          </ItemBox>
           <ItemBox>
             <div>과목</div>
             <Select
@@ -363,6 +382,23 @@ class Step3TeacherContainer extends Component {
               ml="15"
               domainType={Auth.domainType}
             />
+          </ItemBox>
+          <ItemBox width="100%" height="100%">
+            <div />
+            <SelectArea>
+              {Auth.selectedSubject.map((item, idx) => {
+                return (
+                  <div
+                    onClick={() => {
+                      Auth.selectedSubject.splice(idx, 1);
+                    }}
+                  >
+                    <div>{item}</div>
+                    <img src={deleteImg} />
+                  </div>
+                );
+              })}
+            </SelectArea>
           </ItemBox>
           <ItemBox>
             <div>학교</div>
@@ -409,7 +445,7 @@ class Step3TeacherContainer extends Component {
               //  className={this.props.className}
               styles={customStyles}
               //  value={value}
-              onChange={(e) => this.handleChange(e, 'email')}
+              onChange={(e) => Auth.handleChange(e, 'budget')}
               getOptionLabel={(option) => option.label}
               options={budgetAry}
               //  isSearchable={false}
@@ -596,4 +632,32 @@ const TextArea = styled(TextAreaContainer)`
   width: 100%;
   border: 3px solid red;
   height: 300px;
+`;
+
+const SelectArea = styled.div`
+  width: 600px;
+  // height: 80px;
+  // border: 1px solid #c7c7c7;
+  padding: 5px 8px;
+  box-sizing: border-box;
+
+  > div {
+    display: inline-flex;
+    align-items: center;
+    background-color: #aaaaaa;
+    border-radius: 30px;
+    padding: 3px 10px;
+    box-sizing: border-box;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    > div {
+      font-size: 12px;
+      margin-right: 10px;
+    }
+    > img {
+      width: 12px;
+      height: 12px;
+    }
+  }
 `;
