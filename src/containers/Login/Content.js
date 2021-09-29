@@ -90,12 +90,17 @@ const Input = styled.input`
   //     margin-top: 0px !important;
   //     margin-bottom: 8px !important;
   //   }
-  //   @media (min-width: 768px) and (max-width: 991.98px) {
-  //     width: 100%;
-  //   }
-  //   @media (min-width: 992px) and (max-width: 1299.98px) {
-  //     width: 100%;
-  //   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 300px;
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 400px;
+  }
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 500px;
+  }
   @media (min-width: 1300px) {
     width: 500px;
   }
@@ -114,6 +119,13 @@ const Forgotten = styled.div`
 
     text-align: center;
   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 300px;
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 400px;
+  }
 `;
 const Button = styled.button`
   background-color: white;
@@ -129,6 +141,16 @@ const Button = styled.button`
   div {
     font-size: 20px;
     font-weight: 500;
+  }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 250px;
+    height: 50px;
+    div {
+      font-size: 18px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 400px;
   }
 `;
 
