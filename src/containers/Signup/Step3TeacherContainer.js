@@ -75,7 +75,7 @@ const budgetAry = [
     value: 1000000,
   },
 ];
-const emailAry = [
+const locationAry = [
   {
     id: 0,
     label: '경기도',
@@ -136,6 +136,67 @@ const emailAry = [
   },
 ];
 
+const subjectAry = [
+  {
+    id: 0,
+    label: '국어',
+    value: [
+      {
+        label: '중등 국어',
+        value: 1,
+      },
+      {
+        label: '고등 국어(문법)',
+        value: 2,
+      },
+      {
+        label: '고등 국어(문학)',
+        value: 3,
+      },
+    ],
+  },
+  {
+    id: 1,
+    label: '사회',
+    value: [
+      {
+        label: '한국지리',
+        value: 1,
+      },
+      {
+        label: '윤리와 사상',
+        value: 2,
+      },
+      {
+        label: '한국사',
+        value: 3,
+      },
+    ],
+  },
+  {
+    id: 2,
+    label: '과학',
+    value: [
+      {
+        label: '생명과학',
+        value: 1,
+      },
+      {
+        label: '화학',
+        value: 2,
+      },
+      {
+        label: '물리',
+        value: 3,
+      },
+      {
+        label: '지구과학',
+        value: 4,
+      },
+    ],
+  },
+];
+
 const customStyles = {
   dropdownIndicator: () => ({
     backgroundColor: '#fff',
@@ -156,6 +217,7 @@ const customStyles = {
     borderRadius: 0,
     padding: 16,
     fontSize: 16,
+    cursor: 'pointer',
   }),
   control: () => ({
     fontSize: 16,
@@ -163,6 +225,7 @@ const customStyles = {
     border: '1px solid #c7c7c7',
     display: 'flex',
     height: '100%',
+    cursor: 'pointer',
   }),
   singleValue: (provided, state) => {
     const opacity = state.isDisabled ? 0.5 : 1;
@@ -175,79 +238,6 @@ const customStyles = {
 @inject('Auth')
 @observer
 class Step3TeacherContainer extends Component {
-  state = {
-    locationIndex: 0,
-    lowerLocationAry: [],
-    // fileArray: [],
-    // fileName: '',
-    // file: '',
-    // checkFileUpload: false,
-  };
-  componentDidMount = () => {
-    // for (let i = 2021; i > 1900; i--) {
-    //   birthAry.push({ label: i, value: i });
-    // }
-    // console.log(birthAry);
-  };
-
-  handleChange = (e, type) => {
-    console.info(e);
-    switch (type) {
-      case 'upperLocation':
-        console.info('upperLocation');
-        Auth.locationIndex = e.id;
-        Auth.setUpperLocation(e);
-        Auth.lowerLocationAry = [];
-        console.info(Auth.locationIndex);
-        // console.info(emailAry[Auth.locationIndex].value);
-        // Auth.temp = '선택';
-        // this.setState({
-        //   lowerLocationAry: this.state.lowerLocationAry.push(e.value),
-        // });
-        // Auth.lowerLocationAry.push(e)
-        // console.info(e.value);
-        e.value.map((item, idx) => {
-          console.info(item);
-          Auth.lowerLocationAry.push(item);
-        });
-        // for(let i=0; i<e.value.length < i++){
-        //     Auth.lowerLocationAry.pu
-        // }
-        console.info(toJS(Auth.lowerLocationAry));
-
-        // let lowerN = document.getElementById('lowerLocation');
-        // lowerN.append('');
-        // lowerN.innerHTML = '';
-        //   .getElementsByClassName('css-319lph-ValueContainer');
-        //   .getElementsByClassName('css-14e12xx-placeholder');
-        // console.info(lowerN);
-        // console.info(lowerN.placeholder);
-        // console.info(lowerN.value);
-
-        // lowerN.value = 'sdf';
-        // console.info(lowerN[0].outerText);
-        // console.info(lowerN[0]);
-        // console.info(lowerN.value);
-        // lowerN.value
-        // console.info(lowerN[0].getOptionLabel);
-        // console.info(lowerN.target);
-
-        // lowerN = 'sdf';
-        break;
-      case 'lowerLocation':
-        console.info('lowerLocation');
-        console.info(e);
-        // Auth.setLowerLocation(e);
-        console.info(e.label);
-        // e.label = '선택';
-        Auth.temp = e.label;
-        console.info(Auth.temp);
-        break;
-      default:
-        break;
-    }
-  };
-
   inputHandler = (e, type) => {
     console.log(e.value);
     // console.log(type);
@@ -283,14 +273,8 @@ class Step3TeacherContainer extends Component {
         console.log('default');
     }
   };
-  changeHandler = (e) => {
-    console.info(e.target);
-  };
+
   render() {
-    console.log(emailAry[1]);
-    console.info('======================================');
-    // console.info(emailAry[Auth.locationIndex].value[0].label);
-    console.info(Auth.selectedLowerLocation);
     return (
       <Container>
         <Name>과외선생님 회원가입</Name>
@@ -300,58 +284,38 @@ class Step3TeacherContainer extends Component {
             <div>지역</div>
 
             <Select
-              //  id={this.props.id}
-              //  className={this.props.className}
               styles={customStyles}
-              //  value={value}
-              onChange={(e) => this.handleChange(e, 'upperLocation')}
+              value={{
+                label: Auth.selectedUpperLocation
+                  ? Auth.selectedUpperLocation
+                  : '시/도',
+                value: Auth.selectedUpperLocation,
+              }}
+              onChange={(e) => Auth.handleChange(e, 'upperLocation')}
               getOptionLabel={(option) => option.label}
-              options={emailAry}
+              options={locationAry}
               //  isSearchable={false}
               placeholder="시/도"
               // ml="15"
               domainType={Auth.domainType}
             />
 
-            {/* <select name="language" onChange={(e) => this.changeHandler(e)}>
-                {emailAry.map((item, idx) => {
-                  return (
-                    <>
-                      <option value={item.label}>{item.label}</option>
-                    </>
-                  );
-                })}
-              </select>
-
-              <select name="language">
-                {emailAry.map((item, idx) => {
-                  return (
-                    <>
-                      <option value={item.value}>{item.label}</option>
-                    </>
-                  );
-                })}
-              </select> */}
-
             <Select
               width={330}
-              isDisabled
-              isMulti={true}
-              defaultValue={Auth.selectedLowerLocation}
               id="lowerLocation"
-              //  className={this.props.className}
               styles={customStyles}
-              // value=""
-              // value="1"
-              // value={(option) => {
-              //   console.info(option);
-              // }}
+              value={{
+                label: Auth.selectedLowerLocation
+                  ? Auth.selectedLowerLocation
+                  : '시/군/구',
+                value: Auth.selectedLowerLocation,
+              }}
               temp={Auth.selectedLowerLocation}
-              onChange={(e) => this.handleChange(e, 'lowerLocation')}
+              onChange={(e) => Auth.handleChange(e, 'lowerLocation')}
               getOptionLabel={(option) => option.label}
-              //options={emailAry[Auth.locationIndex].value}
+              // options={locationAry[Auth.locationIndex].value}
               options={Auth.lowerLocationAry}
-              //  isSearchable={false}
+              isSearchable={false}
               placeholder={Auth.selectedLowerLocation}
               // placeholder={`ㅣㅣ`}
               // onFocus={() => (this.placeholder = '')}
@@ -361,15 +325,17 @@ class Step3TeacherContainer extends Component {
           </ItemBox>
           <ItemBox>
             <div>과목</div>
-
             <Select
-              //  id={this.props.id}
-              //  className={this.props.className}
               styles={customStyles}
-              //  value={value}
-              onChange={(e) => this.handleChange(e, 'upperLocation')}
+              value={{
+                label: Auth.selectedUpperSubject
+                  ? Auth.selectedUpperSubject
+                  : '상위 과목',
+                value: Auth.selectedUpperSubject,
+              }}
+              onChange={(e) => Auth.handleChange(e, 'upperSubject')}
               getOptionLabel={(option) => option.label}
-              options={emailAry}
+              options={subjectAry}
               //  isSearchable={false}
               placeholder="시/도"
               // ml="15"
@@ -378,24 +344,20 @@ class Step3TeacherContainer extends Component {
 
             <Select
               width={330}
-              isDisabled
-              isMulti={true}
-              defaultValue={Auth.selectedLowerLocation}
               id="lowerLocation"
-              //  className={this.props.className}
               styles={customStyles}
-              // value=""
-              // value="1"
-              // value={(option) => {
-              //   console.info(option);
-              // }}
-              temp={Auth.selectedLowerLocation}
-              onChange={(e) => this.handleChange(e, 'lowerLocation')}
+              value={{
+                label: Auth.selectedLowerSubject
+                  ? Auth.selectedLowerSubject
+                  : '하위 과목',
+                value: Auth.selectedLowerSubject,
+              }}
+              onChange={(e) => Auth.handleChange(e, 'lowerSubject')}
               getOptionLabel={(option) => option.label}
-              //options={emailAry[Auth.locationIndex].value}
-              options={Auth.lowerLocationAry}
-              //  isSearchable={false}
-              placeholder={Auth.selectedLowerLocation}
+              // options={locationAry[Auth.locationIndex].value}
+              options={Auth.lowerSubjectAry}
+              isSearchable={false}
+              placeholder={Auth.selectedLowerSubject}
               // placeholder={`ㅣㅣ`}
               // onFocus={() => (this.placeholder = '')}
               ml="15"

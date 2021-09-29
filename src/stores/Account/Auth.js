@@ -46,7 +46,11 @@ class Auth {
   @observable selectedUpperLocation = '';
   @observable selectedLowerLocation = '';
   @observable lowerLocationAry = [];
-  @observable temp = '';
+
+  @observable subjectIndex = 0;
+  @observable selectedUpperSubject = '';
+  @observable selectedLowerSubject = '';
+  @observable lowerSubjectAry = [];
 
   @observable fileAry = [];
   @observable fileName = '';
@@ -77,6 +81,62 @@ class Auth {
     console.info(toJS(e));
     console.info(toJS(this.selectedUpperLocation));
     // this.selectedLowerLocation = e.value[0].label;
+  };
+
+  @action setUpperSubject = (e) => {
+    console.info(e[0]);
+    this.selectedUpperSubject = e.label;
+    // this.midCategorySet = e.detail;
+    console.info(toJS(e[0]));
+    console.info(toJS(this.selectedUpperSubject));
+    this.selectedLowerSubject = e.value[0].label;
+  };
+
+  @action setLowerSubject = (e) => {
+    this.selectedLowerSubject = e.label;
+    // this.midCategorySet = e.detail;
+    console.info(toJS(e));
+    console.info(toJS(this.selectedUpperSubject));
+    // this.selectedLowerLocation = e.value[0].label;
+  };
+  @action handleChange = (e, type) => {
+    switch (type) {
+      case 'upperLocation':
+        console.info('upperLocation');
+        this.locationIndex = e.id;
+        this.setUpperLocation(e);
+        this.lowerLocationAry = [];
+
+        e.value.map((item, idx) => {
+          console.info(item);
+          this.lowerLocationAry.push(item);
+        });
+        break;
+
+      case 'lowerLocation':
+        console.info('lowerLocation');
+        this.setLowerLocation(e);
+        break;
+
+      case 'upperSubject':
+        this.SubjectIndex = e.id;
+        this.setUpperSubject(e);
+        this.lowerSubjectAry = [];
+
+        e.value.map((item, idx) => {
+          console.info(item);
+          this.lowerSubjectAry.push(item);
+        });
+
+        break;
+      case 'lowerSubject':
+        this.setLowerSubject(e);
+        console.info(e.label);
+
+        break;
+      default:
+        break;
+    }
   };
 }
 
