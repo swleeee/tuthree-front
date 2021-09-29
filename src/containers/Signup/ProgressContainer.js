@@ -50,6 +50,9 @@ const Container = styled.div`
   //   flex-direction: column;
   align-items: center;
   justify-content: center;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const ProgressItem = styled.div`
@@ -68,5 +71,49 @@ const ProgressItem = styled.div`
     font-size: 24px;
     font-weight: bold;
     color: ${(props) => (props.choice ? '#ffffff' : '#000000')};
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    margin: 0 10px;
+    margin-bottom: 10px;
+    padding: 0 8px;
+    height: 50px;
+    width: 180px;
+    > span {
+      font-size: 14px;
+    }
+    > img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    margin: 0 10px;
+    padding: 0 10px;
+    height: 60px;
+    width: 200px;
+    > span {
+      font-size: 16px;
+    }
+    > img {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    margin: 0 10px;
+    padding: 0 10px;
+    height: 80px;
+    width: 225px;
+    > span {
+      font-size: 20px;
+    }
+    > img {
+      width: 32px;
+      height: 32px;
+    }
+  }
+  @media (min-width: 1300px) {
   }
 `;
