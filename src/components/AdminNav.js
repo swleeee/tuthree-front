@@ -73,6 +73,20 @@ const Link = styled(Connection)`
   color: #fff;
   // width: ${(props) => (props.menu ? '70%' : '1%')};
   margin: ${(props) => (props.menu ? '0 30px' : '0 0')};
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 14px;
+    > span {
+      font-size: 22px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 16px;
+    > span {
+      font-size: 26px;
+    }
+  }
 `;
 
 const Button = styled.button`
@@ -84,4 +98,15 @@ const Button = styled.button`
   color: #fff;
   border-radius: 3px;
   font-weight: bold;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+  }
 `;
