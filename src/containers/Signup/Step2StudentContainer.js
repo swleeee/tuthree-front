@@ -11,6 +11,7 @@ import ProgressContainer from './ProgressContainer';
 import SelectComponent from '../../components/Select';
 
 import Auth from '../../stores/Account/Auth';
+import Common from '../../stores/Common/Common';
 
 const birthAry = [];
 const emailAry = [
@@ -22,6 +23,49 @@ const emailAry = [
   { label: 'gmail.com', value: 6 },
   { label: '직접 입력', value: 'direct' },
 ];
+
+const mobileCustomStyles = {
+  placeholder: (defaultStyles) => {
+    return {
+      ...defaultStyles,
+      color: '#000',
+      fontSize: 13,
+    };
+  },
+  dropdownIndicator: () => ({
+    backgroundColor: '#fff',
+    color: '#000',
+    width: 40,
+    height: 40,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isSelected ? '#000000' : '#555555',
+    backgroundColor: '#fff',
+    borderRadius: 0,
+    padding: 13,
+    fontSize: 13,
+  }),
+  control: () => ({
+    fontSize: 13,
+    lineHeight: 1.2,
+    border: '1px solid #c7c7c7',
+    display: 'flex',
+    height: '100%',
+  }),
+  singleValue: (provided, state) => {
+    const opacity = state.isDisabled ? 0.5 : 1;
+    const transition = 'opacity 300ms';
+
+    return { ...provided, opacity, transition };
+  },
+};
 
 const customStyles = {
   dropdownIndicator: () => ({
@@ -59,7 +103,7 @@ const customStyles = {
   },
 };
 
-@inject('Auth')
+@inject('Auth', 'Common')
 @observer
 class Step2StudentContainer extends Component {
   componentDidMount = () => {
@@ -198,7 +242,7 @@ class Step2StudentContainer extends Component {
           </ItemBox>
           <ItemBox>
             <div>이메일</div>
-            <WrapperBox>
+            <WrapperBox wrap={true}>
               <Input
                 placeholder="이메일"
                 // onChange={this.onIdHandler}
@@ -209,7 +253,9 @@ class Step2StudentContainer extends Component {
               <Select
                 //  id={this.props.id}
                 //  className={this.props.className}
-                styles={customStyles}
+                styles={
+                  Common.width > 767.98 ? customStyles : mobileCustomStyles
+                }
                 //  value={value}
                 onChange={(e) => this.handleChange(e, 'email')}
                 getOptionLabel={(option) => option.label}
@@ -287,7 +333,7 @@ class Step2StudentContainer extends Component {
             <Select
               //  id={this.props.id}
               //  className={this.props.className}
-              styles={customStyles}
+              styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               //  value={value}
               onChange={(e) => this.handleChange(e, 'birth')}
               getOptionLabel={(option) => option.label}
@@ -334,6 +380,17 @@ const Name = styled.div`
   font-family: RobotoBlack;
   font-weight: bold;
   margin: 110px 0;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 24px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 30px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 36px;
+  }
 `;
 
 const MainBox = styled.div`
@@ -345,12 +402,27 @@ const MainBox = styled.div`
   justify-content: center;
   padding: 10px 30px;
   box-sizing: border-box;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 100%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 100%;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 90%;
+  }
 `;
 const WrapperBox = styled.div`
   display: flex;
   align-items: center;
   span {
     margin-left: 10px;
+  }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-wrap: wrap;
+    flex-direction: ${(props) => (props.wrap ? 'column' : 'row')};
   }
 `;
 const ItemBox = styled.div`
@@ -365,6 +437,29 @@ const ItemBox = styled.div`
     font-size: 20px;
     font-weight: bold;
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    > div:nth-of-type(1) {
+      width: 100px;
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div:nth-of-type(1) {
+      width: 180px;
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div:nth-of-type(1) {
+      width: 200px;
+      font-size: 18px;
+    }
+  }
 `;
 
 const OverlapBtn = styled.button`
@@ -377,15 +472,24 @@ const OverlapBtn = styled.button`
   font-weight: bold;
   margin-left: 15px;
   cursor: pointer;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 14px;
+    width: 120px;
+    height: 40px;
+    margin-left: 0;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 16px;
+    width: 115px;
+    height: 40px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 18px;
+    width: 125px;
+  }
 `;
-const PasswordBox = styled.div``;
-const PasswordConfirmBox = styled.div``;
-const NameBox = styled.div``;
-const EmailBox = styled.div``;
-const PhoneBox = styled.div``;
-const CertificationBox = styled.div``;
-const GenderBox = styled.div``;
-const BirthBox = styled.div``;
 
 const Input = styled.input`
   border: none;
@@ -400,17 +504,22 @@ const Input = styled.input`
   :focus {
   }
 
-  //   @media (min-width: 0px) and (max-width: 767.98px) {
-  //     width: 100%;
-  //     margin-top: 0px !important;
-  //     margin-bottom: 8px !important;
-  //   }
-  //   @media (min-width: 768px) and (max-width: 991.98px) {
-  //     width: 100%;
-  //   }
-  //   @media (min-width: 992px) and (max-width: 1299.98px) {
-  //     width: 100%;
-  //   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: ${(props) => (props.domainType === 2 ? '145px' : '200px')};
+    height: 40px;
+    margin-left: ${(props) => (props.domainType === 2 ? '5px' : '0px')};
+    font-size: 12px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: ${(props) => (props.domainType === 2 ? '145px' : '250px')};
+    height: 60px;
+    margin-left: ${(props) => (props.domainType === 2 ? '10px' : '0px')};
+  }
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: ${(props) => (props.domainType === 2 ? '145px' : '300px')};
+    height: 60px;
+    margin-left: ${(props) => (props.domainType === 2 ? '15px' : '0px')};
+  }
   @media (min-width: 1300px) {
     width: ${(props) => (props.domainType === 2 ? '145px' : '440px')};
     height: 60px;
@@ -423,6 +532,13 @@ const Select = styled(SelectComponent)`
   height: 60px;
   margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
   display: ${(props) => (props.domainType === 1 ? 'block' : 'none')};
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 140px;
+    height: 40px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
 `;
 
 const Radiobox = styled.div`
@@ -452,6 +568,20 @@ const Radiobox = styled.div`
     font-size: 16px;
     margin-left: 10px;
   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    margin-bottom: 10px;
+    > div:nth-of-type(1) {
+      width: 16px;
+      height: 16px;
+      > div {
+        width: 10px;
+        height: 10px;
+      }
+    }
+    > span {
+      font-size: 13px;
+    }
+  }
 `;
 
 const NextBtn = styled.div`
@@ -466,5 +596,27 @@ const NextBtn = styled.div`
   > div {
     font-size: 20px;
     font-weight: bold;
+  }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 140px;
+    height: 50px;
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 160px;
+    height: 50px;
+    > div {
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 180px;
+    height: 50px;
+    > div {
+      font-size: 18px;
+    }
   }
 `;

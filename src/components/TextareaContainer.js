@@ -91,4 +91,14 @@ const Textarea = styled.textarea`
     font-weight: 300;
   }
   white-space: pre-line;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    max-width: 450px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    max-width: 500px;
+  }
 `;

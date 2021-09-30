@@ -17,65 +17,9 @@ import makeAnimated from 'react-select/animated';
 import deleteImg from '../../static/images/Signup/delete.png';
 
 import Auth from '../../stores/Account/Auth';
+import Common from '../../stores/Common/Common';
 const animatedComponents = makeAnimated();
 
-const stateSchoolAry = [
-  {
-    label: '재학상태',
-    value: '재학상태',
-  },
-  {
-    label: '졸업상태',
-    value: '졸업상태',
-  },
-  {
-    label: '휴학상태',
-    value: '휴학상태',
-  },
-];
-
-const budgetAry = [
-  {
-    label: '10만원',
-    value: 100000,
-  },
-  {
-    label: '20만원',
-    value: 200000,
-  },
-  {
-    label: '30만원',
-    value: 300000,
-  },
-  {
-    label: '40만원',
-    value: 400000,
-  },
-  {
-    label: '50만원',
-    value: 500000,
-  },
-  {
-    label: '60만원',
-    value: 600000,
-  },
-  {
-    label: '70만원',
-    value: 700000,
-  },
-  {
-    label: '80만원',
-    value: 800000,
-  },
-  {
-    label: '90만원',
-    value: 900000,
-  },
-  {
-    label: '100만원 이상',
-    value: 1000000,
-  },
-];
 const locationAry = [
   {
     id: 0,
@@ -137,66 +81,48 @@ const locationAry = [
   },
 ];
 
-const subjectAry = [
-  {
-    id: 0,
-    label: '국어',
-    value: [
-      {
-        label: '중등 국어',
-        value: 1,
-      },
-      {
-        label: '고등 국어(문법)',
-        value: 2,
-      },
-      {
-        label: '고등 국어(문학)',
-        value: 3,
-      },
-    ],
+const mobileCustomStyles = {
+  placeholder: (defaultStyles) => {
+    return {
+      ...defaultStyles,
+      color: '#000',
+      fontSize: 13,
+    };
   },
-  {
-    id: 1,
-    label: '사회',
-    value: [
-      {
-        label: '한국지리',
-        value: 1,
-      },
-      {
-        label: '윤리와 사상',
-        value: 2,
-      },
-      {
-        label: '한국사',
-        value: 3,
-      },
-    ],
+  dropdownIndicator: () => ({
+    backgroundColor: '#fff',
+    color: '#000',
+    width: 40,
+    height: 40,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isSelected ? '#000000' : '#555555',
+    backgroundColor: '#fff',
+    borderRadius: 0,
+    padding: 13,
+    fontSize: 13,
+  }),
+  control: () => ({
+    fontSize: 13,
+    lineHeight: 1.2,
+    border: '1px solid #c7c7c7',
+    display: 'flex',
+    height: '100%',
+  }),
+  singleValue: (provided, state) => {
+    const opacity = state.isDisabled ? 0.5 : 1;
+    const transition = 'opacity 300ms';
+
+    return { ...provided, opacity, transition };
   },
-  {
-    id: 2,
-    label: '과학',
-    value: [
-      {
-        label: '생명과학',
-        value: 1,
-      },
-      {
-        label: '화학',
-        value: 2,
-      },
-      {
-        label: '물리',
-        value: 3,
-      },
-      {
-        label: '지구과학',
-        value: 4,
-      },
-    ],
-  },
-];
+};
 
 const customStyles = {
   dropdownIndicator: () => ({
@@ -236,7 +162,7 @@ const customStyles = {
   },
 };
 
-@inject('Auth')
+@inject('Auth', 'Common')
 @observer
 class Step3TeacherContainer extends Component {
   inputHandler = (e, type) => {
@@ -285,7 +211,7 @@ class Step3TeacherContainer extends Component {
             <div>지역</div>
 
             <Select
-              styles={customStyles}
+              styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               value={{
                 label: Auth.selectedUpperLocation
                   ? Auth.selectedUpperLocation
@@ -304,7 +230,7 @@ class Step3TeacherContainer extends Component {
             <Select
               width={330}
               id="lowerLocation"
-              styles={customStyles}
+              styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               value={{
                 label: Auth.selectedLowerLocation
                   ? Auth.selectedLowerLocation
@@ -320,7 +246,7 @@ class Step3TeacherContainer extends Component {
               placeholder={Auth.selectedLowerLocation}
               // placeholder={`ㅣㅣ`}
               // onFocus={() => (this.placeholder = '')}
-              ml="15"
+              ml={Common.width > 767.98 && '15'}
               domainType={Auth.domainType}
             />
           </ItemBox>
@@ -345,7 +271,7 @@ class Step3TeacherContainer extends Component {
           <ItemBox>
             <div>과목</div>
             <Select
-              styles={customStyles}
+              styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               value={{
                 label: Auth.selectedUpperSubject
                   ? Auth.selectedUpperSubject
@@ -354,7 +280,7 @@ class Step3TeacherContainer extends Component {
               }}
               onChange={(e) => Auth.handleChange(e, 'upperSubject')}
               getOptionLabel={(option) => option.label}
-              options={subjectAry}
+              options={Auth.subjectAry}
               //  isSearchable={false}
               placeholder="시/도"
               // ml="15"
@@ -364,7 +290,7 @@ class Step3TeacherContainer extends Component {
             <Select
               width={330}
               id="lowerLocation"
-              styles={customStyles}
+              styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               value={{
                 label: Auth.selectedLowerSubject
                   ? Auth.selectedLowerSubject
@@ -379,7 +305,7 @@ class Step3TeacherContainer extends Component {
               placeholder={Auth.selectedLowerSubject}
               // placeholder={`ㅣㅣ`}
               // onFocus={() => (this.placeholder = '')}
-              ml="15"
+              ml={Common.width > 767.98 && '15'}
               domainType={Auth.domainType}
             />
           </ItemBox>
@@ -412,11 +338,13 @@ class Step3TeacherContainer extends Component {
               <Select
                 //  id={this.props.id}
                 //  className={this.props.className}
-                styles={customStyles}
+                styles={
+                  Common.width > 767.98 ? customStyles : mobileCustomStyles
+                }
                 //  value={value}
-                onChange={(e) => this.handleChange(e, 'email')}
+                onChange={(e) => Auth.handleChange(e, 'schoolState')}
                 getOptionLabel={(option) => option.label}
-                options={stateSchoolAry}
+                options={Auth.stateSchoolAry}
                 //  isSearchable={false}
                 placeholder="선택하세요."
                 ml="15"
@@ -443,11 +371,11 @@ class Step3TeacherContainer extends Component {
             <Select
               //  id={this.props.id}
               //  className={this.props.className}
-              styles={customStyles}
+              styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               //  value={value}
               onChange={(e) => Auth.handleChange(e, 'budget')}
               getOptionLabel={(option) => option.label}
-              options={budgetAry}
+              options={Auth.budgetAry}
               //  isSearchable={false}
               placeholder="선택하세요."
               // ml="15"
@@ -489,6 +417,17 @@ const Name = styled.div`
   font-family: RobotoBlack;
   font-weight: bold;
   margin: 110px 0;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 24px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 30px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 36px;
+  }
 `;
 
 const MainBox = styled.div`
@@ -500,6 +439,16 @@ const MainBox = styled.div`
   justify-content: center;
   padding: 10px 30px;
   box-sizing: border-box;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 100%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 100%;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 90%;
+  }
 `;
 const WrapperBox = styled.div`
   display: flex;
@@ -520,6 +469,28 @@ const ItemBox = styled.div`
     font-size: 20px;
     font-weight: bold;
   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    > div:nth-of-type(1) {
+      width: 100px;
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div:nth-of-type(1) {
+      width: 180px;
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div:nth-of-type(1) {
+      width: 200px;
+      font-size: 18px;
+    }
+  }
 `;
 
 const OverlapBtn = styled.button`
@@ -533,14 +504,6 @@ const OverlapBtn = styled.button`
   margin-left: 15px;
   cursor: pointer;
 `;
-const PasswordBox = styled.div``;
-const PasswordConfirmBox = styled.div``;
-const NameBox = styled.div``;
-const EmailBox = styled.div``;
-const PhoneBox = styled.div``;
-const CertificationBox = styled.div``;
-const GenderBox = styled.div``;
-const BirthBox = styled.div``;
 
 const Input = styled.input`
   border: none;
@@ -554,18 +517,22 @@ const Input = styled.input`
   padding-left: 10px;
   :focus {
   }
-
-  //   @media (min-width: 0px) and (max-width: 767.98px) {
-  //     width: 100%;
-  //     margin-top: 0px !important;
-  //     margin-bottom: 8px !important;
-  //   }
-  //   @media (min-width: 768px) and (max-width: 991.98px) {
-  //     width: 100%;
-  //   }
-  //   @media (min-width: 992px) and (max-width: 1299.98px) {
-  //     width: 100%;
-  //   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: ${(props) => (props.domainType === 2 ? '145px' : '200px')};
+    height: 40px;
+    margin-left: ${(props) => (props.domainType === 2 ? '5px' : '0px')};
+    font-size: 12px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: ${(props) => (props.domainType === 2 ? '145px' : '250px')};
+    height: 60px;
+    margin-left: ${(props) => (props.domainType === 2 ? '10px' : '0px')};
+  }
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: ${(props) => (props.domainType === 2 ? '145px' : '300px')};
+    height: 60px;
+    margin-left: ${(props) => (props.domainType === 2 ? '15px' : '0px')};
+  }
   @media (min-width: 1300px) {
     width: ${(props) => (props.domainType === 2 ? '145px' : '440px')};
     height: 60px;
@@ -578,6 +545,13 @@ const Select = styled(SelectComponent)`
   height: 60px;
   margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
   display: ${(props) => (props.domainType === 1 ? 'block' : 'none')};
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 140px;
+    height: 40px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
 `;
 
 const Radiobox = styled.div`
@@ -621,6 +595,29 @@ const NextBtn = styled.div`
   > div {
     font-size: 20px;
     font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 140px;
+    height: 50px;
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 160px;
+    height: 50px;
+    > div {
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 180px;
+    height: 50px;
+    > div {
+      font-size: 18px;
+    }
   }
 `;
 

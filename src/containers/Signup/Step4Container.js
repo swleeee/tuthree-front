@@ -40,7 +40,7 @@ class Step4Container extends Component {
               </div>
             </Content>
             <ButtonBox>
-              <Link to="/" style={{ marginBottom: '30px' }}>
+              <Link to="/" mmb={10}>
                 <Button
                   backgroundColor="#ffffff"
                   color="rgb(235, 114,82)"
@@ -51,7 +51,7 @@ class Step4Container extends Component {
                 </Button>
               </Link>
 
-              <Link to="/login" style={{ marginBottom: '30px' }}>
+              <Link to="/login">
                 <Button backgroundColor="rgb(235, 114,82)" color="#ffffff">
                   <img src={loginImg} />
                   <div>로그인하기</div>
@@ -117,18 +117,43 @@ const Card = styled.div`
       color: rgb(235, 114, 82);
     }
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 90%;
+    height: 300px;
+    > div:nth-of-type(1) {
+      font-size: 20px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 600px;
+    height: 300px;
+    > div:nth-of-type(1) {
+      font-size: 28px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 700px;
+    > div:nth-of-type(1) {
+      font-size: 32px;
+    }
+  }
 `;
 
 const ButtonBox = styled.div`
   display: flex;
   justify-content: space-around;
   width: 100%;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const Button = styled.button`
   cursor: pointer;
-  width: 250px;
-  height: 70px;
+  width: 200px;
+  height: 50px;
   background-color: ${(props) =>
     props.backgroundColor ? props.backgroundColor : '#ffffff'};
   border: ${(props) => (props.border ? `1px solid ${props.border}` : 'none')};
@@ -143,6 +168,39 @@ const Button = styled.button`
     font-weight: bold;
     color: ${(props) => (props.color ? props.color : '#000000')};
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 170px;
+    height: 50px;
+    > img {
+      width: 20px;
+      height: 20px;
+    }
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 200px;
+    height: 60px;
+    > img {
+      width: 24px;
+      height: 24px;
+    }
+    > div {
+      font-size: 17px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > img {
+      width: 28px;
+      height: 28px;
+    }
+    > div {
+      font-size: 20px;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -153,6 +211,24 @@ const Content = styled.div`
   div {
     font-size: 18px;
     color: #666666;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 80%;
+    > div {
+      font-size: 12px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      font-size: 16px;
+    }
   }
 `;
 
@@ -166,4 +242,8 @@ const Link = styled(Connection)`
   box-sizing: border-box;
   display: block;
   text-align: center;
+  margin-bottom: 30px;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    margin-bottom: ${(props) => (props.mmb ? props.mmb : 0)}px;
+  }
 `;
