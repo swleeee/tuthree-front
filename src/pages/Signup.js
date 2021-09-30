@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SignupContainer from '../containers/Signup';
+import SignupContainer from '../containers/User/Signup';
 import NavContainer from '../components/Nav.js';
 import Footer from '../components/Footer';
 
