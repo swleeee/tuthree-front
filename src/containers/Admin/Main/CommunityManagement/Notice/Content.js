@@ -8,10 +8,10 @@ import {
   Link as Connection,
 } from 'react-router-dom';
 
-// import Notice from '../../../../stores/Community/Notice';
+import AdminCommunity from '../../../../../stores/Admin/Community';
 import searchImg from '../../../../../static/images/Admin/Main/search.png';
 
-// @inject('Notice')
+@inject('AdminCommunity')
 @observer
 class Content extends Component {
   render() {
@@ -33,7 +33,9 @@ class Content extends Component {
             <Count>
               총 <span>25</span>개
             </Count>
-            <WriteBtn>글쓰기</WriteBtn>
+            <WriteBtn onClick={() => (AdminCommunity.state = 2)}>
+              글쓰기
+            </WriteBtn>
           </Header>
           <MainBox>
             <Line title={true}>

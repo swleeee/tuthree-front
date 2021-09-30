@@ -424,7 +424,11 @@ class Step3StudentContainer extends Component {
           </ItemBox>
           <ItemBox height="100%">
             <div>요구사항</div>
-            <TextArea />
+            <TextArea
+              placeholder="예) 수/금 16시, 주말 시간 가능(협의 가능)
+                            시급 2만원 가능
+                            개념 위주 말고 모의고사 위주로 했으면 좋겠습니다."
+            />
           </ItemBox>
         </MainBox>
         <NextBtn

@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 
 import AdminCommunity from '../../../../stores/Admin/Community';
 import NoticeContainer from './Notice';
+import NoticeWritingContainer from './Notice/Writing';
 
 @inject('AdminCommunity')
 @observer
@@ -32,7 +33,12 @@ class Content extends Component {
             <div>커뮤니티</div>
           </Nav>
         </NavBox>
-        {AdminCommunity.type === 2 && <NoticeContainer />}
+        {AdminCommunity.type === 2 && AdminCommunity.state === 1 && (
+          <NoticeContainer />
+        )}
+        {AdminCommunity.type === 2 && AdminCommunity.state === 2 && (
+          <NoticeWritingContainer />
+        )}
       </Container>
     );
   }

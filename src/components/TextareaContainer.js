@@ -44,13 +44,16 @@ class TextareaContainer extends Component {
   };
 
   render() {
+    const { type, placeholder } = this.props;
+    console.info(type);
     return (
       <Provider Auth={authStore}>
         <Textarea
-          placeholder={`${placeholderText}`}
+          type={type}
+          placeholder={`${placeholder}`}
           onFocus={(e) => (e.target.placeholder = '')}
           onBlur={(e) => {
-            e.target.placeholder = `${placeholderText}`;
+            e.target.placeholder = `${placeholder}`;
             if (this.state.value === '') {
               this.setState({ rows: 7 });
             }
@@ -70,9 +73,10 @@ export default TextareaContainer;
 
 const Textarea = styled.textarea`
   resize: none;
-  border: 1px solid #c7c7c7;
+  border: ${(props) =>
+    props.type === 'notice' ? 'none' : '1px solid #c7c7c7'};
   width: 100%;
-  max-width: 630px;
+  // max-width: 630px;
   padding: 14px 16px;
   box-sizing: border-box;
   font-size: 15px;
@@ -93,12 +97,20 @@ const Textarea = styled.textarea`
   white-space: pre-line;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
+    max-width: ${(props) => (props.type === 'notice' ? 'none' : '630px')};
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
-    max-width: 450px;
+    max-width: ${(props) => (props.type === 'notice' ? 'none' : '450px')};
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
-    max-width: 500px;
+    max-width: ${(props) => (props.type === 'notice' ? 'none' : '500px')};
+    width: 100%;
+    // max-width: 0;
+  }
+
+  @media (min-width: 1300px) {
+    max-width: ${(props) => (props.type === 'notice' ? 'none' : '630px')};
+    width: 90%;
   }
 `;
