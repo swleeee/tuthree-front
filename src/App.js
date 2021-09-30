@@ -7,7 +7,17 @@
 // export default App;
 
 import React from 'react';
-import { Home, Signup, Login, Forgotten } from './pages';
+import {
+  Home,
+  Signup,
+  Login,
+  Forgotten,
+  Notice,
+  AdminHome,
+  AdminUser,
+  AdminMain,
+  AdminCommunity,
+} from './pages';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { inject, observer, Provider } from 'mobx-react';
 import stores from './stores';
@@ -41,18 +51,22 @@ class App extends React.Component {
       <div>
         <Provider {...stores} Common={Common}>
           <BrowserRouter>
-            {Common.width &&
+            {/* {Common.width &&
               (Common.width >= 767.98 ? (
                 <NavContainer />
               ) : (
                 <MovileNavContainer />
-              ))}
+              ))} */}
 
             <div>
               <Route exact path="/" component={Home} />
               <Route path="/signup" component={Signup} />
               <Route path="/login" component={Login} />
               <Route path="/forgotten" component={Forgotten} />
+              <Route path="/notice" component={Notice} />
+              <Route exact path="/admin" component={AdminHome} />
+              <Route path="/admin/main" component={AdminMain} />
+              <Route path="/admin/community" component={AdminCommunity} />
             </div>
           </BrowserRouter>
         </Provider>
