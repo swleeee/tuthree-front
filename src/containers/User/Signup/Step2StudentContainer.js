@@ -354,6 +354,7 @@ class Step2StudentContainer extends Component {
               Auth.step = 4;
               Auth.userType = 2;
             }
+            window.scrollTo(0, 0);
           }}
         >
           <div>다음</div>

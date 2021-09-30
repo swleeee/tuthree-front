@@ -435,6 +435,7 @@ class Step3StudentContainer extends Component {
           onClick={() => {
             Auth.step = 4;
             Auth.userType = 1;
+            window.scrollTo(0, 0);
           }}
         >
           <div>회원가입</div>

@@ -325,6 +325,7 @@ class Step2TeacherContainer extends Component {
           onClick={() => {
             Auth.step = 3;
             Auth.userType = 1;
+            window.scrollTo(0, 0);
           }}
         >
           <div>다음</div>
