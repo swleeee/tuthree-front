@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import NoticeContainer from '../containers/Notice';
-import Footer from '../components/Footer';
+import AdminContainer from '../../containers/Admin';
+import Footer from '../../components/Footer';
 
-class Notice extends Component {
+class Admin extends Component {
   render() {
     return (
       <>
         {/* <NavContainer /> */}
-        <NoticeContainer />
+        <AdminContainer />
         <Footer />
       </>
     );
@@ -16,4 +16,4 @@ class Notice extends Component {
 
 // Signup.propTypes = {};
 
-export default Notice;
+export default Admin;

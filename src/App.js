@@ -7,7 +7,7 @@
 // export default App;
 
 import React from 'react';
-import { Home, Signup, Login, Forgotten } from './pages';
+import { Home, Signup, Login, Forgotten, Notice } from './pages';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { inject, observer, Provider } from 'mobx-react';
 import stores from './stores';
@@ -53,6 +53,7 @@ class App extends React.Component {
               <Route path="/signup" component={Signup} />
               <Route path="/login" component={Login} />
               <Route path="/forgotten" component={Forgotten} />
+              <Route path="/notice" component={Notice} />
             </div>
           </BrowserRouter>
         </Provider>
