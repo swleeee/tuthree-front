@@ -48,7 +48,7 @@ class MobileNav extends React.Component {
               <ModalHeader>
                 <div style={{ marginBottom: 20, width: '100%' }}>
                   <Link to="/admin">
-                    <span>Tuthree(A)</span>
+                    <span>TuThree</span>
                   </Link>
                   <img src={close_ic} style={{ float: 'right' }} />
                 </div>
@@ -129,7 +129,7 @@ class MobileNav extends React.Component {
 
             <HeadText>
               <Link to="/admin" style={{ width: '40%' }}>
-                <span>Tuthree(A)</span>
+                <span>TuThree</span>
               </Link>
             </HeadText>
             <Icon src={hamburger_ic} onClick={this.menuClick} />

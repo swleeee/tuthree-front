@@ -20,7 +20,7 @@ class Nav extends Component {
           <Item>
             <Logo>
               <Link to="/" style={{ width: '30%' }}>
-                <span>Tuthree</span>
+                <span>TuThree</span>
               </Link>
             </Logo>
             <Menu>

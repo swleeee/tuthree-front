@@ -12,7 +12,7 @@ class AdminNav extends Component {
   render() {
     return (
       <NavBox>
-        <div>TUTHREE ADMIN</div>
+        <div>TuThree Admin</div>
         <Menu>
           <Link to="/admin/main" menu={true}>
             사용자 관리

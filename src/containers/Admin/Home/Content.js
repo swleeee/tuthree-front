@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link as Connection,
+} from 'react-router-dom';
 
 import userImg from '../../../static/images/Admin/Login/admin-user.png';
 import passwordImg from '../../../static/images/Admin/Login/admin-password.png';
@@ -15,7 +21,7 @@ class ContentContainer extends Component {
       <Container>
         <Item>
           <Header>
-            <div>TUTHREE ADMIN LOGIN</div>
+            <div>TuThree Admin Login</div>
           </Header>
           <InputBox>
             <InputItem mb={true}>
@@ -43,7 +49,9 @@ class ContentContainer extends Component {
               />
             </InputItem>
           </InputBox>
-          <Button>로그인</Button>
+          <Link to="/admin/main">
+            <Button>로그인</Button>
+          </Link>
         </Item>
       </Container>
     );
@@ -218,4 +226,17 @@ const Button = styled.button`
   }
   @media (min-width: 1300px) {
   }
+`;
+
+const Link = styled(Connection)`
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  font-family: RobotoBlack;
+  font-weight: bold;
+
+  box-sizing: border-box;
+  display: block;
+  text-align: center;
+  width: 75%;
 `;

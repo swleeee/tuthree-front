@@ -57,6 +57,7 @@ class InputComponent extends React.Component {
       console.log(e.currentTarget.files[0]);
 
       authStore.fileAry.push(e.currentTarget.files[0]);
+      console.info(toJS(authStore.fileAry));
       //   for (var item in e.currentTarget.files) {
       //     console.log(item);
       //     if (typeof e.currentTarget.files[item] === "object") {
