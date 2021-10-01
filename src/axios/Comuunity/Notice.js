@@ -9,3 +9,12 @@ export function getNotice(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function getAdminNotice(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/notice/admin/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}

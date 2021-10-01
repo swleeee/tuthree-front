@@ -10,10 +10,14 @@ import {
 
 import AdminCommunity from '../../../../../stores/Admin/Community';
 import searchImg from '../../../../../static/images/Admin/Main/search.png';
+import Pagination from '../../../../../components/Pagination';
 
 @inject('AdminCommunity')
 @observer
 class Content extends Component {
+  componentDidMount = () => {
+    AdminCommunity.getAdminNoticeList();
+  };
   render() {
     return (
       <Container>
@@ -31,7 +35,7 @@ class Content extends Component {
           </SearchBox>
           <Header>
             <Count>
-              총 <span>25</span>개
+              총 <span>{AdminCommunity.noticeListTotalCount}</span>개
             </Count>
             <WriteBtn onClick={() => (AdminCommunity.state = 2)}>
               글쓰기
@@ -46,7 +50,26 @@ class Content extends Component {
               <Management title={true}>관리</Management>
             </Line>
 
-            <Line>
+            {AdminCommunity.noticeList &&
+              AdminCommunity.noticeList.map((item, idx) => {
+                return (
+                  <Line>
+                    <Number>{idx}</Number>
+                    <Type>{item.type.korType}</Type>
+                    <Title>{item.title}</Title>
+                    <Date>{item.writeAt}</Date>
+                    <Management>
+                      <CtlBtn>
+                        <div>수정</div>
+                      </CtlBtn>
+                      <CtlBtn del={true}>
+                        <div>삭제</div>
+                      </CtlBtn>
+                    </Management>
+                  </Line>
+                );
+              })}
+            {/* <Line>
               <Number>1</Number>
               <Type>일반</Type>
               <Title>안녕!dsfdsfdsfsdfdsfddsdfsdfsdfsdfdsfdsfsf</Title>
@@ -59,8 +82,13 @@ class Content extends Component {
                   <div>삭제</div>
                 </CtlBtn>
               </Management>
-            </Line>
+            </Line> */}
           </MainBox>
+          <Pagination
+            currentSet={AdminCommunity.noticeCurrentSet}
+            currentPage={AdminCommunity.noticeCurrentPage}
+            totalPage={AdminCommunity.noticeTotalPage}
+          />
         </Item>
       </Container>
     );
@@ -235,7 +263,7 @@ const WriteBtn = styled.button`
 
 const MainBox = styled.div`
   width: 100%;
-  height: 500px;
+  // height: 500px;
   //   border: 3px solid blue;
   border-top: 3px solid #000000;
   border-bottom: 3px solid #000000;
