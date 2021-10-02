@@ -55,6 +55,17 @@ class Community {
     }
   };
 
+  @action onInputHandler = (e, type) => {
+    console.info(e.value);
+    switch (type) {
+      case 'noticeTitle':
+        this.noticeTitle = e.value;
+        break;
+      default:
+        break;
+    }
+  };
+
   @action getAdminNoticeList = async (id) => {
     const req = {
       id: id ? id : 1,

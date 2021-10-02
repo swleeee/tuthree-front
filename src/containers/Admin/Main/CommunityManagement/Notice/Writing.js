@@ -125,7 +125,15 @@ class Writing extends Component {
               <div>제목</div>
             </Name>
             <Content>
-              <TextArea type="noticeTitle" placeholder="입력하세요" />
+              {/* <TextArea type="noticeTitle" placeholder="입력하세요" /> */}
+              <Input
+                placeholder="제목을 입력하세요."
+                onChange={(e) =>
+                  AdminCommunity.onInputHandler(e.target, 'noticeTitle')
+                }
+                onFocus={(e) => (e.target.placeholder = '')}
+                onBlur={(e) => (e.target.placeholder = '제목을 입력하세요')}
+              />
             </Content>
           </Section>
           <Section mb={true}>
@@ -176,7 +184,7 @@ const Item = styled.div`
 
 const Section = styled.div`
   display: flex;
-
+  // height:
   border: 1px solid #707070;
   border-bottom: ${(props) => (props.mb ? '1px solid #707070' : 'none')};
   box-sizing: border-box;
@@ -245,5 +253,33 @@ const Button = styled.button`
   border-radius: 3px;
   > div {
     font-size: 20px;
+  }
+`;
+
+const Input = styled.input`
+  border: none;
+  // border: 1px solid #c7c7c7;
+  // padding-bottom: 18px;
+  outline: none;
+  font-size: 15px;
+  // width: 100%;
+  box-sizing: border-box;
+  // display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
+  // padding-left: 10px;
+  :focus {
+  }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    height: 40px;
+    font-size: 12px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    height: 60px;
+  }
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    height: 60px;
+  }
+  @media (min-width: 1300px) {
+    width: 100%;
+    height: 60px;
   }
 `;
