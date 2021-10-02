@@ -47,9 +47,9 @@ class TextareaContainer extends Component {
       case 'teacherSignup':
         authStore.introductionValue = event.target.value;
         break;
-      case 'noticeTitle':
-        AdminCommunity.noticeTitle = event.target.value;
-        break;
+      // case 'noticeTitle':
+      //   AdminCommunity.noticeTitle = event.target.value;
+      //   break;
       case 'noticeContent':
         AdminCommunity.noticeContent = event.target.value;
         break;
@@ -96,7 +96,7 @@ const Textarea = styled.textarea`
       : 'none'};
   width: 100%;
   // max-width: 630px;
-  padding: 14px 16px;
+  padding: 14px 0;
   box-sizing: border-box;
   font-size: 15px;
   line-height: 34px;
