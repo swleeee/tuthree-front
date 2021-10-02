@@ -93,64 +93,71 @@ const noticeStateAry = [
 @inject('AdminCommunity', 'Common')
 @observer
 class DetailContent extends Component {
+  componentWillUnmount = () => {
+    AdminCommunity.noticeDetailList = [];
+  };
   render() {
     return (
       <Container>
         <Item>
           <Section>
-            <Name>
-              <div>분류</div>
-            </Name>
-            <Content>
-              <Select
-                //  id={this.props.id}
-                //  className={this.props.className}
-                styles={
-                  Common.width > 767.98 ? customStyles : mobileCustomStyles
-                }
-                //  value={value}
-                onChange={(e) =>
-                  AdminCommunity.onSelectHandler(e, 'noticeState')
-                }
-                getOptionLabel={(option) => option.label}
-                options={noticeStateAry}
-                //  isSearchable={false}
-                placeholder="선택하세요."
-                domainType={1}
-              />
-            </Content>
-          </Section>
-          <Section>
-            <Name>
-              <div>제목</div>
-            </Name>
-            <Content>
-              <TextArea type="noticeTitle" placeholder="입력하세요" />
-            </Content>
+            <SubSection width={100}>
+              <Name>
+                <div>제목</div>
+              </Name>
+              <Content>
+                {AdminCommunity.noticeDetailList &&
+                  AdminCommunity.noticeDetailList[0].title}
+              </Content>
+            </SubSection>
+            <SubSection width={30} bl={true}>
+              <Name>
+                <div>분류</div>
+              </Name>
+              <Content width={30}>
+                {AdminCommunity.noticeDetailList &&
+                  AdminCommunity.noticeDetailList[0].type.korType}
+              </Content>
+            </SubSection>
+
+            <SubSection width={40} bl={true}>
+              <Name>
+                <div>날짜</div>
+              </Name>
+              <Content width={40}>
+                {AdminCommunity.noticeDetailList &&
+                  AdminCommunity.noticeDetailList[0].writeAt}
+              </Content>
+            </SubSection>
           </Section>
           <Section mb={true}>
             <Name>
               <div>내용</div>
             </Name>
-            <Content>
-              <TextArea type="noticeContent" placeholder="입력하세요" />
+            <Content height={500}>
+              {AdminCommunity.noticeDetailList &&
+                AdminCommunity.noticeDetailList[0].content}
             </Content>
           </Section>
           <ButtonBox>
-            <Button color="#000" bcolor="#fff" border="1px solid #000">
-              <div>취소</div>
+            <Button color="#fff" bcolor="rgb(235, 114, 82)">
+              <div>목록</div>
             </Button>
 
-            <Button
+            <Button color="#fff" bcolor="#0b7def">
+              <div>수정</div>
+            </Button>
+
+            <Button color="#fff" bcolor="#ff0000">
+              <div>삭제</div>
+            </Button>
+
+            {/* <Button
               color="#fff"
-              bcolor="rgb(235, 114, 82)"
-              onClick={() => {
-                console.info('click');
-                AdminCommunity.setAdminNotice();
-              }}
+              bcolor="rgb(235, 114, 82)"              
             >
               <div>등록</div>
-            </Button>
+            </Button> */}
           </ButtonBox>
         </Item>
       </Container>
@@ -183,15 +190,24 @@ const Section = styled.div`
 
   width: 100%;
 `;
+
+const SubSection = styled.div`
+  width: ${(props) => (props.width ? props.width : '')}%;
+  //   border: 2px solid black;
+  display: flex;
+  border-left: ${(props) => (props.bl ? '1px solid #707070' : '')};
+`;
+
 const Name = styled.div`
   background-color: #cccccc;
-  width: 150px;
+  width: 100px;
   border-right: 1px solid #707070;
   box-sizing: border-box;
-  flex-grow: 1;
+  flex-grow: 3;
   display: felx;
   justify-content: center;
   align-items: center;
+  min-width: 100px;
 
   > div {
     font-size: 24px;
@@ -202,10 +218,10 @@ const Content = styled.div`
   flex-grow: 8;
   padding: 5px 20px;
   box-sizing: border-box;
-  min-height: 100px;
+  min-height: ${(props) => (props.height ? props.height : '70')}px;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: ${(props) => (props.width ? props.width : '100')}%;
 `;
 
 const Select = styled(SelectComponent)`
@@ -229,21 +245,21 @@ const TextArea = styled(TextAreaContainer)`
 `;
 
 const ButtonBox = styled.div`
-  margin-top: 60px;
+  margin-top: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 `;
 
 const Button = styled.button`
-  width: 200px;
-  height: 60px;
+  width: 100px;
+  height: 40px;
   color: ${(props) => (props.color ? props.color : '')};
   background-color: ${(props) => (props.bcolor ? props.bcolor : '')};
   border: ${(props) => (props.border ? props.border : 'none')};
-  margin: 0 50px;
+  margin: 0 10px;
   margin-bottom: 200px;
   border-radius: 3px;
   > div {
-    font-size: 20px;
+    font-size: 18px;
   }
 `;

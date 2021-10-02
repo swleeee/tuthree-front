@@ -6,7 +6,7 @@ class Community {
     makeObservable(this);
   }
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzE4NTczMywiZXhwIjoxNjMzMTg5MzMzLCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.5IZnuUGgH-jfqQ-6H4rH36OUnwoP-HGCQhZZFiCoMXk';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzE4OTUwOSwiZXhwIjoxNjMzMTkzMTA5LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.liWJqCvbLl9Jl_MGKl9ZTeY8qAH_BTWBin2o0xBRHwU';
   @observable type = 1;
   @observable state = 1; // 조회 : 1, 글 쓰기 : 2, 글 수정 : 3
   @observable noticeState = '';
