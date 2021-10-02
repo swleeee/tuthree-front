@@ -17,6 +17,9 @@ class Community {
   @observable noticeCurrentPage = 1;
   @observable noticeCurrentSet = parseInt((this.noticeCurrentPage - 1) / 5) + 1;
 
+  @observable checkState = 0;
+  @observable checkAry = [];
+
   @action onClickNavHandler = (type) => {
     console.info(type);
     switch (type) {
@@ -89,6 +92,28 @@ class Community {
       this.noticeCurrentPage = newPage;
       await this.getAdminNoticeList(this.noticeCurrentPage);
     }
+  };
+
+  @action checkDataHandler = (id) => {
+    console.info(id);
+
+    const index = this.checkAry.indexOf(parseInt(id));
+    // this.checkAry
+
+    console.info(index);
+    if (index === -1) {
+      this.checkAry.push(parseInt(id));
+    } else {
+      this.checkAry.splice(index, 1);
+    }
+    console.info(toJS(this.checkAry));
+    this.checkData(id);
+  };
+  @action checkData = (id) => {
+    console.info(this.checkAry.includes(parseInt(id)));
+    console.info(id);
+
+    return this.checkAry.includes(id);
   };
 }
 

@@ -10,7 +10,56 @@ import {
 
 import AdminCommunity from '../../../../../stores/Admin/Community';
 import searchImg from '../../../../../static/images/Admin/Main/search.png';
+import checkImg from '../../../../../static/images/Common/check.png';
 import Pagination from '../../../../../components/Pagination';
+
+const dummydata = [
+  {
+    id: '293',
+    title: 'title1',
+    type: {
+      korType: '일반',
+    },
+    writeAt: '2021-09-27',
+    content: 'content1',
+  },
+  {
+    id: '291',
+    title: 'title2',
+    type: {
+      korType: '일반',
+    },
+    writeAt: '2021-09-27',
+    content: 'content1',
+  },
+  {
+    id: '288',
+    title: 'title3',
+    type: {
+      korType: '일반',
+    },
+    writeAt: '2021-09-27',
+    content: 'content1',
+  },
+  {
+    id: '281',
+    title: 'title4',
+    type: {
+      korType: '일반',
+    },
+    writeAt: '2021-09-27',
+    content: 'content1',
+  },
+  {
+    id: '271',
+    title: 'title5',
+    type: {
+      korType: '일반',
+    },
+    writeAt: '2021-09-27',
+    content: 'content1',
+  },
+];
 
 @inject('AdminCommunity')
 @observer
@@ -43,13 +92,16 @@ class Content extends Component {
           </Header>
           <MainBox>
             <Line title={true}>
+              <Check>
+                <div></div>
+              </Check>
               <Number>번호</Number>
               <Type>분류</Type>
               <Title>제목</Title>
               <Date>등록일</Date>
               <Management title={true}>관리</Management>
             </Line>
-
+            {/* 
             {AdminCommunity.noticeList &&
               AdminCommunity.noticeList.map((item, idx) => {
                 return (
@@ -68,8 +120,13 @@ class Content extends Component {
                     </Management>
                   </Line>
                 );
-              })}
+              })} */}
             {/* <Line>
+              <Check>
+                <div>
+                  <img src={checkImg} />
+                </div>
+              </Check>
               <Number>1</Number>
               <Type>일반</Type>
               <Title>안녕!dsfdsfdsfsdfdsfddsdfsdfsdfsdfdsfdsfsf</Title>
@@ -83,6 +140,33 @@ class Content extends Component {
                 </CtlBtn>
               </Management>
             </Line> */}
+
+            {dummydata &&
+              dummydata.map((item, idx) => {
+                return (
+                  <Line>
+                    <Check active={AdminCommunity.checkData(item.id)}>
+                      <div
+                        onClick={() => AdminCommunity.checkDataHandler(item.id)}
+                      >
+                        <img src={checkImg} />
+                      </div>
+                    </Check>
+                    <Number>{idx}</Number>
+                    <Type>{item.type.korType}</Type>
+                    <Title>{item.title}</Title>
+                    <Date>{item.writeAt}</Date>
+                    <Management>
+                      <CtlBtn>
+                        <div>수정</div>
+                      </CtlBtn>
+                      <CtlBtn del={true}>
+                        <div>삭제</div>
+                      </CtlBtn>
+                    </Management>
+                  </Line>
+                );
+              })}
           </MainBox>
           <Pagination
             currentSet={AdminCommunity.noticeCurrentSet}
@@ -302,6 +386,27 @@ const Line = styled.div`
     }
   }
 `;
+
+const Check = styled.div`
+  flex-grow: 1;
+  width: 2%;
+  > div {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #707070;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    > img {
+      display: ${(props) => (props.active ? 'block' : 'none')};
+      width: 18px;
+      height: 18px;
+    }
+  }
+`;
+
 const Number = styled.div`
   //   border: 2px solid red;
   flex-grow: 1;
