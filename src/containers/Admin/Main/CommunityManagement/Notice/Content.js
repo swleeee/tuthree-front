@@ -101,48 +101,9 @@ class Content extends Component {
               <Date>등록일</Date>
               <Management title={true}>관리</Management>
             </Line>
-            {/* 
+
             {AdminCommunity.noticeList &&
               AdminCommunity.noticeList.map((item, idx) => {
-                return (
-                  <Line>
-                    <Number>{idx}</Number>
-                    <Type>{item.type.korType}</Type>
-                    <Title>{item.title}</Title>
-                    <Date>{item.writeAt}</Date>
-                    <Management>
-                      <CtlBtn>
-                        <div>수정</div>
-                      </CtlBtn>
-                      <CtlBtn del={true}>
-                        <div>삭제</div>
-                      </CtlBtn>
-                    </Management>
-                  </Line>
-                );
-              })} */}
-            {/* <Line>
-              <Check>
-                <div>
-                  <img src={checkImg} />
-                </div>
-              </Check>
-              <Number>1</Number>
-              <Type>일반</Type>
-              <Title>안녕!dsfdsfdsfsdfdsfddsdfsdfsdfsdfdsfdsfsf</Title>
-              <Date>2021.09.28</Date>
-              <Management>
-                <CtlBtn>
-                  <div>수정</div>
-                </CtlBtn>
-                <CtlBtn del={true}>
-                  <div>삭제</div>
-                </CtlBtn>
-              </Management>
-            </Line> */}
-
-            {dummydata &&
-              dummydata.map((item, idx) => {
                 return (
                   <Line>
                     <Check active={AdminCommunity.checkData(item.id)}>
@@ -167,6 +128,52 @@ class Content extends Component {
                   </Line>
                 );
               })}
+            {/* <Line>
+              <Check>
+                <div>
+                  <img src={checkImg} />
+                </div>
+              </Check>
+              <Number>1</Number>
+              <Type>일반</Type>
+              <Title>안녕!dsfdsfdsfsdfdsfddsdfsdfsdfsdfdsfdsfsf</Title>
+              <Date>2021.09.28</Date>
+              <Management>
+                <CtlBtn>
+                  <div>수정</div>
+                </CtlBtn>
+                <CtlBtn del={true}>
+                  <div>삭제</div>
+                </CtlBtn>
+              </Management>
+            </Line> */}
+
+            {/* {dummydata &&
+              dummydata.map((item, idx) => {
+                return (
+                  <Line>
+                    <Check active={AdminCommunity.checkData(item.id)}>
+                      <div
+                        onClick={() => AdminCommunity.checkDataHandler(item.id)}
+                      >
+                        <img src={checkImg} />
+                      </div>
+                    </Check>
+                    <Number>{idx}</Number>
+                    <Type>{item.type.korType}</Type>
+                    <Title>{item.title}</Title>
+                    <Date>{item.writeAt}</Date>
+                    <Management>
+                      <CtlBtn>
+                        <div>수정</div>
+                      </CtlBtn>
+                      <CtlBtn del={true}>
+                        <div>삭제</div>
+                      </CtlBtn>
+                    </Management>
+                  </Line>
+                );
+              })} */}
           </MainBox>
           <Pagination
             currentSet={AdminCommunity.noticeCurrentSet}

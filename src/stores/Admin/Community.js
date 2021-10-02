@@ -5,8 +5,8 @@ class Community {
   constructor() {
     makeObservable(this);
   }
-  @observable token =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzEwNTYxOCwiZXhwIjoxNjMzMTA5MjE4LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.KuHs-qPG3gL0jdJzozeAWtf1q3I-w_96YconIIwNE7s';
+  @observable Authorization =
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzE3ODM2NSwiZXhwIjoxNjMzMTgxOTY1LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.i_WgTMOV59xMiDS_xQ6h2bJl1g98vQDk98yUkmqYfSU';
   @observable type = 1;
   @observable state = 1; // 조회 : 1, 글 쓰기 : 2, 글 수정 : 3
   @observable noticeState = '';
@@ -19,6 +19,9 @@ class Community {
 
   @observable checkState = 0;
   @observable checkAry = [];
+
+  @observable noticeTitle = '';
+  @observable noticeContent = '';
 
   @action onClickNavHandler = (type) => {
     console.info(type);
@@ -55,7 +58,7 @@ class Community {
     const req = {
       id: id ? id : 1,
       headers: {
-        token: this.token,
+        Authorization: this.Authorization,
       },
     };
 
@@ -71,6 +74,7 @@ class Community {
       .catch((e) => {
         console.info(e);
         console.info(e.response);
+        console.info(e.message);
       });
   };
 
@@ -114,6 +118,35 @@ class Community {
     console.info(id);
 
     return this.checkAry.includes(id);
+  };
+
+  @action setAdminNotice = async () => {
+    console.info(this.noticeState);
+    console.info('공지사항 작성 버튼 클릭');
+    const req = {
+      data: {
+        adminId: {
+          id: 'admin1',
+          pwd: 'admin1',
+        },
+        title: this.noticeTitle,
+        content: this.noticeContent,
+        type: this.noticeState,
+        secret: 'OPEN',
+      },
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await NoticeAPI.setAdminNotice(req)
+      .then(async (res) => {
+        console.info(res);
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
   };
 }
 

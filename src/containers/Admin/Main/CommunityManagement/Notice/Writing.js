@@ -86,8 +86,8 @@ const customStyles = {
 };
 
 const noticeStateAry = [
-  { label: '중요', value: 1 },
-  { label: '일반', value: 2 },
+  { label: '중요', value: 'IMPORTANT' },
+  { label: '일반', value: 'NORMAL' },
 ];
 
 @inject('AdminCommunity', 'Common')
@@ -125,7 +125,7 @@ class Writing extends Component {
               <div>제목</div>
             </Name>
             <Content>
-              <TextArea type="notice" placeholder="입력하세요" />
+              <TextArea type="noticeTitle" placeholder="입력하세요" />
             </Content>
           </Section>
           <Section mb={true}>
@@ -133,7 +133,7 @@ class Writing extends Component {
               <div>내용</div>
             </Name>
             <Content>
-              <TextArea type="notice" placeholder="입력하세요" />
+              <TextArea type="noticeContent" placeholder="입력하세요" />
             </Content>
           </Section>
           <ButtonBox>
@@ -141,7 +141,14 @@ class Writing extends Component {
               <div>취소</div>
             </Button>
 
-            <Button color="#fff" bcolor="rgb(235, 114, 82)">
+            <Button
+              color="#fff"
+              bcolor="rgb(235, 114, 82)"
+              onClick={() => {
+                console.info('click');
+                AdminCommunity.setAdminNotice();
+              }}
+            >
               <div>등록</div>
             </Button>
           </ButtonBox>

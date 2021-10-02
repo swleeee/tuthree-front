@@ -169,33 +169,15 @@ class Step3TeacherContainer extends Component {
     console.log(e.value);
     // console.log(type);
     switch (type) {
-      case 'id':
-        console.log('id');
+      case 'school':
+        console.log('school');
+        Auth.school = e.value;
         break;
-      case 'password':
-        console.log('password');
+      case 'major':
+        console.log('major');
+        Auth.major = e.value;
         break;
-      case 'passwordConfirm':
-        console.log('passwordConfirm');
-        break;
-      case 'name':
-        console.log('name');
-        break;
-      case 'email':
-        console.log('email');
-        break;
-      case 'phone':
-        console.log('phone');
-        break;
-      case 'certification':
-        console.log('certification');
-        break;
-      case 'gender':
-        console.log('gender');
-        break;
-      case 'birth':
-        console.log('birth');
-        break;
+
       default:
         console.log('default');
     }
@@ -331,7 +313,7 @@ class Step3TeacherContainer extends Component {
             <WrapperBox>
               <Input
                 placeholder="학교"
-                // onChange={this.onIdHandler}
+                onChange={(e) => this.inputHandler(e.target, 'school')}
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '학교')}
               />
@@ -357,7 +339,7 @@ class Step3TeacherContainer extends Component {
             <div>학과</div>
             <Input
               placeholder="학과"
-              // onChange={this.onIdHandler}
+              onChange={(e) => this.inputHandler(e.target, 'major')}
               onFocus={(e) => (e.target.placeholder = '')}
               onBlur={(e) => (e.target.placeholder = '학과')}
             />
@@ -385,6 +367,7 @@ class Step3TeacherContainer extends Component {
           <ItemBox height="100%">
             <div>소개</div>
             <TextArea
+              type="teacherSignup"
               placeholder="예) 수/금 16시, 주말 시간 가능(협의 가능)
                             시급 2만원
                             개념 설명부터 실전 문제 풀이까지 꼼꼼하게 해드립니다."
@@ -395,6 +378,7 @@ class Step3TeacherContainer extends Component {
           onClick={() => {
             Auth.step = 4;
             Auth.userType = 1;
+            Auth.showData();
             window.scrollTo(0, 0);
           }}
         >

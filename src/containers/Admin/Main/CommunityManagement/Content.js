@@ -39,6 +39,10 @@ class Content extends Component {
         {AdminCommunity.type === 2 && AdminCommunity.state === 2 && (
           <NoticeWritingContainer />
         )}
+
+        {AdminCommunity.type === 2 && AdminCommunity.state === 3 && (
+          <NoticeWritingContainer />
+        )}
       </Container>
     );
   }

@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer, Provider } from 'mobx-react';
 import authStore from '../stores/Account/Auth';
+import AdminCommunity from '../stores/Admin/Community';
 
 const placeholderText = `예) 수/금 16시, 주말 시간 가능(협의 가능)
                             시급 2만원
                             개념 설명부터 실전 문제 풀이까지 꼼꼼하게 해드립니다.
                             `;
 
+@inject('AdminCommunity')
+@observer
 class TextareaContainer extends Component {
   state = {
     minRows: 7,
@@ -16,6 +19,7 @@ class TextareaContainer extends Component {
     row: 1,
   };
   requestHandler = (event) => {
+    const { type } = this.props;
     const textareaLineHeight = 34;
     const { minRows, maxRows } = this.state;
     const previousRows = event.target.rows;
@@ -39,7 +43,20 @@ class TextareaContainer extends Component {
       row: currentRows < maxRows ? currentRows : maxRows,
     });
 
-    authStore.introductionValue = event.target.value;
+    switch (type) {
+      case 'teacherSignup':
+        authStore.introductionValue = event.target.value;
+        break;
+      case 'noticeTitle':
+        AdminCommunity.noticeTitle = event.target.value;
+        break;
+      case 'noticeContent':
+        AdminCommunity.noticeContent = event.target.value;
+        break;
+      default:
+        break;
+    }
+    // authStore.introductionValue = event.target.value;
     console.info(authStore.introductionValue);
   };
 

@@ -18,3 +18,14 @@ export function getAdminNotice(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function setAdminNotice(req) {
+  console.info(req);
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/notice/admin/write`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
