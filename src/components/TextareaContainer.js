@@ -91,7 +91,9 @@ export default TextareaContainer;
 const Textarea = styled.textarea`
   resize: none;
   border: ${(props) =>
-    props.type === 'notice' ? 'none' : '1px solid #c7c7c7'};
+    props.type === 'teacherSignup' || props.type === 'studentSignup'
+      ? '1px solid #c7c7c7'
+      : 'none'};
   width: 100%;
   // max-width: 630px;
   padding: 14px 16px;
@@ -114,20 +116,32 @@ const Textarea = styled.textarea`
   white-space: pre-line;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
-    max-width: ${(props) => (props.type === 'notice' ? 'none' : '630px')};
+    max-width: ${(props) =>
+      props.type === 'teacherSignup' || props.type === 'studentSignup'
+        ? '630px'
+        : 'nopne'};
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
-    max-width: ${(props) => (props.type === 'notice' ? 'none' : '450px')};
+    max-width: ${(props) =>
+      props.type === 'teacherSignup' || props.type === 'studentSignup'
+        ? '450px'
+        : 'none'};
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
-    max-width: ${(props) => (props.type === 'notice' ? 'none' : '500px')};
+    max-width: ${(props) =>
+      props.type === 'teacherSignup' || props.type === 'studentSignup'
+        ? '500px'
+        : 'none'};
     width: 100%;
     // max-width: 0;
   }
 
   @media (min-width: 1300px) {
-    max-width: ${(props) => (props.type === 'notice' ? 'none' : '630px')};
-    width: 90%;
+    max-width: ${(props) =>
+      props.type === 'teacherSignup' || props.type === 'studentSignup'
+        ? '630px'
+        : 'none'};
+    width: 100%;
   }
 `;

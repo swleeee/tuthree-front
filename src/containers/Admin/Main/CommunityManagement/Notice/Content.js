@@ -105,7 +105,7 @@ class Content extends Component {
             {AdminCommunity.noticeList &&
               AdminCommunity.noticeList.map((item, idx) => {
                 return (
-                  <Line>
+                  <Line onClick={() => AdminCommunity.pushToDetail(item, idx)}>
                     <Check active={AdminCommunity.checkData(item.id)}>
                       <div
                         onClick={() => AdminCommunity.checkDataHandler(item.id)}

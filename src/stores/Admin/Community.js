@@ -6,7 +6,7 @@ class Community {
     makeObservable(this);
   }
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzE3ODM2NSwiZXhwIjoxNjMzMTgxOTY1LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.i_WgTMOV59xMiDS_xQ6h2bJl1g98vQDk98yUkmqYfSU';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzE4NTczMywiZXhwIjoxNjMzMTg5MzMzLCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.5IZnuUGgH-jfqQ-6H4rH36OUnwoP-HGCQhZZFiCoMXk';
   @observable type = 1;
   @observable state = 1; // 조회 : 1, 글 쓰기 : 2, 글 수정 : 3
   @observable noticeState = '';
@@ -16,6 +16,7 @@ class Community {
   @observable noticeTotalPage = 0;
   @observable noticeCurrentPage = 1;
   @observable noticeCurrentSet = parseInt((this.noticeCurrentPage - 1) / 5) + 1;
+  @observable noticeDetailList = []; // 공지사항 세부 페이지
 
   @observable checkState = 0;
   @observable checkAry = [];
@@ -147,6 +148,12 @@ class Community {
         console.info(e);
         console.info(e.response);
       });
+  };
+
+  @action pushToDetail = async (item, idx) => {
+    await this.noticeDetailList.push(item);
+    console.info(toJS(this.noticeDetailList));
+    this.state = 3;
   };
 }
 
