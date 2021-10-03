@@ -10,6 +10,7 @@ import {
 
 import Community from '../../../../stores/Community/Community';
 import searchImg from '../../../../static/images/Admin/Main/search.png';
+import Pagination from '../../../../components/Pagination';
 
 const dummydata = [
   {
@@ -109,6 +110,11 @@ class Content extends Component {
               );
             })}
         </MainBox>
+        <Pagination
+          currentSet={Community.faqCurrentSet}
+          currentPage={Community.faqCurrentPage}
+          totalPage={Community.faqTotalPage}
+        />
       </Container>
     );
   }

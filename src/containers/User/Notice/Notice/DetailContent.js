@@ -22,6 +22,7 @@ class DetailContent extends Component {
               <Content width={30}>
                 {Community.noticeDetailList &&
                   Community.noticeDetailList[0] &&
+                  Community.noticeDetailList[0].type &&
                   Community.noticeDetailList[0].type.korType}
               </Content>
             </SubSection>

@@ -6,20 +6,52 @@ import previousImg from '../static/images/Common/previous.png';
 import nextImg from '../static/images/Common/next.png';
 
 import AdminCommunity from '../stores/Admin/Community';
+import Community from '../stores/Community/Community';
 
-@inject('AdminCommunity')
+@inject('AdminCommunity', 'Community')
 @observer
 class Pagination extends Component {
   pageMoveHandler = async (e) => {
-    await AdminCommunity.movePage(e);
+    const { type } = this.props;
+    switch (type) {
+      case 'AdminNotice':
+        await AdminCommunity.movePage(e);
+        break;
+      case 'AdminFaq':
+        await AdminCommunity.moveFaqPage(e);
+        break;
+      default:
+        break;
+    }
   };
 
   pagePrevHandler = async () => {
-    await AdminCommunity.pagePrev();
+    const { type } = this.props;
+    switch (type) {
+      case 'AdminNotice':
+        await AdminCommunity.pagePrev();
+        break;
+
+      case 'AdminFaq':
+        await AdminCommunity.pageFaqPrev();
+        break;
+      default:
+        break;
+    }
   };
 
   pageNextHandler = async () => {
-    await AdminCommunity.pageNext();
+    const { type } = this.props;
+    switch (type) {
+      case 'AdminNotice':
+        await AdminCommunity.pageNext();
+        break;
+      case 'AdminFaq':
+        await AdminCommunity.pageFaqNext();
+        break;
+      default:
+        break;
+    }
   };
   render() {
     const { currentSet, currentPage, totalPage } = this.props;

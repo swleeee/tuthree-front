@@ -192,6 +192,7 @@ class Content extends Component {
               })}
           </MainBox>
           <Pagination
+            type="AdminNotice"
             currentSet={AdminCommunity.noticeCurrentSet}
             currentPage={AdminCommunity.noticeCurrentPage}
             totalPage={AdminCommunity.noticeTotalPage}

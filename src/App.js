@@ -13,6 +13,7 @@ import {
   Login,
   Forgotten,
   Notice,
+  Community,
   AdminHome,
   AdminUser,
   AdminMain,
@@ -64,6 +65,7 @@ class App extends React.Component {
               <Route path="/login" component={Login} />
               <Route path="/forgotten" component={Forgotten} />
               <Route path="/notice" component={Notice} />
+              <Route path="/community" component={Community} />
               <Route exact path="/admin" component={AdminHome} />
               <Route path="/admin/main" component={AdminMain} />
               <Route path="/admin/community" component={AdminCommunity} />

@@ -19,6 +19,8 @@ class Community {
 
   @observable faqDropdownState = -1;
 
+  // @observable
+
   @action onClickNavHandler = (type) => {
     console.info(type);
     switch (type) {

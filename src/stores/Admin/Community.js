@@ -419,6 +419,31 @@ class Community {
       this.state = 3;
     }
   };
+
+  /* FAQ 클릭한 페이지로 이동하는 함수 */
+  @action moveFaqPage = async (e) => {
+    const newPage = e.target.innerText * 1;
+    this.faqCurrentPage = newPage;
+    await this.getAdminFaqList(this.faqCurrentPage);
+  };
+
+  /* FAQ 다음 페이지로 이동하는 함수 */
+  @action pageFaqNext = async () => {
+    if (this.faqCurrentPage < this.faqTotalPage) {
+      const nextPage = this.faqCurrentPage + 1;
+      this.faqCurrentPage = nextPage;
+      await this.getAdminFaqList(this.faqCurrentPage);
+    }
+  };
+
+  /* FAQ 이전 페이지로 이동하는 함수 */
+  @action pageFaqPrev = async () => {
+    if (this.faqCurrentPage > 1) {
+      const newPage = this.faqCurrentPage - 1;
+      this.faqCurrentPage = newPage;
+      await this.getAdminFaqList(this.faqCurrentPage);
+    }
+  };
 }
 
 export default new Community();
