@@ -58,10 +58,11 @@ class TextareaContainer extends Component {
     }
     // authStore.introductionValue = event.target.value;
     console.info(authStore.introductionValue);
+    console.info(AdminCommunity.noticeContent);
   };
 
   render() {
-    const { type, placeholder } = this.props;
+    const { type, placeholder, value } = this.props;
     console.info(type);
     return (
       <Provider Auth={authStore}>
@@ -76,7 +77,7 @@ class TextareaContainer extends Component {
             }
           }}
           rows={this.state.rows}
-          value={this.state.value}
+          value={value ? value : this.state.value}
           className={'textarea'}
           placeholderStyle={{ fontWeight: '400' }}
           onChange={this.requestHandler}

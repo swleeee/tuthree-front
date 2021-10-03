@@ -102,7 +102,7 @@ class Content extends Component {
               <Management title={true}>관리</Management>
             </Line>
 
-            {AdminCommunity.noticeList &&
+            {/* {AdminCommunity.noticeList &&
               AdminCommunity.noticeList.map((item, idx) => {
                 return (
                   <Line onClick={() => AdminCommunity.pushToDetail(item, idx)}>
@@ -127,7 +127,7 @@ class Content extends Component {
                     </Management>
                   </Line>
                 );
-              })}
+              })} */}
             {/* <Line>
               <Check>
                 <div>
@@ -148,13 +148,16 @@ class Content extends Component {
               </Management>
             </Line> */}
 
-            {/* {dummydata &&
+            {dummydata &&
               dummydata.map((item, idx) => {
                 return (
-                  <Line>
-                    <Check active={AdminCommunity.checkData(item.id)}>
+                  <Line onClick={() => AdminCommunity.pushToDetail(item, idx)}>
+                    <Check active={item.checked}>
                       <div
-                        onClick={() => AdminCommunity.checkDataHandler(item.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          AdminCommunity.checkDataHandler(item, item.id);
+                        }}
                       >
                         <img src={checkImg} />
                       </div>
@@ -164,16 +167,29 @@ class Content extends Component {
                     <Title>{item.title}</Title>
                     <Date>{item.writeAt}</Date>
                     <Management>
-                      <CtlBtn>
+                      <CtlBtn
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          AdminCommunity.state = 2;
+                          AdminCommunity.noticeWritingState = 1;
+                          AdminCommunity.pushToDetail(item, idx);
+                        }}
+                      >
                         <div>수정</div>
                       </CtlBtn>
-                      <CtlBtn del={true}>
+                      <CtlBtn
+                        del={true}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          AdminCommunity.delAdminNotice(item.id);
+                        }}
+                      >
                         <div>삭제</div>
                       </CtlBtn>
                     </Management>
                   </Line>
                 );
-              })} */}
+              })}
           </MainBox>
           <Pagination
             currentSet={AdminCommunity.noticeCurrentSet}
@@ -395,8 +411,8 @@ const Line = styled.div`
 `;
 
 const Check = styled.div`
-  flex-grow: 1;
-  width: 2%;
+  // flex-grow: 1;
+  width: 1%;
   > div {
     cursor: pointer;
     width: 24px;

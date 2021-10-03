@@ -7,23 +7,26 @@ class Community {
   }
   @observable Authorization =
     'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzE4OTUwOSwiZXhwIjoxNjMzMTkzMTA5LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.liWJqCvbLl9Jl_MGKl9ZTeY8qAH_BTWBin2o0xBRHwU';
-  @observable type = 1;
+  @observable type = 1; // FAQ : 1, 공지사항 : 2, 커뮤니티 : 3
   @observable state = 1; // 조회 : 1, 글 쓰기 : 2, 글 수정 : 3
-  @observable noticeState = '';
 
   @observable noticeList = []; // 공지사항 페이지 당 목록 데이터
   @observable noticeListTotalCount = 0; // 공지사항 전체 개수
-  @observable noticeTotalPage = 0;
-  @observable noticeCurrentPage = 1;
-  @observable noticeCurrentSet = parseInt((this.noticeCurrentPage - 1) / 5) + 1;
+  @observable noticeTotalPage = 0; // 공지사항 전체 페이지 수
+  @observable noticeCurrentPage = 1; // 공지사항 현재 페이지
+  @observable noticeCurrentSet = parseInt((this.noticeCurrentPage - 1) / 5) + 1; // 공지사항 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
   @observable noticeDetailList = []; // 공지사항 세부 페이지
 
   @observable checkState = 0;
-  @observable checkAry = [];
+  @observable checkAry = []; // 공지사항 체크박스 선택하면 배열 안에 공지사항 id가 들어감
 
-  @observable noticeTitle = '';
-  @observable noticeContent = '';
+  @observable noticeTitle = ''; // 공지사항 제목
+  @observable noticeContent = ''; // 공지사항 내용
+  @observable noticeState = ''; // 공지사항 분류 (중요 / 일반)
 
+  @observable noticeWritingState = 0; // (0 : 글작성 / 1 : 글수정)
+
+  /* 공지사항 상단 네비게이션 이동 관련 함수 */
   @action onClickNavHandler = (type) => {
     console.info(type);
     switch (type) {
@@ -45,6 +48,7 @@ class Community {
     // this.setState({ g: 3 });
   };
 
+  /* 공지사항 작성 - 분류 select change 함수 */
   @action onSelectHandler = (e, type) => {
     switch (type) {
       case 'noticeState':
@@ -55,6 +59,7 @@ class Community {
     }
   };
 
+  /* 공지사항 작성 - 제목 input chagne 함수 */
   @action onInputHandler = (e, type) => {
     console.info(e.value);
     switch (type) {
@@ -66,6 +71,7 @@ class Community {
     }
   };
 
+  /* 전체 공지사항 목록 가져오는 함수  */
   @action getAdminNoticeList = async (id) => {
     const req = {
       id: id ? id : 1,
@@ -80,6 +86,9 @@ class Community {
         this.noticeList = await res.data.data;
         this.noticeListTotalCount = await res.data.list;
         this.noticeTotalPage = await Math.ceil(this.noticeListTotalCount / 10);
+        await this.noticeList.map(async (item, idx) => {
+          item.checked = false;
+        });
         console.info(toJS(this.noticeList));
         console.info(res.data.list);
       })
@@ -90,48 +99,7 @@ class Community {
       });
   };
 
-  @action movePage = async (e) => {
-    const newPage = e.target.innerText * 1;
-    this.noticeCurrentPage = newPage;
-    await this.getAdminNoticeList(this.noticeCurrentPage);
-  };
-  @action pageNext = async () => {
-    if (this.noticeCurrentPage < this.noticeTotalPage) {
-      const nextPage = this.noticeCurrentPage + 1;
-      this.noticeCurrentPage = nextPage;
-      await this.getAdminNoticeList(this.noticeCurrentPage);
-    }
-  };
-  @action pagePrev = async () => {
-    if (this.noticeCurrentPage > 1) {
-      const newPage = this.noticeCurrentPage - 1;
-      this.noticeCurrentPage = newPage;
-      await this.getAdminNoticeList(this.noticeCurrentPage);
-    }
-  };
-
-  @action checkDataHandler = (id) => {
-    console.info(id);
-
-    const index = this.checkAry.indexOf(parseInt(id));
-    // this.checkAry
-
-    console.info(index);
-    if (index === -1) {
-      this.checkAry.push(parseInt(id));
-    } else {
-      this.checkAry.splice(index, 1);
-    }
-    console.info(toJS(this.checkAry));
-    this.checkData(id);
-  };
-  @action checkData = (id) => {
-    console.info(this.checkAry.includes(parseInt(id)));
-    console.info(id);
-
-    return this.checkAry.includes(id);
-  };
-
+  /* 공지사항 작성하는 함수 */
   @action setAdminNotice = async () => {
     console.info(this.noticeState);
     console.info('공지사항 작성 버튼 클릭');
@@ -143,7 +111,7 @@ class Community {
         },
         title: this.noticeTitle,
         content: this.noticeContent,
-        type: this.noticeState,
+        type: this.noticeState === '일반' ? 'NORMAL' : 'IMPORTANT',
         secret: 'OPEN',
       },
       headers: {
@@ -154,6 +122,8 @@ class Community {
     await NoticeAPI.setAdminNotice(req)
       .then(async (res) => {
         console.info(res);
+        this.noticeWritingState = 0;
+        this.noticeState = 1;
       })
       .catch((e) => {
         console.info(e);
@@ -161,10 +131,115 @@ class Community {
       });
   };
 
-  @action pushToDetail = async (item, idx) => {
+  /* 공지사항 수정하는 함수 */
+  @action putAdminNotice = async (id) => {
+    console.info(this.noticeState);
+    console.info('공지사항 수정 버튼 클릭');
+    const req = {
+      id: id,
+      data: {
+        adminId: {
+          id: 'admin1',
+          pwd: 'admin1',
+        },
+        title: this.noticeTitle,
+        content: this.noticeContent,
+        type: this.noticeState === '일반' ? 'NORMAL' : 'IMPORTANT',
+        secret: 'OPEN',
+      },
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await NoticeAPI.putAdminNotice(req)
+      .then(async (res) => {
+        console.info(res);
+        this.noticeWritingState = 0;
+        this.noticeState = 1;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* 공지사항 삭제하는 함수 */
+  @action delAdminNotice = async (id) => {
+    const req = {
+      id: id,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await NoticeAPI.delAdminNotice(req)
+      .then((res) => {
+        console.info(res);
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* 공지사항 클릭한 페이지로 이동하는 함수 */
+  @action movePage = async (e) => {
+    const newPage = e.target.innerText * 1;
+    this.noticeCurrentPage = newPage;
+    await this.getAdminNoticeList(this.noticeCurrentPage);
+  };
+
+  /* 공지사항 다음 페이지로 이동하는 함수 */
+  @action pageNext = async () => {
+    if (this.noticeCurrentPage < this.noticeTotalPage) {
+      const nextPage = this.noticeCurrentPage + 1;
+      this.noticeCurrentPage = nextPage;
+      await this.getAdminNoticeList(this.noticeCurrentPage);
+    }
+  };
+
+  /* 공지사항 이전 페이지로 이동하는 함수 */
+  @action pagePrev = async () => {
+    if (this.noticeCurrentPage > 1) {
+      const newPage = this.noticeCurrentPage - 1;
+      this.noticeCurrentPage = newPage;
+      await this.getAdminNoticeList(this.noticeCurrentPage);
+    }
+  };
+
+  /* 공지사항 체크 박스 관련 함수 */
+  @action checkDataHandler = (item, id) => {
+    console.info(id);
+    console.info(item.checked);
+    const index = this.checkAry.indexOf(parseInt(id));
+    // this.checkAry
+
+    console.info(index);
+    if (index === -1) {
+      this.checkAry.push(parseInt(id));
+    } else {
+      this.checkAry.splice(index, 1);
+    }
+    console.info(toJS(this.checkAry));
+    return this.checkData(id);
+  };
+
+  /*  */
+  @action checkData = (id) => {
+    console.info(this.checkAry.includes(parseInt(id)));
+    console.info(id);
+
+    return this.checkAry.includes(id);
+  };
+
+  /* 공지사항 상세 페이지로 이동하는 함수 */
+  @action pushToDetail = async (item, idx = 0) => {
     await this.noticeDetailList.push(item);
     console.info(toJS(this.noticeDetailList));
-    this.state = 3;
+    if (this.state === 1) {
+      this.state = 3;
+    }
   };
 }
 

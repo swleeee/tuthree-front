@@ -107,6 +107,7 @@ class DetailContent extends Component {
               </Name>
               <Content>
                 {AdminCommunity.noticeDetailList &&
+                  AdminCommunity.noticeDetailList[0] &&
                   AdminCommunity.noticeDetailList[0].title}
               </Content>
             </SubSection>
@@ -116,6 +117,7 @@ class DetailContent extends Component {
               </Name>
               <Content width={30}>
                 {AdminCommunity.noticeDetailList &&
+                  AdminCommunity.noticeDetailList[0] &&
                   AdminCommunity.noticeDetailList[0].type.korType}
               </Content>
             </SubSection>
@@ -126,6 +128,7 @@ class DetailContent extends Component {
               </Name>
               <Content width={40}>
                 {AdminCommunity.noticeDetailList &&
+                  AdminCommunity.noticeDetailList[0] &&
                   AdminCommunity.noticeDetailList[0].writeAt}
               </Content>
             </SubSection>
@@ -136,19 +139,40 @@ class DetailContent extends Component {
             </Name>
             <Content height={500}>
               {AdminCommunity.noticeDetailList &&
+                AdminCommunity.noticeDetailList[0] &&
                 AdminCommunity.noticeDetailList[0].content}
             </Content>
           </Section>
           <ButtonBox>
-            <Button color="#fff" bcolor="rgb(235, 114, 82)">
+            <Button
+              color="#fff"
+              bcolor="rgb(235, 114, 82)"
+              onClick={() => (AdminCommunity.state = 1)}
+            >
               <div>목록</div>
             </Button>
 
-            <Button color="#fff" bcolor="#0b7def">
+            <Button
+              color="#fff"
+              bcolor="#0b7def"
+              onClick={() => {
+                AdminCommunity.state = 2;
+                AdminCommunity.noticeWritingState = 1;
+                AdminCommunity.pushToDetail(AdminCommunity.noticeDetailList[0]);
+              }}
+            >
               <div>수정</div>
             </Button>
 
-            <Button color="#fff" bcolor="#ff0000">
+            <Button
+              color="#fff"
+              bcolor="#ff0000"
+              onClick={() => {
+                AdminCommunity.delAdminNotice(
+                  AdminCommunity.noticeDetailList[0].id
+                );
+              }}
+            >
               <div>삭제</div>
             </Button>
 
@@ -259,6 +283,7 @@ const Button = styled.button`
   margin: 0 10px;
   margin-bottom: 200px;
   border-radius: 3px;
+  cursor: pointer;
   > div {
     font-size: 18px;
   }

@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 import AdminCommunity from '../../../../../stores/Admin/Community';
 import Common from '../../../../../stores/Common/Common';
 import TextAreaContainer from '../../../../../components/TextareaContainer';
+import { toJS } from 'mobx';
 
 const mobileCustomStyles = {
   placeholder: (defaultStyles) => {
@@ -86,14 +87,36 @@ const customStyles = {
 };
 
 const noticeStateAry = [
-  { label: '중요', value: 'IMPORTANT' },
-  { label: '일반', value: 'NORMAL' },
+  { label: '중요', value: '중요' },
+  { label: '일반', value: '일반' },
 ];
 
 @inject('AdminCommunity', 'Common')
 @observer
 class Writing extends Component {
+  componentDidMount = () => {
+    console.info('didmount');
+    if (AdminCommunity.noticeWritingState === 1) {
+      console.info(toJS(AdminCommunity.noticeDetailList));
+      AdminCommunity.noticeTitle = AdminCommunity.noticeDetailList[0].title;
+      AdminCommunity.noticeContent = AdminCommunity.noticeDetailList[0].content;
+      AdminCommunity.noticeState =
+        AdminCommunity.noticeDetailList[0].type.korType;
+      console.info(AdminCommunity.noticeState);
+      this.setState({ g: 3 });
+    }
+  };
+
+  componentWillUnmount = () => {
+    AdminCommunity.noticeDetailList = [];
+    AdminCommunity.noticeWritingState = 0;
+    AdminCommunity.state = 1;
+    AdminCommunity.noticeTitle = '';
+    AdminCommunity.noticeContent = '';
+  };
+
   render() {
+    console.info('render');
     return (
       <Container>
         <Item>
@@ -108,7 +131,10 @@ class Writing extends Component {
                 styles={
                   Common.width > 767.98 ? customStyles : mobileCustomStyles
                 }
-                //  value={value}
+                value={{
+                  label: AdminCommunity.noticeState,
+                  value: AdminCommunity.noticeState,
+                }}
                 onChange={(e) =>
                   AdminCommunity.onSelectHandler(e, 'noticeState')
                 }
@@ -133,6 +159,7 @@ class Writing extends Component {
                 }
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '제목을 입력하세요')}
+                value={AdminCommunity.noticeTitle}
               />
             </Content>
           </Section>
@@ -141,7 +168,11 @@ class Writing extends Component {
               <div>내용</div>
             </Name>
             <Content>
-              <TextArea type="noticeContent" placeholder="입력하세요" />
+              <TextArea
+                value={AdminCommunity.noticeContent}
+                type="noticeContent"
+                placeholder="입력하세요"
+              />
             </Content>
           </Section>
           <ButtonBox>
@@ -154,10 +185,20 @@ class Writing extends Component {
               bcolor="rgb(235, 114, 82)"
               onClick={() => {
                 console.info('click');
-                AdminCommunity.setAdminNotice();
+                if (AdminCommunity.noticeWritingState === 0) {
+                  AdminCommunity.setAdminNotice();
+                } else {
+                  AdminCommunity.putAdminNotice(
+                    AdminCommunity.noticeDetailList[0].id
+                  );
+                }
               }}
             >
-              <div>등록</div>
+              {AdminCommunity.noticeWritingState === 0 ? (
+                <div>등록</div>
+              ) : (
+                <div>수정</div>
+              )}
             </Button>
           </ButtonBox>
         </Item>
