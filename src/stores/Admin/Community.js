@@ -1,5 +1,6 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 import * as NoticeAPI from '../../axios/Comuunity/Notice';
+import * as FaqAPI from '../../axios/Comuunity/Faq';
 
 class Community {
   constructor() {
@@ -25,6 +26,21 @@ class Community {
   @observable noticeState = ''; // 공지사항 분류 (중요 / 일반)
 
   @observable noticeWritingState = 0; // (0 : 글작성 / 1 : 글수정)
+
+  /////////////////////////////////////////////////////////////////////////
+
+  @observable faqList = []; // FAQ 페이지 당 목록 데이터
+  @observable faqListTotalCount = 0; // FAQ 전체 개수
+  @observable faqTotalPage = 0; // FAQ 전체 페이지 수
+  @observable faqCurrentPage = 1; // FAQ 현재 페이지
+  @observable faqCurrentSet = parseInt((this.noticeCurrentPage - 1) / 5) + 1; // FAQ 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
+  @observable faqDetailList = []; // FAQ 세부 페이지
+
+  @observable faqTitle = ''; // FAQ 제목
+  @observable faqContent = ''; // FAQ 내용
+  @observable faqState = ''; // FAQ 분류 (중요 / 일반)
+
+  @observable faqWritingState = 0; // (0 : 글작성 / 1 : 글수정)
 
   /* 공지사항 상단 네비게이션 이동 관련 함수 */
   @action onClickNavHandler = (type) => {
@@ -54,6 +70,9 @@ class Community {
       case 'noticeState':
         this.noticeState = e.value;
         break;
+      case 'faqState':
+        this.faqState = e.value;
+        break;
       default:
         break;
     }
@@ -65,6 +84,9 @@ class Community {
     switch (type) {
       case 'noticeTitle':
         this.noticeTitle = e.value;
+        break;
+      case 'faqTitle':
+        this.faqTitle = e.value;
         break;
       default:
         break;
@@ -237,6 +259,162 @@ class Community {
   @action pushToDetail = async (item, idx = 0) => {
     await this.noticeDetailList.push(item);
     console.info(toJS(this.noticeDetailList));
+    if (this.state === 1) {
+      this.state = 3;
+    }
+  };
+
+  /* 전체 FAQ 목록 가져오는 함수  */
+  @action getAdminFaqList = async (id) => {
+    const req = {
+      id: id ? id : 1,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await FaqAPI.getAdminFaq(req)
+      .then(async (res) => {
+        console.info(res);
+        this.faqList = await res.data.data;
+        this.faqListTotalCount = await res.data.list;
+        this.faqTotalPage = await Math.ceil(this.faqListTotalCount / 10);
+        await this.faqList.map(async (item, idx) => {
+          item.checked = false;
+        });
+        console.info(toJS(this.faqList));
+        console.info(res.data.list);
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        console.info(e.message);
+      });
+  };
+
+  /* FAQ 작성하는 함수 */
+  @action setAdminFaq = async () => {
+    console.info(this.faqState);
+    console.info('FAQ 작성 버튼 클릭');
+    let type = '';
+    switch (this.faqState) {
+      case '사용자 인증':
+        type = 'CETIFY';
+        break;
+      case '수업매칭서비스':
+        type = 'MATCHING';
+        break;
+      case '수업관리서비스':
+        type = 'MANAGE';
+        break;
+      case '기타':
+        type = 'ETC';
+        break;
+      default:
+        break;
+    }
+    const req = {
+      data: {
+        adminId: {
+          id: 'admin1',
+          pwd: 'admin1',
+        },
+        title: this.faqTitle,
+        content: this.faqContent,
+        type: type,
+        secret: 'OPEN',
+      },
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await FaqAPI.setAdminFaq(req)
+      .then(async (res) => {
+        console.info(res);
+        this.faqWritingState = 0;
+        this.state = 1;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* FAQ 수정하는 함수 */
+  @action putAdminFaq = async (id) => {
+    console.info(this.faqState);
+    console.info('FAQ 수정 버튼 클릭');
+    let type = '';
+    switch (this.faqState) {
+      case '사용자 인증':
+        type = 'CETIFY';
+        break;
+      case '수업매칭서비스':
+        type = 'MATCHING';
+        break;
+      case '수업관리서비스':
+        type = 'MANAGE';
+        break;
+      case '기타':
+        type = 'ETC';
+        break;
+      default:
+        break;
+    }
+
+    const req = {
+      id: id,
+      data: {
+        adminId: {
+          id: 'admin1',
+          pwd: 'admin1',
+        },
+        title: this.faqTitle,
+        content: this.faqContent,
+        type: type,
+        secret: 'OPEN',
+      },
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await FaqAPI.putAdminFaq(req)
+      .then(async (res) => {
+        console.info(res);
+        this.faqWritingState = 0;
+        this.state = 1;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* FAQ 삭제하는 함수 */
+  @action delAdminFaq = async (id) => {
+    const req = {
+      id: id,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await FaqAPI.delAdminFaq(req)
+      .then((res) => {
+        console.info(res);
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* FAQ 상세 페이지로 이동하는 함수 */
+  @action pushToDetailFaq = async (item, idx = 0) => {
+    await this.faqDetailList.push(item);
+    console.info(toJS(this.faqDetailList));
     if (this.state === 1) {
       this.state = 3;
     }

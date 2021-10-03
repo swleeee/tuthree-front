@@ -10,7 +10,7 @@ import TextAreaContainer from '../../../../../components/TextareaContainer';
 @observer
 class DetailContent extends Component {
   componentWillUnmount = () => {
-    AdminCommunity.noticeDetailList = [];
+    AdminCommunity.faqDetailList = [];
   };
   render() {
     return (
@@ -22,9 +22,9 @@ class DetailContent extends Component {
                 <div>제목</div>
               </Name>
               <Content>
-                {AdminCommunity.noticeDetailList &&
-                  AdminCommunity.noticeDetailList[0] &&
-                  AdminCommunity.noticeDetailList[0].title}
+                {AdminCommunity.faqDetailList &&
+                  AdminCommunity.faqDetailList[0] &&
+                  AdminCommunity.faqDetailList[0].title}
               </Content>
             </SubSection>
             <SubSection width={30} bl={true}>
@@ -32,9 +32,9 @@ class DetailContent extends Component {
                 <div>분류</div>
               </Name>
               <Content width={30}>
-                {AdminCommunity.noticeDetailList &&
-                  AdminCommunity.noticeDetailList[0] &&
-                  AdminCommunity.noticeDetailList[0].type.korType}
+                {AdminCommunity.faqDetailList &&
+                  AdminCommunity.faqDetailList[0] &&
+                  AdminCommunity.faqDetailList[0].type.korType}
               </Content>
             </SubSection>
 
@@ -43,9 +43,9 @@ class DetailContent extends Component {
                 <div>날짜</div>
               </Name>
               <Content width={40}>
-                {AdminCommunity.noticeDetailList &&
-                  AdminCommunity.noticeDetailList[0] &&
-                  AdminCommunity.noticeDetailList[0].writeAt}
+                {AdminCommunity.faqDetailList &&
+                  AdminCommunity.faqDetailList[0] &&
+                  AdminCommunity.faqDetailList[0].writeAt}
               </Content>
             </SubSection>
           </Section>
@@ -54,9 +54,9 @@ class DetailContent extends Component {
               <div>내용</div>
             </Name>
             <Content height={500}>
-              {AdminCommunity.noticeDetailList &&
-                AdminCommunity.noticeDetailList[0] &&
-                AdminCommunity.noticeDetailList[0].content}
+              {AdminCommunity.faqDetailList &&
+                AdminCommunity.faqDetailList[0] &&
+                AdminCommunity.faqDetailList[0].content}
             </Content>
           </Section>
           <ButtonBox>
@@ -73,8 +73,8 @@ class DetailContent extends Component {
               bcolor="#0b7def"
               onClick={() => {
                 AdminCommunity.state = 2;
-                AdminCommunity.noticeWritingState = 1;
-                AdminCommunity.pushToDetail(AdminCommunity.noticeDetailList[0]);
+                AdminCommunity.faqWritingState = 1;
+                AdminCommunity.pushToDetailFaq(AdminCommunity.faqDetailList[0]);
               }}
             >
               <div>수정</div>
@@ -84,9 +84,7 @@ class DetailContent extends Component {
               color="#fff"
               bcolor="#ff0000"
               onClick={() => {
-                AdminCommunity.delAdminNotice(
-                  AdminCommunity.noticeDetailList[0].id
-                );
+                AdminCommunity.delAdminFaq(AdminCommunity.faqDetailList[0].id);
               }}
             >
               <div>삭제</div>

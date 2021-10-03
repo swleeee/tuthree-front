@@ -53,6 +53,9 @@ class TextareaContainer extends Component {
       case 'noticeContent':
         AdminCommunity.noticeContent = event.target.value;
         break;
+      case 'faqContent':
+        AdminCommunity.faqContent = event.target.value;
+        break;
       default:
         break;
     }
