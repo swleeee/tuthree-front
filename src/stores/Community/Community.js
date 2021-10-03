@@ -1,7 +1,7 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 import * as NoticeAPI from '../../axios/Comuunity/Notice';
 
-class Notice {
+class Community {
   constructor() {
     makeObservable(this);
   }
@@ -64,4 +64,4 @@ class Notice {
   };
 }
 
-export default new Notice();
+export default new Community();

@@ -12,9 +12,9 @@ import NoticeContainer from './Notice';
 import NoticeDetailContainer from './Notice/DetailContent';
 import FaqContainer from './Faq';
 
-import Notice from '../../../stores/Community/Notice';
+import Community from '../../../stores/Community/Community';
 
-@inject('Notice')
+@inject('Community')
 @observer
 class Content extends Component {
   render() {
@@ -22,21 +22,21 @@ class Content extends Component {
       <Container>
         <NavBox>
           <Nav
-            active={Notice.type === 1 ? true : false}
-            onClick={() => Notice.onClickNavHandler('notice')}
+            active={Community.type === 1 ? true : false}
+            onClick={() => Community.onClickNavHandler('notice')}
           >
             <div>공지사항</div>
           </Nav>
           <Nav
-            active={Notice.type === 2 ? true : false}
-            onClick={() => Notice.onClickNavHandler('faq')}
+            active={Community.type === 2 ? true : false}
+            onClick={() => Community.onClickNavHandler('faq')}
           >
             <div>FAQ</div>
           </Nav>
         </NavBox>
 
-        {Notice.type && Notice.type === 1 && <NoticeContainer />}
-        {Notice.type && Notice.type === 2 && <FaqContainer />}
+        {Community.type && Community.type === 1 && <NoticeContainer />}
+        {Community.type && Community.type === 2 && <FaqContainer />}
       </Container>
     );
   }

@@ -8,7 +8,7 @@ import {
   Link as Connection,
 } from 'react-router-dom';
 
-import Notice from '../../../../stores/Community/Notice';
+import Community from '../../../../stores/Community/Community';
 import searchImg from '../../../../static/images/Admin/Main/search.png';
 
 const dummydata = [
@@ -59,11 +59,11 @@ const dummydata = [
   },
 ];
 
-@inject('Notice')
+@inject('Community')
 @observer
 class Content extends Component {
   componentDidMount = () => {
-    Notice.getNoticeList();
+    Community.getNoticeList();
   };
   render() {
     return (
@@ -95,7 +95,7 @@ class Content extends Component {
           {dummydata &&
             dummydata.map((item, idx) => {
               return (
-                <Line onClick={() => Notice.pushToDetail(item, idx)}>
+                <Line onClick={() => Community.pushToDetail(item, idx)}>
                   <Number>{idx}</Number>
                   <Type>{item.type.korType}</Type>
                   <Title>{item.title}</Title>

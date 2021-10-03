@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import SelectComponent from '../../../../components/Select';
 import { inject, observer } from 'mobx-react';
-import Notice from '../../../../stores/Community/Notice';
+import Community from '../../../../stores/Community/Community';
 import Common from '../../../../stores/Common/Common';
 import TextAreaContainer from '../../../../components/TextareaContainer';
 
-@inject('Notice', 'Common')
+@inject('Community', 'Common')
 @observer
 class DetailContent extends Component {
   componentWillUnmount = () => {
-    Notice.noticeDetailList = [];
-    Notice.state = 1;
+    Community.noticeDetailList = [];
+    Community.state = 1;
   };
   render() {
     return (
@@ -20,33 +20,33 @@ class DetailContent extends Component {
           <Section by={true}>
             <SubSection width={30}>
               <Content width={30}>
-                {Notice.noticeDetailList &&
-                  Notice.noticeDetailList[0] &&
-                  Notice.noticeDetailList[0].type.korType}
+                {Community.noticeDetailList &&
+                  Community.noticeDetailList[0] &&
+                  Community.noticeDetailList[0].type.korType}
               </Content>
             </SubSection>
 
             <SubSection width={100} bl={true}>
               <Content title={true}>
-                {Notice.noticeDetailList &&
-                  Notice.noticeDetailList[0] &&
-                  Notice.noticeDetailList[0].title}
+                {Community.noticeDetailList &&
+                  Community.noticeDetailList[0] &&
+                  Community.noticeDetailList[0].title}
               </Content>
             </SubSection>
 
             <SubSection width={40} bl={true}>
               <Content width={40} right={true}>
-                {Notice.noticeDetailList &&
-                  Notice.noticeDetailList[0] &&
-                  Notice.noticeDetailList[0].writeAt}
+                {Community.noticeDetailList &&
+                  Community.noticeDetailList[0] &&
+                  Community.noticeDetailList[0].writeAt}
               </Content>
             </SubSection>
           </Section>
           <Section mb={true}>
             <Content height={500}>
-              {Notice.noticeDetailList &&
-                Notice.noticeDetailList[0] &&
-                Notice.noticeDetailList[0].content}
+              {Community.noticeDetailList &&
+                Community.noticeDetailList[0] &&
+                Community.noticeDetailList[0].content}
             </Content>
           </Section>
         </Item>
@@ -54,7 +54,7 @@ class DetailContent extends Component {
           <Button
             color="#fff"
             bcolor="rgb(235, 114, 82)"
-            onClick={() => (Notice.state = 1)}
+            onClick={() => (Community.state = 1)}
           >
             <div>목록</div>
           </Button>
