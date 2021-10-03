@@ -106,6 +106,7 @@ class Content extends Component {
             })}
         </MainBox>
         <Pagination
+          type="Notice"
           currentSet={Community.noticeCurrentSet}
           currentPage={Community.noticeCurrentPage}
           totalPage={Community.noticeTotalPage}

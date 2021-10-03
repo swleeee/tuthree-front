@@ -1,6 +1,15 @@
 import axios from 'axios';
 import { ROOT_URL } from '../index';
 
+export function getFaq(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/faq/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
 export function getAdminFaq(req) {
   return axios({
     method: 'GET',

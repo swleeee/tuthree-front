@@ -111,6 +111,7 @@ class Content extends Component {
             })}
         </MainBox>
         <Pagination
+          type="Faq"
           currentSet={Community.faqCurrentSet}
           currentPage={Community.faqCurrentPage}
           totalPage={Community.faqTotalPage}
