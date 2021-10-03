@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ContentContainer from './Content';
+import DetailContentContainer from './DetailContent';
 import { inject, observer } from 'mobx-react';
 
 import Notice from '../../../../stores/Community/Notice';
@@ -7,11 +8,12 @@ import Notice from '../../../../stores/Community/Notice';
 @inject('Notice')
 @observer
 class index extends Component {
-  componentDidMount = () => {
-    Notice.init();
-  };
   render() {
-    return <ContentContainer />;
+    return (
+      <>
+        {Notice.state === 1 ? <ContentContainer /> : <DetailContentContainer />}
+      </>
+    );
   }
 }
 

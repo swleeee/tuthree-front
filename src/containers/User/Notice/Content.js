@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 
 import NoticeContainer from './Notice';
+import NoticeDetailContainer from './Notice/DetailContent';
 import FaqContainer from './Faq';
 
 import Notice from '../../../stores/Community/Notice';
@@ -34,11 +35,8 @@ class Content extends Component {
           </Nav>
         </NavBox>
 
-        {Notice.type && Notice.type === 1 ? (
-          <NoticeContainer />
-        ) : (
-          <FaqContainer />
-        )}
+        {Notice.type && Notice.type === 1 && <NoticeContainer />}
+        {Notice.type && Notice.type === 2 && <FaqContainer />}
       </Container>
     );
   }
