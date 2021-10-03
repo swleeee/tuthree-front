@@ -17,6 +17,8 @@ class Community {
   @observable noticeCurrentSet = parseInt((this.noticeCurrentPage - 1) / 5) + 1; // 공지사항 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
   @observable noticeDetailList = []; // 공지사항 세부 페이지
 
+  @observable faqDropdownState = -1;
+
   @action onClickNavHandler = (type) => {
     console.info(type);
     switch (type) {
@@ -61,6 +63,16 @@ class Community {
     await this.noticeDetailList.push(item);
     console.info(toJS(this.noticeDetailList));
     this.state = 2;
+  };
+
+  @action dropdownHandler = async (item, idx = 0) => {
+    console.info(item);
+
+    if (idx === this.faqDropdownState) {
+      this.faqDropdownState = -1;
+    } else {
+      this.faqDropdownState = idx;
+    }
   };
 }
 
