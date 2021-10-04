@@ -74,7 +74,7 @@ class Content extends Component {
     return (
       <Container>
         <Item>
-          <SearchBox>
+          {/* <SearchBox>
             <Input
               placeholder="질문을 입력하세요."
               // onChange={(e) => AdminAuth.onUserHandler(e, 'id')}
@@ -84,7 +84,7 @@ class Content extends Component {
             <Search>
               <img src={searchImg} />
             </Search>
-          </SearchBox>
+          </SearchBox> */}
           <Header>
             <Count>
               총 <span>{AdminCommunity.noticeListTotalCount}</span>개
@@ -125,7 +125,12 @@ class Content extends Component {
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
-                          AdminCommunity.checkDataHandler(item, item.id, idx);
+                          AdminCommunity.checkDataHandler(
+                            'notice',
+                            item,
+                            item.id,
+                            idx
+                          );
                         }}
                       >
                         <img src={checkImg} />

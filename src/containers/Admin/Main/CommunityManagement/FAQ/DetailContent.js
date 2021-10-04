@@ -10,7 +10,9 @@ import TextAreaContainer from '../../../../../components/TextareaContainer';
 @observer
 class DetailContent extends Component {
   componentWillUnmount = () => {
-    AdminCommunity.faqDetailList = [];
+    if (AdminCommunity.faqWritingState !== 1) {
+      AdminCommunity.faqDetailList = [];
+    }
   };
   render() {
     return (
@@ -23,8 +25,7 @@ class DetailContent extends Component {
               </Name>
               <Content>
                 {AdminCommunity.faqDetailList &&
-                  AdminCommunity.faqDetailList[0] &&
-                  AdminCommunity.faqDetailList[0].title}
+                  AdminCommunity.faqDetailList.title}
               </Content>
             </SubSection>
             <SubSection width={30} bl={true}>
@@ -33,8 +34,7 @@ class DetailContent extends Component {
               </Name>
               <Content width={30}>
                 {AdminCommunity.faqDetailList &&
-                  AdminCommunity.faqDetailList[0] &&
-                  AdminCommunity.faqDetailList[0].type.korType}
+                  AdminCommunity.faqDetailList.type}
               </Content>
             </SubSection>
 
@@ -44,8 +44,7 @@ class DetailContent extends Component {
               </Name>
               <Content width={40}>
                 {AdminCommunity.faqDetailList &&
-                  AdminCommunity.faqDetailList[0] &&
-                  AdminCommunity.faqDetailList[0].writeAt}
+                  AdminCommunity.faqDetailList.writeAt}
               </Content>
             </SubSection>
           </Section>
@@ -55,8 +54,7 @@ class DetailContent extends Component {
             </Name>
             <Content height={500}>
               {AdminCommunity.faqDetailList &&
-                AdminCommunity.faqDetailList[0] &&
-                AdminCommunity.faqDetailList[0].content}
+                AdminCommunity.faqDetailList.content}
             </Content>
           </Section>
           <ButtonBox>
@@ -71,10 +69,14 @@ class DetailContent extends Component {
             <Button
               color="#fff"
               bcolor="#0b7def"
-              onClick={() => {
-                AdminCommunity.state = 2;
+              onClick={async () => {
                 AdminCommunity.faqWritingState = 1;
-                AdminCommunity.pushToDetailFaq(AdminCommunity.faqDetailList[0]);
+                await AdminCommunity.pushToFaqDetail(
+                  AdminCommunity.faqDetailList,
+                  0,
+                  'modify'
+                );
+                AdminCommunity.state = 2;
               }}
             >
               <div>수정</div>
@@ -84,7 +86,7 @@ class DetailContent extends Component {
               color="#fff"
               bcolor="#ff0000"
               onClick={() => {
-                AdminCommunity.delAdminFaq(AdminCommunity.faqDetailList[0].id);
+                AdminCommunity.delAdminFaq(AdminCommunity.faqDetailList.id);
               }}
             >
               <div>삭제</div>

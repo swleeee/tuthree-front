@@ -30,12 +30,16 @@ class Community {
 
   /////////////////////////////////////////////////////////////////////////
 
+  @observable faqDelState = 1; // 기본 : 1, 선택 삭제 : 2
   @observable faqList = []; // FAQ 페이지 당 목록 데이터
   @observable faqListTotalCount = 0; // FAQ 전체 개수
   @observable faqTotalPage = 0; // FAQ 전체 페이지 수
   @observable faqCurrentPage = 1; // FAQ 현재 페이지
   @observable faqCurrentSet = parseInt((this.noticeCurrentPage - 1) / 5) + 1; // FAQ 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
   @observable faqDetailList = []; // FAQ 세부 페이지
+
+  @observable checkFaqState = 0;
+  @observable checkFaqAry = []; // Faq 체크박스 선택하면 배열 안에 공지사항 id가 들어감
 
   @observable faqTitle = ''; // FAQ 제목
   @observable faqContent = ''; // FAQ 내용
@@ -240,34 +244,70 @@ class Community {
     }
   };
 
-  /* 공지사항 체크 박스 관련 함수 */
-  @action checkDataHandler = (item, id, idx) => {
+  /* 체크 박스 관련 함수 */
+  @action checkDataHandler = (type = '', item, id, idx) => {
     console.info(id);
     console.info(item.checked);
-    const index = this.checkAry.indexOf(parseInt(id));
-    // this.checkAry
+    let index = 0;
+    switch (type) {
+      case 'notice':
+        index = this.checkAry.indexOf(parseInt(id));
+        // this.checkAry
 
-    console.info(index);
-    if (index === -1) {
-      this.checkAry.push(parseInt(id));
-    } else {
-      this.checkAry.splice(index, 1);
+        console.info(index);
+        if (index === -1) {
+          this.checkAry.push(parseInt(id));
+        } else {
+          this.checkAry.splice(index, 1);
+        }
+        console.info(toJS(this.checkAry));
+        // console.info(this.checkData(id));
+        this.checkData(type, item, idx);
+        break;
+      case 'faq':
+        index = this.checkFaqAry.indexOf(parseInt(id));
+        // this.checkAry
+
+        console.info(index);
+        if (index === -1) {
+          this.checkFaqAry.push(parseInt(id));
+        } else {
+          this.checkFaqAry.splice(index, 1);
+        }
+        console.info(toJS(this.checkFaqAry));
+        // console.info(this.checkData(id));
+        this.checkData(type, item, idx);
+        break;
+      default:
+        break;
     }
-    console.info(toJS(this.checkAry));
-    // console.info(this.checkData(id));
-    this.checkData(item, idx);
   };
 
   /*  */
-  @action checkData = (item, idx) => {
+  @action checkData = (type, item, idx) => {
     // console.info(this.checkAry.includes(parseInt(id)));
     // console.info(id);
-    console.info(idx);
-    console.info(toJS(this.noticeList[idx]));
-    if (this.noticeList[idx].checked) {
-      this.noticeList[idx].checked = false;
-    } else {
-      this.noticeList[idx].checked = true;
+    switch (type) {
+      case 'notice':
+        console.info(idx);
+        console.info(toJS(this.noticeList[idx]));
+        if (this.noticeList[idx].checked) {
+          this.noticeList[idx].checked = false;
+        } else {
+          this.noticeList[idx].checked = true;
+        }
+        break;
+      case 'faq':
+        console.info(idx);
+        console.info(toJS(this.faqList[idx]));
+        if (this.faqList[idx].checked) {
+          this.faqList[idx].checked = false;
+        } else {
+          this.faqList[idx].checked = true;
+        }
+        break;
+      default:
+        break;
     }
 
     // item.checked = !item.checked;
@@ -306,14 +346,6 @@ class Community {
     await NoticeAPI.getDetailNotice(req)
       .then(async (res) => {
         console.info(res);
-        // this.noticeList = await res.data.data;
-        // this.noticeListTotalCount = await res.data.list;
-        // this.noticeTotalPage = await Math.ceil(this.noticeListTotalCount / 10);
-        // await this.noticeList.map(async (item, idx) => {
-        //   item.checked = false;
-        // });
-        // console.info(toJS(this.noticeList));
-        // console.info(res.data.list);
         this.noticeDetailList = await res.data.data;
       })
       .catch((e) => {
@@ -337,7 +369,7 @@ class Community {
       },
     };
 
-    await FaqAPI.getAdminFaq(req)
+    await FaqAPI.getFaq(req)
       .then(async (res) => {
         console.info(res);
         this.faqList = await res.data.data;
@@ -468,6 +500,11 @@ class Community {
     await FaqAPI.delAdminFaq(req)
       .then((res) => {
         console.info(res);
+        if (this.faqDelState !== 1) {
+          this.state = 1;
+          this.faqWritingState = 0;
+          this.getAdminFaqList();
+        }
       })
       .catch((e) => {
         console.info(e);
@@ -476,10 +513,26 @@ class Community {
   };
 
   /* FAQ 상세 페이지로 이동하는 함수 */
-  @action pushToDetailFaq = async (item, idx = 0) => {
-    await this.faqDetailList.push(item);
+  @action pushToDetailFaq = async (item, idx = 0, type = '') => {
+    const req = {
+      id: item.id,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await FaqAPI.getDetailFaq(req)
+      .then(async (res) => {
+        console.info(res);
+        this.faqDetailList = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+
     console.info(toJS(this.faqDetailList));
-    if (this.state === 1) {
+    if (type !== 'modify') {
       this.state = 3;
     }
   };

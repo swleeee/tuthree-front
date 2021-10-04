@@ -10,10 +10,10 @@ export function getFaq(req) {
   });
 }
 
-export function getAdminFaq(req) {
+export function getDetailFaq(req) {
   return axios({
     method: 'GET',
-    url: `${ROOT_URL}/faq/admin/${req.id}`,
+    url: `${ROOT_URL}/faq/id/${req.id}`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });

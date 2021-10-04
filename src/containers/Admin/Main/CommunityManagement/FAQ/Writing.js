@@ -100,15 +100,22 @@ class Writing extends Component {
     console.info('didmount');
     if (AdminCommunity.faqWritingState === 1) {
       console.info(toJS(AdminCommunity.faqDetailList));
-      AdminCommunity.faqTitle = AdminCommunity.faqDetailList[0].title;
-      AdminCommunity.faqContent = AdminCommunity.faqDetailList[0].content;
-      AdminCommunity.faqState = AdminCommunity.faqDetailList[0].type.korType;
+      AdminCommunity.faqTitle =
+        AdminCommunity.faqDetailList && AdminCommunity.faqDetailList.title;
+      AdminCommunity.faqContent =
+        AdminCommunity.faqDetailList && AdminCommunity.faqDetailList.content;
+      AdminCommunity.faqState =
+        AdminCommunity.faqDetailList && AdminCommunity.faqDetailList.type;
       console.info(AdminCommunity.faqState);
+      console.info(AdminCommunity.faqContent);
+      console.info(AdminCommunity.state);
+      console.info(AdminCommunity.faqWritingState);
       this.setState({ g: 3 });
     }
   };
 
   componentWillUnmount = () => {
+    console.info('unmount');
     AdminCommunity.faqDetailList = [];
     AdminCommunity.faqWritingState = 0;
     AdminCommunity.state = 1;
@@ -175,7 +182,15 @@ class Writing extends Component {
             </Content>
           </Section>
           <ButtonBox>
-            <Button color="#000" bcolor="#fff" border="1px solid #000">
+            <Button
+              color="#000"
+              bcolor="#fff"
+              border="1px solid #000"
+              onClick={() => {
+                AdminCommunity.state = 1;
+                AdminCommunity.faqWritingState = 0;
+              }}
+            >
               <div>취소</div>
             </Button>
 
@@ -187,9 +202,7 @@ class Writing extends Component {
                 if (AdminCommunity.faqWritingState === 0) {
                   AdminCommunity.setAdminFaq();
                 } else {
-                  AdminCommunity.putAdminFaq(
-                    AdminCommunity.faqDetailList[0].id
-                  );
+                  AdminCommunity.putAdminFaq(AdminCommunity.faqDetailList.id);
                 }
               }}
             >

@@ -71,7 +71,7 @@ class Content extends Component {
     return (
       <Container>
         <Item>
-          <SearchBox>
+          {/* <SearchBox>
             <Input
               placeholder="질문을 입력하세요."
               // onChange={(e) => AdminAuth.onUserHandler(e, 'id')}
@@ -81,14 +81,26 @@ class Content extends Component {
             <Search>
               <img src={searchImg} />
             </Search>
-          </SearchBox>
+          </SearchBox> */}
           <Header>
             <Count>
               총 <span>{AdminCommunity.faqListTotalCount}</span>개
             </Count>
-            <WriteBtn onClick={() => (AdminCommunity.state = 2)}>
-              글쓰기
-            </WriteBtn>
+            <ButtonBox>
+              <WriteBtn
+                onClick={async () => {
+                  AdminCommunity.noticeDelState = 2;
+                  await AdminCommunity.delCheckedData();
+                }}
+                mr={15}
+                color="#707070"
+              >
+                선택 삭제
+              </WriteBtn>
+              <WriteBtn onClick={() => (AdminCommunity.state = 2)}>
+                글쓰기
+              </WriteBtn>
+            </ButtonBox>
           </Header>
           <MainBox>
             <Line title={true}>
@@ -102,32 +114,59 @@ class Content extends Component {
               <Management title={true}>관리</Management>
             </Line>
 
-            {/* {AdminCommunity.faqList &&
+            {AdminCommunity.faqList &&
               AdminCommunity.faqList.map((item, idx) => {
                 return (
-                  <Line onClick={() => AdminCommunity.pushToDetailFaq(item, idx)}>
-                    <Check active={AdminCommunity.checkData(item.id)}>
+                  <Line
+                    onClick={() => AdminCommunity.pushToDetailFaq(item, idx)}
+                  >
+                    <Check active={item.checked}>
                       <div
-                        onClick={() => AdminCommunity.checkDataHandler(item.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          AdminCommunity.checkDataHandler(
+                            'faq',
+                            item,
+                            item.id,
+                            idx
+                          );
+                        }}
                       >
                         <img src={checkImg} />
                       </div>
                     </Check>
                     <Number>{idx}</Number>
-                    <Type>{item.type.korType}</Type>
+                    <Type>{item.type}</Type>
                     <Title>{item.title}</Title>
                     <Date>{item.writeAt}</Date>
                     <Management>
-                      <CtlBtn>
+                      <CtlBtn
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          AdminCommunity.faqWritingState = 1;
+                          await AdminCommunity.pushToFaqDetail(
+                            item,
+                            idx,
+                            'modify'
+                          );
+                          AdminCommunity.state = 2;
+                        }}
+                      >
                         <div>수정</div>
                       </CtlBtn>
-                      <CtlBtn del={true}>
+                      <CtlBtn
+                        del={true}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          AdminCommunity.delAdminFaq(item.id);
+                        }}
+                      >
                         <div>삭제</div>
                       </CtlBtn>
                     </Management>
                   </Line>
                 );
-              })} */}
+              })}
             {/* <Line>
               <Check>
                 <div>
@@ -148,7 +187,7 @@ class Content extends Component {
               </Management>
             </Line> */}
 
-            {dummydata &&
+            {/* {dummydata &&
               dummydata.map((item, idx) => {
                 return (
                   <Line
@@ -191,7 +230,7 @@ class Content extends Component {
                     </Management>
                   </Line>
                 );
-              })}
+              })} */}
           </MainBox>
           <Pagination
             type="AdminFaq"
@@ -342,9 +381,10 @@ const Count = styled.div`
     font-size: 14px;
   }
 `;
+const ButtonBox = styled.div``;
 const WriteBtn = styled.button`
   border: none;
-  background-color: #eb7252;
+  background-color: ${(props) => (props.color ? props.color : '#eb7252')};
   width: 100px;
   height: 40px;
   border-radius: 5px;
@@ -352,7 +392,7 @@ const WriteBtn = styled.button`
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-
+  margin-right: ${(props) => (props.mr ? props.mr : '')}px;
   @media (min-width: 0px) and (max-width: 767.98px) {
     width: 50px;
     height: 23px;
