@@ -346,7 +346,12 @@ class Step3TeacherContainer extends Component {
           </ItemBox>
           <ItemBox>
             <div>재학증명서</div>
-            <FileUpload file={true} />
+            <FileUpload
+              file={true}
+              fileAry={Auth.fileAry}
+              type="signup"
+              state="single"
+            />
           </ItemBox>
           <ItemBox>
             <div>급여</div>

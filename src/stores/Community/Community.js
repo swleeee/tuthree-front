@@ -35,6 +35,8 @@ class Community {
   @observable communityCurrentSet =
     parseInt((this.communityCurrentPage - 1) / 5) + 1; // community 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
   @observable communityDetailList = []; // community 세부 페이지
+  @observable communityFileAry = [];
+  @observable communityFileName = [];
 
   @action onClickNavHandler = (type) => {
     console.info(type);

@@ -73,7 +73,12 @@ class Writing extends Component {
               <div>파일 첨부</div>
             </Name>
             <Content>
-              <FileUpload file={true} />
+              <FileUpload
+                file={true}
+                fileAry={Community.communityFileAry}
+                type="community"
+                state="multi"
+              />
             </Content>
           </Section>
           <ButtonBox>
