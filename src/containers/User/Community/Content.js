@@ -78,6 +78,11 @@ class Content extends Component {
             <img src={searchImg} />
           </Search>
         </SearchBox>
+        <Header>
+          <Button onClick={() => (Community.communityState = 2)}>
+            <div>글 작성</div>
+          </Button>
+        </Header>
         <MainBox>
           <Line title={true}>
             <Number>번호</Number>
@@ -96,7 +101,9 @@ class Content extends Component {
           {dummydata &&
             dummydata.map((item, idx) => {
               return (
-                <Line onClick={() => Community.pushToDetail(item, idx)}>
+                <Line
+                  onClick={() => Community.pushToCommunityDetail(item, idx)}
+                >
                   <Number>{idx}</Number>
                   <Title>{item.title}</Title>
                   <Id>{item.userId}</Id>
@@ -148,6 +155,24 @@ const SearchBox = styled.div`
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
     width: 55%;
+  }
+`;
+
+const Header = styled.div`
+  margin-bottom: 10px;
+  align-self: flex-end;
+`;
+const Button = styled.button`
+  background-color: #eb7252;
+  border: none;
+  width: 80px;
+  height: 36px;
+  border-radius: 5px;
+  cursor: pointer;
+  > div {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
   }
 `;
 

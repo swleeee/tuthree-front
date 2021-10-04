@@ -27,6 +27,7 @@ class Community {
   @observable faqCurrentSet = parseInt((this.faqCurrentPage - 1) / 5) + 1; // FAQ 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
   @observable faqDetailList = []; // FAQ 세부 페이지
 
+  @observable communityState = 1; // 1 : 조회, 2 : 작성, 3 : 세부 조회
   @observable communityList = []; // community 페이지 당 목록 데이터
   @observable communityListTotalCount = 0; // community 전체 개수
   @observable communityTotalPage = 0; // community 전체 페이지 수
