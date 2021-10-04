@@ -12,6 +12,7 @@ import AdminCommunity from '../../../../../stores/Admin/Community';
 import searchImg from '../../../../../static/images/Admin/Main/search.png';
 import checkImg from '../../../../../static/images/Common/check.png';
 import Pagination from '../../../../../components/Pagination';
+import { toJS } from 'mobx';
 
 const dummydata = [
   {
@@ -65,9 +66,11 @@ const dummydata = [
 @observer
 class Content extends Component {
   componentDidMount = () => {
+    console.info('dm');
     AdminCommunity.getAdminNoticeList();
   };
   render() {
+    console.info('rrr');
     return (
       <Container>
         <Item>
@@ -86,9 +89,21 @@ class Content extends Component {
             <Count>
               총 <span>{AdminCommunity.noticeListTotalCount}</span>개
             </Count>
-            <WriteBtn onClick={() => (AdminCommunity.state = 2)}>
-              글쓰기
-            </WriteBtn>
+            <ButtonBox>
+              <WriteBtn
+                onClick={async () => {
+                  AdminCommunity.noticeDelState = 2;
+                  await AdminCommunity.delCheckedData();
+                }}
+                mr={15}
+                color="#707070"
+              >
+                선택 삭제
+              </WriteBtn>
+              <WriteBtn onClick={() => (AdminCommunity.state = 2)}>
+                글쓰기
+              </WriteBtn>
+            </ButtonBox>
           </Header>
           <MainBox>
             <Line title={true}>
@@ -102,32 +117,55 @@ class Content extends Component {
               <Management title={true}>관리</Management>
             </Line>
 
-            {/* {AdminCommunity.noticeList &&
+            {AdminCommunity.noticeList &&
               AdminCommunity.noticeList.map((item, idx) => {
                 return (
                   <Line onClick={() => AdminCommunity.pushToDetail(item, idx)}>
-                    <Check active={AdminCommunity.checkData(item.id)}>
+                    <Check active={item.checked}>
                       <div
-                        onClick={() => AdminCommunity.checkDataHandler(item.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          AdminCommunity.checkDataHandler(item, item.id, idx);
+                        }}
                       >
                         <img src={checkImg} />
                       </div>
                     </Check>
-                    <Number>{idx}</Number>
-                    <Type>{item.type.korType}</Type>
+                    <Number>
+                      {idx + 1 + 10 * (AdminCommunity.noticeCurrentPage - 1)}
+                    </Number>
+                    <Type>{item.type}</Type>
                     <Title>{item.title}</Title>
                     <Date>{item.writeAt}</Date>
                     <Management>
-                      <CtlBtn>
+                      <CtlBtn
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          AdminCommunity.noticeWritingState = 1;
+                          await AdminCommunity.pushToDetail(
+                            item,
+                            idx,
+                            'modify'
+                          );
+                          AdminCommunity.state = 2;
+                          console.info(toJS(AdminCommunity.noticeDetailList));
+                        }}
+                      >
                         <div>수정</div>
                       </CtlBtn>
-                      <CtlBtn del={true}>
+                      <CtlBtn
+                        del={true}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          AdminCommunity.delAdminNotice(item.id);
+                        }}
+                      >
                         <div>삭제</div>
                       </CtlBtn>
                     </Management>
                   </Line>
                 );
-              })} */}
+              })}
             {/* <Line>
               <Check>
                 <div>
@@ -147,7 +185,7 @@ class Content extends Component {
                 </CtlBtn>
               </Management>
             </Line> */}
-
+            {/* 
             {dummydata &&
               dummydata.map((item, idx) => {
                 return (
@@ -189,7 +227,7 @@ class Content extends Component {
                     </Management>
                   </Line>
                 );
-              })}
+              })} */}
           </MainBox>
           <Pagination
             type="AdminNotice"
@@ -340,9 +378,10 @@ const Count = styled.div`
     font-size: 14px;
   }
 `;
+const ButtonBox = styled.div``;
 const WriteBtn = styled.button`
   border: none;
-  background-color: #eb7252;
+  background-color: ${(props) => (props.color ? props.color : '#eb7252')};
   width: 100px;
   height: 40px;
   border-radius: 5px;
@@ -350,7 +389,7 @@ const WriteBtn = styled.button`
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-
+  margin-right: ${(props) => (props.mr ? props.mr : '')}px;
   @media (min-width: 0px) and (max-width: 767.98px) {
     width: 50px;
     height: 23px;
@@ -413,7 +452,7 @@ const Line = styled.div`
 
 const Check = styled.div`
   // flex-grow: 1;
-  width: 1%;
+  width: 30px;
   > div {
     cursor: pointer;
     width: 24px;

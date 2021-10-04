@@ -98,16 +98,24 @@ class Writing extends Component {
     console.info('didmount');
     if (AdminCommunity.noticeWritingState === 1) {
       console.info(toJS(AdminCommunity.noticeDetailList));
-      AdminCommunity.noticeTitle = AdminCommunity.noticeDetailList[0].title;
-      AdminCommunity.noticeContent = AdminCommunity.noticeDetailList[0].content;
+      AdminCommunity.noticeTitle =
+        AdminCommunity.noticeDetailList &&
+        AdminCommunity.noticeDetailList.title;
+      AdminCommunity.noticeContent =
+        AdminCommunity.noticeDetailList &&
+        AdminCommunity.noticeDetailList.content;
       AdminCommunity.noticeState =
-        AdminCommunity.noticeDetailList[0].type.korType;
+        AdminCommunity.noticeDetailList && AdminCommunity.noticeDetailList.type;
       console.info(AdminCommunity.noticeState);
+      console.info(AdminCommunity.noticeContent);
+      console.info(AdminCommunity.state);
+      console.info(AdminCommunity.noticeWritingState);
       this.setState({ g: 3 });
     }
   };
 
   componentWillUnmount = () => {
+    console.info('unmount');
     AdminCommunity.noticeDetailList = [];
     AdminCommunity.noticeWritingState = 0;
     AdminCommunity.state = 1;
@@ -116,7 +124,10 @@ class Writing extends Component {
   };
 
   render() {
-    console.info('render');
+    // console.info('render');
+    // console.info(AdminCommunity.state);
+    // console.info(AdminCommunity.noticeWritingState);
+    // console.info(toJS(AdminCommunity.noticeDetailList));
     return (
       <Container>
         <Item>
@@ -132,8 +143,8 @@ class Writing extends Component {
                   Common.width > 767.98 ? customStyles : mobileCustomStyles
                 }
                 value={{
-                  label: AdminCommunity.noticeState,
-                  value: AdminCommunity.noticeState,
+                  label: AdminCommunity.noticeState || '',
+                  value: AdminCommunity.noticeState || '',
                 }}
                 onChange={(e) =>
                   AdminCommunity.onSelectHandler(e, 'noticeState')
@@ -159,7 +170,7 @@ class Writing extends Component {
                 }
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '제목을 입력하세요')}
-                value={AdminCommunity.noticeTitle}
+                value={AdminCommunity.noticeTitle || ''}
               />
             </Content>
           </Section>
@@ -169,14 +180,22 @@ class Writing extends Component {
             </Name>
             <Content>
               <TextArea
-                value={AdminCommunity.noticeContent}
+                value={AdminCommunity.noticeContent || ''}
                 type="noticeContent"
                 placeholder="입력하세요"
               />
             </Content>
           </Section>
           <ButtonBox>
-            <Button color="#000" bcolor="#fff" border="1px solid #000">
+            <Button
+              color="#000"
+              bcolor="#fff"
+              border="1px solid #000"
+              onClick={() => {
+                AdminCommunity.state = 1;
+                AdminCommunity.noticeWritingState = 0;
+              }}
+            >
               <div>취소</div>
             </Button>
 
@@ -185,11 +204,12 @@ class Writing extends Component {
               bcolor="rgb(235, 114, 82)"
               onClick={() => {
                 console.info('click');
+                console.info(toJS(AdminCommunity.noticeDetailList));
                 if (AdminCommunity.noticeWritingState === 0) {
                   AdminCommunity.setAdminNotice();
                 } else {
                   AdminCommunity.putAdminNotice(
-                    AdminCommunity.noticeDetailList[0].id
+                    AdminCommunity.noticeDetailList.id
                   );
                 }
               }}
@@ -292,6 +312,7 @@ const Button = styled.button`
   margin: 0 50px;
   margin-bottom: 200px;
   border-radius: 3px;
+  cursor: pointer;
   > div {
     font-size: 20px;
   }

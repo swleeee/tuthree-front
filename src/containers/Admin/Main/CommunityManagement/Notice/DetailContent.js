@@ -5,14 +5,19 @@ import { inject, observer } from 'mobx-react';
 import AdminCommunity from '../../../../../stores/Admin/Community';
 import Common from '../../../../../stores/Common/Common';
 import TextAreaContainer from '../../../../../components/TextareaContainer';
+import { toJS } from 'mobx';
 
 @inject('AdminCommunity', 'Common')
 @observer
 class DetailContent extends Component {
   componentWillUnmount = () => {
-    AdminCommunity.noticeDetailList = [];
+    console.info('un');
+    if (AdminCommunity.noticeWritingState !== 1) {
+      AdminCommunity.noticeDetailList = [];
+    }
   };
   render() {
+    console.info(toJS(AdminCommunity.noticeDetailList));
     return (
       <Container>
         <Item>
@@ -23,8 +28,7 @@ class DetailContent extends Component {
               </Name>
               <Content>
                 {AdminCommunity.noticeDetailList &&
-                  AdminCommunity.noticeDetailList[0] &&
-                  AdminCommunity.noticeDetailList[0].title}
+                  AdminCommunity.noticeDetailList.title}
               </Content>
             </SubSection>
             <SubSection width={30} bl={true}>
@@ -33,8 +37,7 @@ class DetailContent extends Component {
               </Name>
               <Content width={30}>
                 {AdminCommunity.noticeDetailList &&
-                  AdminCommunity.noticeDetailList[0] &&
-                  AdminCommunity.noticeDetailList[0].type.korType}
+                  AdminCommunity.noticeDetailList.type}
               </Content>
             </SubSection>
 
@@ -44,8 +47,7 @@ class DetailContent extends Component {
               </Name>
               <Content width={40}>
                 {AdminCommunity.noticeDetailList &&
-                  AdminCommunity.noticeDetailList[0] &&
-                  AdminCommunity.noticeDetailList[0].writeAt}
+                  AdminCommunity.noticeDetailList.writeAt}
               </Content>
             </SubSection>
           </Section>
@@ -55,8 +57,7 @@ class DetailContent extends Component {
             </Name>
             <Content height={500}>
               {AdminCommunity.noticeDetailList &&
-                AdminCommunity.noticeDetailList[0] &&
-                AdminCommunity.noticeDetailList[0].content}
+                AdminCommunity.noticeDetailList.content}
             </Content>
           </Section>
           <ButtonBox>
@@ -71,10 +72,14 @@ class DetailContent extends Component {
             <Button
               color="#fff"
               bcolor="#0b7def"
-              onClick={() => {
-                AdminCommunity.state = 2;
+              onClick={async () => {
                 AdminCommunity.noticeWritingState = 1;
-                AdminCommunity.pushToDetail(AdminCommunity.noticeDetailList[0]);
+                await AdminCommunity.pushToDetail(
+                  AdminCommunity.noticeDetailList,
+                  0,
+                  'modify'
+                );
+                AdminCommunity.state = 2;
               }}
             >
               <div>수정</div>
@@ -85,7 +90,7 @@ class DetailContent extends Component {
               bcolor="#ff0000"
               onClick={() => {
                 AdminCommunity.delAdminNotice(
-                  AdminCommunity.noticeDetailList[0].id
+                  AdminCommunity.noticeDetailList.id
                 );
               }}
             >

@@ -10,10 +10,10 @@ export function getNotice(req) {
   });
 }
 
-export function getAdminNotice(req) {
+export function getDetailNotice(req) {
   return axios({
     method: 'GET',
-    url: `${ROOT_URL}/notice/admin/${req.id}`,
+    url: `${ROOT_URL}/notice/id/${req.id}`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });
