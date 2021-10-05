@@ -197,6 +197,7 @@ class Community {
   /* 공지사항 삭제하는 함수 */
   @action delAdminNotice = async (id) => {
     console.info(id);
+    console.info(this.noticeDelState);
     const req = {
       id: id,
       headers: {
@@ -207,7 +208,7 @@ class Community {
     await NoticeAPI.delAdminNotice(req)
       .then((res) => {
         console.info(res);
-        if (this.noticeDelState !== 1) {
+        if (this.noticeDelState === 1) {
           this.state = 1;
           this.noticeWritingState = 0;
           this.getAdminNoticeList();
