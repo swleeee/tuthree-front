@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import {
   BrowserRouter as Router,
   Switch,
@@ -64,12 +65,12 @@ const dummydata = [
 @observer
 class Content extends Component {
   componentDidMount = () => {
-    Community.getNoticeList();
+    Community.getFaqList(Community.faqCurrentPage);
   };
   render() {
     return (
       <Container>
-        <SearchBox>
+        {/* <SearchBox>
           <Input
             placeholder="질문을 입력하세요."
             // onChange={(e) => AdminAuth.onUserHandler(e, 'id')}
@@ -79,7 +80,12 @@ class Content extends Component {
           <Search>
             <img src={searchImg} />
           </Search>
-        </SearchBox>
+        </SearchBox> */}
+        <Header>
+          <Count>
+            총 <span>{Community.faqListTotalCount}</span>개
+          </Count>
+        </Header>
         <MainBox>
           <Line title={true}>
             <Number>번호</Number>
@@ -88,12 +94,27 @@ class Content extends Component {
             <Date>등록일</Date>
           </Line>
 
-          {/* <Line>
-            <Number>1</Number>
-            <Title>안녕!</Title>
-            <Date>2021.09.28</Date>
-          </Line> */}
-          {dummydata &&
+          {Community.faqList &&
+            Community.faqList.map((item, idx) => {
+              return (
+                <Item>
+                  <Line onClick={() => Community.dropdownHandler(item, idx)}>
+                    <Number>
+                      {idx + 1 + 10 * (Community.faqCurrentPage - 1)}
+                    </Number>
+                    <Type>{item.type}</Type>
+                    <Title>{item.title}</Title>
+                    <Date>{item.writeAt}</Date>
+                    <View>{item.view}</View>
+                  </Line>
+                  <Answer active={idx === Community.faqDropdownState}>
+                    {item.content}
+                  </Answer>
+                </Item>
+              );
+            })}
+
+          {/* {dummydata &&
             dummydata.map((item, idx) => {
               return (
                 <Item>
@@ -108,7 +129,7 @@ class Content extends Component {
                   </Answer>
                 </Item>
               );
-            })}
+            })} */}
         </MainBox>
         <Pagination
           type="Faq"
@@ -125,7 +146,7 @@ export default Content;
 
 const Container = styled.div`
   width: 100%;
-  height: 1000px;
+  // height: 1000px;
   //   border: 3px solid red;
   display: flex;
   flex-direction: column;
@@ -229,6 +250,7 @@ const Line = styled.div`
   //   border: 2px solid black;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   border-bottom: ${(props) =>
     props.title ? '1px solid black' : '1px solid #aaaaaa'};
   > div {
@@ -272,4 +294,48 @@ const Answer = styled.div`
   padding: 0 50px;
   box-sizing: border-box;
   display: ${(props) => (props.active ? 'block' : 'none')};
+  background-color: rgba(235, 114, 82, 0.5);
+`;
+
+const View = styled.div`
+  width: 1%;
+  flex-grow: 1;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  height: 40px;
+  //   border: 2px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    height: 30px;
+    margin-bottom: 5px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+  }
+`;
+const Count = styled.div`
+  font-size: 16px;
+  > span {
+    font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 11px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 13px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 14px;
+  }
 `;

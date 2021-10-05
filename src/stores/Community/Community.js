@@ -106,7 +106,7 @@ class Community {
   };
 
   @action dropdownHandler = async (item, idx = 0) => {
-    console.info(item);
+    console.info(toJS(item));
 
     if (idx === this.faqDropdownState) {
       this.faqDropdownState = -1;
@@ -151,6 +151,7 @@ class Community {
     FaqAPI.getFaq(req)
       .then(async (res) => {
         console.info(res);
+        this.faqDropdownState = -1;
         this.faqList = await res.data.data;
         this.faqListTotalCount = await res.data.list;
         this.faqTotalPage = await Math.ceil(this.faqListTotalCount / 10);
@@ -168,6 +169,7 @@ class Community {
   @action moveFaqPage = async (e) => {
     const newPage = e.target.innerText * 1;
     this.faqCurrentPage = newPage;
+
     await this.getFaqList(this.faqCurrentPage);
   };
 
@@ -244,6 +246,31 @@ class Community {
       const newPage = this.communityCurrentPage - 1;
       this.communityCurrentPage = newPage;
       await this.getCommunityList(this.communityCurrentPage);
+    }
+  };
+
+  /* FAQ 상세 페이지로 이동하는 함수 */
+  @action pushToFaqDetail = async (item, idx = 0, type = '') => {
+    const req = {
+      id: item.id,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await FaqAPI.getDetailFaq(req)
+      .then(async (res) => {
+        console.info(res);
+        this.faqDetailList = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+
+    console.info(toJS(this.faqDetailList));
+    if (type !== 'modify') {
+      this.state = 3;
     }
   };
 }
