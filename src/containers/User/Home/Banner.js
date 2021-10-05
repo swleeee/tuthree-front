@@ -19,6 +19,7 @@ class Banner extends Component {
 
     const data = [
       {
+        color: '#2C315E',
         image: banner1,
         text: {
           title: '[ 수업 매칭 서비스 ]',
@@ -26,6 +27,7 @@ class Banner extends Component {
         },
       },
       {
+        color: '#2C5E40',
         image: banner2,
         text: {
           title: '[ 수업 관리 서비스 ]',
@@ -34,6 +36,7 @@ class Banner extends Component {
         },
       },
       {
+        color: '#5E472C',
         image: banner3,
         text: {
           title: '[ 비대면 원격 강의 서비스 ]',
@@ -42,6 +45,7 @@ class Banner extends Component {
         },
       },
       {
+        color: '#4E2C5E',
         image: banner4,
         text: {
           title: '[ 채점 서비스 ]',
@@ -76,7 +80,7 @@ class Banner extends Component {
       <SliderContainer {...settings}>
         {data.map((d) => {
           return (
-            <Item>
+            <Item color={d.color}>
               <OuterContainer>
                 <InnerContainer>
                   <div>
@@ -86,7 +90,7 @@ class Banner extends Component {
                 </InnerContainer>
               </OuterContainer>
               {/* <div>{d.text.content}</div> */}
-              <Img src={d.image} />
+              {/* <Img src={d.image} /> */}
             </Item>
           );
         })}
@@ -117,7 +121,7 @@ const SliderContainer = styled(Slider)`
   > div:nth-of-type(1) {
     // border: 3px solid red;
     width: 100%;
-    height: 500px;
+    height: 400px;
     // position: relative;
     // background-image: url(https://pbs.twimg.com/profile_banners/1285511592/1470391779/1500x500);
     > div {
@@ -136,7 +140,7 @@ const SliderContainer = styled(Slider)`
       // float: right;
     }
   }
-  background-color: #cccccc;
+  // background-color: #342342;
   .slick-dots {
     // border: 3px solid orange;
     bottom: 10px;
@@ -147,9 +151,9 @@ const SliderContainer = styled(Slider)`
 const Item = styled.div`
   width: 100%;
   // border: 6px solid green;
-  height: 500px;
+  height: 400px;
   position: relative;
-  // background-color: #eb7252;
+  background-color: ${(props) => (props.color ? props.color : '#000000')};
   > div {
     width: 100%;
     height: 100%;
@@ -158,7 +162,7 @@ const Item = styled.div`
     left: 0;
     // transform: translate(-50%, -50%);
     // border: 3px solid red;
-    color: #000000;
+    color: #fff;
 
     span:nth-of-type(1) {
       display: block;

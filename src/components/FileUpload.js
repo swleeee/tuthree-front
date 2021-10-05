@@ -8,9 +8,10 @@ import { toJS } from 'mobx';
 import addButtonImg from '../static/images/Signup/addFile.png';
 import deleteButtonImg from '../static/images/Signup/delete.png';
 
-import authStore from '../stores/Account/Auth';
+import Auth from '../stores/Account/Auth';
+import Community from '../stores/Community/Community';
 
-// @inject('Request', 'ManufactureProcess', 'Project')
+@inject('Auth', 'Community')
 @observer
 class InputComponent extends React.Component {
   constructor(props) {
@@ -41,8 +42,77 @@ class InputComponent extends React.Component {
   };
 
   onChangeFile = (e) => {
+    const { type, fileAry } = this.props;
     console.info(e);
     console.info(e.currentTarget.files[0]);
+    switch (type) {
+      case 'signup':
+        if (e && e.currentTarget.files[0]) {
+          console.log(e.currentTarget.files[0]);
+
+          Auth.fileAry.push(e.currentTarget.files[0]);
+          console.info(toJS(Auth.fileAry));
+          //   for (var item in e.currentTarget.files) {
+          //     console.log(item);
+          //     if (typeof e.currentTarget.files[item] === "object") {
+          //       Auth.fileAry.push(e.currentTarget.files[item]);
+          //     } else {
+          //       break;
+          //     }
+          //   }
+
+          Auth.fileName = e.currentTarget.files[0].name;
+          this.setState({ checkFileUpload: true });
+          //   this.setState({
+          //     ...this.state,
+          //     file: e.currentTarget.files[0],
+          //     fileName: fileName,
+          //     checkFileUpload: true,
+          //   });
+          //   const formData = new FormData();
+          //   const files = e.target.files;
+          //   Request.setCommonFile(e.currentTarget.files[0]);
+          //   console.log(toJS(ManufactureProcess.openFileArray));
+          // }
+          console.info(Auth.fileName);
+          console.info(Auth.fileAry);
+          console.info(toJS(Auth.fileAry));
+        }
+        break;
+      case 'community':
+        if (e && e.currentTarget.files[0]) {
+          console.log(e.currentTarget.files[0]);
+
+          Community.communityFileAry.push(e.currentTarget.files[0]);
+          console.info(toJS(Community.communityFileAry));
+          //   for (var item in e.currentTarget.files) {
+          //     console.log(item);
+          //     if (typeof e.currentTarget.files[item] === "object") {
+          //       Auth.fileAry.push(e.currentTarget.files[item]);
+          //     } else {
+          //       break;
+          //     }
+          //   }
+
+          Community.communityFileName = e.currentTarget.files[0].name;
+          // this.setState({ checkFileUpload: true });
+          //   this.setState({
+          //     ...this.state,
+          //     file: e.currentTarget.files[0],
+          //     fileName: fileName,
+          //     checkFileUpload: true,
+          //   });
+          //   const formData = new FormData();
+          //   const files = e.target.files;
+          //   Request.setCommonFile(e.currentTarget.files[0]);
+          //   console.log(toJS(ManufactureProcess.openFileArray));
+          // }
+        }
+        break;
+
+      default:
+        break;
+    }
     // console.log(typeof e);
     // const { Request, ManufactureProcess } = this.props;
     // var file = document.getElementById("inputFile");
@@ -53,35 +123,6 @@ class InputComponent extends React.Component {
     // reader.addEventListener("load", () => {
     //   this.setState({ src: reader.result });
     // });
-    if (e && e.currentTarget.files[0]) {
-      console.log(e.currentTarget.files[0]);
-
-      authStore.fileAry.push(e.currentTarget.files[0]);
-      //   for (var item in e.currentTarget.files) {
-      //     console.log(item);
-      //     if (typeof e.currentTarget.files[item] === "object") {
-      //       authStore.fileAry.push(e.currentTarget.files[item]);
-      //     } else {
-      //       break;
-      //     }
-      //   }
-
-      authStore.fileName = e.currentTarget.files[0].name;
-      this.setState({ checkFileUpload: true });
-      //   this.setState({
-      //     ...this.state,
-      //     file: e.currentTarget.files[0],
-      //     fileName: fileName,
-      //     checkFileUpload: true,
-      //   });
-      //   const formData = new FormData();
-      //   const files = e.target.files;
-      //   Request.setCommonFile(e.currentTarget.files[0]);
-      //   console.log(toJS(ManufactureProcess.openFileArray));
-      // }
-      console.info(authStore.fileName);
-      console.info(authStore.fileAry);
-    }
   };
 
   render() {
@@ -94,103 +135,105 @@ class InputComponent extends React.Component {
       ManufactureProcess,
       isOpen,
       mobile,
+      type,
+      fileAry,
+      state,
       ...props
     } = this.props;
     const { fileName, checkFileUpload } = this.state;
+    console.info(state);
 
     if (!file) {
       return (
-        <Provider Auth={authStore}>
-          <Wrap width={this.props.width}>
-            {label && <div fontWeight={500}>{label}</div>}
-            <InputBox marginTop={label ? 12 : 0}>
-              <Input>
-                <input {...props} onChange={this.onChange} />
-              </Input>
-              {children}
-            </InputBox>
-          </Wrap>
-        </Provider>
+        // <Provider Auth={Auth}>
+        <Wrap width={this.props.width}>
+          {label && <div fontWeight={500}>{label}</div>}
+          <InputBox marginTop={label ? 12 : 0}>
+            <Input>
+              <input {...props} onChange={this.onChange} />
+            </Input>
+            {children}
+          </InputBox>
+        </Wrap>
+        // </Provider>
       );
     }
 
     return (
-      <Provider Auth={authStore}>
-        <Wrap width={this.props.width}>
-          <FileText
+      <Wrap width={this.props.width} state={state}>
+        <FileText mobile={mobile} checkFileUpload={this.state.checkFileUpload}>
+          <InputBox
             mobile={mobile}
-            checkFileUpload={this.state.checkFileUpload}
+            style={{ width: '100%', display: 'inline-flex' }}
+            state={state}
           >
-            <InputBox
-              mobile={mobile}
-              style={{ width: '100%', display: 'inline-flex' }}
-            >
+            <div>
               <div>
-                <input
-                  type="file"
-                  multiple={'multiple'}
-                  fileName={'fileName[]'}
-                  style={{ display: 'none' }}
-                  onChange={this.onChangeFile}
-                  id="inputFile"
-                  ref={this.file}
-                  value=""
-                  placeholder={'파일을 선택해 주세요.'}
-                />
+                {fileAry.map((item, idx) => {
+                  return (
+                    <>
+                      <span
+                        onClick={() => {
+                          // if (checkFileUpload) {
+                          fileAry.splice(idx, 1);
+                          const inputFile =
+                            document.getElementById('inputFile');
+                          console.log(toJS(Auth.fileAry));
+                          inputFile.innerHTML = '';
 
-                <div
-                  onClick={() => {
-                    console.log(this.file);
-                    this.file.current.click();
-                  }}
-                >
-                  {/* <span>파일첨부</span> */}
-                  {!this.state.checkFileUpload && <img src={addButtonImg} />}
-                </div>
-                <div>
-                  {authStore.fileAry.map((item, idx) => {
-                    return (
-                      <>
-                        <span
-                          onClick={() => {
-                            if (checkFileUpload) {
-                              authStore.fileAry.splice(idx, 1);
-                              const inputFile =
-                                document.getElementById('inputFile');
-                              console.log(toJS(authStore.fileAry));
-                              inputFile.innerHTML = '';
-
-                              if (authStore.fileAry.length === 0) {
-                                this.setState({ checkFileUpload: false });
-                              }
-                            }
-                          }}
-                        >
+                          if (fileAry.length === 0) {
+                            this.setState({ checkFileUpload: false });
+                          }
+                          // }
+                        }}
+                      >
+                        <span>
                           <span>
-                            <span>
-                              {!item.name
-                                ? decodeURI(item.file.split('/').pop())
-                                : item.name}
-                            </span>
-                            <DeleteFile
-                              src={deleteButtonImg}
-                              style={{
-                                display: this.state.checkFileUpload
+                            {!item.name
+                              ? decodeURI(item.file.split('/').pop())
+                              : item.name}
+                          </span>
+                          <DeleteFile
+                            src={deleteButtonImg}
+                            style={{
+                              display:
+                                this.state.checkFileUpload || state === 'multi'
                                   ? 'inline'
                                   : 'none',
-                              }}
-                            />
-                          </span>
+                            }}
+                          />
                         </span>
-                      </>
-                    );
-                  })}
-                </div>
+                      </span>
+                    </>
+                  );
+                })}
               </div>
-            </InputBox>
-          </FileText>
-        </Wrap>
-      </Provider>
+
+              <input
+                type="file"
+                multiple={'multiple'}
+                fileName={'fileName[]'}
+                style={{ display: 'none' }}
+                onChange={this.onChangeFile}
+                id="inputFile"
+                ref={this.file}
+                value=""
+                placeholder={'파일을 선택해 주세요.'}
+              />
+
+              <div
+                onClick={() => {
+                  console.log(this.file);
+                  this.file.current.click();
+                }}
+              >
+                {/* <span>파일첨부</span> */}
+                {!this.state.checkFileUpload && <img src={addButtonImg} />}
+              </div>
+            </div>
+          </InputBox>
+        </FileText>
+      </Wrap>
     );
   }
 }
@@ -202,19 +245,19 @@ const InputBox = styled.div`
   width: 100%;
   display: flex;
   align-items: center;  
-  border: solid 1px #ffffff;
+  border: ${(props) =>
+    props.state === 'single' ? '1px solid #ffffff' : 'none'};
   color: #404040;
   border-radius: 3px;
   box-sizing: border-box;
   >div{    
     width: ${(props) => (props.mobile ? '100%' : '100%')};
-    >div:nth-of-type(1){        
-    //   margin-right: 40px;
+    display: flex;
+    align-items:center;
+    >div:nth-of-type(2){        
       cursor: pointer;
-      width: ${(props) => (props.mobile ? '100%' : '100%')};
       display: flex;
-      justify-content: flex-end;
-    //   position: relative;
+      float: right;
       >span{
         font-size: ${(props) => (props.mobile ? '14px' : '18px')};
         line-height: 40px;
@@ -226,15 +269,12 @@ const InputBox = styled.div`
       }
       >img {
         vertical-align : baseline;
-        // position: absolute;
-        // top:0;
-        // right: 0;
         width: ${(props) => (props.mobile ? '20px' : '32px')};
         height: ${(props) => (props.mobile ? '18px' : '32px')};
       }      
     }
       
-    >div:nth-of-type(2){      
+    >div:nth-of-type(1){      
       width: 100%;   
       word-wrap: break-word;
       word-break:break-all;
@@ -295,16 +335,16 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   width: ${(props) => (props.width ? props.width : '100%')};
-  max-width: 625px;
+  max-width: ${(props) => (props.state === 'single' ? '625px' : '')};
 
   @media (min-width: 0px) and (max-width: 767.98px) {
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
-    max-width: 450px;
+    max-width: ${(props) => (props.state === 'single' ? '450px' : '')};
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
-    max-width: 500px;
+    max-width: ${(props) => (props.state === 'single' ? '500px' : '')};
   }
 `;
 const Input = styled.div`

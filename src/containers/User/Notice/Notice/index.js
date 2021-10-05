@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import ContentContainer from './Content';
+import DetailContentContainer from './DetailContent';
 import { inject, observer } from 'mobx-react';
 
-import Notice from '../../../../stores/Community/Notice';
+import Community from '../../../../stores/Community/Community';
 
-@inject('Notice')
+@inject('Community')
 @observer
 class index extends Component {
-  componentDidMount = () => {
-    Notice.init();
-  };
   render() {
-    return <ContentContainer />;
+    return (
+      <>
+        {Community.state === 1 ? (
+          <ContentContainer />
+        ) : (
+          <DetailContentContainer />
+        )}
+      </>
+    );
   }
 }
 

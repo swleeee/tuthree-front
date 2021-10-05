@@ -122,7 +122,7 @@ class Step2TeacherContainer extends Component {
   };
 
   handleChange = (e, type) => {
-    console.log(e);
+    console.info(e);
     switch (type) {
       case 'email':
         if (e.value === 'direct') {
@@ -133,6 +133,7 @@ class Step2TeacherContainer extends Component {
         break;
       case 'birth':
         console.log('birth');
+        Auth.signupBirth = e.value;
         break;
       default:
         break;
@@ -145,31 +146,35 @@ class Step2TeacherContainer extends Component {
     switch (type) {
       case 'id':
         console.log('id');
+        Auth.signupId = e.value;
         break;
       case 'password':
         console.log('password');
+        Auth.signupPassword = e.value;
         break;
       case 'passwordConfirm':
         console.log('passwordConfirm');
+        Auth.signupPasswordConfirm = e.value;
         break;
       case 'name':
         console.log('name');
+        Auth.signupName = e.value;
         break;
       case 'email':
         console.log('email');
+        Auth.signupEmail = e.value;
         break;
       case 'phone':
+        Auth.signupPhone = e.value;
         console.log('phone');
         break;
       case 'certification':
         console.log('certification');
         break;
-      case 'gender':
-        console.log('gender');
-        break;
-      case 'birth':
-        console.log('birth');
-        break;
+      // case 'birth':
+      //   console.log('birth');
+      //   Auth.signupBirth = e.value;
+      //   break;
       default:
         console.log('default');
     }
@@ -214,7 +219,7 @@ class Step2TeacherContainer extends Component {
             <div>이름</div>
             <Input
               placeholder="이름"
-              // onChange={this.onIdHandler}
+              onChange={(e) => this.inputHandler(e.target, 'name')} // onChange={this.onIdHandler}
               onFocus={(e) => (e.target.placeholder = '')}
               onBlur={(e) => (e.target.placeholder = '이름')}
             />
@@ -224,7 +229,7 @@ class Step2TeacherContainer extends Component {
             <WrapperBox wrap={true}>
               <Input
                 placeholder="이메일"
-                // onChange={this.onIdHandler}
+                onChange={(e) => this.inputHandler(e.target, 'email')} // onChange={this.onIdHandler}
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '이메일')}
               />
@@ -259,7 +264,7 @@ class Step2TeacherContainer extends Component {
             <WrapperBox>
               <Input
                 placeholder="-없이 입력하세요."
-                // onChange={this.onIdHandler}
+                onChange={(e) => this.inputHandler(e.target, 'phone')} // onChange={this.onIdHandler}
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '-없이 입력하세요.')}
               />
@@ -325,6 +330,7 @@ class Step2TeacherContainer extends Component {
           onClick={() => {
             Auth.step = 3;
             Auth.userType = 1;
+            window.scrollTo(0, 0);
           }}
         >
           <div>다음</div>

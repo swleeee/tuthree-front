@@ -1,50 +1,58 @@
 import axios from 'axios';
 import { ROOT_URL } from '../index';
 
-export function getNotice(req) {
+export function getCommunity(req) {
   return axios({
     method: 'GET',
-    url: `${ROOT_URL}/notice/${req.id}`,
+    url: `${ROOT_URL}/community/${req.id}`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });
 }
 
-export function getDetailNotice(req) {
+export function getDetailCommunity(req) {
   return axios({
     method: 'GET',
-    url: `${ROOT_URL}/notice/id/${req.id}`,
+    url: `${ROOT_URL}/community/id/${req.id}`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });
 }
+export function downloadFile(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/community/download/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    // responseType: 'blob',
+    // responseType: 'arraybuffer',
+  });
+}
 
-export function setAdminNotice(req) {
-  console.info(req);
+export function setDetailCommunity(req) {
   return axios({
     method: 'POST',
-    url: `${ROOT_URL}/notice/admin/write`,
+    url: `${ROOT_URL}/community/write`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
     data: req.data,
   });
 }
 
-export function putAdminNotice(req) {
-  console.info(req);
+export function putDetailCommunity(req) {
   return axios({
     method: 'PUT',
-    url: `${ROOT_URL}/notice/admin/id/${req.id}`,
+    url: `${ROOT_URL}/community/write`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
     data: req.data,
   });
 }
 
-export function delAdminNotice(req) {
+export function delCommunity(req) {
   return axios({
     method: 'DELETE',
-    url: `${ROOT_URL}/notice/admin/id/${req.id}`,
+    url: `${ROOT_URL}/community/${req.id}`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });

@@ -8,91 +8,95 @@ import {
   Link as Connection,
 } from 'react-router-dom';
 
-import AdminCommunity from '../../../../stores/Community/Community';
-import Community from '../../../../stores/Community/Community';
-import searchImg from '../../../../static/images/Admin/Main/search.png';
-import Pagination from '../../../../components/Pagination';
+import Community from '../../../stores/Community/Community';
+import searchImg from '../../../static/images/Admin/Main/search.png';
+import Pagination from '../../../components/Pagination';
 
 const dummydata = [
   {
     id: '293',
     title: 'title1',
-    type: {
-      korType: '일반',
-    },
     writeAt: '2021-09-27',
     content: 'content1',
+    userId: 'abc1',
+    views: 12,
   },
   {
     id: '291',
     title: 'title2',
-    type: {
-      korType: '일반',
-    },
     writeAt: '2021-09-27',
     content: 'content1',
+    userId: 'abc2',
+    views: 15,
   },
   {
     id: '288',
     title: 'title3',
-    type: {
-      korType: '일반',
-    },
     writeAt: '2021-09-27',
     content: 'content1',
+    userId: 'abc3',
+    views: 22,
   },
   {
     id: '281',
     title: 'title4',
-    type: {
-      korType: '일반',
-    },
+
     writeAt: '2021-09-27',
     content: 'content1',
+    userId: 'abc4',
+    views: 62,
   },
   {
     id: '271',
     title: 'title5',
-    type: {
-      korType: '일반',
-    },
     writeAt: '2021-09-27',
     content: 'content1',
+    userId: 'abc5',
+    views: 212,
   },
 ];
 
-@inject('Community', 'AdminCommunity')
+@inject('Community')
 @observer
 class Content extends Component {
   componentDidMount = () => {
-    Community.getNoticeList(Community.noticeCurrentPage);
+    Community.getCommunityList(Community.communityCurrentPage);
   };
   render() {
     return (
       <Container>
-        {/* <SearchBox>
+        <SearchBox>
           <Input
-            placeholder="질문을 입력하세요."
+            placeholder="제목 및 내용을 입력하세요."
             // onChange={(e) => AdminAuth.onUserHandler(e, 'id')}
             onFocus={(e) => (e.target.placeholder = '')}
-            onBlur={(e) => (e.target.placeholder = '질문을 입력하세요.')}
+            onBlur={(e) =>
+              (e.target.placeholder = '제목 및 내용을 입력하세요.')
+            }
           />
           <Search>
             <img src={searchImg} />
           </Search>
-        </SearchBox> */}
+        </SearchBox>
         <Header>
           <Count>
-            총 <span>{AdminCommunity.noticeListTotalCount}</span>개
+            총 <span>{Community.communityListTotalCount}</span>개
           </Count>
+
+          <ButtonBox>
+            <Button onClick={() => (Community.communityState = 2)}>
+              <div>글 작성</div>
+            </Button>
+          </ButtonBox>
         </Header>
         <MainBox>
           <Line title={true}>
             <Number>번호</Number>
-            <Type>분류</Type>
+
             <Title>제목</Title>
+            <Id>아이디</Id>
             <Date>등록일</Date>
-            <View>조회수</View>
+            {/* <View>조회수</View> */}
           </Line>
 
           {/* <Line>
@@ -103,35 +107,40 @@ class Content extends Component {
           {/* {dummydata &&
             dummydata.map((item, idx) => {
               return (
-                <Line onClick={() => Community.pushToDetail(item, idx)}>
+                <Line
+                  onClick={() => Community.pushToCommunityDetail(item, idx)}
+                >
                   <Number>{idx}</Number>
-                  <Type>{item.type.korType}</Type>
                   <Title>{item.title}</Title>
+                  <Id>{item.userId}</Id>
                   <Date>{item.writeAt}</Date>
+                  <View>{item.views}</View>
                 </Line>
               );
             })} */}
-
-          {Community.noticeList &&
-            Community.noticeList.map((item, idx) => {
+          {Community.communityList &&
+            Community.communityList.map((item, idx) => {
               return (
-                <Line onClick={() => Community.pushToDetail(item, idx)}>
+                <Line
+                  onClick={() => Community.pushToCommunityDetail(item, idx)}
+                >
                   <Number>
-                    {idx + 1 + 10 * (Community.noticeCurrentPage - 1)}
+                    {idx + 1 + 10 * (Community.communityCurrentPage - 1)}
                   </Number>
-                  <Type>{item.type}</Type>
+
                   <Title>{item.title}</Title>
+                  <Id>{item.userId}</Id>
                   <Date>{item.writeAt}</Date>
-                  <View>{item.view}</View>
+                  {/* <View>{item.view}</View> */}
                 </Line>
               );
             })}
         </MainBox>
         <Pagination
-          type="Notice"
-          currentSet={Community.noticeCurrentSet}
-          currentPage={Community.noticeCurrentPage}
-          totalPage={Community.noticeTotalPage}
+          type="Community"
+          currentSet={Community.communityCurrentSet}
+          currentPage={Community.communityCurrentPage}
+          totalPage={Community.communityTotalPage}
         />
       </Container>
     );
@@ -141,8 +150,9 @@ class Content extends Component {
 export default Content;
 
 const Container = styled.div`
+  margin-top: 100px;
   width: 100%;
-  height: 1000px;
+  // height: 1000px;
   //   border: 3px solid red;
   display: flex;
   flex-direction: column;
@@ -168,6 +178,39 @@ const SearchBox = styled.div`
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
     width: 55%;
+  }
+`;
+
+const Header = styled.div`
+  width: 100%;
+  height: 40px;
+  //   border: 2px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    height: 30px;
+    margin-bottom: 5px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+  }
+`;
+const Button = styled.button`
+  background-color: #eb7252;
+  border: none;
+  width: 80px;
+  height: 36px;
+  border-radius: 5px;
+  cursor: pointer;
+  > div {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
   }
 `;
 
@@ -271,36 +314,22 @@ const Title = styled.div`
   flex-grow: 6;
   width: 20%;
 `;
+const Id = styled.div`
+  flex-grow: 1;
+  width: 3%;
+`;
+
 const Date = styled.div`
   //   border: 2px solid green;
   flex-grow: 1;
   width: 3%;
 `;
 const View = styled.div`
-  width: 1%;
   flex-grow: 1;
+  width: 3%;
 `;
+const ButtonBox = styled.div``;
 
-const Header = styled.div`
-  width: 100%;
-  height: 40px;
-  //   border: 2px solid black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  cursor: pointer;
-
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    height: 30px;
-    margin-bottom: 5px;
-  }
-  @media (min-width: 768px) and (max-width: 991.98px) {
-  }
-
-  @media (min-width: 992px) and (max-width: 1299.98px) {
-  }
-`;
 const Count = styled.div`
   font-size: 16px;
   > span {

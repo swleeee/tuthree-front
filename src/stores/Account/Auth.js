@@ -1,4 +1,5 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
+import * as AccountAPI from '../../axios/Account/Account';
 
 class Auth {
   constructor() {
@@ -27,26 +28,29 @@ class Auth {
     //   getStep: action,
     // });
   }
+  @observable Authorization =
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzEwNTYxOCwiZXhwIjoxNjMzMTA5MjE4LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.KuHs-qPG3gL0jdJzozeAWtf1q3I-w_96YconIIwNE7s';
+
   @observable step = 1;
   @observable userType = 0;
   @observable domainType = 1;
 
-  @observable signupId = '';
-  @observable signupPassword = '';
-  @observable signupPasswordConfirm = '';
-  @observable signupName = '';
-  @observable signupEmail = '';
-  @observable signupPhone = '';
+  @observable signupId = ''; // 아이디
+  @observable signupPassword = ''; // 비밀번호
+  @observable signupPasswordConfirm = ''; // 비밀번호 확인
+  @observable signupName = ''; // 이름
+  @observable signupEmail = ''; // 이메일
+  @observable signupPhone = ''; // 휴대전화
   @observable signupCertification = '';
-  @observable signupGender = 0;
-  @observable signupBirth = '';
-  @observable signupType = 0;
+  @observable signupGender = 0; // 성별
+  @observable signupBirth = ''; // 출생년도
+  @observable signupType = 0; // 학생 / 학부모
 
   @observable locationIndex = 0;
   @observable selectedUpperLocation = '';
   @observable selectedLowerLocation = '';
   @observable lowerLocationAry = [];
-  @observable selectedLocation = [];
+  @observable selectedLocation = []; // 지역
 
   @observable budgetAry = [
     {
@@ -305,13 +309,15 @@ class Auth {
   @observable selectedUpperSubject = '';
   @observable selectedLowerSubject = '';
   @observable lowerSubjectAry = [];
-  @observable selectedSubject = [];
+  @observable selectedSubject = []; // 과목
 
-  @observable budget = 0;
-  @observable schoolState = 0;
-  @observable grade = '';
+  @observable budget = 0; // 예산
+  @observable school = ''; // 학교
+  @observable major = ''; // 학교
+  @observable schoolState = 0; // 재학상태
+  @observable grade = ''; // 학년
 
-  @observable fileAry = [];
+  @observable fileAry = []; // 재학증명서
   @observable fileName = '';
 
   @observable introductionValue = '';
@@ -323,6 +329,28 @@ class Auth {
 
   getStep = () => {
     console.log(this.step);
+  };
+
+  @action showData = () => {
+    console.info(this.signupId);
+    console.info(this.signupPassword);
+    console.info(this.signupPasswordConfirm);
+    console.info(this.signupName);
+    console.info(this.signupEmail);
+    console.info(this.signupPhone);
+    console.info(this.signupGender);
+    console.info(this.signupBirth);
+    // console.info(this.signupType)
+
+    console.info(toJS(this.selectedLocation));
+    console.info(toJS(this.selectedSubject));
+    console.info(this.budget);
+    console.info(this.school);
+    console.info(this.major);
+    console.info(this.schoolState);
+    // console.info(this.grade);
+    console.info(toJS(this.fileAry));
+    console.info(this.introductionValue);
   };
 
   @action setUpperLocation = (e) => {
@@ -415,6 +443,25 @@ class Auth {
       default:
         break;
     }
+  };
+
+  @action tutorSignup = () => {
+    const req = {
+      data: {
+        userId: '',
+        pwd: '',
+        name: '',
+        email: '',
+        tel: '',
+        sex: '',
+        birth: '',
+        post: '',
+        grade: '',
+        region: [{ region: '' }, { region: '' }],
+        registration: 0,
+        subject: '',
+      },
+    };
   };
 }
 

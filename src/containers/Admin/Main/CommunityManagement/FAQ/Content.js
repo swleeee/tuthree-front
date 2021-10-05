@@ -12,14 +12,13 @@ import AdminCommunity from '../../../../../stores/Admin/Community';
 import searchImg from '../../../../../static/images/Admin/Main/search.png';
 import checkImg from '../../../../../static/images/Common/check.png';
 import Pagination from '../../../../../components/Pagination';
-import { toJS } from 'mobx';
 
 const dummydata = [
   {
     id: '293',
     title: 'title1',
     type: {
-      korType: '일반',
+      korType: '사용자 인증',
     },
     writeAt: '2021-09-27',
     content: 'content1',
@@ -28,7 +27,7 @@ const dummydata = [
     id: '291',
     title: 'title2',
     type: {
-      korType: '일반',
+      korType: '수업매칭서비스',
     },
     writeAt: '2021-09-27',
     content: 'content1',
@@ -37,7 +36,7 @@ const dummydata = [
     id: '288',
     title: 'title3',
     type: {
-      korType: '일반',
+      korType: '수업관리서비스',
     },
     writeAt: '2021-09-27',
     content: 'content1',
@@ -46,7 +45,7 @@ const dummydata = [
     id: '281',
     title: 'title4',
     type: {
-      korType: '일반',
+      korType: '기타',
     },
     writeAt: '2021-09-27',
     content: 'content1',
@@ -55,7 +54,7 @@ const dummydata = [
     id: '271',
     title: 'title5',
     type: {
-      korType: '일반',
+      korType: '기타',
     },
     writeAt: '2021-09-27',
     content: 'content1',
@@ -66,11 +65,9 @@ const dummydata = [
 @observer
 class Content extends Component {
   componentDidMount = () => {
-    console.info('dm');
-    AdminCommunity.getAdminNoticeList(AdminCommunity.noticeCurrentPage);
+    AdminCommunity.getAdminFaqList(AdminCommunity.faqCurrentPage);
   };
   render() {
-    console.info('rrr');
     return (
       <Container>
         <Item>
@@ -87,13 +84,13 @@ class Content extends Component {
           </SearchBox> */}
           <Header>
             <Count>
-              총 <span>{AdminCommunity.noticeListTotalCount}</span>개
+              총 <span>{AdminCommunity.faqListTotalCount}</span>개
             </Count>
             <ButtonBox>
               <WriteBtn
                 onClick={async () => {
                   AdminCommunity.noticeDelState = 2;
-                  await AdminCommunity.delCheckedData('notice');
+                  await AdminCommunity.delCheckedData('faq');
                 }}
                 mr={15}
                 color="#707070"
@@ -117,16 +114,18 @@ class Content extends Component {
               <Management title={true}>관리</Management>
             </Line>
 
-            {AdminCommunity.noticeList &&
-              AdminCommunity.noticeList.map((item, idx) => {
+            {AdminCommunity.faqList &&
+              AdminCommunity.faqList.map((item, idx) => {
                 return (
-                  <Line onClick={() => AdminCommunity.pushToDetail(item, idx)}>
+                  <Line
+                    onClick={() => AdminCommunity.pushToFaqDetail(item, idx)}
+                  >
                     <Check active={item.checked}>
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
                           AdminCommunity.checkDataHandler(
-                            'notice',
+                            'faq',
                             item,
                             item.id,
                             idx
@@ -137,7 +136,7 @@ class Content extends Component {
                       </div>
                     </Check>
                     <Number>
-                      {idx + 1 + 10 * (AdminCommunity.noticeCurrentPage - 1)}
+                      {idx + 1 + 10 * (AdminCommunity.faqCurrentPage - 1)}
                     </Number>
                     <Type>{item.type}</Type>
                     <Title>{item.title}</Title>
@@ -146,14 +145,13 @@ class Content extends Component {
                       <CtlBtn
                         onClick={async (e) => {
                           e.stopPropagation();
-                          AdminCommunity.noticeWritingState = 1;
-                          await AdminCommunity.pushToDetail(
+                          AdminCommunity.faqWritingState = 1;
+                          await AdminCommunity.pushToFaqDetail(
                             item,
                             idx,
                             'modify'
                           );
                           AdminCommunity.state = 2;
-                          console.info(toJS(AdminCommunity.noticeDetailList));
                         }}
                       >
                         <div>수정</div>
@@ -162,7 +160,7 @@ class Content extends Component {
                         del={true}
                         onClick={(e) => {
                           e.stopPropagation();
-                          AdminCommunity.delAdminNotice(item.id);
+                          AdminCommunity.delAdminFaq(item.id);
                         }}
                       >
                         <div>삭제</div>
@@ -190,11 +188,13 @@ class Content extends Component {
                 </CtlBtn>
               </Management>
             </Line> */}
-            {/* 
-            {dummydata &&
+
+            {/* {dummydata &&
               dummydata.map((item, idx) => {
                 return (
-                  <Line onClick={() => AdminCommunity.pushToDetail(item, idx)}>
+                  <Line
+                    onClick={() => AdminCommunity.pushToDetailFaq(item, idx)}
+                  >
                     <Check active={item.checked}>
                       <div
                         onClick={(e) => {
@@ -214,8 +214,8 @@ class Content extends Component {
                         onClick={(e) => {
                           e.stopPropagation();
                           AdminCommunity.state = 2;
-                          AdminCommunity.noticeWritingState = 1;
-                          AdminCommunity.pushToDetail(item, idx);
+                          AdminCommunity.faqWritingState = 1;
+                          AdminCommunity.pushToDetailFaq(item, idx);
                         }}
                       >
                         <div>수정</div>
@@ -224,7 +224,7 @@ class Content extends Component {
                         del={true}
                         onClick={(e) => {
                           e.stopPropagation();
-                          AdminCommunity.delAdminNotice(item.id);
+                          AdminCommunity.delAdminFaq(item.id);
                         }}
                       >
                         <div>삭제</div>
@@ -235,10 +235,10 @@ class Content extends Component {
               })} */}
           </MainBox>
           <Pagination
-            type="AdminNotice"
-            currentSet={AdminCommunity.noticeCurrentSet}
-            currentPage={AdminCommunity.noticeCurrentPage}
-            totalPage={AdminCommunity.noticeTotalPage}
+            type="AdminFaq"
+            currentSet={AdminCommunity.faqCurrentSet}
+            currentPage={AdminCommunity.faqCurrentPage}
+            totalPage={AdminCommunity.faqTotalPage}
           />
         </Item>
       </Container>
@@ -354,7 +354,7 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  // cursor: pointer;
+  cursor: pointer;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     height: 30px;
