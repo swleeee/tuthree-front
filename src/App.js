@@ -14,8 +14,8 @@ import {
   Forgotten,
   Notice,
   Community,
+  Tutor,
   AdminHome,
-  AdminUser,
   AdminMain,
   AdminCommunity,
 } from './pages';
@@ -66,6 +66,7 @@ class App extends React.Component {
               <Route path="/forgotten" component={Forgotten} />
               <Route path="/notice" component={Notice} />
               <Route path="/community" component={Community} />
+              <Route path="/tutor" component={Tutor} />
               <Route exact path="/admin" component={AdminHome} />
               <Route path="/admin/main" component={AdminMain} />
               <Route path="/admin/community" component={AdminCommunity} />

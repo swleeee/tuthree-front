@@ -4,6 +4,7 @@ export { default as Login } from './Login';
 export { default as Forgotten } from './Forgotten';
 export { default as Notice } from './Notice';
 export { default as Community } from './Community';
+export { default as Tutor } from './Tutor';
 export { default as AdminHome } from './Admin/Home';
 export { default as AdminMain } from './Admin/Main';
 export { default as AdminCommunity } from './Admin/Community';
