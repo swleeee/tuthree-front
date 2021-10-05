@@ -270,7 +270,7 @@ const Content = styled.div`
 `;
 
 const Select = styled(SelectComponent)`
-  width: 170px;
+  width: 220px;
   height: 60px;
   margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
   display: ${(props) => (props.domainType === 1 ? 'block' : 'none')};
@@ -296,6 +296,7 @@ const ButtonBox = styled.div`
 `;
 
 const Button = styled.button`
+  cursor: pointer;
   width: 200px;
   height: 60px;
   color: ${(props) => (props.color ? props.color : '')};

@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 import Community from '../../../../stores/Community/Community';
 import Common from '../../../../stores/Common/Common';
 import TextAreaContainer from '../../../../components/TextareaContainer';
+import viewImg from '../../../../static/images/Common/visibility.png';
 
 @inject('Community', 'Common')
 @observer
@@ -20,34 +21,33 @@ class DetailContent extends Component {
           <Section by={true}>
             <SubSection width={30}>
               <Content width={30}>
-                {Community.noticeDetailList &&
-                  Community.noticeDetailList[0] &&
-                  Community.noticeDetailList[0].type &&
-                  Community.noticeDetailList[0].type.korType}
+                {Community.noticeDetailList && Community.noticeDetailList.type}
               </Content>
             </SubSection>
 
             <SubSection width={100} bl={true}>
               <Content title={true}>
-                {Community.noticeDetailList &&
-                  Community.noticeDetailList[0] &&
-                  Community.noticeDetailList[0].title}
+                {Community.noticeDetailList && Community.noticeDetailList.title}
               </Content>
             </SubSection>
 
             <SubSection width={40} bl={true}>
               <Content width={40} right={true}>
                 {Community.noticeDetailList &&
-                  Community.noticeDetailList[0] &&
-                  Community.noticeDetailList[0].writeAt}
+                  Community.noticeDetailList.writeAt}
+              </Content>
+            </SubSection>
+
+            <SubSection width={10} bl={true}>
+              <Content width={10} right={true}>
+                <img src={viewImg} />
+                {Community.noticeDetailList && Community.noticeDetailList.view}
               </Content>
             </SubSection>
           </Section>
           <Section mb={true}>
             <Content height={500}>
-              {Community.noticeDetailList &&
-                Community.noticeDetailList[0] &&
-                Community.noticeDetailList[0].content}
+              {Community.noticeDetailList && Community.noticeDetailList.content}
             </Content>
           </Section>
         </Item>
@@ -129,6 +129,9 @@ const Content = styled.div`
   width: ${(props) => (props.width ? props.width : '100')}%;
   font-size: ${(props) => (props.title ? '30' : '15')}px;
   justify-content: ${(props) => (props.right ? 'flex-end' : '')};
+  > img {
+    margin-right: 5px;
+  }
 `;
 const ButtonBox = styled.div`
   margin-top: 20px;

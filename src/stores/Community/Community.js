@@ -43,10 +43,12 @@ class Community {
     switch (type) {
       case 'notice':
         this.type = 1;
+        this.state = 1;
         // Auth.idStep = 1;
         break;
       case 'faq':
         this.type = 2;
+        this.state = 1;
         // Auth.passwordStep = 1;
         break;
       default:
@@ -78,10 +80,29 @@ class Community {
       });
   };
   /* 공지사항 상세 페이지로 이동하는 함수 */
-  @action pushToDetail = async (item, idx = 0) => {
-    await this.noticeDetailList.push(item);
+  @action pushToDetail = async (item, idx = 0, type = '') => {
+    const req = {
+      id: item.id,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await NoticeAPI.getDetailNotice(req)
+      .then(async (res) => {
+        console.info(res);
+        this.noticeDetailList = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+
+    // await this.noticeDetailList.push(item);
     console.info(toJS(this.noticeDetailList));
-    this.state = 2;
+    if (type !== 'modify') {
+      this.state = 3;
+    }
   };
 
   @action dropdownHandler = async (item, idx = 0) => {

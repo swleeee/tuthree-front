@@ -9,7 +9,7 @@ import NoticeDetailContainer from './Notice/DetailContent';
 
 import FaqContainer from './FAQ';
 import FaqWritingContainer from './FAQ/Writing';
-import FaqDetailContainer from './Notice/DetailContent';
+import FaqDetailContainer from './FAQ/DetailContent';
 
 @inject('AdminCommunity')
 @observer
@@ -47,7 +47,7 @@ class Content extends Component {
         )}
 
         {AdminCommunity.type === 1 && AdminCommunity.state === 3 && (
-          <NoticeDetailContainer />
+          <FaqDetailContainer />
         )}
 
         {AdminCommunity.type === 2 && AdminCommunity.state === 1 && (

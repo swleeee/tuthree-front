@@ -8,6 +8,7 @@ import {
   Link as Connection,
 } from 'react-router-dom';
 
+import AdminCommunity from '../../../../stores/Community/Community';
 import Community from '../../../../stores/Community/Community';
 import searchImg from '../../../../static/images/Admin/Main/search.png';
 import Pagination from '../../../../components/Pagination';
@@ -60,16 +61,16 @@ const dummydata = [
   },
 ];
 
-@inject('Community')
+@inject('Community', 'AdminCommunity')
 @observer
 class Content extends Component {
   componentDidMount = () => {
-    Community.getNoticeList();
+    Community.getNoticeList(Community.noticeCurrentPage);
   };
   render() {
     return (
       <Container>
-        <SearchBox>
+        {/* <SearchBox>
           <Input
             placeholder="질문을 입력하세요."
             // onChange={(e) => AdminAuth.onUserHandler(e, 'id')}
@@ -79,13 +80,19 @@ class Content extends Component {
           <Search>
             <img src={searchImg} />
           </Search>
-        </SearchBox>
+        </SearchBox> */}
+        <Header>
+          <Count>
+            총 <span>{AdminCommunity.noticeListTotalCount}</span>개
+          </Count>
+        </Header>
         <MainBox>
           <Line title={true}>
             <Number>번호</Number>
             <Type>분류</Type>
             <Title>제목</Title>
             <Date>등록일</Date>
+            <View>조회수</View>
           </Line>
 
           {/* <Line>
@@ -93,7 +100,7 @@ class Content extends Component {
             <Title>안녕!</Title>
             <Date>2021.09.28</Date>
           </Line> */}
-          {dummydata &&
+          {/* {dummydata &&
             dummydata.map((item, idx) => {
               return (
                 <Line onClick={() => Community.pushToDetail(item, idx)}>
@@ -101,6 +108,21 @@ class Content extends Component {
                   <Type>{item.type.korType}</Type>
                   <Title>{item.title}</Title>
                   <Date>{item.writeAt}</Date>
+                </Line>
+              );
+            })} */}
+
+          {Community.noticeList &&
+            Community.noticeList.map((item, idx) => {
+              return (
+                <Line onClick={() => Community.pushToDetail(item, idx)}>
+                  <Number>
+                    {idx + 1 + 10 * (Community.noticeCurrentPage - 1)}
+                  </Number>
+                  <Type>{item.type}</Type>
+                  <Title>{item.title}</Title>
+                  <Date>{item.writeAt}</Date>
+                  <View>{item.view}</View>
                 </Line>
               );
             })}
@@ -253,4 +275,46 @@ const Date = styled.div`
   //   border: 2px solid green;
   flex-grow: 1;
   width: 3%;
+`;
+const View = styled.div`
+  width: 1%;
+  flex-grow: 1;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  height: 40px;
+  //   border: 2px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    height: 30px;
+    margin-bottom: 5px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+  }
+`;
+const Count = styled.div`
+  font-size: 16px;
+  > span {
+    font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 11px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 13px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 14px;
+  }
 `;

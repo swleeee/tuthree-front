@@ -67,7 +67,7 @@ const dummydata = [
 class Content extends Component {
   componentDidMount = () => {
     console.info('dm');
-    AdminCommunity.getAdminNoticeList();
+    AdminCommunity.getAdminNoticeList(AdminCommunity.noticeCurrentPage);
   };
   render() {
     console.info('rrr');
@@ -93,7 +93,7 @@ class Content extends Component {
               <WriteBtn
                 onClick={async () => {
                   AdminCommunity.noticeDelState = 2;
-                  await AdminCommunity.delCheckedData();
+                  await AdminCommunity.delCheckedData('notice');
                 }}
                 mr={15}
                 color="#707070"

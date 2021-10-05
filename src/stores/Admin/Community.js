@@ -317,22 +317,45 @@ class Community {
   };
 
   /* 선택삭제하는 함수 */
-  @action delCheckedData = async () => {
-    console.info('sdfsdf');
-    console.info(this.noticeDelState);
-    await Promise.all(
-      this.checkAry.map(async (item, idx) => {
-        console.info(item);
+  @action delCheckedData = async (type = '') => {
+    switch (type) {
+      case 'notice':
+        console.info('sdfsdf');
+        console.info(this.noticeDelState);
+        await Promise.all(
+          this.checkAry.map(async (item, idx) => {
+            console.info(item);
 
-        await this.delAdminNotice(item);
-      })
-    );
+            await this.delAdminNotice(item);
+          })
+        );
 
-    console.info(toJS(this.noticeList));
-    this.getAdminNoticeList();
-    this.state = 1;
-    this.noticeWritingState = 0;
-    this.noticeDelState = 1;
+        console.info(toJS(this.noticeList));
+        this.getAdminNoticeList();
+        this.state = 1;
+        this.noticeWritingState = 0;
+        this.noticeDelState = 1;
+        break;
+      case 'faq':
+        console.info('sdfsdf');
+        console.info(this.faqDelState);
+        await Promise.all(
+          this.checkFaqAry.map(async (item, idx) => {
+            console.info(item);
+
+            await this.delAdminFaq(item);
+          })
+        );
+
+        console.info(toJS(this.faqList));
+        this.getAdminFaqList();
+        this.state = 1;
+        this.faqWritingState = 0;
+        this.faqDelState = 1;
+        break;
+      default:
+        break;
+    }
   };
 
   /* 공지사항 상세 페이지로 이동하는 함수 */
@@ -445,7 +468,7 @@ class Community {
     let type = '';
     switch (this.faqState) {
       case '사용자 인증':
-        type = 'CETIFY';
+        type = 'CERTIFY';
         break;
       case '수업매칭서비스':
         type = 'MATCHING';
@@ -501,7 +524,7 @@ class Community {
     await FaqAPI.delAdminFaq(req)
       .then((res) => {
         console.info(res);
-        if (this.faqDelState !== 1) {
+        if (this.faqDelState === 1) {
           this.state = 1;
           this.faqWritingState = 0;
           this.getAdminFaqList();
@@ -514,7 +537,7 @@ class Community {
   };
 
   /* FAQ 상세 페이지로 이동하는 함수 */
-  @action pushToDetailFaq = async (item, idx = 0, type = '') => {
+  @action pushToFaqDetail = async (item, idx = 0, type = '') => {
     const req = {
       id: item.id,
       headers: {

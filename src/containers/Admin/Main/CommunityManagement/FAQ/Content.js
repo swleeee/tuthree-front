@@ -65,7 +65,7 @@ const dummydata = [
 @observer
 class Content extends Component {
   componentDidMount = () => {
-    AdminCommunity.getAdminFaqList();
+    AdminCommunity.getAdminFaqList(AdminCommunity.faqCurrentPage);
   };
   render() {
     return (
@@ -90,7 +90,7 @@ class Content extends Component {
               <WriteBtn
                 onClick={async () => {
                   AdminCommunity.noticeDelState = 2;
-                  await AdminCommunity.delCheckedData();
+                  await AdminCommunity.delCheckedData('faq');
                 }}
                 mr={15}
                 color="#707070"
@@ -118,7 +118,7 @@ class Content extends Component {
               AdminCommunity.faqList.map((item, idx) => {
                 return (
                   <Line
-                    onClick={() => AdminCommunity.pushToDetailFaq(item, idx)}
+                    onClick={() => AdminCommunity.pushToFaqDetail(item, idx)}
                   >
                     <Check active={item.checked}>
                       <div
@@ -135,7 +135,9 @@ class Content extends Component {
                         <img src={checkImg} />
                       </div>
                     </Check>
-                    <Number>{idx}</Number>
+                    <Number>
+                      {idx + 1 + 10 * (AdminCommunity.faqCurrentPage - 1)}
+                    </Number>
                     <Type>{item.type}</Type>
                     <Title>{item.title}</Title>
                     <Date>{item.writeAt}</Date>
@@ -455,7 +457,7 @@ const Line = styled.div`
 
 const Check = styled.div`
   // flex-grow: 1;
-  width: 1%;
+  width: 30px;
   > div {
     cursor: pointer;
     width: 24px;
