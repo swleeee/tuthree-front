@@ -354,7 +354,7 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  cursor: pointer;
+  // cursor: pointer;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     height: 30px;

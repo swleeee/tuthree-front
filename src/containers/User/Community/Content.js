@@ -60,7 +60,7 @@ const dummydata = [
 @observer
 class Content extends Component {
   componentDidMount = () => {
-    Community.getNoticeList();
+    Community.getCommunityList(Community.communityCurrentPage);
   };
   render() {
     return (
@@ -79,9 +79,15 @@ class Content extends Component {
           </Search>
         </SearchBox>
         <Header>
-          <Button onClick={() => (Community.communityState = 2)}>
-            <div>글 작성</div>
-          </Button>
+          <Count>
+            총 <span>{Community.communityListTotalCount}</span>개
+          </Count>
+
+          <ButtonBox>
+            <Button onClick={() => (Community.communityState = 2)}>
+              <div>글 작성</div>
+            </Button>
+          </ButtonBox>
         </Header>
         <MainBox>
           <Line title={true}>
@@ -90,7 +96,7 @@ class Content extends Component {
             <Title>제목</Title>
             <Id>아이디</Id>
             <Date>등록일</Date>
-            <View>조회수</View>
+            {/* <View>조회수</View> */}
           </Line>
 
           {/* <Line>
@@ -98,7 +104,7 @@ class Content extends Component {
             <Title>안녕!</Title>
             <Date>2021.09.28</Date>
           </Line> */}
-          {dummydata &&
+          {/* {dummydata &&
             dummydata.map((item, idx) => {
               return (
                 <Line
@@ -111,10 +117,27 @@ class Content extends Component {
                   <View>{item.views}</View>
                 </Line>
               );
+            })} */}
+          {Community.communityList &&
+            Community.communityList.map((item, idx) => {
+              return (
+                <Line
+                  onClick={() => Community.pushToCommunityDetail(item, idx)}
+                >
+                  <Number>
+                    {idx + 1 + 10 * (Community.communityCurrentPage - 1)}
+                  </Number>
+
+                  <Title>{item.title}</Title>
+                  <Id>{item.userId}</Id>
+                  <Date>{item.writeAt}</Date>
+                  {/* <View>{item.view}</View> */}
+                </Line>
+              );
             })}
         </MainBox>
         <Pagination
-          type="community"
+          type="Community"
           currentSet={Community.communityCurrentSet}
           currentPage={Community.communityCurrentPage}
           totalPage={Community.communityTotalPage}
@@ -129,7 +152,7 @@ export default Content;
 const Container = styled.div`
   margin-top: 100px;
   width: 100%;
-  height: 1000px;
+  // height: 1000px;
   //   border: 3px solid red;
   display: flex;
   flex-direction: column;
@@ -159,8 +182,23 @@ const SearchBox = styled.div`
 `;
 
 const Header = styled.div`
+  width: 100%;
+  height: 40px;
+  //   border: 2px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
-  align-self: flex-end;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    height: 30px;
+    margin-bottom: 5px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+  }
 `;
 const Button = styled.button`
   background-color: #eb7252;
@@ -289,4 +327,23 @@ const Date = styled.div`
 const View = styled.div`
   flex-grow: 1;
   width: 3%;
+`;
+const ButtonBox = styled.div``;
+
+const Count = styled.div`
+  font-size: 16px;
+  > span {
+    font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 11px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 13px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 14px;
+  }
 `;

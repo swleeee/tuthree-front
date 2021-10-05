@@ -35,6 +35,8 @@ class Community {
   @observable communityCurrentSet =
     parseInt((this.communityCurrentPage - 1) / 5) + 1; // community 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
   @observable communityDetailList = []; // community 세부 페이지
+  @observable communityDetailFileAry = [];
+  @observable communityFile = [];
   @observable communityFileAry = [];
   @observable communityFileName = [];
 
@@ -79,6 +81,100 @@ class Community {
         console.info(e.response);
       });
   };
+
+  @action base64ToArrayBuffer(base64) {
+    var binaryString = window.atob(base64);
+    var binaryLen = binaryString.length;
+    var bytes = new Uint8Array(binaryLen);
+    for (var i = 0; i < binaryLen; i++) {
+      var ascii = binaryString.charCodeAt(i);
+      bytes[i] = ascii;
+    }
+    return bytes;
+  }
+
+  @action saveByteArray(reportName, byte) {
+    var blob = new Blob([byte], { type: 'application/pdf' });
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    var fileName = reportName;
+    link.download = fileName;
+    link.click();
+  }
+
+  @action downloadFile = async (id, name) => {
+    const req = {
+      id: id,
+      headers: {
+        Authorization: this.Authorization,
+
+        // 'Content-Type': 'application/octet-stream',
+      },
+    };
+
+    await CommunityAPI.downloadFile(req)
+      .then(async (res) => {
+        console.info(res);
+        console.info(res.data);
+        this.communityFile = await res.data;
+        // let blob = new Blob([new Uint8Array(res.data)], {
+        //   type: 'application/json',
+        // });
+
+        // let array = new Uint8Array(res.data.length);
+        // console.info(res.data.length);
+        // for (let i = 0; i < res.data.length; i++) {
+        //   array[i] = res.data.charCodeAt(i);
+        // }
+        // console.info(array);
+        // let blob = new Blob([array], {
+        //   type: 'application/octet-stream',
+        // });
+        // console.info(blob);
+        // window.location.href = URL.createObjectURL(blob);
+
+        // console.info(res.data);
+
+        // var reader = new FileReader();
+        // let data = '';
+        // reader.addEventListener('loaded', function (e) {
+        //   data = reader.result;
+        // });
+        // reader.readAsBinaryString(res.data);
+
+        let blob = new Blob([res.data], { type: 'application/octet-stream' });
+        console.info(blob);
+        const url = window.URL.createObjectURL(blob);
+        // const a = document.createElement('a');
+        // a.href = `${url}`;
+        // a.download = `${url}`;
+        // a.click();
+        // a.remove();
+        // window.URL.revokeObjectURL(url);
+        // reader.readAsBinaryString(blob);
+        // reader.readAsArrayBuffer(blob);
+        // console.info(reader);
+        let file = new File([blob], name);
+        this.communityFileAry.push(file);
+        // console.info(url);
+        // console.info(file);
+        console.info(toJS(this.communityFileAry));
+
+        // var reader = new FileReader();
+        // reader.onload = function (e) {
+        //   console.log(e.target.result);
+        // };
+        // reader.onerror = function (e) {
+        //   console.log('Error : ' + e.type);
+        // };
+        // reader.readAsBinaryString(blob);
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
   /* 공지사항 상세 페이지로 이동하는 함수 */
   @action pushToDetail = async (item, idx = 0, type = '') => {
     const req = {
@@ -218,15 +314,42 @@ class Community {
       });
   };
   /* commuinity 상세 페이지로 이동하는 함수 */
-  @action pushToCommunityDetail = async (item, idx = 0) => {
-    await this.communityDetailList.push(item);
+  @action pushToCommunityDetail = async (item, idx = 0, type = '') => {
+    console.info(this.communityState);
+    this.communityState = 3;
+    console.info(this.communityState);
+    const req = {
+      id: item.id,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await CommunityAPI.getDetailCommunity(req)
+      .then(async (res) => {
+        console.info(res);
+        this.communityDetailList = await res.data.list;
+        this.communityDetailFileAry = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+
+    // await this.communityDetailList.push(item);
     console.info(toJS(this.communityDetailList));
+    console.info(toJS(this.communityDetailFileAry));
+    if (type !== 'modify') {
+      this.state = 3;
+      this.communityState = 3;
+    }
     this.state = 2;
   };
 
   /* community 클릭한 페이지로 이동하는 함수 */
   @action moveCommunityPage = async (e) => {
     const newPage = e.target.innerText * 1;
+    console.info(e);
     this.communityCurrentPage = newPage;
     await this.getCommunityList(this.communityCurrentPage);
   };

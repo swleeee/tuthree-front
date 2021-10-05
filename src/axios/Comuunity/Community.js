@@ -18,6 +18,16 @@ export function getDetailCommunity(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+export function downloadFile(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/community/download/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    // responseType: 'blob',
+    // responseType: 'arraybuffer',
+  });
+}
 
 export function setDetailCommunity(req) {
   return axios({

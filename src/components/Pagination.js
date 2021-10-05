@@ -13,6 +13,7 @@ import Community from '../stores/Community/Community';
 class Pagination extends Component {
   pageMoveHandler = async (e) => {
     const { type } = this.props;
+    console.info(type);
     switch (type) {
       case 'AdminNotice':
         await AdminCommunity.movePage(e);

@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import InnerContainer from '../../../components/InnerContainer';
 import OuterContainer from '../../../components/OuterContainer';
-import Container from './Content';
+import Content from './Content';
 import Writing from './Writing';
+import DetailContent from './DetailContent';
 import Community from '../../../stores/Community/Community';
 
 @inject('Community')
@@ -15,8 +16,9 @@ class index extends Component {
       <>
         <OuterContainer>
           <InnerContainer>
-            {Community.communityState === 1 && <Container />}
+            {Community.communityState === 1 && <Content />}
             {Community.communityState === 2 && <Writing />}
+            {Community.communityState === 3 && <DetailContent />}
             {/* {Community.communityState === 1 && <Container />} */}
           </InnerContainer>
         </OuterContainer>
