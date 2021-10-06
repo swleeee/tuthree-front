@@ -39,6 +39,7 @@ class Community {
   @observable communityFile = [];
   @observable communityFileAry = [];
   @observable communityFileName = [];
+  @observable communityWritingState = 0;
 
   @action onClickNavHandler = (type) => {
     console.info(type);
@@ -313,6 +314,124 @@ class Community {
         console.info(e.response);
       });
   };
+
+  /* community 작성하는 함수 */
+  @action setCommunity = async () => {
+    console.info('community 작성 버튼 클릭');
+    let type = '';
+    // switch (this.faqState) {
+    //   case '사용자 인증':
+    //     type = 'CETIFY';
+    //     break;
+    //   case '수업매칭서비스':
+    //     type = 'MATCHING';
+    //     break;
+    //   case '수업관리서비스':
+    //     type = 'MANAGE';
+    //     break;
+    //   case '기타':
+    //     type = 'ETC';
+    //     break;
+    //   default:
+    //     break;
+    // }
+    const req = {
+      data: {
+        userId: 'teacher1',
+        title: this.faqTitle,
+        content: this.faqContent,
+        secret: 'OPEN',
+        file: this.communityFileAry,
+      },
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await CommunityAPI.setCommunity(req)
+      .then(async (res) => {
+        console.info(res);
+        this.communityWritingState = 0;
+        this.state = 1;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* community 수정하는 함수 */
+  @action putCommunity = async (id) => {
+    // console.info(this.communityState);
+    // console.info('community 수정 버튼 클릭');
+    // let type = '';
+    // switch (this.faqState) {
+    //   case '사용자 인증':
+    //     type = 'CERTIFY';
+    //     break;
+    //   case '수업매칭서비스':
+    //     type = 'MATCHING';
+    //     break;
+    //   case '수업관리서비스':
+    //     type = 'MANAGE';
+    //     break;
+    //   case '기타':
+    //     type = 'ETC';
+    //     break;
+    //   default:
+    //     break;
+    // }
+
+    const req = {
+      id: id,
+      data: {
+        userId: 'teacher1',
+        title: this.faqTitle,
+        content: this.faqContent,
+        secret: 'OPEN',
+        file: this.communityFileAry,
+      },
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await CommunityAPI.putCommunity(req)
+      .then(async (res) => {
+        console.info(res);
+        this.communityWritingState = 0;
+        this.state = 1;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* community 삭제하는 함수 */
+  @action delCommunity = async (id) => {
+    const req = {
+      id: id,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await CommunityAPI.delCommunity(req)
+      .then((res) => {
+        console.info(res);
+        if (this.communityDelState === 1) {
+          this.state = 1;
+          this.communityWritingState = 0;
+          this.getCommunityList();
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
   /* commuinity 상세 페이지로 이동하는 함수 */
   @action pushToCommunityDetail = async (item, idx = 0, type = '') => {
     console.info(this.communityState);

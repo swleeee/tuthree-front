@@ -29,7 +29,7 @@ export function downloadFile(req) {
   });
 }
 
-export function setDetailCommunity(req) {
+export function setCommunity(req) {
   return axios({
     method: 'POST',
     url: `${ROOT_URL}/community/write`,
@@ -39,7 +39,7 @@ export function setDetailCommunity(req) {
   });
 }
 
-export function putDetailCommunity(req) {
+export function putCommunity(req) {
   return axios({
     method: 'PUT',
     url: `${ROOT_URL}/community/write`,

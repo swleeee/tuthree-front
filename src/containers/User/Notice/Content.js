@@ -17,6 +17,9 @@ import Community from '../../../stores/Community/Community';
 @inject('Community')
 @observer
 class Content extends Component {
+  componentWillUnmount = () => {
+    console.info('dd');
+  };
   render() {
     return (
       <Container>

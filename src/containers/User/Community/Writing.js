@@ -91,16 +91,14 @@ class Writing extends Component {
               bcolor="rgb(235, 114, 82)"
               onClick={() => {
                 console.info('click');
-                if (AdminCommunity.faqWritingState === 0) {
-                  AdminCommunity.setAdminFaq();
+                if (Community.communityWritingState === 0) {
+                  Community.setCommunity();
                 } else {
-                  AdminCommunity.putAdminFaq(
-                    AdminCommunity.faqDetailList[0].id
-                  );
+                  Community.putCommunity(Community.communityDetailList[0].id);
                 }
               }}
             >
-              {AdminCommunity.faqWritingState === 0 ? (
+              {Community.communityWritingState === 0 ? (
                 <div>등록</div>
               ) : (
                 <div>수정</div>

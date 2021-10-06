@@ -9,6 +9,12 @@ import MovileNavContainer from '../components/MobileNav';
 @inject('Common')
 @observer
 class Notice extends Component {
+  componentDidMount = () => {
+    console.info('mount');
+  };
+  componentWillUnmount = () => {
+    console.info('um');
+  };
   render() {
     return (
       <>

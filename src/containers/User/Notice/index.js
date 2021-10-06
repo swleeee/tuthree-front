@@ -5,6 +5,9 @@ import OuterContainer from '../../../components/OuterContainer';
 import Container from './Content';
 
 class index extends Component {
+  componentWillUnmount = () => {
+    console.info('dd');
+  };
   render() {
     return (
       <>

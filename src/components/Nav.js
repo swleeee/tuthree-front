@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import InnerContainer from './InnerContainer';
 import OuterContainer from './OuterContainer';
+import { inject, observer } from 'mobx-react';
 
 import {
   BrowserRouter as Router,
@@ -11,7 +12,10 @@ import {
 } from 'react-router-dom';
 
 import personImg from '../static/images/person.png';
+import Community from '../stores/Community/Community';
 
+@inject('Community')
+@observer
 class Nav extends Component {
   render() {
     return (
@@ -24,10 +28,25 @@ class Nav extends Component {
               </Link>
             </Logo>
             <Menu>
-              <Link to="/notice">공지사항</Link>
+              <Link
+                to="/notice"
+                onClick={() => {
+                  Community.type = 1;
+                  Community.state = 1;
+                }}
+              >
+                공지사항
+              </Link>
               <Link to="/tutor">과외찾기</Link>
               <Link to="/tutee">학생찾기</Link>
-              <Link to="/community">커뮤니티</Link>
+              <Link
+                to="/community"
+                onClick={() => {
+                  Community.communityState = 1;
+                }}
+              >
+                커뮤니티
+              </Link>
               <Link to="/myclass" style={{ marginRight: '0px' }}>
                 내강의실
               </Link>
