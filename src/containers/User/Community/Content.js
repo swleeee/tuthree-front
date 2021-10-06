@@ -63,21 +63,44 @@ class Content extends Component {
     Community.getCommunityList(Community.communityCurrentPage);
   };
   render() {
+    console.info('render!!');
+    console.info(Community.communityErrorMessage);
+    console.info(Community.communityErrorMessage === '');
     return (
       <Container>
         <SearchBox>
           <Input
             placeholder="제목 및 내용을 입력하세요."
-            // onChange={(e) => AdminAuth.onUserHandler(e, 'id')}
+            onChange={(e) => Community.onChangeHandler(e, 'community')}
             onFocus={(e) => (e.target.placeholder = '')}
             onBlur={(e) =>
               (e.target.placeholder = '제목 및 내용을 입력하세요.')
             }
           />
-          <Search>
+          <Search
+            onClick={() => {
+              console.info('dsfdsf');
+              Community.communityErrorMessage = '';
+              if (Community.communitySearchValue === '') {
+                Community.getCommunityList(1);
+              } else {
+                Community.searchCommunity(1);
+              }
+            }}
+          >
             <img src={searchImg} />
           </Search>
         </SearchBox>
+        <SearchArea
+          active={Community.communitySearchFinalValue === ''}
+          error={Community.communityErrorMessage === ''}
+        >
+          <div>
+            "<span>{`${Community.communitySearchFinalValue}`}</span>" 로 검색한
+            결과입니다
+          </div>
+          <div>{Community.communityErrorMessage}</div>
+        </SearchArea>
         <Header>
           <Count>
             총 <span>{Community.communityListTotalCount}</span>개
@@ -248,6 +271,7 @@ const Search = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
+  cursor: pointer;
   //   border: 2px solid blue;
   //   background-color: #eb7252;
   //   border-radius: 0 21px 21px 0;
@@ -345,5 +369,33 @@ const Count = styled.div`
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
     font-size: 14px;
+  }
+`;
+
+const SearchArea = styled.div`
+  width: 100%;
+  // height: 100px;
+  // border: 2px solid red;
+  // display: none;
+  margin-bottom: 30px;
+  display: ${(props) =>
+    !props.error ? 'flex' : props.active ? 'none' : 'flex'};
+  // display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > div {
+    font-size: 24px;
+    > span {
+      font-weight: bold;
+      color: #eb7252;
+    }
+  }
+  div:nth-of-type(1) {
+    display: ${(props) => (props.error ? 'block' : 'none')};
+  }
+
+  div:nth-of-type(2) {
+    display: ${(props) => (props.error ? 'none' : 'block')};
   }
 `;

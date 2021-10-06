@@ -57,3 +57,12 @@ export function delCommunity(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function searchCommunity(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/community`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
