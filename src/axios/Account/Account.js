@@ -10,3 +10,12 @@ export function tutorSignup(req) {
     data: req.data,
   });
 }
+
+export function checkId(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/register/${req.id}/checkid`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}

@@ -380,11 +380,15 @@ class Step3TeacherContainer extends Component {
           </ItemBox>
         </MainBox>
         <NextBtn
-          onClick={() => {
-            Auth.step = 4;
-            Auth.userType = 1;
-            Auth.showData();
-            window.scrollTo(0, 0);
+          onClick={async () => {
+            await Auth.checkTutorDataTwo('step1');
+            if (Auth.signupAuthTwo) {
+              Auth.tutorSignup();
+              Auth.step = 4;
+              Auth.userType = 1;
+              Auth.showData();
+              window.scrollTo(0, 0);
+            }
           }}
         >
           <div>회원가입</div>

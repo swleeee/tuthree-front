@@ -75,7 +75,7 @@ class InputComponent extends React.Component {
           //   console.log(toJS(ManufactureProcess.openFileArray));
           // }
           console.info(Auth.fileName);
-          console.info(Auth.fileAry);
+          // console.info(toJS(Auth.fileAry));
           console.info(toJS(Auth.fileAry));
         }
         break;
