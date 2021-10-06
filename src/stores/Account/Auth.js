@@ -307,10 +307,16 @@ class Auth {
 
   @observable introductionValue = '';
 
+  /* 아이디/비밀번호 찾기 관련 변수 */
   @observable forgottenType = 1;
   @observable certificationType = 1;
   @observable idStep = 1;
   @observable passwordStep = 1;
+
+  /* login 관련 변수 */
+  @observable loginId = '';
+  @observable loginPassowrd = '';
+  @observable loginAuth = false;
 
   getStep = () => {
     console.log(this.step);
@@ -644,6 +650,45 @@ class Auth {
             '* 중복되는 아이디가 있습니다. 다시 입력해주세요';
         } else {
           this.idErrorMessage = '* 사용가능한 아이디입니다.';
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action checkLoginData = async () => {
+    if (!this.loginId) {
+      await alert('아이디를 입력해주세요.');
+      return;
+    }
+    if (!this.loginPassowrd) {
+      await alert('비밀번호를 입력해주세요.');
+      return;
+    }
+    this.loginAuth = true;
+  };
+
+  @action login = async () => {
+    const req = {
+      data: {
+        id: this.loginId,
+        pwd: this.loginPassowrd,
+      },
+      // headers: {
+      //   Authorization: this.Authorization,
+      // },
+    };
+
+    await AccountAPI.login(req)
+      .then(async (res) => {
+        console.info(res);
+        // window.location.href = '/';
+        if (res.data.success) {
+          window.location.href = '/';
+        } else {
+          await alert(res.data.message);
         }
       })
       .catch((e) => {

@@ -19,3 +19,13 @@ export function checkId(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function login(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/login`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
