@@ -393,9 +393,15 @@ class Step2StudentContainer extends Component {
               }
             } else {
               if (Auth.signupAuthOne) {
-                Auth.step = 4;
-                Auth.userType = 2;
-                window.scrollTo(0, 0);
+                await Auth.parentSignup();
+                if (Auth.signupComplete) {
+                  Auth.step = 4;
+                  Auth.userType = 2;
+                  window.scrollTo(0, 0);
+                } else {
+                  alert('회원가입에 실패하셨습니다.');
+                  window.location.href = '/';
+                }
               }
             }
           }}

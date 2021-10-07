@@ -30,6 +30,7 @@ class Auth {
   @observable signupType = 0; // 학생 / 학부모
   @observable signupAuthOne = false;
   @observable signupAuthTwo = false;
+  @observable signupComplete = false;
 
   @observable locationIndex = 0;
   @observable selectedUpperLocation = '';
@@ -376,6 +377,8 @@ class Auth {
     this.fileName = '';
 
     this.introductionValue = '';
+
+    this.signupComplete = false;
   };
   @action showData = () => {
     console.info(this.signupId);
@@ -719,11 +722,19 @@ class Auth {
     await AccountAPI.tutorSignup(req)
       .then((res) => {
         console.info(res);
+        if (res.data.success) {
+          this.signupComplete = true;
+        } else {
+          this.signupComplete = false;
+        }
       })
       .catch((e) => {
         console.info(e);
         console.info(e.response);
         console.info(e.response.data);
+        if (e.response.data.status === 400) {
+          this.signupComplete = false;
+        }
       });
   };
 
@@ -802,11 +813,83 @@ class Auth {
     await AccountAPI.tuteeSignup(req)
       .then((res) => {
         console.info(res);
+        if (res.data.success) {
+          this.signupComplete = true;
+        } else {
+          this.signupComplete = false;
+        }
       })
       .catch((e) => {
         console.info(e);
         console.info(e.response);
         console.info(e.response.data);
+        if (e.response.data.status === 400) {
+          this.signupComplete = false;
+        }
+      });
+  };
+
+  @action parentSignup = async () => {
+    console.info(`id : ${this.signupId}`);
+    console.info(`password : ${this.signupPassword}`);
+    console.info(`passwrod_confirm : ${this.signupPasswordConfirm}`);
+    console.info(`name : ${this.signupName}`);
+    console.info(`email : ${this.signupEmail}`);
+    console.info(`email_Domain : ${this.signupEmailDomain}`);
+    console.info(`tel : ${this.signupPhone}`);
+    console.info(`sex : ${this.signupGender}`);
+    console.info(`birth : ${this.signupBirth}`);
+    console.info(`region : ${this.selectedLocation[0]}`);
+    console.info(`subject : ${this.selectedSubject[0]}`);
+    console.info(`cost : ${this.budget}`);
+    console.info(`grade : ${this.grade}`);
+
+    console.info(`detail : ${this.introductionValue}`);
+    console.info(this.signupEmail + '@' + this.signupEmailDomain);
+
+    // const file = new File();
+
+    const blob = new Blob();
+    let formData = new FormData();
+    formData.append('id', this.signupId);
+    // formData.append('id', 'test149');
+    formData.append('pwd', this.signupPassword);
+    // formData.append('pwd', 'test149');
+    formData.append('name', this.signupName);
+    // formData.append('name', 'lsw');
+    // formData.append('email', 'sdfsdf@naver.com');
+    formData.append('email', this.signupEmail + '@' + this.signupEmailDomain);
+
+    formData.append('tel', this.signupPhone);
+    // formData.append('tel', '01011111111');
+    formData.append('sex', this.signupGender === 0 ? 'MALE' : 'FEMALE');
+    // formData.append('sex', 'MALE');
+    formData.append('birth', this.signupBirth);
+    // formData.append('birth', '2000');
+    formData.append('grade', 'PARENT');
+
+    formData.append('file', blob);
+    // formData.append('authFile', this.fileAry[0]);
+    const req = {
+      data: formData,
+    };
+
+    await AccountAPI.parentSignup(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          this.signupComplete = true;
+        } else {
+          this.signupComplete = false;
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        console.info(e.response.data);
+        if (e.response.data.status === 400) {
+          this.signupComplete = false;
+        }
       });
   };
 

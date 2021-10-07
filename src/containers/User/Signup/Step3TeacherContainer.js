@@ -383,11 +383,19 @@ class Step3TeacherContainer extends Component {
           onClick={async () => {
             await Auth.checkTutorDataTwo('step1');
             if (Auth.signupAuthTwo) {
-              Auth.tutorSignup();
-              Auth.step = 4;
-              Auth.userType = 1;
-              Auth.showData();
-              window.scrollTo(0, 0);
+              await Auth.tutorSignup();
+              console.info(Auth.signupComplete);
+              if (Auth.signupComplete) {
+                Auth.step = 4;
+                Auth.userType = 1;
+                window.scrollTo(0, 0);
+              } else {
+                alert('회원가입에 실패하셨습니다.');
+                window.location.href = '/';
+                // Auth.step = 1;
+                // Auth.userType = 1;
+                // window.scrollTo(0, 0);
+              }
             }
           }}
         >
