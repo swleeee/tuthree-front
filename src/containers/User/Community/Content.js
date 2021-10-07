@@ -82,6 +82,7 @@ class Content extends Component {
               console.info('dsfdsf');
               Community.communityErrorMessage = '';
               if (Community.communitySearchValue === '') {
+                Community.communitySearchFinalValue = '';
                 Community.getCommunityList(1);
               } else {
                 Community.searchCommunity(1);
