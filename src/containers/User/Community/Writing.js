@@ -14,23 +14,24 @@ import { toJS } from 'mobx';
 class Writing extends Component {
   componentDidMount = () => {
     console.info('didmount');
-    if (Community.faqWritingState === 1) {
-      console.info(toJS(Community.faqDetailList));
-      Community.faqTitle = Community.faqDetailList[0].title;
-      Community.faqContent = Community.faqDetailList[0].content;
-      Community.faqState = Community.faqDetailList[0].type.korType;
-      console.info(Community.faqState);
+    if (Community.communityWritingState === 1) {
+      console.info(toJS(Community.communityDetailList));
+      console.info(toJS(Community.communityDetailFileAry));
+      Community.communityTitle = Community.communityDetailList.title;
+      Community.communityContent = Community.communityDetailList.content;
+      Community.communityFileAry = Community.communityDetailFileAry;
+      // Community.communityDetailFileAry
       this.setState({ g: 3 });
     }
   };
 
   componentWillUnmount = () => {
-    Community.faqDetailList = [];
-    Community.faqWritingState = 0;
-    Community.state = 1;
-    Community.faqTitle = '';
-    Community.faqContent = '';
+    Community.communityDetailList = [];
+    Community.communityWritingState = 0;
     Community.communityState = 1;
+    Community.communityTitle = '';
+    Community.communityContent = '';
+    Community.communityFileAry = [];
   };
 
   render() {
@@ -43,7 +44,6 @@ class Writing extends Component {
               <div>제목</div>
             </Name>
             <Content>
-              {/* <TextArea type="faqTitle" placeholder="입력하세요" /> */}
               <Input
                 placeholder="제목을 입력하세요."
                 onChange={(e) =>

@@ -7,7 +7,7 @@ class Community {
     makeObservable(this);
   }
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYxMTYwMCwiZXhwIjoxNjMzNjE1MjAwLCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.AxNJ46S1bTeBIa0G676Lzt9UYmrYia42afHyYpIpl5k';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYyMjQ4NywiZXhwIjoxNjMzNjI2MDg3LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.8IGb4OIDZu2PMILajh8rZA1Ks0MOTEgIM8yyK1N2AN8';
   @observable type = 1; // FAQ : 1, 공지사항 : 2, 커뮤니티 : 3
   @observable state = 1; // 조회 : 1, 글 쓰기 : 2, 글 수정 : 3
 
