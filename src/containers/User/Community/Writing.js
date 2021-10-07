@@ -14,23 +14,46 @@ import { toJS } from 'mobx';
 class Writing extends Component {
   componentDidMount = () => {
     console.info('didmount');
-    if (AdminCommunity.faqWritingState === 1) {
-      console.info(toJS(AdminCommunity.faqDetailList));
-      AdminCommunity.faqTitle = AdminCommunity.faqDetailList[0].title;
-      AdminCommunity.faqContent = AdminCommunity.faqDetailList[0].content;
-      AdminCommunity.faqState = AdminCommunity.faqDetailList[0].type.korType;
-      console.info(AdminCommunity.faqState);
+    if (Community.communityWritingState === 1) {
+      console.info(toJS(Community.communityDetailList));
+      console.info(toJS(Community.communityDetailFileAry));
+      Community.communityTitle = Community.communityDetailList.title;
+      Community.communityContent = Community.communityDetailList.content;
+
+      for (let i = 0; i < Community.communityDetailFileAry.length; i++) {
+        // formData.append(`file`, this.communityFileAry[i]);
+        let blob = new Blob([Community.communityDetailFileAry[i].file], {
+          type: 'application/octet-stream',
+        });
+        console.info(blob);
+
+        let file = new File([blob], Community.communityDetailFileAry[i].name);
+        console.info(file);
+        // Community.communityFileAry = Community.communityDetailFileAry;
+        Community.communityFileAry.push(file);
+      }
+
+      // let blob = new Blob([Community.communityDetailFileAry[0].file], {
+      //   type: 'application/octet-stream',
+      // });
+      // console.info(blob);
+
+      // let file = new File([blob], Community.communityDetailFileAry[0].name);
+      // console.info(file);
+      // // Community.communityFileAry = Community.communityDetailFileAry;
+      // Community.communityFileAry.push(file);
+
       this.setState({ g: 3 });
     }
   };
 
   componentWillUnmount = () => {
-    AdminCommunity.faqDetailList = [];
-    AdminCommunity.faqWritingState = 0;
-    AdminCommunity.state = 1;
-    AdminCommunity.faqTitle = '';
-    AdminCommunity.faqContent = '';
+    Community.communityDetailList = [];
+    Community.communityWritingState = 0;
     Community.communityState = 1;
+    Community.communityTitle = '';
+    Community.communityContent = '';
+    Community.communityFileAry = [];
   };
 
   render() {
@@ -43,15 +66,14 @@ class Writing extends Component {
               <div>제목</div>
             </Name>
             <Content>
-              {/* <TextArea type="faqTitle" placeholder="입력하세요" /> */}
               <Input
                 placeholder="제목을 입력하세요."
                 onChange={(e) =>
-                  AdminCommunity.onInputHandler(e.target, 'faqTitle')
+                  Community.onInputHandler(e.target, 'community')
                 }
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '제목을 입력하세요')}
-                value={AdminCommunity.faqTitle}
+                value={Community.communityTitle}
               />
             </Content>
           </Section>
@@ -61,8 +83,8 @@ class Writing extends Component {
             </Name>
             <Content>
               <TextArea
-                value={AdminCommunity.faqContent}
-                type="faqContent"
+                value={Community.communityContent}
+                type="communityContent"
                 placeholder="입력하세요"
               />
             </Content>
@@ -82,7 +104,15 @@ class Writing extends Component {
             </Content>
           </Section>
           <ButtonBox>
-            <Button color="#000" bcolor="#fff" border="1px solid #000">
+            <Button
+              color="#000"
+              bcolor="#fff"
+              border="1px solid #000"
+              onClick={() => {
+                Community.communityState = 1;
+                Community.communityWritingState = 0;
+              }}
+            >
               <div>취소</div>
             </Button>
 
@@ -91,16 +121,14 @@ class Writing extends Component {
               bcolor="rgb(235, 114, 82)"
               onClick={() => {
                 console.info('click');
-                if (AdminCommunity.faqWritingState === 0) {
-                  AdminCommunity.setAdminFaq();
+                if (Community.communityWritingState === 0) {
+                  Community.setCommunity();
                 } else {
-                  AdminCommunity.putAdminFaq(
-                    AdminCommunity.faqDetailList[0].id
-                  );
+                  Community.putCommunity(Community.communityDetailList.id);
                 }
               }}
             >
-              {AdminCommunity.faqWritingState === 0 ? (
+              {Community.communityWritingState === 0 ? (
                 <div>등록</div>
               ) : (
                 <div>수정</div>
@@ -128,6 +156,16 @@ const Item = styled.div`
   width: 80%;
   height: 100%;
   //   border: 2px solid black;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 100%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 100%;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 100%;
+  }
 `;
 
 const Section = styled.div`
@@ -152,6 +190,23 @@ const Name = styled.div`
   > div {
     font-size: 24px;
   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 15%;
+    > div {
+      font-size: 17px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: 20px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      font-size: 22px;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -162,20 +217,6 @@ const Content = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-`;
-
-const Select = styled(SelectComponent)`
-  width: 170px;
-  height: 60px;
-  margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
-  display: ${(props) => (props.domainType === 1 ? 'block' : 'none')};
-
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    width: 140px;
-    height: 40px;
-  }
-  @media (min-width: 768px) and (max-width: 991.98px) {
-  }
 `;
 
 const TextArea = styled(TextAreaContainer)`
@@ -191,6 +232,7 @@ const ButtonBox = styled.div`
 `;
 
 const Button = styled.button`
+  cursor: pointer;
   width: 200px;
   height: 60px;
   color: ${(props) => (props.color ? props.color : '')};
@@ -201,6 +243,22 @@ const Button = styled.button`
   border-radius: 3px;
   > div {
     font-size: 20px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 160px;
+    height: 48px;
+    margin: 0 30px;
+    > div {
+      font-size: 16px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 180px;
+    height: 52px;
+    > div {
+      font-size: 18px;
+    }
   }
 `;
 

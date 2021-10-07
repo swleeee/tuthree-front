@@ -10,7 +10,7 @@ class Community {
   @observable type = 1;
   @observable state = 1;
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzE4OTUwOSwiZXhwIjoxNjMzMTkzMTA5LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.liWJqCvbLl9Jl_MGKl9ZTeY8qAH_BTWBin2o0xBRHwU';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYyNjExMywiZXhwIjoxNjMzNjI5NzEzLCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.tq2TTKCEymrrUvXwrCi_vmK1TbutNLZwmLtRjZaTI2g';
 
   @observable noticeList = []; // 공지사항 페이지 당 목록 데이터
   @observable noticeListTotalCount = 0; // 공지사항 전체 개수
@@ -39,6 +39,12 @@ class Community {
   @observable communityFile = [];
   @observable communityFileAry = [];
   @observable communityFileName = [];
+  @observable communityWritingState = 0;
+  @observable communitySearchValue = '';
+  @observable communitySearchFinalValue = '';
+  @observable communityErrorMessage = '';
+  @observable communityTitle = '';
+  @observable communityContent = '';
 
   @action onClickNavHandler = (type) => {
     console.info(type);
@@ -287,32 +293,225 @@ class Community {
     }
   };
 
+  /* 공지사항 작성 - 제목 input chagne 함수 */
+  @action onInputHandler = (e, type) => {
+    console.info(e.value);
+    switch (type) {
+      case 'community':
+        this.communityTitle = e.value;
+        break;
+
+      default:
+        break;
+    }
+  };
+
   @action getCommunityList = async (id) => {
-    console.info('init');
+    console.info('communitySearchValue');
+    console.info(this.communitySearchValue);
+    if (this.communitySearchValue) {
+      this.communityCurrentPage = 1;
+      this.searchCommunity();
+    } else {
+      console.info('init');
+      const req = {
+        id: id ? id : 1,
+        headers: {
+          Authorization: this.Authorization,
+        },
+      };
+
+      CommunityAPI.getCommunity(req)
+        .then(async (res) => {
+          console.info(res);
+          this.communityList = await res.data.data;
+          this.communityListTotalCount = await res.data.list;
+          this.communityTotalPage = await Math.ceil(
+            this.communityListTotalCount / 10
+          );
+
+          this.communityCurrentSet =
+            parseInt((this.communityCurrentPage - 1) / 5) + 1; // community 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
+
+          await this.communityList.map(async (item, idx) => {
+            item.checked = false;
+          });
+        })
+        .catch((e) => {
+          console.info(e);
+          console.info(e.response);
+        });
+    }
+  };
+
+  /* community 작성하는 함수 */
+  @action setCommunity = async () => {
+    console.info('community 작성 버튼 클릭');
+
+    const formData = new FormData();
+    formData.append('userId', 'teacher1');
+    formData.append('title', this.communityTitle);
+    formData.append('content', this.communityContent);
+    formData.append('secret', 'OPEN');
+    // formData.append('file', this.communityFileAry[0]);
+    for (let i = 0; i < this.communityFileAry.length; i++) {
+      formData.append(`file`, this.communityFileAry[i]);
+    }
+
     const req = {
-      id: id ? id : 1,
+      data: formData,
       headers: {
         Authorization: this.Authorization,
       },
     };
 
-    CommunityAPI.getCommunity(req)
+    await CommunityAPI.setCommunity(req)
       .then(async (res) => {
         console.info(res);
-        this.communityList = await res.data.data;
-        this.communityListTotalCount = await res.data.list;
-        this.communityTotalPage = await Math.ceil(
-          this.communityListTotalCount / 10
-        );
-        await this.communityList.map(async (item, idx) => {
-          item.checked = false;
-        });
+        alert('글 작성을 완료하였습니다');
+        this.communityWritingState = 0;
+        this.communityState = 1;
+      })
+      .catch((e) => {
+        alert('글 작성하는 데 실패하였습니다');
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* community 수정하는 함수 */
+  @action putCommunity = async (id) => {
+    console.info(toJS(this.communityFileAry[0]));
+    console.info(toJS(this.communityFileAry[1]));
+    const formData = new FormData();
+    formData.append('userId', 'teacher1');
+
+    formData.append('title', this.communityTitle);
+    formData.append('content', this.communityContent);
+    formData.append('secret', 'OPEN');
+    // formData.append('file', this.communityFileAry[0]);
+    for (let i = 0; i < this.communityFileAry.length; i++) {
+      formData.append(`file`, this.communityFileAry[i]);
+    }
+
+    const req = {
+      data: formData,
+      headers: {
+        Authorization: this.Authorization,
+      },
+      id: id,
+    };
+
+    await CommunityAPI.putCommunity(req)
+      .then(async (res) => {
+        console.info(res);
+        alert('글 수정이 완료되었습니다');
+        this.communityWritingState = 0;
+        this.communityState = 1;
+      })
+      .catch((e) => {
+        alert('글 수정을 실패하였습니다');
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* community 삭제하는 함수 */
+  @action delCommunity = async (id) => {
+    const req = {
+      id: id,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await CommunityAPI.delCommunity(req)
+      .then((res) => {
+        console.info(res);
+        alert('글 삭제가 완료되었습니다');
+        this.communityState = 1;
+        this.communityWritingState = 0;
+        this.getCommunityList();
+      })
+      .catch((e) => {
+        alert('글 삭제를 실패하였습니다');
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action searchCommunity = async (id = '') => {
+    console.info(this.communityCurrentSet);
+    console.info(this.communityCurrentPage);
+    console.info(this.communityTotalPage);
+
+    console.info('search');
+    console.info(id);
+    const req = {
+      params: {
+        keyword: id
+          ? this.communitySearchValue
+          : this.communitySearchFinalValue,
+        page: id ? id : this.communityCurrentPage,
+      },
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    await CommunityAPI.searchCommunity(req)
+      .then(async (res) => {
+        if (res.data.statusCode === 403) {
+          console.info('error');
+          this.communityErrorMessage = `'${this.communitySearchValue}' 검색어를 찾을 수 없습니다. 다시 검색해주세요!`;
+        } else {
+          console.info(res);
+          if (id) {
+            this.communitySearchFinalValue = this.communitySearchValue;
+          }
+
+          this.communityList = await res.data.data;
+          this.communityListTotalCount = await res.data.list;
+          this.communityTotalPage = await Math.ceil(
+            this.communityListTotalCount / 10
+          );
+          if (id) {
+            this.communityCurrentPage = 1;
+          }
+
+          console.info(this.communityCurrentSet);
+          console.info(this.communityCurrentPage);
+          console.info(this.communityTotalPage);
+        }
       })
       .catch((e) => {
         console.info(e);
         console.info(e.response);
       });
   };
+
+  @action onChangeHandler = (e, type = '') => {
+    switch (type) {
+      case 'community':
+        console.info(e.target.value);
+        this.communitySearchValue = e.target.value;
+        break;
+      default:
+        break;
+    }
+  };
+
+  // @action onClickHandler = (type = '') => {
+  //   switch (type) {
+  //     case 'community':
+  //       // console.info(e.target.value);
+  //       this.searchCommunity();
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
   /* commuinity 상세 페이지로 이동하는 함수 */
   @action pushToCommunityDetail = async (item, idx = 0, type = '') => {
     console.info(this.communityState);
@@ -343,7 +542,7 @@ class Community {
       this.state = 3;
       this.communityState = 3;
     }
-    this.state = 2;
+    // this.communityState = 2;
   };
 
   /* community 클릭한 페이지로 이동하는 함수 */
@@ -351,7 +550,11 @@ class Community {
     const newPage = e.target.innerText * 1;
     console.info(e);
     this.communityCurrentPage = newPage;
-    await this.getCommunityList(this.communityCurrentPage);
+    if (this.communitySearchFinalValue === '') {
+      await this.getCommunityList(this.communityCurrentPage);
+    } else {
+      await this.searchCommunity();
+    }
   };
 
   /* community 다음 페이지로 이동하는 함수 */
@@ -359,7 +562,12 @@ class Community {
     if (this.communityCurrentPage < this.communityTotalPage) {
       const nextPage = this.communityCurrentPage + 1;
       this.communityCurrentPage = nextPage;
-      await this.getCommunityList(this.communityCurrentPage);
+
+      if (this.communitySearchFinalValue === '') {
+        await this.getCommunityList(this.communityCurrentPage);
+      } else {
+        await this.searchCommunity();
+      }
     }
   };
 
@@ -368,7 +576,12 @@ class Community {
     if (this.communityCurrentPage > 1) {
       const newPage = this.communityCurrentPage - 1;
       this.communityCurrentPage = newPage;
-      await this.getCommunityList(this.communityCurrentPage);
+
+      if (this.communitySearchFinalValue === '') {
+        await this.getCommunityList(this.communityCurrentPage);
+      } else {
+        await this.searchCommunity();
+      }
     }
   };
 

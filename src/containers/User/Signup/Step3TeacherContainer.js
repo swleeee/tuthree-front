@@ -18,6 +18,9 @@ import deleteImg from '../../../static/images/Signup/delete.png';
 
 import Auth from '../../../stores/Account/Auth';
 import Common from '../../../stores/Common/Common';
+import LocationList from '../../../sigungu.json';
+import SubjectList from '../../../subject.json';
+
 const animatedComponents = makeAnimated();
 
 const locationAry = [
@@ -195,14 +198,14 @@ class Step3TeacherContainer extends Component {
             <Select
               styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               value={{
-                label: Auth.selectedUpperLocation
+                name: Auth.selectedUpperLocation
                   ? Auth.selectedUpperLocation
                   : '시/도',
-                value: Auth.selectedUpperLocation,
+                gugun: Auth.selectedUpperLocation,
               }}
               onChange={(e) => Auth.handleChange(e, 'upperLocation')}
-              getOptionLabel={(option) => option.label}
-              options={locationAry}
+              getOptionLabel={(option) => option.name}
+              options={LocationList}
               //  isSearchable={false}
               placeholder="시/도"
               // ml="15"
@@ -214,14 +217,14 @@ class Step3TeacherContainer extends Component {
               id="lowerLocation"
               styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               value={{
-                label: Auth.selectedLowerLocation
+                name: Auth.selectedLowerLocation
                   ? Auth.selectedLowerLocation
                   : '시/군/구',
-                value: Auth.selectedLowerLocation,
+                gugun: Auth.selectedLowerLocation,
               }}
               temp={Auth.selectedLowerLocation}
               onChange={(e) => Auth.handleChange(e, 'lowerLocation')}
-              getOptionLabel={(option) => option.label}
+              getOptionLabel={(option) => option.name}
               // options={locationAry[Auth.locationIndex].value}
               options={Auth.lowerLocationAry}
               isSearchable={false}
@@ -262,7 +265,7 @@ class Step3TeacherContainer extends Component {
               }}
               onChange={(e) => Auth.handleChange(e, 'upperSubject')}
               getOptionLabel={(option) => option.label}
-              options={Auth.subjectAry}
+              options={SubjectList}
               //  isSearchable={false}
               placeholder="시/도"
               // ml="15"
@@ -380,11 +383,23 @@ class Step3TeacherContainer extends Component {
           </ItemBox>
         </MainBox>
         <NextBtn
-          onClick={() => {
-            Auth.step = 4;
-            Auth.userType = 1;
-            Auth.showData();
-            window.scrollTo(0, 0);
+          onClick={async () => {
+            await Auth.checkTutorDataTwo('step1');
+            if (Auth.signupAuthTwo) {
+              await Auth.tutorSignup();
+              console.info(Auth.signupComplete);
+              if (Auth.signupComplete) {
+                Auth.step = 4;
+                Auth.userType = 1;
+                window.scrollTo(0, 0);
+              } else {
+                alert('회원가입에 실패하셨습니다.');
+                window.location.href = '/';
+                // Auth.step = 1;
+                // Auth.userType = 1;
+                // window.scrollTo(0, 0);
+              }
+            }
           }}
         >
           <div>회원가입</div>

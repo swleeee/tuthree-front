@@ -396,7 +396,7 @@ const WriteBtn = styled.button`
   cursor: pointer;
   margin-right: ${(props) => (props.mr ? props.mr : '')}px;
   @media (min-width: 0px) and (max-width: 767.98px) {
-    width: 50px;
+    width: 70px;
     height: 23px;
     font-size: 11px;
   }

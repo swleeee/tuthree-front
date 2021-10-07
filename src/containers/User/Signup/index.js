@@ -18,6 +18,7 @@ class index extends Component {
   componentDidMount = () => {
     Auth.step = 1;
     Auth.userType = 1;
+    Auth.resetSignupData();
   };
   render() {
     console.log(Auth.step);

@@ -75,7 +75,7 @@ class InputComponent extends React.Component {
           //   console.log(toJS(ManufactureProcess.openFileArray));
           // }
           console.info(Auth.fileName);
-          console.info(Auth.fileAry);
+          // console.info(toJS(Auth.fileAry));
           console.info(toJS(Auth.fileAry));
         }
         break;
@@ -301,20 +301,27 @@ const InputBox = styled.div`
   }
 }
    @media (min-width: 0px) and (max-width: 767.98px) { 
-  //   height: 100%;
-  //   height: 34px;
-  //   object-fit: contain;
-  //   border-radius: 3px;
-  //   background-color: #ffffff;
-  //   > img {
-  //     position: relative;
-  //     padding-top: 8px;
-  //     padding-bottom: 8px;
-  //     padding-right: 20px;
-  //     padding-left: 0;
-  //     width: 20px;
-  //     height: 18px;
-  //   }
+     >div{
+      >div:nth-of-type(2){    
+        >span{
+          font-size: 14px;
+        }
+        >img{
+          width: 22px;
+          height: 22px;
+        }
+      }
+      >div:nth-of-type(1){      
+ 
+        
+        >span{      
+          >span{    
+            >span{
+              font-size: 14px;
+            }
+          }
+        }
+     }
   >div{
     div:nth-of-type(2){
       width: auto;

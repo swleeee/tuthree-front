@@ -29,7 +29,7 @@ export function downloadFile(req) {
   });
 }
 
-export function setDetailCommunity(req) {
+export function setCommunity(req) {
   return axios({
     method: 'POST',
     url: `${ROOT_URL}/community/write`,
@@ -39,10 +39,10 @@ export function setDetailCommunity(req) {
   });
 }
 
-export function putDetailCommunity(req) {
+export function putCommunity(req) {
   return axios({
     method: 'PUT',
-    url: `${ROOT_URL}/community/write`,
+    url: `${ROOT_URL}/community/id/${req.id}`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
     data: req.data,
@@ -52,7 +52,16 @@ export function putDetailCommunity(req) {
 export function delCommunity(req) {
   return axios({
     method: 'DELETE',
-    url: `${ROOT_URL}/community/${req.id}`,
+    url: `${ROOT_URL}/community/id/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function searchCommunity(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/community`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { inject, observer, Provider } from 'mobx-react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,13 +8,20 @@ import {
   Link as Connection,
 } from 'react-router-dom';
 
+import Auth from '../../../stores/Account/Auth';
+import Common from '../../../stores/Common/Common';
+
+@inject('Auth', 'Common')
+@observer
 class Content extends Component {
   onIdHandler = (e) => {
     console.log(e.target.value);
+    Auth.loginId = e.target.value;
   };
 
   onPasswordHandler = (e) => {
     console.log(e.target.value);
+    Auth.loginPassowrd = e.target.value;
   };
   render() {
     return (
@@ -24,14 +32,14 @@ class Content extends Component {
             <Input
               id="custom-css-outlined-input"
               placeholder="아이디"
-              onChange={this.onIdHandler}
+              onChange={(e) => this.onIdHandler(e)}
               style={{ marginBottom: '70px' }}
             />
             <Input
               id="custom-css-outlined-input"
               placeholder="비밀번호"
               type="password"
-              onChange={this.onPasswordHandler}
+              onChange={(e) => this.onPasswordHandler(e)}
               //   onChange={Auth.setPassword}
               // onKeyDown={this.handleKeyDown}
             />
@@ -42,16 +50,28 @@ class Content extends Component {
             </Link>
           </Forgotten>
 
-          <Link to="/" style={{ marginBottom: '30px' }}>
-            <Button background="rgba(235, 114, 82, 0.7)">
-              <div>로그인</div>
-            </Button>
-          </Link>
-          <Link to="/signup">
+          {/* <Link to="/" style={{ marginBottom: '30px' }} onClick={}> */}
+          <Button
+            background="rgba(235, 114, 82, 0.7)"
+            style={{ marginBottom: '30px' }}
+            onClick={async () => {
+              await Auth.checkLoginData();
+              if (Auth.loginAuth) {
+                Auth.login();
+              }
+            }}
+          >
+            <div>로그인</div>
+          </Button>
+          {/* </Link> */}
+          <Link to="/signup" style={{ marginBottom: '30px' }}>
             <Button border="1px solid black">
               <div>회원가입</div>
             </Button>
           </Link>
+          <Button background="#F4EF21">
+            <div>카카오 로그인</div>
+          </Button>
         </Container>
       </>
     );

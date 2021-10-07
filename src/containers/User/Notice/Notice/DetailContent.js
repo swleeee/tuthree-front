@@ -103,22 +103,6 @@ const SubSection = styled.div`
   //   border-left: ${(props) => (props.bl ? '1px solid #707070' : '')};
 `;
 
-const Name = styled.div`
-  background-color: #cccccc;
-  width: 100px;
-  border-right: 1px solid #707070;
-  box-sizing: border-box;
-  flex-grow: 3;
-  display: felx;
-  justify-content: center;
-  align-items: center;
-  min-width: 100px;
-
-  > div {
-    font-size: 24px;
-  }
-`;
-
 const Content = styled.div`
   flex-grow: 8;
   padding: 5px 20px;
@@ -132,10 +116,27 @@ const Content = styled.div`
   > img {
     margin-right: 5px;
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    padding: 2px 6px;
+    flex-grow: 3;
+    font-size: ${(props) => (props.title ? '16' : '12')}px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    padding: 4px 12px;
+    flex-grow: 6;
+    font-size: ${(props) => (props.title ? '25' : '14')}px;
+  }
 `;
 const ButtonBox = styled.div`
   margin-top: 20px;
   align-self: flex-end;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    margin-top: 10px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    margin-top: 15px;
+  }
 `;
 
 const Button = styled.button`
@@ -150,5 +151,20 @@ const Button = styled.button`
   cursor: pointer;
   > div {
     font-size: 18px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 60px;
+    height: 28px;
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 80px;
+    height: 32px;
+    > div {
+      font-size: 16px;
+    }
   }
 `;

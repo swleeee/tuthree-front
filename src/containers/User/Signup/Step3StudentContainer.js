@@ -17,6 +17,8 @@ import Auth from '../../../stores/Account/Auth';
 import Common from '../../../stores/Common/Common';
 
 import deleteImg from '../../../static/images/Signup/delete.png';
+import LocationList from '../../../sigungu.json';
+import SubjectList from '../../../subject.json';
 
 const locationAry = [
   {
@@ -224,41 +226,23 @@ const customStyles = {
 @inject('Auth')
 @observer
 class Step3StudentContainer extends Component {
-  inputHandler = (e, type) => {
-    console.log(e.value);
-    // console.log(type);
-    switch (type) {
-      case 'id':
-        console.log('id');
-        break;
-      case 'password':
-        console.log('password');
-        break;
-      case 'passwordConfirm':
-        console.log('passwordConfirm');
-        break;
-      case 'name':
-        console.log('name');
-        break;
-      case 'email':
-        console.log('email');
-        break;
-      case 'phone':
-        console.log('phone');
-        break;
-      case 'certification':
-        console.log('certification');
-        break;
-      case 'gender':
-        console.log('gender');
-        break;
-      case 'birth':
-        console.log('birth');
-        break;
-      default:
-        console.log('default');
-    }
-  };
+  // selectHandler = (e, type) => {
+  //   console.log(e.value);
+  //   // console.log(type);
+  //   switch (type) {
+  //     case 'grade':
+  //       console.log('school');
+  //       Auth.school = e.value;
+  //       break;
+  //     case 'bud':
+  //       console.log('major');
+  //       Auth.major = e.value;
+  //       break;
+
+  //     default:
+  //       console.log('default');
+  //   }
+  // };
 
   render() {
     return (
@@ -273,14 +257,14 @@ class Step3StudentContainer extends Component {
               styles={customStyles}
               styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               value={{
-                label: Auth.selectedUpperLocation
+                name: Auth.selectedUpperLocation
                   ? Auth.selectedUpperLocation
                   : '시/도',
-                value: Auth.selectedUpperLocation,
+                gugun: Auth.selectedUpperLocation,
               }}
               onChange={(e) => Auth.handleChange(e, 'upperLocation')}
-              getOptionLabel={(option) => option.label}
-              options={locationAry}
+              getOptionLabel={(option) => option.name}
+              options={LocationList}
               //  isSearchable={false}
               placeholder="시/도"
               // ml="15"
@@ -292,14 +276,14 @@ class Step3StudentContainer extends Component {
               id="lowerLocation"
               styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               value={{
-                label: Auth.selectedLowerLocation
+                name: Auth.selectedLowerLocation
                   ? Auth.selectedLowerLocation
                   : '시/군/구',
-                value: Auth.selectedLowerLocation,
+                gugun: Auth.selectedLowerLocation,
               }}
               temp={Auth.selectedLowerLocation}
               onChange={(e) => Auth.handleChange(e, 'lowerLocation')}
-              getOptionLabel={(option) => option.label}
+              getOptionLabel={(option) => option.name}
               // options={locationAry[Auth.locationIndex].value}
               options={Auth.lowerLocationAry}
               isSearchable={false}
@@ -341,7 +325,7 @@ class Step3StudentContainer extends Component {
               }}
               onChange={(e) => Auth.handleChange(e, 'upperSubject')}
               getOptionLabel={(option) => option.label}
-              options={subjectAry}
+              options={SubjectList}
               //  isSearchable={false}
               placeholder="시/도"
               // ml="15"
@@ -394,6 +378,7 @@ class Step3StudentContainer extends Component {
             <Select
               //  id={this.props.id}
               //  className={this.props.className}
+              width={225}
               styles={customStyles}
               //  value={value}
               onChange={(e) => Auth.handleChange(e, 'grade')}
@@ -433,10 +418,20 @@ class Step3StudentContainer extends Component {
           </ItemBox>
         </MainBox>
         <NextBtn
-          onClick={() => {
-            Auth.step = 4;
-            Auth.userType = 1;
-            window.scrollTo(0, 0);
+          onClick={async () => {
+            await Auth.checkTuteeData('step1');
+            if (Auth.signupAuthTwo) {
+              await Auth.tuteeSignup();
+              if (Auth.signupComplete) {
+                Auth.step = 4;
+                Auth.userType = 1;
+
+                window.scrollTo(0, 0);
+              } else {
+                alert('회원가입에 실패하셨습니다.');
+                window.location.href = '/';
+              }
+            }
           }}
         >
           <div>회원가입</div>

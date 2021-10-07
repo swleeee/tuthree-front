@@ -63,21 +63,45 @@ class Content extends Component {
     Community.getCommunityList(Community.communityCurrentPage);
   };
   render() {
+    console.info('render!!');
+    console.info(Community.communityErrorMessage);
+    console.info(Community.communityErrorMessage === '');
     return (
       <Container>
         <SearchBox>
           <Input
             placeholder="제목 및 내용을 입력하세요."
-            // onChange={(e) => AdminAuth.onUserHandler(e, 'id')}
+            onChange={(e) => Community.onChangeHandler(e, 'community')}
             onFocus={(e) => (e.target.placeholder = '')}
             onBlur={(e) =>
               (e.target.placeholder = '제목 및 내용을 입력하세요.')
             }
           />
-          <Search>
+          <Search
+            onClick={() => {
+              console.info('dsfdsf');
+              Community.communityErrorMessage = '';
+              if (Community.communitySearchValue === '') {
+                Community.communitySearchFinalValue = '';
+                Community.getCommunityList(1);
+              } else {
+                Community.searchCommunity(1);
+              }
+            }}
+          >
             <img src={searchImg} />
           </Search>
         </SearchBox>
+        <SearchArea
+          active={Community.communitySearchFinalValue === ''}
+          error={Community.communityErrorMessage === ''}
+        >
+          <div>
+            "<span>{`${Community.communitySearchFinalValue}`}</span>" 로 검색한
+            결과입니다
+          </div>
+          <div>{Community.communityErrorMessage}</div>
+        </SearchArea>
         <Header>
           <Count>
             총 <span>{Community.communityListTotalCount}</span>개
@@ -96,7 +120,7 @@ class Content extends Component {
             <Title>제목</Title>
             <Id>아이디</Id>
             <Date>등록일</Date>
-            {/* <View>조회수</View> */}
+            <View>조회수</View>
           </Line>
 
           {/* <Line>
@@ -131,7 +155,7 @@ class Content extends Component {
                   <Title>{item.title}</Title>
                   <Id>{item.userId}</Id>
                   <Date>{item.writeAt}</Date>
-                  {/* <View>{item.view}</View> */}
+                  <View>{item.view}</View>
                 </Line>
               );
             })}
@@ -212,6 +236,21 @@ const Button = styled.button`
     font-weight: bold;
     color: #fff;
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 60px;
+    height: 28px;
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 80px;
+    height: 32px;
+    > div {
+      font-size: 15px;
+    }
+  }
 `;
 
 const Input = styled.input`
@@ -248,6 +287,7 @@ const Search = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
+  cursor: pointer;
   //   border: 2px solid blue;
   //   background-color: #eb7252;
   //   border-radius: 0 21px 21px 0;
@@ -297,6 +337,17 @@ const Line = styled.div`
     font-size: ${(props) => (props.title ? '20' : '16')}px;
     font-weight: ${(props) => (props.title ? 'bold' : '400')};
   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      font-size: ${(props) => (props.title ? '14' : '11')}px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: ${(props) => (props.title ? '18' : '14')}px;
+    }
+  }
 `;
 const Number = styled.div`
   //   border: 2px solid red;
@@ -313,6 +364,14 @@ const Title = styled.div`
   //   border: 2px solid blue;
   flex-grow: 6;
   width: 20%;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-grow: 2.5;
+    width: 12%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 15%;
+  }
 `;
 const Id = styled.div`
   flex-grow: 1;
@@ -323,10 +382,18 @@ const Date = styled.div`
   //   border: 2px solid green;
   flex-grow: 1;
   width: 3%;
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 5%;
+  }
 `;
 const View = styled.div`
   flex-grow: 1;
   width: 3%;
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 3%;
+  }
 `;
 const ButtonBox = styled.div``;
 
@@ -345,5 +412,50 @@ const Count = styled.div`
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
     font-size: 14px;
+  }
+`;
+
+const SearchArea = styled.div`
+  width: 100%;
+  // height: 100px;
+  // border: 2px solid red;
+  // display: none;
+  margin-bottom: 30px;
+  display: ${(props) =>
+    !props.error ? 'flex' : props.active ? 'none' : 'flex'};
+  // display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > div {
+    font-size: 24px;
+    > span {
+      font-weight: bold;
+      color: #eb7252;
+    }
+  }
+  div:nth-of-type(1) {
+    display: ${(props) => (props.error ? 'block' : 'none')};
+  }
+
+  div:nth-of-type(2) {
+    display: ${(props) => (props.error ? 'none' : 'block')};
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      font-size: 17px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: 20px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      font-size: 22px;
+    }
   }
 `;

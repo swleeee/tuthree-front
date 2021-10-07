@@ -7,14 +7,20 @@ import Common from '../../../stores/Common/Common';
 import TextAreaContainer from '../../../components/TextareaContainer';
 import viewImg from '../../../static/images/Common/visibility.png';
 import { ROOT_URL } from '../../../axios/index';
+import fileImg from '../../../static/images/Common/files.png';
+import { toJS } from 'mobx';
 
 @inject('Community', 'Common')
 @observer
 class DetailContent extends Component {
   componentWillUnmount = () => {
-    Community.communityDetailList = [];
-    Community.state = 1;
-    Community.communityState = 1;
+    console.info('dsfsdfd');
+
+    if (Community.communityWritingState !== 1) {
+      Community.communityDetailList = [];
+      Community.state = 1;
+      Community.communityState = 1;
+    }
   };
   render() {
     return (
@@ -23,6 +29,7 @@ class DetailContent extends Component {
           <Section by={true}>
             <SubSection width={30}>
               <Content width={30}>
+                작성자{' '}
                 {Community.communityDetailList &&
                   Community.communityDetailList.userId}
               </Content>
@@ -51,19 +58,22 @@ class DetailContent extends Component {
             </SubSection>
           </Section>
           <Section by={true}>
-            <Content height={50}>
+            <Content height={50} file={true}>
               {Community.communityDetailFileAry &&
                 Community.communityDetailFileAry.map((item, idx) => {
                   return (
-                    <a href={`${ROOT_URL}/community/download/${item.id}`}>
-                      {item.name}
-                    </a>
+                    <FileContent>
+                      <img src={fileImg} />
+                      <a href={`${ROOT_URL}/community/download/${item.id}`}>
+                        {item.name}
+                      </a>
+                    </FileContent>
                   );
                 })}
             </Content>
           </Section>
 
-          <Section by={true}>
+          {/* <Section by={true}>
             <Content height={50}>
               {Community.communityDetailFileAry &&
                 Community.communityDetailFileAry.map((item, idx) => {
@@ -73,6 +83,7 @@ class DetailContent extends Component {
                         id="myImg"
                         onClick={async () => {
                           //   Community.downloadFile(item.id, item.name);
+                          console.info(item.file);
 
                           let blob = new Blob([item.file], {
                             type: 'application/octet-stream',
@@ -121,7 +132,7 @@ class DetailContent extends Component {
                   );
                 })}
             </Content>
-          </Section>
+          </Section> */}
 
           <Section mb={true}>
             <Content height={500}>
@@ -131,6 +142,31 @@ class DetailContent extends Component {
           </Section>
         </Item>
         <ButtonBox>
+          <Button
+            color="#fff"
+            bcolor="blue"
+            onClick={async () => {
+              Community.communityState = 2;
+              Community.communityWritingState = 1;
+              // await Community.pushToCommunityDetail(
+              //   Community.communityDetailList,
+              //   0,
+              //   'modify'
+              // );
+            }}
+          >
+            <div>수정</div>
+          </Button>
+          <Button
+            color="#fff"
+            bcolor="red"
+            onClick={async () => {
+              // console.info(toJS(Community.communityDetailList));
+              await Community.delCommunity(Community.communityDetailList.id);
+            }}
+          >
+            <div>삭제</div>
+          </Button>
           <Button
             color="#fff"
             bcolor="rgb(235, 114, 82)"
@@ -153,11 +189,12 @@ const Container = styled.div`
   min-height: 100vh;
   width: 100%;
   flex-direction: column;
+  margin-top: 100px;
 `;
 
 const Item = styled.div`
   width: 100%;
-  height: 80%;
+  height: 100%;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
 `;
@@ -182,22 +219,6 @@ const SubSection = styled.div`
   //   border-left: ${(props) => (props.bl ? '1px solid #707070' : '')};
 `;
 
-const Name = styled.div`
-  background-color: #cccccc;
-  width: 100px;
-  border-right: 1px solid #707070;
-  box-sizing: border-box;
-  flex-grow: 3;
-  display: felx;
-  justify-content: center;
-  align-items: center;
-  min-width: 100px;
-
-  > div {
-    font-size: 24px;
-  }
-`;
-
 const Content = styled.div`
   flex-grow: 8;
   padding: 5px 20px;
@@ -210,6 +231,17 @@ const Content = styled.div`
   justify-content: ${(props) => (props.right ? 'flex-end' : '')};
   > img {
     margin-right: 5px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    padding: 2px 6px;
+    flex-grow: 3;
+    font-size: ${(props) => (props.title ? '16' : '12')}px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    padding: 4px 12px;
+    flex-grow: 6;
+    font-size: ${(props) => (props.title ? '25' : '14')}px;
   }
 `;
 const ButtonBox = styled.div`
@@ -229,5 +261,32 @@ const Button = styled.button`
   cursor: pointer;
   > div {
     font-size: 18px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 60px;
+    height: 28px;
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 80px;
+    height: 32px;
+    > div {
+      font-size: 16px;
+    }
+  }
+`;
+
+const FileContent = styled.div`
+  display: flex;
+  margin-right: 10px;
+  > img {
+    width: 24px;
+  }
+  > a {
+    text-decoration: none;
+    color: black;
   }
 `;

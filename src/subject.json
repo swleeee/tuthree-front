@@ -1,0 +1,339 @@
+[
+  {
+    "id": 0,
+    "label": "국어",
+    "value": [
+      {
+        "label": "중등 국어",
+        "value": 1
+      },
+      {
+        "label": "고등 국어",
+        "value": "2"
+      },
+      {
+        "label": "고등 국어(문학)",
+        "value": 3
+      },
+      {
+        "label": "고등 국어(문법)",
+        "value": 4
+      },
+      {
+        "label": "고등 국어(화작문)",
+        "value": 5
+      },
+      {
+        "label": "고등 국어(비문학)",
+        "value": 6
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "label": "수학",
+    "value": [
+      {
+        "label": "중등 수학",
+        "value": 1
+      },
+      {
+        "label": "고등 수학(공통)",
+        "value": 2
+      },
+      {
+        "label": "고등 수학(문과)",
+        "value": 3
+      },
+      {
+        "label": "고등 수학(이과)",
+        "value": 4
+      },
+      {
+        "label": "편입 수학",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "label": "사회",
+    "value": [
+      {
+        "label": "중등사회",
+        "value": 1
+      },
+      {
+        "label": "고등사회",
+        "value": 2
+      },
+      {
+        "label": "세계사",
+        "value": 3
+      },
+      {
+        "label": "한국사",
+        "value": 4
+      },
+
+      {
+        "label": "동아시아사",
+        "value": 5
+      },
+      {
+        "label": "세계지리",
+        "value": 6
+      },
+      {
+        "label": "한국지리",
+        "value": 7
+      },
+      {
+        "label": "윤리와사상",
+        "value": 8
+      },
+      {
+        "label": "생활과윤리",
+        "value": 9
+      },
+
+      {
+        "label": "사회문화",
+        "value": 10
+      },
+
+      {
+        "label": "경제",
+        "value": 11
+      },
+      {
+        "label": "법과정치",
+        "value": 12
+      }
+    ]
+  },
+
+  {
+    "id": 3,
+    "label": "과학",
+    "value": [
+      {
+        "label": "중등과학",
+        "value": 1
+      },
+      {
+        "label": "고등과학",
+        "value": 2
+      },
+      {
+        "label": "물리I",
+        "value": 3
+      },
+      {
+        "label": "물리II",
+        "value": 4
+      },
+
+      {
+        "label": "화학I",
+        "value": 5
+      },
+      {
+        "label": "화학II",
+        "value": 6
+      },
+      {
+        "label": "생명과학I",
+        "value": 7
+      },
+      {
+        "label": "생명과학II",
+        "value": 8
+      },
+      {
+        "label": "지구과학I",
+        "value": 9
+      },
+
+      {
+        "label": "지구과학II",
+        "value": 10
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "label": "영어",
+    "value": [
+      {
+        "label": "중등영어",
+        "value": 1
+      },
+      {
+        "label": "고등영어",
+        "value": 2
+      },
+      {
+        "label": "수능영어",
+        "value": 3
+      },
+      {
+        "label": "편입영어",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "label": "제2외국어",
+    "value": [
+      {
+        "label": "한문",
+        "value": 1
+      },
+      {
+        "label": "일본어",
+        "value": 2
+      },
+      {
+        "label": "중국어",
+        "value": 3
+      },
+      {
+        "label": "프랑스어",
+        "value": 4
+      },
+
+      {
+        "label": "스페인어",
+        "value": 5
+      },
+      {
+        "label": "독일어",
+        "value": 6
+      },
+      {
+        "label": "아랍어",
+        "value": 7
+      },
+      {
+        "label": "러시아어",
+        "value": 8
+      },
+      {
+        "label": "베트남어",
+        "value": 9
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "label": "외국어 공인 인증",
+    "value": [
+      {
+        "label": "토익",
+        "value": 1
+      },
+      {
+        "label": "토스",
+        "value": 2
+      },
+      {
+        "label": "텝스",
+        "value": 3
+      },
+      {
+        "label": "토플",
+        "value": 4
+      },
+
+      {
+        "label": "아이엘츠",
+        "value": 5
+      },
+      {
+        "label": "OPIc",
+        "value": 6
+      },
+
+      {
+        "label": "HSK/TSC",
+        "value": 7
+      },
+      {
+        "label": "JPT/JLPT",
+        "value": 8
+      },
+      {
+        "label": "DELE",
+        "value": 9
+      },
+
+      {
+        "label": "DELE/DALF",
+        "value": 10
+      },
+      {
+        "label": "TORFL",
+        "value": 11
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "label": "외국어 회화",
+    "value": [
+      {
+        "label": "영어회화",
+        "value": 1
+      },
+      {
+        "label": "비즈니스 영어",
+        "value": 2
+      },
+      {
+        "label": "중국어",
+        "value": 3
+      },
+      {
+        "label": "비즈니스 중국어",
+        "value": 4
+      },
+
+      {
+        "label": "일본어",
+        "value": 5
+      },
+      {
+        "label": "비즈니스 일본어",
+        "value": 6
+      },
+
+      {
+        "label": "프랑스어",
+        "value": 7
+      },
+
+      {
+        "label": "스페인어",
+        "value": 8
+      },
+      {
+        "label": "독일어",
+        "value": 9
+      },
+      {
+        "label": "아랍어",
+        "value": 10
+      },
+      {
+        "label": "러시아어",
+        "value": 11
+      },
+      {
+        "label": "베트남어",
+        "value": 12
+      }
+    ]
+  }
+]
