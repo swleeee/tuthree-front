@@ -10,7 +10,7 @@ class Community {
   @observable type = 1;
   @observable state = 1;
   @observable Authorization =
-    'Barer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzUzMjEwNCwiZXhwIjoxNjMzNTM1NzA0LCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.-9O6ZBVPLK-YhImMP-OYHGBHVhi1VuOXBCK_r94kUAw';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYxMTYzOSwiZXhwIjoxNjMzNjE1MjM5LCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.FAF916cRsieMevOYti1QXqslPl_lGlaCZqcIjKR331o';
 
   @observable noticeList = []; // 공지사항 페이지 당 목록 데이터
   @observable noticeListTotalCount = 0; // 공지사항 전체 개수
@@ -349,14 +349,29 @@ class Community {
     //   default:
     //     break;
     // }
+    const formData = new FormData();
+    formData.append('userId', 'teacher20');
+    formData.append('title', 'title');
+    formData.append('content', 'content');
+    formData.append('secret', 'OPEN');
+    formData.append('file', this.communityFileAry[0]);
+
+    // const req = {
+    //   data: {
+    //     userId: 'teacher1',
+    //     title: this.faqTitle,
+    //     content: this.faqContent,
+    //     secret: 'OPEN',
+    //     file: this.communityFileAry,
+    //   },
+    //   headers: {
+    //     Authorization: this.Authorization,
+
+    //   },
+    // };
+
     const req = {
-      data: {
-        userId: 'teacher1',
-        title: this.faqTitle,
-        content: this.faqContent,
-        secret: 'OPEN',
-        file: this.communityFileAry,
-      },
+      data: formData,
       headers: {
         Authorization: this.Authorization,
       },

@@ -947,9 +947,12 @@ class Auth {
     await AccountAPI.login(req)
       .then(async (res) => {
         console.info(res);
+        console.info(res.headers);
+        console.info(Object.keys(res.headers));
+
         // window.location.href = '/';
         if (res.data.success) {
-          window.location.href = '/';
+          // window.location.href = '/';
         } else {
           await alert(res.data.message);
         }

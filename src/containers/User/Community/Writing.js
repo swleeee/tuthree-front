@@ -189,6 +189,7 @@ const ButtonBox = styled.div`
 `;
 
 const Button = styled.button`
+  cursor: pointer;
   width: 200px;
   height: 60px;
   color: ${(props) => (props.color ? props.color : '')};
