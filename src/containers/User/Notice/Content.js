@@ -53,6 +53,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    margin-top: 60px;
+  }
 `;
 
 const NavBox = styled.div`
