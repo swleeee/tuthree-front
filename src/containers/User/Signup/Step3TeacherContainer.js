@@ -19,6 +19,7 @@ import deleteImg from '../../../static/images/Signup/delete.png';
 import Auth from '../../../stores/Account/Auth';
 import Common from '../../../stores/Common/Common';
 import LocationList from '../../../sigungu.json';
+import SubjectList from '../../../subject.json';
 
 const animatedComponents = makeAnimated();
 
@@ -264,7 +265,7 @@ class Step3TeacherContainer extends Component {
               }}
               onChange={(e) => Auth.handleChange(e, 'upperSubject')}
               getOptionLabel={(option) => option.label}
-              options={Auth.subjectAry}
+              options={SubjectList}
               //  isSearchable={false}
               placeholder="시/도"
               // ml="15"

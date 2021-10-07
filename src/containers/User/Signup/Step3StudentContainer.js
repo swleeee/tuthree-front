@@ -17,6 +17,8 @@ import Auth from '../../../stores/Account/Auth';
 import Common from '../../../stores/Common/Common';
 
 import deleteImg from '../../../static/images/Signup/delete.png';
+import LocationList from '../../../sigungu.json';
+import SubjectList from '../../../subject.json';
 
 const locationAry = [
   {
@@ -255,14 +257,14 @@ class Step3StudentContainer extends Component {
               styles={customStyles}
               styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               value={{
-                label: Auth.selectedUpperLocation
+                name: Auth.selectedUpperLocation
                   ? Auth.selectedUpperLocation
                   : '시/도',
-                value: Auth.selectedUpperLocation,
+                gugun: Auth.selectedUpperLocation,
               }}
               onChange={(e) => Auth.handleChange(e, 'upperLocation')}
-              getOptionLabel={(option) => option.label}
-              options={locationAry}
+              getOptionLabel={(option) => option.name}
+              options={LocationList}
               //  isSearchable={false}
               placeholder="시/도"
               // ml="15"
@@ -274,14 +276,14 @@ class Step3StudentContainer extends Component {
               id="lowerLocation"
               styles={Common.width > 767.98 ? customStyles : mobileCustomStyles}
               value={{
-                label: Auth.selectedLowerLocation
+                name: Auth.selectedLowerLocation
                   ? Auth.selectedLowerLocation
                   : '시/군/구',
-                value: Auth.selectedLowerLocation,
+                gugun: Auth.selectedLowerLocation,
               }}
               temp={Auth.selectedLowerLocation}
               onChange={(e) => Auth.handleChange(e, 'lowerLocation')}
-              getOptionLabel={(option) => option.label}
+              getOptionLabel={(option) => option.name}
               // options={locationAry[Auth.locationIndex].value}
               options={Auth.lowerLocationAry}
               isSearchable={false}
@@ -323,7 +325,7 @@ class Step3StudentContainer extends Component {
               }}
               onChange={(e) => Auth.handleChange(e, 'upperSubject')}
               getOptionLabel={(option) => option.label}
-              options={subjectAry}
+              options={SubjectList}
               //  isSearchable={false}
               placeholder="시/도"
               // ml="15"
