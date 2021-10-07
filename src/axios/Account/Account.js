@@ -11,6 +11,16 @@ export function tutorSignup(req) {
   });
 }
 
+export function tuteeSignup(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/register/tutee`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
 export function checkId(req) {
   return axios({
     method: 'GET',

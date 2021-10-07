@@ -122,10 +122,12 @@ class Step2StudentContainer extends Component {
           Auth.domainType = 2;
         } else {
           Auth.domainType = 1;
+          Auth.signupEmailDomain = e.label;
         }
         break;
       case 'birth':
         console.log('birth');
+        Auth.signupBirth = e.value;
         break;
       default:
         break;
@@ -137,34 +139,49 @@ class Step2StudentContainer extends Component {
     // console.log(type);
     switch (type) {
       case 'id':
-        console.log('id');
+        Auth.signupId = e.value;
         break;
       case 'password':
-        console.log('password');
+        // console.log('password');
+        Auth.signupPassword = e.value;
         break;
-      case 'passwordConfirm':
-        console.log('passwordConfirm');
+      case 'password_confirm':
+        // console.log('passwordConfirm');
+        Auth.signupPasswordConfirm = e.value;
         break;
       case 'name':
-        console.log('name');
+        // console.log('name');
+        Auth.signupName = e.value;
         break;
       case 'email':
-        console.log('email');
+        // console.log('email');
+        Auth.signupEmail = e.value;
         break;
+      case 'emailDomain':
+        console.log('email');
+        Auth.signupEmailDomain = e.value;
+        break;
+
       case 'phone':
+        Auth.signupPhone = e.value;
         console.log('phone');
         break;
       case 'certification':
         console.log('certification');
         break;
-      case 'gender':
-        console.log('gender');
-        break;
-      case 'birth':
-        console.log('birth');
-        break;
+      // case 'birth':
+      //   console.log('birth');
+      //   Auth.signupBirth = e.value;
+      //   break;
       default:
         console.log('default');
+    }
+    if (Auth.signupPassword === Auth.signupPasswordConfirm) {
+      if (Auth.signupPassword !== '') {
+        Auth.checkSignupPassword = true;
+      }
+    } else {
+      Auth.checkSignupPassword = false;
     }
   };
   render() {
@@ -210,9 +227,18 @@ class Step2StudentContainer extends Component {
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '아이디')}
               />
-              <OverlapBtn>중복확인</OverlapBtn>
+              <OverlapBtn onClick={() => Auth.checkId(Auth.signupId)}>
+                중복확인
+              </OverlapBtn>
             </WrapperBox>
           </ItemBox>
+          <ItemBox width="100%" height="0px">
+            <div />
+            <MessageArea active={Auth.checkSignupId}>
+              <div>{`${Auth.idErrorMessage}`}</div>
+            </MessageArea>
+          </ItemBox>
+
           <ItemBox>
             <div>비밀번호</div>
             <Input
@@ -231,11 +257,21 @@ class Step2StudentContainer extends Component {
               onBlur={(e) => (e.target.placeholder = '비밀번호 확인')}
             />
           </ItemBox>
+          <ItemBox width="100%" height="0px">
+            <div />
+            <MessageArea active={!Auth.checkSignupPassword}>
+              {Auth.checkSignupPassword ? (
+                <div>* 비밀번호가 일치합니다.</div>
+              ) : (
+                <div>* 비밀번호가 일치하지 않습니다.</div>
+              )}
+            </MessageArea>
+          </ItemBox>
           <ItemBox>
             <div>이름</div>
             <Input
               placeholder="이름"
-              // onChange={this.onIdHandler}
+              onChange={(e) => this.inputHandler(e.target, 'name')} // onChange={this.onIdHandler}
               onFocus={(e) => (e.target.placeholder = '')}
               onBlur={(e) => (e.target.placeholder = '이름')}
             />
@@ -245,7 +281,7 @@ class Step2StudentContainer extends Component {
             <WrapperBox wrap={true}>
               <Input
                 placeholder="이메일"
-                // onChange={this.onIdHandler}
+                onChange={(e) => this.inputHandler(e.target, 'email')} // onChange={this.onIdHandler}
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '이메일')}
               />
@@ -268,7 +304,7 @@ class Step2StudentContainer extends Component {
               {/* <OverlapBtn>중복확인</OverlapBtn> */}
               <Input
                 placeholder="직접 입력"
-                // onChange={this.onIdHandler}
+                onChange={(e) => this.inputHandler(e.target, 'emailDomain')}
                 domainType={Auth.domainType}
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '직접 입력')}
@@ -280,7 +316,7 @@ class Step2StudentContainer extends Component {
             <WrapperBox>
               <Input
                 placeholder="-없이 입력하세요."
-                // onChange={this.onIdHandler}
+                onChange={(e) => this.inputHandler(e.target, 'phone')} // onChange={this.onIdHandler}
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '-없이 입력하세요.')}
               />
@@ -345,16 +381,23 @@ class Step2StudentContainer extends Component {
           </ItemBox>
         </MainBox>
         <NextBtn
-          onClick={() => {
+          onClick={async () => {
             console.info('dsfsdf');
+            await Auth.checkTutorData('step1');
+            console.info(Auth.signupAuthOne);
             if (Auth.signupType === 0) {
-              Auth.step = 3;
-              Auth.userType = 2;
+              if (Auth.signupAuthOne) {
+                Auth.step = 3;
+                Auth.userType = 2;
+                window.scrollTo(0, 0);
+              }
             } else {
-              Auth.step = 4;
-              Auth.userType = 2;
+              if (Auth.signupAuthOne) {
+                Auth.step = 4;
+                Auth.userType = 2;
+                window.scrollTo(0, 0);
+              }
             }
-            window.scrollTo(0, 0);
           }}
         >
           <div>다음</div>
@@ -430,7 +473,7 @@ const ItemBox = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 60px;
+  height: ${(props) => (props.height ? props.height : '60px')};
   margin-bottom: 20px;
   // justify-content: space-around;
   > div:nth-of-type(1) {
@@ -620,4 +663,19 @@ const NextBtn = styled.div`
       font-size: 18px;
     }
   }
+`;
+
+const MessageArea = styled.div`
+  // width: 600px;
+  // height: 80px;
+  // border: 1px solid #c7c7c7;
+  // padding: 5px 8px;
+  box-sizing: border-box;
+
+  >div{
+    
+    font-size: 13px;
+    color: ${(props) => (props.active ? 'red' : 'blue')};
+  }
+}
 `;

@@ -47,6 +47,9 @@ class TextareaContainer extends Component {
       case 'teacherSignup':
         authStore.introductionValue = event.target.value;
         break;
+      case 'studentSignup':
+        authStore.introductionValue = event.target.value;
+        break;
       // case 'noticeTitle':
       //   AdminCommunity.noticeTitle = event.target.value;
       //   break;

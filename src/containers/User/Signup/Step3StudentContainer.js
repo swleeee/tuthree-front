@@ -224,41 +224,23 @@ const customStyles = {
 @inject('Auth')
 @observer
 class Step3StudentContainer extends Component {
-  inputHandler = (e, type) => {
-    console.log(e.value);
-    // console.log(type);
-    switch (type) {
-      case 'id':
-        console.log('id');
-        break;
-      case 'password':
-        console.log('password');
-        break;
-      case 'passwordConfirm':
-        console.log('passwordConfirm');
-        break;
-      case 'name':
-        console.log('name');
-        break;
-      case 'email':
-        console.log('email');
-        break;
-      case 'phone':
-        console.log('phone');
-        break;
-      case 'certification':
-        console.log('certification');
-        break;
-      case 'gender':
-        console.log('gender');
-        break;
-      case 'birth':
-        console.log('birth');
-        break;
-      default:
-        console.log('default');
-    }
-  };
+  // selectHandler = (e, type) => {
+  //   console.log(e.value);
+  //   // console.log(type);
+  //   switch (type) {
+  //     case 'grade':
+  //       console.log('school');
+  //       Auth.school = e.value;
+  //       break;
+  //     case 'bud':
+  //       console.log('major');
+  //       Auth.major = e.value;
+  //       break;
+
+  //     default:
+  //       console.log('default');
+  //   }
+  // };
 
   render() {
     return (
@@ -394,6 +376,7 @@ class Step3StudentContainer extends Component {
             <Select
               //  id={this.props.id}
               //  className={this.props.className}
+              width={225}
               styles={customStyles}
               //  value={value}
               onChange={(e) => Auth.handleChange(e, 'grade')}
@@ -433,10 +416,15 @@ class Step3StudentContainer extends Component {
           </ItemBox>
         </MainBox>
         <NextBtn
-          onClick={() => {
-            Auth.step = 4;
-            Auth.userType = 1;
-            window.scrollTo(0, 0);
+          onClick={async () => {
+            await Auth.checkTuteeData('step1');
+            if (Auth.signupAuthTwo) {
+              Auth.tuteeSignup();
+              Auth.step = 4;
+              Auth.userType = 1;
+
+              window.scrollTo(0, 0);
+            }
           }}
         >
           <div>회원가입</div>

@@ -96,32 +96,45 @@ class Auth {
 
   @observable gradeAry = [
     {
+      label: '유아/초등학생',
+      value: 'UNDER_MIDDLE',
+    },
+    {
       label: '중1',
-      value: 1,
+      value: 'M1',
     },
     {
       label: '중2',
-      value: 2,
+      value: 'M2',
     },
     {
       label: '중3',
-      value: 3,
+      value: 'M3',
     },
     {
       label: '고1',
-      value: 4,
+      value: 'H1',
     },
     {
       label: '고2',
-      value: 5,
+      value: 'H2',
     },
     {
       label: '고3',
-      value: 6,
+      value: 'H3',
     },
     {
       label: '성인',
-      value: 7,
+      value: 'OVER_HIGH',
+    },
+    {
+      label: '중학교 검정고시 준비',
+      value: 'EXAM_M',
+    },
+
+    {
+      label: '고등학교 검정고시 준비',
+      value: 'EXAM_H',
     },
   ];
 
@@ -322,6 +335,48 @@ class Auth {
     console.log(this.step);
   };
 
+  @action resetSignupData = () => {
+    this.signupId = ''; // 아이디
+    this.checkSignupId = false;
+    this.idErrorMessage = '';
+    this.signupPassword = ''; // 비밀번호
+    this.checkSignupPassword = false;
+    this.signupPasswordConfirm = ''; // 비밀번호 확인
+    this.signupName = ''; // 이름
+
+    this.signupEmail = ''; // 이메일
+    this.signupEmailDomain = ''; // 이메일 도메인
+    this.signupPhone = ''; // 휴대전화
+    this.signupCertification = '';
+    this.signupGender = 0; // 성별
+    this.signupBirth = ''; // 출생년도
+    this.signupType = 0; // 학생 / 학부모
+    this.signupAuthOne = false;
+    this.signupAuthTwo = false;
+
+    this.locationIndex = 0;
+    this.selectedUpperLocation = '';
+    this.selectedLowerLocation = '';
+    this.lowerLocationAry = [];
+    this.selectedLocation = []; // 지역
+
+    this.subjectIndex = 0;
+    this.selectedUpperSubject = '';
+    this.selectedLowerSubject = '';
+    this.lowerSubjectAry = [];
+    this.selectedSubject = []; // 과목
+
+    this.budget = 0; // 예산
+    this.school = ''; // 학교
+    this.major = ''; // 학교
+    this.schoolState = 0; // 재학상태
+    this.grade = ''; // 학년
+
+    this.fileAry = []; // 재학증명서
+    this.fileName = '';
+
+    this.introductionValue = '';
+  };
   @action showData = () => {
     console.info(this.signupId);
     console.info(this.signupPassword);
@@ -551,6 +606,43 @@ class Auth {
     // return true;
   };
 
+  @action checkTuteeData = async (type) => {
+    switch (type) {
+      case 'step1':
+        if (!this.selectedLocation.length) {
+          await alert('지역을 선택해주세요.');
+          return;
+        }
+
+        if (!this.selectedSubject.length) {
+          await alert('과목을 선택해주세요.');
+          return;
+        }
+
+        if (!this.grade) {
+          await alert('학년을 선택해주세요.');
+          return;
+        }
+
+        if (!this.budget) {
+          await alert('급여를 선택해주세요.');
+          return;
+        }
+
+        if (!this.introductionValue) {
+          await alert('소개를 입력해주세요.');
+          return;
+        }
+
+        break;
+      default:
+        break;
+    }
+    console.info('sdfsdf');
+    this.signupAuthTwo = true;
+    // return true;
+  };
+
   @action tutorSignup = async () => {
     console.info(`id : ${this.signupId}`);
     console.info(`password : ${this.signupPassword}`);
@@ -625,6 +717,89 @@ class Auth {
     };
 
     await AccountAPI.tutorSignup(req)
+      .then((res) => {
+        console.info(res);
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        console.info(e.response.data);
+      });
+  };
+
+  @action tuteeSignup = async () => {
+    console.info(`id : ${this.signupId}`);
+    console.info(`password : ${this.signupPassword}`);
+    console.info(`passwrod_confirm : ${this.signupPasswordConfirm}`);
+    console.info(`name : ${this.signupName}`);
+    console.info(`email : ${this.signupEmail}`);
+    console.info(`email_Domain : ${this.signupEmailDomain}`);
+    console.info(`tel : ${this.signupPhone}`);
+    console.info(`sex : ${this.signupGender}`);
+    console.info(`birth : ${this.signupBirth}`);
+    console.info(`region : ${this.selectedLocation[0]}`);
+    console.info(`subject : ${this.selectedSubject[0]}`);
+    console.info(`cost : ${this.budget}`);
+    console.info(`grade : ${this.grade}`);
+
+    console.info(`detail : ${this.introductionValue}`);
+    console.info(this.signupEmail + '@' + this.signupEmailDomain);
+
+    // const file = new File();
+
+    const blob = new Blob();
+    let formData = new FormData();
+    formData.append('id', this.signupId);
+    // formData.append('id', 'test149');
+    formData.append('pwd', this.signupPassword);
+    // formData.append('pwd', 'test149');
+    formData.append('name', this.signupName);
+    // formData.append('name', 'lsw');
+    // formData.append('email', 'sdfsdf@naver.com');
+    formData.append('email', this.signupEmail + '@' + this.signupEmailDomain);
+
+    formData.append('tel', this.signupPhone);
+    // formData.append('tel', '01011111111');
+    formData.append('sex', this.signupGender === 0 ? 'MALE' : 'FEMALE');
+    // formData.append('sex', 'MALE');
+    formData.append('birth', this.signupBirth);
+    // formData.append('birth', '2000');
+    formData.append('grade', 'STUDENT');
+    // formData.append('region', this.selectedLocation[0]);
+    // formData.append('region', '수원시');
+
+    // for (let i = 0; i < this.selectedLocation.length; i++) {
+    //   formData.append(`region`, this.selectedLocation[i]);
+    // }
+
+    formData.append(`region`, this.selectedLocation[0]);
+    // formData.append(`region`, this.selectedLocation[1]);
+
+    formData.append('registration', 'OPEN');
+    formData.append('subject', this.selectedSubject[0]);
+    // formData.append('subject', '수학');
+
+    // for (let i = 0; i < this.selectedSubject.length; i++) {
+    //   formData.append(`subject`, this.selectedSubject[i]);
+    // }
+
+    formData.append('cost', this.budget);
+    // formData.append('cost', 200000);
+    formData.append('school', this.grade);
+    // formData.append('school', '가천대');
+    // formData.append('status', 'IN_SCHOOL');
+    // formData.append('status', this.schoolState);
+    // formData.append('major', this.major);
+    // formData.append('major', '컴퓨터공학과');
+    formData.append('detail', this.introductionValue);
+    // formData.append('detail', 'dsfsdfd');
+    formData.append('file', blob);
+    // formData.append('authFile', this.fileAry[0]);
+    const req = {
+      data: formData,
+    };
+
+    await AccountAPI.tuteeSignup(req)
       .then((res) => {
         console.info(res);
       })
