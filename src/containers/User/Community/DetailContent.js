@@ -12,9 +12,13 @@ import { ROOT_URL } from '../../../axios/index';
 @observer
 class DetailContent extends Component {
   componentWillUnmount = () => {
-    Community.communityDetailList = [];
-    Community.state = 1;
-    Community.communityState = 1;
+    console.info('dsfsdfd');
+
+    if (Community.communityWritingState !== 1) {
+      Community.communityDetailList = [];
+      Community.state = 1;
+      Community.communityState = 1;
+    }
   };
   render() {
     return (
@@ -131,6 +135,24 @@ class DetailContent extends Component {
           </Section>
         </Item>
         <ButtonBox>
+          <Button
+            color="#fff"
+            bcolor="blue"
+            onClick={async () => {
+              Community.communityState = 2;
+              Community.communityWritingState = 1;
+              // await Community.pushToCommunityDetail(
+              //   Community.communityDetailList,
+              //   0,
+              //   'modify'
+              // );
+            }}
+          >
+            <div>수정</div>
+          </Button>
+          <Button color="#fff" bcolor="red">
+            <div>삭제</div>
+          </Button>
           <Button
             color="#fff"
             bcolor="rgb(235, 114, 82)"

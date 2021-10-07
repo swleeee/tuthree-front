@@ -14,22 +14,22 @@ import { toJS } from 'mobx';
 class Writing extends Component {
   componentDidMount = () => {
     console.info('didmount');
-    if (AdminCommunity.faqWritingState === 1) {
-      console.info(toJS(AdminCommunity.faqDetailList));
-      AdminCommunity.faqTitle = AdminCommunity.faqDetailList[0].title;
-      AdminCommunity.faqContent = AdminCommunity.faqDetailList[0].content;
-      AdminCommunity.faqState = AdminCommunity.faqDetailList[0].type.korType;
-      console.info(AdminCommunity.faqState);
+    if (Community.faqWritingState === 1) {
+      console.info(toJS(Community.faqDetailList));
+      Community.faqTitle = Community.faqDetailList[0].title;
+      Community.faqContent = Community.faqDetailList[0].content;
+      Community.faqState = Community.faqDetailList[0].type.korType;
+      console.info(Community.faqState);
       this.setState({ g: 3 });
     }
   };
 
   componentWillUnmount = () => {
-    AdminCommunity.faqDetailList = [];
-    AdminCommunity.faqWritingState = 0;
-    AdminCommunity.state = 1;
-    AdminCommunity.faqTitle = '';
-    AdminCommunity.faqContent = '';
+    Community.faqDetailList = [];
+    Community.faqWritingState = 0;
+    Community.state = 1;
+    Community.faqTitle = '';
+    Community.faqContent = '';
     Community.communityState = 1;
   };
 
@@ -47,11 +47,11 @@ class Writing extends Component {
               <Input
                 placeholder="제목을 입력하세요."
                 onChange={(e) =>
-                  AdminCommunity.onInputHandler(e.target, 'faqTitle')
+                  Community.onInputHandler(e.target, 'community')
                 }
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '제목을 입력하세요')}
-                value={AdminCommunity.faqTitle}
+                value={Community.communityTitle}
               />
             </Content>
           </Section>
@@ -61,8 +61,8 @@ class Writing extends Component {
             </Name>
             <Content>
               <TextArea
-                value={AdminCommunity.faqContent}
-                type="faqContent"
+                value={Community.communityContent}
+                type="communityContent"
                 placeholder="입력하세요"
               />
             </Content>
@@ -82,7 +82,15 @@ class Writing extends Component {
             </Content>
           </Section>
           <ButtonBox>
-            <Button color="#000" bcolor="#fff" border="1px solid #000">
+            <Button
+              color="#000"
+              bcolor="#fff"
+              border="1px solid #000"
+              onClick={() => {
+                Community.communityState = 1;
+                Community.communityWritingState = 0;
+              }}
+            >
               <div>취소</div>
             </Button>
 
@@ -94,7 +102,7 @@ class Writing extends Component {
                 if (Community.communityWritingState === 0) {
                   Community.setCommunity();
                 } else {
-                  Community.putCommunity(Community.communityDetailList[0].id);
+                  Community.putCommunity(Community.communityDetailList.id);
                 }
               }}
             >

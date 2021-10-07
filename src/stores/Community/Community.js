@@ -10,7 +10,7 @@ class Community {
   @observable type = 1;
   @observable state = 1;
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYxMTYzOSwiZXhwIjoxNjMzNjE1MjM5LCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.FAF916cRsieMevOYti1QXqslPl_lGlaCZqcIjKR331o';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYxODMwOSwiZXhwIjoxNjMzNjIxOTA5LCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.IWB7ke5KmRkDPASBzsiYo8v-HGtSer5K0XdOHboLgQc';
 
   @observable noticeList = []; // 공지사항 페이지 당 목록 데이터
   @observable noticeListTotalCount = 0; // 공지사항 전체 개수
@@ -43,6 +43,8 @@ class Community {
   @observable communitySearchValue = '';
   @observable communitySearchFinalValue = '';
   @observable communityErrorMessage = '';
+  @observable communityTitle = '';
+  @observable communityContent = '';
 
   @action onClickNavHandler = (type) => {
     console.info(type);
@@ -291,6 +293,19 @@ class Community {
     }
   };
 
+  /* 공지사항 작성 - 제목 input chagne 함수 */
+  @action onInputHandler = (e, type) => {
+    console.info(e.value);
+    switch (type) {
+      case 'community':
+        this.communityTitle = e.value;
+        break;
+
+      default:
+        break;
+    }
+  };
+
   @action getCommunityList = async (id) => {
     console.info('communitySearchValue');
     console.info(this.communitySearchValue);
@@ -332,43 +347,13 @@ class Community {
   /* community 작성하는 함수 */
   @action setCommunity = async () => {
     console.info('community 작성 버튼 클릭');
-    let type = '';
-    // switch (this.faqState) {
-    //   case '사용자 인증':
-    //     type = 'CETIFY';
-    //     break;
-    //   case '수업매칭서비스':
-    //     type = 'MATCHING';
-    //     break;
-    //   case '수업관리서비스':
-    //     type = 'MANAGE';
-    //     break;
-    //   case '기타':
-    //     type = 'ETC';
-    //     break;
-    //   default:
-    //     break;
-    // }
+
     const formData = new FormData();
-    formData.append('userId', 'teacher20');
-    formData.append('title', 'title');
-    formData.append('content', 'content');
+    formData.append('userId', 'teacher1');
+    formData.append('title', this.communityTitle);
+    formData.append('content', this.communityContent);
     formData.append('secret', 'OPEN');
     formData.append('file', this.communityFileAry[0]);
-
-    // const req = {
-    //   data: {
-    //     userId: 'teacher1',
-    //     title: this.faqTitle,
-    //     content: this.faqContent,
-    //     secret: 'OPEN',
-    //     file: this.communityFileAry,
-    //   },
-    //   headers: {
-    //     Authorization: this.Authorization,
-
-    //   },
-    // };
 
     const req = {
       data: formData,
@@ -381,7 +366,7 @@ class Community {
       .then(async (res) => {
         console.info(res);
         this.communityWritingState = 0;
-        this.state = 1;
+        this.communityState = 1;
       })
       .catch((e) => {
         console.info(e);
@@ -391,38 +376,19 @@ class Community {
 
   /* community 수정하는 함수 */
   @action putCommunity = async (id) => {
-    // console.info(this.communityState);
-    // console.info('community 수정 버튼 클릭');
-    // let type = '';
-    // switch (this.faqState) {
-    //   case '사용자 인증':
-    //     type = 'CERTIFY';
-    //     break;
-    //   case '수업매칭서비스':
-    //     type = 'MATCHING';
-    //     break;
-    //   case '수업관리서비스':
-    //     type = 'MANAGE';
-    //     break;
-    //   case '기타':
-    //     type = 'ETC';
-    //     break;
-    //   default:
-    //     break;
-    // }
+    const formData = new FormData();
+    formData.append('userId', 'teacher20');
+    formData.append('title', 'title');
+    formData.append('content', 'content');
+    formData.append('secret', 'OPEN');
+    formData.append('file', this.communityFileAry[0]);
 
     const req = {
-      id: id,
-      data: {
-        userId: 'teacher1',
-        title: this.faqTitle,
-        content: this.faqContent,
-        secret: 'OPEN',
-        file: this.communityFileAry,
-      },
+      data: formData,
       headers: {
         Authorization: this.Authorization,
       },
+      id: id,
     };
 
     await CommunityAPI.putCommunity(req)
@@ -563,7 +529,7 @@ class Community {
       this.state = 3;
       this.communityState = 3;
     }
-    this.state = 2;
+    // this.communityState = 2;
   };
 
   /* community 클릭한 페이지로 이동하는 함수 */

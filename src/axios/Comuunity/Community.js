@@ -42,7 +42,7 @@ export function setCommunity(req) {
 export function putCommunity(req) {
   return axios({
     method: 'PUT',
-    url: `${ROOT_URL}/community/write`,
+    url: `${ROOT_URL}/community/id/${req.id}`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
     data: req.data,
