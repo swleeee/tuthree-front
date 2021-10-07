@@ -178,6 +178,7 @@ const PageBar = styled.div`
   }
 
   @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 80%;
     > img {
       align-self: auto;
       width: 14px;

@@ -67,18 +67,36 @@ class Content extends Component {
 
 export default Content;
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+`;
 
 const NavBox = styled.div`
   width: 100%;
   display: flex;
-  height: 50px;
+
+  // min-height: 50px;
+  height: 100%;
   // border: 2px solid black;
   padding-left: 10px;
   padding-bottom: 5px;
   margin-bottom: 10px;
   border-bottom: 1px solid #aaaaaa;
   margin: 50px 0;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    margin: 24px 0;
+    margin-top: 100px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    margin: 32px 0;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    margin: 40px 0;
+  }
 `;
 const Nav = styled.div`
   cursor: pointer;
