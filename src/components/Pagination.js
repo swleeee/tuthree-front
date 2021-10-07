@@ -173,6 +173,30 @@ const PageBar = styled.div`
   text-align: center;
   display: flex;
   justify-content: space-between;
+  > img {
+    align-self: center;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > img {
+      align-self: auto;
+      width: 14px;
+      height: 20px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > img {
+      width: 16px;
+      height: 22px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > img {
+      width: 18px;
+      height: 24px;
+    }
+  }
 `;
 
 const PageCount = styled.span`
@@ -191,6 +215,17 @@ const PageCount = styled.span`
     props.active &&
     css`
       font-weight: 700;
-      color: #0933b3;
+      color: #eb7252;
     `}
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 18px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 21px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 23px;
+  }
 `;
