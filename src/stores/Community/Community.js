@@ -368,10 +368,12 @@ class Community {
     await CommunityAPI.setCommunity(req)
       .then(async (res) => {
         console.info(res);
+        alert('글 작성을 완료하였습니다');
         this.communityWritingState = 0;
         this.communityState = 1;
       })
       .catch((e) => {
+        alert('글 작성하는 데 실패하였습니다');
         console.info(e);
         console.info(e.response);
       });
@@ -403,10 +405,12 @@ class Community {
     await CommunityAPI.putCommunity(req)
       .then(async (res) => {
         console.info(res);
+        alert('글 수정이 완료되었습니다');
         this.communityWritingState = 0;
-        this.state = 1;
+        this.communityState = 1;
       })
       .catch((e) => {
+        alert('글 수정을 실패하였습니다');
         console.info(e);
         console.info(e.response);
       });
@@ -424,12 +428,13 @@ class Community {
     await CommunityAPI.delCommunity(req)
       .then((res) => {
         console.info(res);
-
+        alert('글 삭제가 완료되었습니다');
         this.communityState = 1;
         this.communityWritingState = 0;
         this.getCommunityList();
       })
       .catch((e) => {
+        alert('글 삭제를 실패하였습니다');
         console.info(e);
         console.info(e.response);
       });
