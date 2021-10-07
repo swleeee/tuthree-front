@@ -19,8 +19,30 @@ class Writing extends Component {
       console.info(toJS(Community.communityDetailFileAry));
       Community.communityTitle = Community.communityDetailList.title;
       Community.communityContent = Community.communityDetailList.content;
-      Community.communityFileAry = Community.communityDetailFileAry;
-      // Community.communityDetailFileAry
+
+      for (let i = 0; i < Community.communityDetailFileAry.length; i++) {
+        // formData.append(`file`, this.communityFileAry[i]);
+        let blob = new Blob([Community.communityDetailFileAry[i].file], {
+          type: 'application/octet-stream',
+        });
+        console.info(blob);
+
+        let file = new File([blob], Community.communityDetailFileAry[i].name);
+        console.info(file);
+        // Community.communityFileAry = Community.communityDetailFileAry;
+        Community.communityFileAry.push(file);
+      }
+
+      // let blob = new Blob([Community.communityDetailFileAry[0].file], {
+      //   type: 'application/octet-stream',
+      // });
+      // console.info(blob);
+
+      // let file = new File([blob], Community.communityDetailFileAry[0].name);
+      // console.info(file);
+      // // Community.communityFileAry = Community.communityDetailFileAry;
+      // Community.communityFileAry.push(file);
+
       this.setState({ g: 3 });
     }
   };

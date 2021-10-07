@@ -353,7 +353,10 @@ class Community {
     formData.append('title', this.communityTitle);
     formData.append('content', this.communityContent);
     formData.append('secret', 'OPEN');
-    formData.append('file', this.communityFileAry[0]);
+    // formData.append('file', this.communityFileAry[0]);
+    for (let i = 0; i < this.communityFileAry.length; i++) {
+      formData.append(`file`, this.communityFileAry[i]);
+    }
 
     const req = {
       data: formData,
@@ -376,12 +379,18 @@ class Community {
 
   /* community 수정하는 함수 */
   @action putCommunity = async (id) => {
+    console.info(toJS(this.communityFileAry[0]));
+    console.info(toJS(this.communityFileAry[1]));
     const formData = new FormData();
-    formData.append('userId', 'teacher20');
-    formData.append('title', 'title');
-    formData.append('content', 'content');
+    formData.append('userId', 'teacher1');
+
+    formData.append('title', this.communityTitle);
+    formData.append('content', this.communityContent);
     formData.append('secret', 'OPEN');
-    formData.append('file', this.communityFileAry[0]);
+    // formData.append('file', this.communityFileAry[0]);
+    for (let i = 0; i < this.communityFileAry.length; i++) {
+      formData.append(`file`, this.communityFileAry[i]);
+    }
 
     const req = {
       data: formData,
