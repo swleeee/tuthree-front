@@ -8,6 +8,7 @@ import TextAreaContainer from '../../../components/TextareaContainer';
 import viewImg from '../../../static/images/Common/visibility.png';
 import { ROOT_URL } from '../../../axios/index';
 import fileImg from '../../../static/images/Common/files.png';
+import { toJS } from 'mobx';
 
 @inject('Community', 'Common')
 @observer
@@ -156,7 +157,14 @@ class DetailContent extends Component {
           >
             <div>수정</div>
           </Button>
-          <Button color="#fff" bcolor="red">
+          <Button
+            color="#fff"
+            bcolor="red"
+            onClick={async () => {
+              // console.info(toJS(Community.communityDetailList));
+              await Community.delCommunity(Community.communityDetailList.id);
+            }}
+          >
             <div>삭제</div>
           </Button>
           <Button

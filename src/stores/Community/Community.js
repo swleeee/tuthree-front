@@ -10,7 +10,7 @@ class Community {
   @observable type = 1;
   @observable state = 1;
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYyMjM2NCwiZXhwIjoxNjMzNjI1OTY0LCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.EEbNX2hMMidXhtZElizi88q0yhso_Cqjp5VAGDPnTS0';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYyNjExMywiZXhwIjoxNjMzNjI5NzEzLCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.tq2TTKCEymrrUvXwrCi_vmK1TbutNLZwmLtRjZaTI2g';
 
   @observable noticeList = []; // 공지사항 페이지 당 목록 데이터
   @observable noticeListTotalCount = 0; // 공지사항 전체 개수
@@ -424,11 +424,10 @@ class Community {
     await CommunityAPI.delCommunity(req)
       .then((res) => {
         console.info(res);
-        if (this.communityDelState === 1) {
-          this.state = 1;
-          this.communityWritingState = 0;
-          this.getCommunityList();
-        }
+
+        this.communityState = 1;
+        this.communityWritingState = 0;
+        this.getCommunityList();
       })
       .catch((e) => {
         console.info(e);

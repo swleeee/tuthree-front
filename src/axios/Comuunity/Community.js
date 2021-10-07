@@ -52,7 +52,7 @@ export function putCommunity(req) {
 export function delCommunity(req) {
   return axios({
     method: 'DELETE',
-    url: `${ROOT_URL}/community/${req.id}`,
+    url: `${ROOT_URL}/community/id/${req.id}`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });
