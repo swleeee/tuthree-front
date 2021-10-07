@@ -1,4 +1,5 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
+import LocationList from '../../sigungu.json';
 
 class Common {
   constructor() {

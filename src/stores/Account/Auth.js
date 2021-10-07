@@ -403,16 +403,18 @@ class Auth {
   };
 
   @action setUpperLocation = (e) => {
-    console.info(e[0]);
-    this.selectedUpperLocation = e.label;
-    // this.midCategorySet = e.detail;
-    console.info(toJS(e[0]));
-    console.info(toJS(this.selectedUpperLocation));
-    this.selectedLowerLocation = e.value[0].label;
+    console.info(e);
+    // console.info(e[0]);
+    // this.selectedUpperLocation = e.label;
+    this.selectedUpperLocation = e.name;
+
+    // console.info(toJS(e[0]));
+    // console.info(toJS(this.selectedUpperLocation));
+    this.selectedLowerLocation = e.gugun[0].name;
   };
 
   @action setLowerLocation = (e) => {
-    this.selectedLowerLocation = e.label;
+    this.selectedLowerLocation = e.name;
     // this.midCategorySet = e.detail;
     console.info(toJS(e));
     console.info(toJS(this.selectedUpperLocation));
@@ -438,12 +440,14 @@ class Auth {
   @action handleChange = (e, type) => {
     switch (type) {
       case 'upperLocation':
+        console.info(e);
         console.info('upperLocation');
+
         this.locationIndex = e.id;
         this.setUpperLocation(e);
         this.lowerLocationAry = [];
 
-        e.value.map((item, idx) => {
+        e.gugun.map((item, idx) => {
           console.info(item);
           this.lowerLocationAry.push(item);
         });
