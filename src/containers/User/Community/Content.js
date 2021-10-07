@@ -120,7 +120,7 @@ class Content extends Component {
             <Title>제목</Title>
             <Id>아이디</Id>
             <Date>등록일</Date>
-            {/* <View>조회수</View> */}
+            <View>조회수</View>
           </Line>
 
           {/* <Line>
@@ -155,7 +155,7 @@ class Content extends Component {
                   <Title>{item.title}</Title>
                   <Id>{item.userId}</Id>
                   <Date>{item.writeAt}</Date>
-                  {/* <View>{item.view}</View> */}
+                  <View>{item.view}</View>
                 </Line>
               );
             })}
@@ -235,6 +235,21 @@ const Button = styled.button`
     font-size: 16px;
     font-weight: bold;
     color: #fff;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 60px;
+    height: 28px;
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 80px;
+    height: 32px;
+    > div {
+      font-size: 15px;
+    }
   }
 `;
 
@@ -322,6 +337,17 @@ const Line = styled.div`
     font-size: ${(props) => (props.title ? '20' : '16')}px;
     font-weight: ${(props) => (props.title ? 'bold' : '400')};
   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      font-size: ${(props) => (props.title ? '14' : '11')}px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: ${(props) => (props.title ? '18' : '14')}px;
+    }
+  }
 `;
 const Number = styled.div`
   //   border: 2px solid red;
@@ -338,6 +364,14 @@ const Title = styled.div`
   //   border: 2px solid blue;
   flex-grow: 6;
   width: 20%;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-grow: 2.5;
+    width: 12%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 15%;
+  }
 `;
 const Id = styled.div`
   flex-grow: 1;
@@ -348,10 +382,18 @@ const Date = styled.div`
   //   border: 2px solid green;
   flex-grow: 1;
   width: 3%;
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 5%;
+  }
 `;
 const View = styled.div`
   flex-grow: 1;
   width: 3%;
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 3%;
+  }
 `;
 const ButtonBox = styled.div``;
 
@@ -398,5 +440,22 @@ const SearchArea = styled.div`
 
   div:nth-of-type(2) {
     display: ${(props) => (props.error ? 'none' : 'block')};
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      font-size: 17px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: 20px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      font-size: 22px;
+    }
   }
 `;
