@@ -64,12 +64,12 @@ class Content extends Component {
             <div>로그인</div>
           </Button>
           {/* </Link> */}
-          <Link to="/signup">
+          <Link to="/signup" style={{ marginBottom: '30px' }}>
             <Button border="1px solid black">
               <div>회원가입</div>
             </Button>
           </Link>
-          <Button border="1px solid #F4EF21">
+          <Button background="#F4EF21">
             <div>카카오 로그인</div>
           </Button>
         </Container>
