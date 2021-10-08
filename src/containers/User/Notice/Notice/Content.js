@@ -158,6 +158,7 @@ const MainBox = styled.div`
 `;
 
 const Line = styled.div`
+  cursor: pointer;
   width: 100%;
   height: 60px;
   display: flex;

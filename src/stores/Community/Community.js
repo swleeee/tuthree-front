@@ -10,7 +10,7 @@ class Community {
   @observable type = 1;
   @observable state = 1;
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYyNjExMywiZXhwIjoxNjMzNjI5NzEzLCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.tq2TTKCEymrrUvXwrCi_vmK1TbutNLZwmLtRjZaTI2g';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzY1ODk3NywiZXhwIjoxNjMzNjYyNTc3LCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.a8s5pCBhZhosj2wBCdOAFYcI_-qJ6Vu32FQZ20gW3Dw';
 
   @observable noticeList = []; // 공지사항 페이지 당 목록 데이터
   @observable noticeListTotalCount = 0; // 공지사항 전체 개수

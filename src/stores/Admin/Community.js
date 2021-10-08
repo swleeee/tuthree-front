@@ -7,7 +7,7 @@ class Community {
     makeObservable(this);
   }
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYyMjQ4NywiZXhwIjoxNjMzNjI2MDg3LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.8IGb4OIDZu2PMILajh8rZA1Ks0MOTEgIM8yyK1N2AN8';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzY1ODk2NCwiZXhwIjoxNjMzNjYyNTY0LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.Frs_y729dFISaeQ800JMwE-IWmAOUDMm_WuDqtnT-oo';
   @observable type = 1; // FAQ : 1, 공지사항 : 2, 커뮤니티 : 3
   @observable state = 1; // 조회 : 1, 글 쓰기 : 2, 글 수정 : 3
 
@@ -152,10 +152,12 @@ class Community {
     await NoticeAPI.setAdminNotice(req)
       .then(async (res) => {
         console.info(res);
+        alert('해당 공지사항 글을 작성하였습니다.');
         this.noticeWritingState = 0;
         this.state = 1;
       })
       .catch((e) => {
+        alert('해당 공지사항 글을 작성하는데 실패하였습니다.');
         console.info(e);
         console.info(e.response);
       });
@@ -185,10 +187,13 @@ class Community {
     await NoticeAPI.putAdminNotice(req)
       .then(async (res) => {
         console.info(res);
+        alert('해당 공지사항 글을 수정하였습니다.');
+
         this.noticeWritingState = 0;
         this.state = 1;
       })
       .catch((e) => {
+        alert('해당 공지사항 글을 수정하는데 실패하였습니다.');
         console.info(e);
         console.info(e.response);
       });
@@ -208,6 +213,7 @@ class Community {
     await NoticeAPI.delAdminNotice(req)
       .then((res) => {
         console.info(res);
+        alert('해당 공지사항 글이 삭제되었습니다.');
         if (this.noticeDelState === 1) {
           this.state = 1;
           this.noticeWritingState = 0;
@@ -215,6 +221,7 @@ class Community {
         }
       })
       .catch((e) => {
+        alert('해당 공지사항 글을 삭제하는데 실패하였습니다.');
         console.info(e);
         console.info(e.response);
       });
@@ -419,7 +426,7 @@ class Community {
     let type = '';
     switch (this.faqState) {
       case '사용자 인증':
-        type = 'CETIFY';
+        type = 'CERTIFY';
         break;
       case '수업매칭서비스':
         type = 'MATCHING';
@@ -452,10 +459,12 @@ class Community {
     await FaqAPI.setAdminFaq(req)
       .then(async (res) => {
         console.info(res);
+        alert('해당 FAQ 글을 작성하였습니다.');
         this.faqWritingState = 0;
         this.state = 1;
       })
       .catch((e) => {
+        alert('해당 FAQ 글을 작성하는데 실패하였습니다.');
         console.info(e);
         console.info(e.response);
       });
@@ -503,10 +512,12 @@ class Community {
     await FaqAPI.putAdminFaq(req)
       .then(async (res) => {
         console.info(res);
+        alert('해당 FAQ 글을 수정하였습니다.');
         this.faqWritingState = 0;
         this.state = 1;
       })
       .catch((e) => {
+        alert('해당 FAQ 글을 수정하는데 실패하였습니다.');
         console.info(e);
         console.info(e.response);
       });
@@ -525,12 +536,14 @@ class Community {
       .then((res) => {
         console.info(res);
         if (this.faqDelState === 1) {
+          alert('해당 FAQ 글이 삭제되었습니다.');
           this.state = 1;
           this.faqWritingState = 0;
           this.getAdminFaqList();
         }
       })
       .catch((e) => {
+        alert('해당 FAQ 글을 삭제하는데 실패하였습니다.');
         console.info(e);
         console.info(e.response);
       });

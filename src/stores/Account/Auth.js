@@ -952,7 +952,8 @@ class Auth {
 
         // window.location.href = '/';
         if (res.data.success) {
-          // window.location.href = '/';
+          alert('로그인에 성공하셨습니다.');
+          window.location.href = '/';
         } else {
           await alert(res.data.message);
         }
