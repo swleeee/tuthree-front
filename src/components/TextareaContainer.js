@@ -107,7 +107,7 @@ const Textarea = styled.textarea`
       : 'none'};
   width: 100%;
   // max-width: 630px;
-  padding: 14px 0;
+  padding: 14px 10px;
   box-sizing: border-box;
   font-size: 15px;
   line-height: 34px;

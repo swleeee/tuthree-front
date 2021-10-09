@@ -80,6 +80,25 @@ class Auth {
       value: 1000000,
     },
   ];
+
+  @observable budgetTypeAry = [
+    {
+      label: '시급',
+      value: '시급',
+    },
+    {
+      label: '일급',
+      value: '일급',
+    },
+    {
+      label: '주급',
+      value: '주급',
+    },
+    {
+      label: '월급',
+      value: '월급',
+    },
+  ];
   @observable stateSchoolAry = [
     {
       label: '재학상태',
@@ -311,6 +330,7 @@ class Auth {
   @observable selectedSubject = []; // 과목
 
   @observable budget = 0; // 예산
+  @observable budgetType = ''; // 예산 유형(시급, 일금, 주급, 월급)
   @observable school = ''; // 학교
   @observable major = ''; // 학교
   @observable schoolState = 0; // 재학상태
@@ -485,7 +505,7 @@ class Auth {
 
         break;
       case 'budget':
-        this.budget = e.value;
+        this.budgetType = e.value;
         break;
       case 'schoolState':
         this.schoolState = e.value;
