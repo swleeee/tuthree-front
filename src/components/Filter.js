@@ -414,7 +414,7 @@ const SelectBox = styled.div`
 `;
 const ButtonBox = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   @media (min-width: 0px) and (max-width: 767.98px) {
     margin-top: 10px;
   }
