@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Filter from '../../../components/Filter';
 import Card from '../../../components/Card';
+import { inject, observer, Provider } from 'mobx-react';
+import Tutor from '../../../stores/Matching/Tutor';
 
 const dummyData = [
   {
@@ -138,6 +140,8 @@ const dummyData = [
   },
 ];
 
+@inject('Tutor')
+@observer
 class Content extends Component {
   render() {
     return (
@@ -151,17 +155,24 @@ class Content extends Component {
           <CardContainer>
             {dummyData.map((item, idx) => {
               return (
-                <Card
-                  type="teacher"
-                  name={item.name}
-                  gender={item.gender}
-                  rating={item.rating}
-                  school={item.school}
-                  subject={item.subject}
-                  location={item.location}
-                  budget={item.budget}
-                  registration={item.registration}
-                />
+                <div
+                  onClick={async () => {
+                    console.info('dsfdfd');
+                    await Tutor.pushToDetail(item, idx);
+                  }}
+                >
+                  <Card
+                    type="teacher"
+                    name={item.name}
+                    gender={item.gender}
+                    rating={item.rating}
+                    school={item.school}
+                    subject={item.subject}
+                    location={item.location}
+                    budget={item.budget}
+                    registration={item.registration}
+                  />
+                </div>
               );
             })}
           </CardContainer>

@@ -4,6 +4,7 @@ class Tutor {
   constructor() {
     makeObservable(this);
   }
+  @observable state = 0;
   @observable domainType = 1;
 
   @observable locationIndex = 0;
@@ -17,6 +18,8 @@ class Tutor {
   @observable selectedLowerSubject = '';
   @observable lowerSubjectAry = [];
   @observable selectedSubject = []; // 과목
+
+  @observable tutorDetailAry = [];
 
   @observable budgetType = '';
 
@@ -180,6 +183,11 @@ class Tutor {
       default:
         break;
     }
+  };
+  @action pushToDetail = (item, idx) => {
+    this.tutorDetailAry.push(item);
+    this.state = 1;
+    console.info(toJS(this.tutorDetailAry));
   };
 }
 

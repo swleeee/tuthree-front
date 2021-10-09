@@ -64,6 +64,7 @@ class Card extends Component {
 export default Card;
 
 const Container = styled.div`
+  cursor: pointer;
   width: 250px;
   height: 350px;
   border: 2px solid #707070;
