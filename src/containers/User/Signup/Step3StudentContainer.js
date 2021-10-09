@@ -116,7 +116,6 @@ class Step3StudentContainer extends Component {
                 <div>지역</div>
 
                 <Select
-                  styles={customStyles}
                   styles={
                     Common.width > 767.98 ? customStyles : mobileCustomStyles
                   }

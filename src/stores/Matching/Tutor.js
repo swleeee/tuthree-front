@@ -18,6 +18,26 @@ class Tutor {
   @observable lowerSubjectAry = [];
   @observable selectedSubject = []; // 과목
 
+  @observable budgetType = '';
+
+  @observable budgetTypeAry = [
+    {
+      label: '시급',
+      value: '시급',
+    },
+    {
+      label: '일급',
+      value: '일급',
+    },
+    {
+      label: '주급',
+      value: '주급',
+    },
+    {
+      label: '월급',
+      value: '월급',
+    },
+  ];
   @observable budgetMark = [
     {
       value: 0,
@@ -67,16 +87,18 @@ class Tutor {
   @observable budgetValue = [0, 100];
 
   @action setUpperLocation = (e) => {
-    console.info(e[0]);
-    this.selectedUpperLocation = e.label;
-    // this.midCategorySet = e.detail;
-    console.info(toJS(e[0]));
-    console.info(toJS(this.selectedUpperLocation));
-    this.selectedLowerLocation = e.value[0].label;
+    console.info(e);
+    // console.info(e[0]);
+    // this.selectedUpperLocation = e.label;
+    this.selectedUpperLocation = e.name;
+
+    // console.info(toJS(e[0]));
+    // console.info(toJS(this.selectedUpperLocation));
+    this.selectedLowerLocation = e.gugun[0].name;
   };
 
   @action setLowerLocation = (e) => {
-    this.selectedLowerLocation = e.label;
+    this.selectedLowerLocation = e.name;
     // this.midCategorySet = e.detail;
     console.info(toJS(e));
     console.info(toJS(this.selectedUpperLocation));
@@ -99,16 +121,17 @@ class Tutor {
     console.info(toJS(this.selectedUpperSubject));
     // this.selectedLowerLocation = e.value[0].label;
   };
-
   @action handleChange = (e, type) => {
     switch (type) {
       case 'upperLocation':
+        console.info(e);
         console.info('upperLocation');
+
         this.locationIndex = e.id;
         this.setUpperLocation(e);
         this.lowerLocationAry = [];
 
-        e.value.map((item, idx) => {
+        e.gugun.map((item, idx) => {
           console.info(item);
           this.lowerLocationAry.push(item);
         });
@@ -146,8 +169,7 @@ class Tutor {
 
         break;
       case 'budget':
-        // this.budget = e.value;
-        console.info(e);
+        this.budgetType = e.value;
         break;
       case 'schoolState':
         this.schoolState = e.value;
