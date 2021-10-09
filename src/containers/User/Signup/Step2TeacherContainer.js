@@ -364,12 +364,12 @@ class Step2TeacherContainer extends Component {
         </MainBox>
         <NextBtn
           onClick={async () => {
-            // await Auth.checkTutorData('step1');
-            // if (Auth.signupAuthOne) {
-            Auth.step = 3;
-            Auth.userType = 1;
-            window.scrollTo(0, 0);
-            // }
+            await Auth.checkTutorData('step1');
+            if (Auth.signupAuthOne) {
+              Auth.step = 3;
+              Auth.userType = 1;
+              window.scrollTo(0, 0);
+            }
           }}
         >
           <div>다음</div>

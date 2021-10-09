@@ -388,6 +388,7 @@ class Auth {
     this.selectedSubject = []; // 과목
 
     this.budget = 0; // 예산
+    this.budgetType = '';
     this.school = ''; // 학교
     this.major = ''; // 학교
     this.schoolState = 0; // 재학상태
@@ -728,7 +729,7 @@ class Auth {
       formData.append(`subject`, this.selectedSubject[i]);
     }
 
-    formData.append('cost', this.budget);
+    formData.append('cost', this.budget + this.budgetType);
     // formData.append('cost', 200000);
     formData.append('school', this.school);
     // formData.append('school', '가천대');
@@ -819,7 +820,7 @@ class Auth {
       formData.append(`subject`, this.selectedSubject[i]);
     }
 
-    formData.append('cost', this.budget);
+    formData.append('cost', this.budget + this.budgetType);
     // formData.append('cost', 200000);
     formData.append('school', this.grade);
     // formData.append('school', '가천대');

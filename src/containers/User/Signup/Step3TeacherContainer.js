@@ -130,188 +130,428 @@ class Step3TeacherContainer extends Component {
     return (
       <>
         {Common.width > 767.98 ? (
-          <>
-            <Container>
-              <Name>과외선생님 회원가입</Name>
-              <ProgressContainer step="3" />
-              <MainBox>
-                <ItemBox>
-                  <div>지역</div>
+          <Container>
+            <Name>과외선생님 회원가입</Name>
+            <ProgressContainer step="3" />
+            <MainBox>
+              <ItemBox>
+                <div>지역</div>
 
-                  <Select
-                    styles={
-                      Common.width > 767.98 ? customStyles : mobileCustomStyles
-                    }
-                    value={{
-                      name: Auth.selectedUpperLocation
-                        ? Auth.selectedUpperLocation
-                        : '시/도',
-                      gugun: Auth.selectedUpperLocation,
-                    }}
-                    onChange={(e) => Auth.handleChange(e, 'upperLocation')}
-                    getOptionLabel={(option) => option.name}
-                    options={LocationList}
-                    //  isSearchable={false}
-                    placeholder="시/도"
-                    // ml="15"
-                    domainType={Auth.domainType}
-                  />
+                <Select
+                  styles={
+                    Common.width > 767.98 ? customStyles : mobileCustomStyles
+                  }
+                  value={{
+                    name: Auth.selectedUpperLocation
+                      ? Auth.selectedUpperLocation
+                      : '시/도',
+                    gugun: Auth.selectedUpperLocation,
+                  }}
+                  onChange={(e) => Auth.handleChange(e, 'upperLocation')}
+                  getOptionLabel={(option) => option.name}
+                  options={LocationList}
+                  //  isSearchable={false}
+                  placeholder="시/도"
+                  // ml="15"
+                  domainType={Auth.domainType}
+                />
 
-                  <Select
-                    width={330}
-                    id="lowerLocation"
-                    styles={
-                      Common.width > 767.98 ? customStyles : mobileCustomStyles
-                    }
-                    value={{
-                      name: Auth.selectedLowerLocation
-                        ? Auth.selectedLowerLocation
-                        : '시/군/구',
-                      gugun: Auth.selectedLowerLocation,
-                    }}
-                    temp={Auth.selectedLowerLocation}
-                    onChange={(e) => Auth.handleChange(e, 'lowerLocation')}
-                    getOptionLabel={(option) => option.name}
-                    // options={locationAry[Auth.locationIndex].value}
-                    options={Auth.lowerLocationAry}
-                    isSearchable={false}
-                    placeholder={Auth.selectedLowerLocation}
-                    // placeholder={`ㅣㅣ`}
-                    // onFocus={() => (this.placeholder = '')}
-                    ml={Common.width > 767.98 && '15'}
-                    domainType={Auth.domainType}
-                  />
-                </ItemBox>
-                <ItemBox width="100%" height="100%">
-                  <div />
-                  <SelectArea>
-                    {Auth.selectedLocation.map((item, idx) => {
-                      return (
-                        <div
-                          onClick={() => {
-                            console.info('sdf');
-                            Auth.selectedLocation.splice(idx, 1);
-                          }}
-                        >
-                          <div>{item}</div>
-                          <img src={deleteImg} />
-                        </div>
-                      );
-                    })}
-                  </SelectArea>
-                </ItemBox>
-                <ItemBox>
-                  <div>과목</div>
-                  <Select
-                    styles={
-                      Common.width > 767.98 ? customStyles : mobileCustomStyles
-                    }
-                    value={{
-                      label: Auth.selectedUpperSubject
-                        ? Auth.selectedUpperSubject
-                        : '상위 과목',
-                      value: Auth.selectedUpperSubject,
-                    }}
-                    onChange={(e) => Auth.handleChange(e, 'upperSubject')}
-                    getOptionLabel={(option) => option.label}
-                    options={SubjectList}
-                    //  isSearchable={false}
-                    placeholder="시/도"
-                    // ml="15"
-                    domainType={Auth.domainType}
-                  />
+                <Select
+                  width={330}
+                  id="lowerLocation"
+                  styles={
+                    Common.width > 767.98 ? customStyles : mobileCustomStyles
+                  }
+                  value={{
+                    name: Auth.selectedLowerLocation
+                      ? Auth.selectedLowerLocation
+                      : '시/군/구',
+                    gugun: Auth.selectedLowerLocation,
+                  }}
+                  temp={Auth.selectedLowerLocation}
+                  onChange={(e) => Auth.handleChange(e, 'lowerLocation')}
+                  getOptionLabel={(option) => option.name}
+                  // options={locationAry[Auth.locationIndex].value}
+                  options={Auth.lowerLocationAry}
+                  isSearchable={false}
+                  placeholder={Auth.selectedLowerLocation}
+                  // placeholder={`ㅣㅣ`}
+                  // onFocus={() => (this.placeholder = '')}
+                  ml={Common.width > 767.98 && '15'}
+                  domainType={Auth.domainType}
+                />
+              </ItemBox>
+              <ItemBox width="100%" height="100%">
+                <div />
+                <SelectArea>
+                  {Auth.selectedLocation.map((item, idx) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          console.info('sdf');
+                          Auth.selectedLocation.splice(idx, 1);
+                        }}
+                      >
+                        <div>{item}</div>
+                        <img src={deleteImg} />
+                      </div>
+                    );
+                  })}
+                </SelectArea>
+              </ItemBox>
+              <ItemBox>
+                <div>과목</div>
+                <Select
+                  styles={
+                    Common.width > 767.98 ? customStyles : mobileCustomStyles
+                  }
+                  value={{
+                    label: Auth.selectedUpperSubject
+                      ? Auth.selectedUpperSubject
+                      : '상위 과목',
+                    value: Auth.selectedUpperSubject,
+                  }}
+                  onChange={(e) => Auth.handleChange(e, 'upperSubject')}
+                  getOptionLabel={(option) => option.label}
+                  options={SubjectList}
+                  //  isSearchable={false}
+                  placeholder="시/도"
+                  // ml="15"
+                  domainType={Auth.domainType}
+                />
 
-                  <Select
-                    width={330}
-                    id="lowerLocation"
-                    styles={
-                      Common.width > 767.98 ? customStyles : mobileCustomStyles
-                    }
-                    value={{
-                      label: Auth.selectedLowerSubject
-                        ? Auth.selectedLowerSubject
-                        : '하위 과목',
-                      value: Auth.selectedLowerSubject,
-                    }}
-                    onChange={(e) => Auth.handleChange(e, 'lowerSubject')}
-                    getOptionLabel={(option) => option.label}
-                    // options={locationAry[Auth.locationIndex].value}
-                    options={Auth.lowerSubjectAry}
-                    isSearchable={false}
-                    placeholder={Auth.selectedLowerSubject}
-                    // placeholder={`ㅣㅣ`}
-                    // onFocus={() => (this.placeholder = '')}
-                    ml={Common.width > 767.98 && '15'}
-                    domainType={Auth.domainType}
-                  />
-                </ItemBox>
-                <ItemBox width="100%" height="100%">
-                  <div />
-                  <SelectArea>
-                    {Auth.selectedSubject.map((item, idx) => {
-                      return (
-                        <div
-                          onClick={() => {
-                            Auth.selectedSubject.splice(idx, 1);
-                          }}
-                        >
-                          <div>{item}</div>
-                          <img src={deleteImg} />
-                        </div>
-                      );
-                    })}
-                  </SelectArea>
-                </ItemBox>
-                <ItemBox>
-                  <div>학교</div>
-                  <WrapperBox>
-                    <Input
-                      placeholder="학교"
-                      onChange={(e) => this.inputHandler(e.target, 'school')}
-                      onFocus={(e) => (e.target.placeholder = '')}
-                      onBlur={(e) => (e.target.placeholder = '학교')}
-                    />
-                    <Select
-                      //  id={this.props.id}
-                      //  className={this.props.className}
-                      styles={
-                        Common.width > 767.98
-                          ? customStyles
-                          : mobileCustomStyles
-                      }
-                      //  value={value}
-                      onChange={(e) => Auth.handleChange(e, 'schoolState')}
-                      getOptionLabel={(option) => option.label}
-                      options={Auth.stateSchoolAry}
-                      //  isSearchable={false}
-                      placeholder="선택하세요."
-                      ml="15"
-                      domainType={Auth.domainType}
-                    />
-                    {/* <OverlapBtn>중복확인</OverlapBtn> */}
-                  </WrapperBox>
-                </ItemBox>
-                <ItemBox>
-                  <div>학과</div>
+                <Select
+                  width={330}
+                  id="lowerLocation"
+                  styles={
+                    Common.width > 767.98 ? customStyles : mobileCustomStyles
+                  }
+                  value={{
+                    label: Auth.selectedLowerSubject
+                      ? Auth.selectedLowerSubject
+                      : '하위 과목',
+                    value: Auth.selectedLowerSubject,
+                  }}
+                  onChange={(e) => Auth.handleChange(e, 'lowerSubject')}
+                  getOptionLabel={(option) => option.label}
+                  // options={locationAry[Auth.locationIndex].value}
+                  options={Auth.lowerSubjectAry}
+                  isSearchable={false}
+                  placeholder={Auth.selectedLowerSubject}
+                  // placeholder={`ㅣㅣ`}
+                  // onFocus={() => (this.placeholder = '')}
+                  ml={Common.width > 767.98 && '15'}
+                  domainType={Auth.domainType}
+                />
+              </ItemBox>
+              <ItemBox width="100%" height="100%">
+                <div />
+                <SelectArea>
+                  {Auth.selectedSubject.map((item, idx) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          Auth.selectedSubject.splice(idx, 1);
+                        }}
+                      >
+                        <div>{item}</div>
+                        <img src={deleteImg} />
+                      </div>
+                    );
+                  })}
+                </SelectArea>
+              </ItemBox>
+              <ItemBox>
+                <div>학교</div>
+                <WrapperBox>
                   <Input
-                    placeholder="학과"
-                    onChange={(e) => this.inputHandler(e.target, 'major')}
+                    placeholder="학교"
+                    onChange={(e) => this.inputHandler(e.target, 'school')}
                     onFocus={(e) => (e.target.placeholder = '')}
-                    onBlur={(e) => (e.target.placeholder = '학과')}
+                    onBlur={(e) => (e.target.placeholder = '학교')}
                   />
-                </ItemBox>
-                <ItemBox>
-                  <div>재학증명서</div>
-                  <FileUpload
-                    file={true}
-                    fileAry={Auth.fileAry}
-                    type="signup"
-                    state="single"
+                  <Select
+                    //  id={this.props.id}
+                    //  className={this.props.className}
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    //  value={value}
+                    onChange={(e) => Auth.handleChange(e, 'schoolState')}
+                    getOptionLabel={(option) => option.label}
+                    options={Auth.stateSchoolAry}
+                    //  isSearchable={false}
+                    placeholder="선택하세요."
+                    ml="15"
+                    domainType={Auth.domainType}
                   />
-                </ItemBox>
-                <ItemBox>
-                  <div>급여</div>
-                  <WrapperBox>
+                  {/* <OverlapBtn>중복확인</OverlapBtn> */}
+                </WrapperBox>
+              </ItemBox>
+              <ItemBox>
+                <div>학과</div>
+                <Input
+                  placeholder="학과"
+                  onChange={(e) => this.inputHandler(e.target, 'major')}
+                  onFocus={(e) => (e.target.placeholder = '')}
+                  onBlur={(e) => (e.target.placeholder = '학과')}
+                />
+              </ItemBox>
+              <ItemBox>
+                <div>재학증명서</div>
+                <FileUpload
+                  file={true}
+                  fileAry={Auth.fileAry}
+                  type="signup"
+                  state="single"
+                />
+              </ItemBox>
+              <ItemBox>
+                <div>급여</div>
+                <WrapperBox>
+                  <Input
+                    //  width="80"
+
+                    domainType={2}
+                    placeholder="급여(ex: 350000, 650000)"
+                    onChange={(e) => this.inputHandler(e.target, 'budget')}
+                    onFocus={(e) => (e.target.placeholder = '')}
+                    onBlur={(e) =>
+                      (e.target.placeholder = '급여(ex: 350000, 650000)')
+                    }
+                  />
+                  <span>원</span>
+                  <Select
+                    //  id={this.props.id}
+                    //  className={this.props.className}
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    //  value={value}
+                    onChange={(e) => Auth.handleChange(e, 'budget')}
+                    getOptionLabel={(option) => option.label}
+                    options={Auth.budgetTypeAry}
+                    //  isSearchable={false}
+                    placeholder="선택하세요."
+                    ml="25"
+                    domainType={Auth.domainType}
+                  />
+                </WrapperBox>
+              </ItemBox>
+              <ItemBox height="100%">
+                <div>소개</div>
+                <TextArea
+                  type="teacherSignup"
+                  placeholder="예) 수/금 16시, 주말 시간 가능(협의 가능)
+                      시급 2만원
+                      개념 설명부터 실전 문제 풀이까지 꼼꼼하게 해드립니다."
+                />
+              </ItemBox>
+            </MainBox>
+            <NextBtn
+              onClick={async () => {
+                await Auth.checkTutorDataTwo('step1');
+                if (Auth.signupAuthTwo) {
+                  await Auth.tutorSignup();
+                  console.info(Auth.signupComplete);
+                  if (Auth.signupComplete) {
+                    Auth.step = 4;
+                    Auth.userType = 1;
+                    window.scrollTo(0, 0);
+                  } else {
+                    alert('회원가입에 실패하셨습니다.');
+                    window.location.href = '/';
+                    // Auth.step = 1;
+                    // Auth.userType = 1;
+                    // window.scrollTo(0, 0);
+                  }
+                }
+              }}
+            >
+              <div>회원가입</div>
+            </NextBtn>
+          </Container>
+        ) : (
+          <Container>
+            <Name>과외선생님 회원가입</Name>
+            <ProgressContainer step="3" />
+            <MainBox>
+              <ItemBox>
+                <div>지역</div>
+
+                <Select
+                  styles={
+                    Common.width > 767.98 ? customStyles : mobileCustomStyles
+                  }
+                  value={{
+                    name: Auth.selectedUpperLocation
+                      ? Auth.selectedUpperLocation
+                      : '시/도',
+                    gugun: Auth.selectedUpperLocation,
+                  }}
+                  onChange={(e) => Auth.handleChange(e, 'upperLocation')}
+                  getOptionLabel={(option) => option.name}
+                  options={LocationList}
+                  //  isSearchable={false}
+                  placeholder="시/도"
+                  // ml="15"
+                  domainType={Auth.domainType}
+                />
+
+                <Select
+                  width={330}
+                  id="lowerLocation"
+                  styles={
+                    Common.width > 767.98 ? customStyles : mobileCustomStyles
+                  }
+                  value={{
+                    name: Auth.selectedLowerLocation
+                      ? Auth.selectedLowerLocation
+                      : '시/군/구',
+                    gugun: Auth.selectedLowerLocation,
+                  }}
+                  temp={Auth.selectedLowerLocation}
+                  onChange={(e) => Auth.handleChange(e, 'lowerLocation')}
+                  getOptionLabel={(option) => option.name}
+                  // options={locationAry[Auth.locationIndex].value}
+                  options={Auth.lowerLocationAry}
+                  isSearchable={false}
+                  placeholder={Auth.selectedLowerLocation}
+                  // placeholder={`ㅣㅣ`}
+                  // onFocus={() => (this.placeholder = '')}
+                  ml={Common.width > 767.98 && '15'}
+                  domainType={Auth.domainType}
+                />
+              </ItemBox>
+              <ItemBox width="100%" height="100%">
+                <div />
+                <SelectArea>
+                  {Auth.selectedLocation.map((item, idx) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          console.info('sdf');
+                          Auth.selectedLocation.splice(idx, 1);
+                        }}
+                      >
+                        <div>{item}</div>
+                        <img src={deleteImg} />
+                      </div>
+                    );
+                  })}
+                </SelectArea>
+              </ItemBox>
+              <ItemBox>
+                <div>과목</div>
+                <Select
+                  styles={
+                    Common.width > 767.98 ? customStyles : mobileCustomStyles
+                  }
+                  value={{
+                    label: Auth.selectedUpperSubject
+                      ? Auth.selectedUpperSubject
+                      : '상위 과목',
+                    value: Auth.selectedUpperSubject,
+                  }}
+                  onChange={(e) => Auth.handleChange(e, 'upperSubject')}
+                  getOptionLabel={(option) => option.label}
+                  options={SubjectList}
+                  //  isSearchable={false}
+                  placeholder="시/도"
+                  // ml="15"
+                  domainType={Auth.domainType}
+                />
+
+                <Select
+                  width={330}
+                  id="lowerLocation"
+                  styles={
+                    Common.width > 767.98 ? customStyles : mobileCustomStyles
+                  }
+                  value={{
+                    label: Auth.selectedLowerSubject
+                      ? Auth.selectedLowerSubject
+                      : '하위 과목',
+                    value: Auth.selectedLowerSubject,
+                  }}
+                  onChange={(e) => Auth.handleChange(e, 'lowerSubject')}
+                  getOptionLabel={(option) => option.label}
+                  // options={locationAry[Auth.locationIndex].value}
+                  options={Auth.lowerSubjectAry}
+                  isSearchable={false}
+                  placeholder={Auth.selectedLowerSubject}
+                  // placeholder={`ㅣㅣ`}
+                  // onFocus={() => (this.placeholder = '')}
+                  ml={Common.width > 767.98 && '15'}
+                  domainType={Auth.domainType}
+                />
+              </ItemBox>
+              <ItemBox width="100%" height="100%">
+                <div />
+                <SelectArea>
+                  {Auth.selectedSubject.map((item, idx) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          Auth.selectedSubject.splice(idx, 1);
+                        }}
+                      >
+                        <div>{item}</div>
+                        <img src={deleteImg} />
+                      </div>
+                    );
+                  })}
+                </SelectArea>
+              </ItemBox>
+              <ItemBox>
+                <div>학교</div>
+                <WrapperBox>
+                  <Input
+                    placeholder="학교"
+                    onChange={(e) => this.inputHandler(e.target, 'school')}
+                    onFocus={(e) => (e.target.placeholder = '')}
+                    onBlur={(e) => (e.target.placeholder = '학교')}
+                  />
+                  <Select
+                    //  id={this.props.id}
+                    //  className={this.props.className}
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    //  value={value}
+                    onChange={(e) => Auth.handleChange(e, 'schoolState')}
+                    getOptionLabel={(option) => option.label}
+                    options={Auth.stateSchoolAry}
+                    //  isSearchable={false}
+                    placeholder="선택하세요."
+                    ml="15"
+                    domainType={Auth.domainType}
+                  />
+                  {/* <OverlapBtn>중복확인</OverlapBtn> */}
+                </WrapperBox>
+              </ItemBox>
+              <ItemBox>
+                <div>학과</div>
+                <Input
+                  placeholder="학과"
+                  onChange={(e) => this.inputHandler(e.target, 'major')}
+                  onFocus={(e) => (e.target.placeholder = '')}
+                  onBlur={(e) => (e.target.placeholder = '학과')}
+                />
+              </ItemBox>
+              <ItemBox>
+                <div>재학증명서</div>
+                <FileUpload
+                  file={true}
+                  fileAry={Auth.fileAry}
+                  type="signup"
+                  state="single"
+                />
+              </ItemBox>
+              <ItemBox>
+                <div>급여</div>
+                <WrapperBox>
+                  <div>
                     <Input
                       //  width="80"
 
@@ -323,310 +563,58 @@ class Step3TeacherContainer extends Component {
                         (e.target.placeholder = '급여(ex: 350000, 650000)')
                       }
                     />
-                    <span>원</span>
-                    <Select
-                      //  id={this.props.id}
-                      //  className={this.props.className}
-                      styles={
-                        Common.width > 767.98
-                          ? customStyles
-                          : mobileCustomStyles
-                      }
-                      //  value={value}
-                      onChange={(e) => Auth.handleChange(e, 'budget')}
-                      getOptionLabel={(option) => option.label}
-                      options={Auth.budgetTypeAry}
-                      //  isSearchable={false}
-                      placeholder="선택하세요."
-                      ml="25"
-                      domainType={Auth.domainType}
-                    />
-                  </WrapperBox>
-                </ItemBox>
-                <ItemBox height="100%">
-                  <div>소개</div>
-                  <TextArea
-                    type="teacherSignup"
-                    placeholder="예) 수/금 16시, 주말 시간 가능(협의 가능)
-                      시급 2만원
-                      개념 설명부터 실전 문제 풀이까지 꼼꼼하게 해드립니다."
-                  />
-                </ItemBox>
-              </MainBox>
-              <NextBtn
-                onClick={async () => {
-                  await Auth.checkTutorDataTwo('step1');
-                  if (Auth.signupAuthTwo) {
-                    await Auth.tutorSignup();
-                    console.info(Auth.signupComplete);
-                    if (Auth.signupComplete) {
-                      Auth.step = 4;
-                      Auth.userType = 1;
-                      window.scrollTo(0, 0);
-                    } else {
-                      alert('회원가입에 실패하셨습니다.');
-                      window.location.href = '/';
-                      // Auth.step = 1;
-                      // Auth.userType = 1;
-                      // window.scrollTo(0, 0);
-                    }
-                  }
-                }}
-              >
-                <div>회원가입</div>
-              </NextBtn>
-            </Container>
-          </>
-        ) : (
-          <>
-            <Container>
-              <Name>과외선생님 회원가입</Name>
-              <ProgressContainer step="3" />
-              <MainBox>
-                <ItemBox>
-                  <div>지역</div>
-
+                    <div>원</div>
+                  </div>
                   <Select
+                    //  id={this.props.id}
+                    //  className={this.props.className}
                     styles={
                       Common.width > 767.98 ? customStyles : mobileCustomStyles
                     }
-                    value={{
-                      name: Auth.selectedUpperLocation
-                        ? Auth.selectedUpperLocation
-                        : '시/도',
-                      gugun: Auth.selectedUpperLocation,
-                    }}
-                    onChange={(e) => Auth.handleChange(e, 'upperLocation')}
-                    getOptionLabel={(option) => option.name}
-                    options={LocationList}
-                    //  isSearchable={false}
-                    placeholder="시/도"
-                    // ml="15"
-                    domainType={Auth.domainType}
-                  />
-
-                  <Select
-                    width={330}
-                    id="lowerLocation"
-                    styles={
-                      Common.width > 767.98 ? customStyles : mobileCustomStyles
-                    }
-                    value={{
-                      name: Auth.selectedLowerLocation
-                        ? Auth.selectedLowerLocation
-                        : '시/군/구',
-                      gugun: Auth.selectedLowerLocation,
-                    }}
-                    temp={Auth.selectedLowerLocation}
-                    onChange={(e) => Auth.handleChange(e, 'lowerLocation')}
-                    getOptionLabel={(option) => option.name}
-                    // options={locationAry[Auth.locationIndex].value}
-                    options={Auth.lowerLocationAry}
-                    isSearchable={false}
-                    placeholder={Auth.selectedLowerLocation}
-                    // placeholder={`ㅣㅣ`}
-                    // onFocus={() => (this.placeholder = '')}
-                    ml={Common.width > 767.98 && '15'}
-                    domainType={Auth.domainType}
-                  />
-                </ItemBox>
-                <ItemBox width="100%" height="100%">
-                  <div />
-                  <SelectArea>
-                    {Auth.selectedLocation.map((item, idx) => {
-                      return (
-                        <div
-                          onClick={() => {
-                            console.info('sdf');
-                            Auth.selectedLocation.splice(idx, 1);
-                          }}
-                        >
-                          <div>{item}</div>
-                          <img src={deleteImg} />
-                        </div>
-                      );
-                    })}
-                  </SelectArea>
-                </ItemBox>
-                <ItemBox>
-                  <div>과목</div>
-                  <Select
-                    styles={
-                      Common.width > 767.98 ? customStyles : mobileCustomStyles
-                    }
-                    value={{
-                      label: Auth.selectedUpperSubject
-                        ? Auth.selectedUpperSubject
-                        : '상위 과목',
-                      value: Auth.selectedUpperSubject,
-                    }}
-                    onChange={(e) => Auth.handleChange(e, 'upperSubject')}
+                    //  value={value}
+                    onChange={(e) => Auth.handleChange(e, 'budget')}
                     getOptionLabel={(option) => option.label}
-                    options={SubjectList}
+                    options={Auth.budgetTypeAry}
                     //  isSearchable={false}
-                    placeholder="시/도"
-                    // ml="15"
+                    placeholder="선택하세요."
+                    ml="25"
                     domainType={Auth.domainType}
                   />
-
-                  <Select
-                    width={330}
-                    id="lowerLocation"
-                    styles={
-                      Common.width > 767.98 ? customStyles : mobileCustomStyles
-                    }
-                    value={{
-                      label: Auth.selectedLowerSubject
-                        ? Auth.selectedLowerSubject
-                        : '하위 과목',
-                      value: Auth.selectedLowerSubject,
-                    }}
-                    onChange={(e) => Auth.handleChange(e, 'lowerSubject')}
-                    getOptionLabel={(option) => option.label}
-                    // options={locationAry[Auth.locationIndex].value}
-                    options={Auth.lowerSubjectAry}
-                    isSearchable={false}
-                    placeholder={Auth.selectedLowerSubject}
-                    // placeholder={`ㅣㅣ`}
-                    // onFocus={() => (this.placeholder = '')}
-                    ml={Common.width > 767.98 && '15'}
-                    domainType={Auth.domainType}
-                  />
-                </ItemBox>
-                <ItemBox width="100%" height="100%">
-                  <div />
-                  <SelectArea>
-                    {Auth.selectedSubject.map((item, idx) => {
-                      return (
-                        <div
-                          onClick={() => {
-                            Auth.selectedSubject.splice(idx, 1);
-                          }}
-                        >
-                          <div>{item}</div>
-                          <img src={deleteImg} />
-                        </div>
-                      );
-                    })}
-                  </SelectArea>
-                </ItemBox>
-                <ItemBox>
-                  <div>학교</div>
-                  <WrapperBox>
-                    <Input
-                      placeholder="학교"
-                      onChange={(e) => this.inputHandler(e.target, 'school')}
-                      onFocus={(e) => (e.target.placeholder = '')}
-                      onBlur={(e) => (e.target.placeholder = '학교')}
-                    />
-                    <Select
-                      //  id={this.props.id}
-                      //  className={this.props.className}
-                      styles={
-                        Common.width > 767.98
-                          ? customStyles
-                          : mobileCustomStyles
-                      }
-                      //  value={value}
-                      onChange={(e) => Auth.handleChange(e, 'schoolState')}
-                      getOptionLabel={(option) => option.label}
-                      options={Auth.stateSchoolAry}
-                      //  isSearchable={false}
-                      placeholder="선택하세요."
-                      ml="15"
-                      domainType={Auth.domainType}
-                    />
-                    {/* <OverlapBtn>중복확인</OverlapBtn> */}
-                  </WrapperBox>
-                </ItemBox>
-                <ItemBox>
-                  <div>학과</div>
-                  <Input
-                    placeholder="학과"
-                    onChange={(e) => this.inputHandler(e.target, 'major')}
-                    onFocus={(e) => (e.target.placeholder = '')}
-                    onBlur={(e) => (e.target.placeholder = '학과')}
-                  />
-                </ItemBox>
-                <ItemBox>
-                  <div>재학증명서</div>
-                  <FileUpload
-                    file={true}
-                    fileAry={Auth.fileAry}
-                    type="signup"
-                    state="single"
-                  />
-                </ItemBox>
-                <ItemBox>
-                  <div>급여</div>
-                  <WrapperBox>
-                    <div>
-                      <Input
-                        //  width="80"
-
-                        domainType={2}
-                        placeholder="급여(ex: 350000, 650000)"
-                        onChange={(e) => this.inputHandler(e.target, 'budget')}
-                        onFocus={(e) => (e.target.placeholder = '')}
-                        onBlur={(e) =>
-                          (e.target.placeholder = '급여(ex: 350000, 650000)')
-                        }
-                      />
-                      <div>원</div>
-                    </div>
-                    <Select
-                      //  id={this.props.id}
-                      //  className={this.props.className}
-                      styles={
-                        Common.width > 767.98
-                          ? customStyles
-                          : mobileCustomStyles
-                      }
-                      //  value={value}
-                      onChange={(e) => Auth.handleChange(e, 'budget')}
-                      getOptionLabel={(option) => option.label}
-                      options={Auth.budgetTypeAry}
-                      //  isSearchable={false}
-                      placeholder="선택하세요."
-                      ml="25"
-                      domainType={Auth.domainType}
-                    />
-                  </WrapperBox>
-                </ItemBox>
-                <ItemBox height="100%">
-                  <div>소개</div>
-                  <TextArea
-                    type="teacherSignup"
-                    placeholder="예) 수/금 16시, 주말 시간 가능(협의 가능)
+                </WrapperBox>
+              </ItemBox>
+              <ItemBox height="100%">
+                <div>소개</div>
+                <TextArea
+                  type="teacherSignup"
+                  placeholder="예) 수/금 16시, 주말 시간 가능(협의 가능)
                             시급 2만원
                             개념 설명부터 실전 문제 풀이까지 꼼꼼하게 해드립니다."
-                  />
-                </ItemBox>
-              </MainBox>
-              <NextBtn
-                onClick={async () => {
-                  await Auth.checkTutorDataTwo('step1');
-                  if (Auth.signupAuthTwo) {
-                    await Auth.tutorSignup();
-                    console.info(Auth.signupComplete);
-                    if (Auth.signupComplete) {
-                      Auth.step = 4;
-                      Auth.userType = 1;
-                      window.scrollTo(0, 0);
-                    } else {
-                      alert('회원가입에 실패하셨습니다.');
-                      window.location.href = '/';
-                      // Auth.step = 1;
-                      // Auth.userType = 1;
-                      // window.scrollTo(0, 0);
-                    }
+                />
+              </ItemBox>
+            </MainBox>
+            <NextBtn
+              onClick={async () => {
+                await Auth.checkTutorDataTwo('step1');
+                if (Auth.signupAuthTwo) {
+                  await Auth.tutorSignup();
+                  console.info(Auth.signupComplete);
+                  if (Auth.signupComplete) {
+                    Auth.step = 4;
+                    Auth.userType = 1;
+                    window.scrollTo(0, 0);
+                  } else {
+                    alert('회원가입에 실패하셨습니다.');
+                    window.location.href = '/';
+                    // Auth.step = 1;
+                    // Auth.userType = 1;
+                    // window.scrollTo(0, 0);
                   }
-                }}
-              >
-                <div>회원가입</div>
-              </NextBtn>
-            </Container>
-          </>
+                }
+              }}
+            >
+              <div>회원가입</div>
+            </NextBtn>
+          </Container>
         )}
       </>
     );
