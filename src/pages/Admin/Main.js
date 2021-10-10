@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MainContainer from '../../containers/Admin/Main';
+import MainContainer from '../../containers/Admin/Main/UserManagement';
 
 import { inject, observer } from 'mobx-react';
 import AdminNav from '../../components/AdminNav';
