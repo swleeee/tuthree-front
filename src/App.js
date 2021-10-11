@@ -15,6 +15,7 @@ import {
   Notice,
   Community,
   Tutor,
+  Chatting,
   AdminHome,
   AdminMain,
   AdminCommunity,
@@ -67,6 +68,7 @@ class App extends React.Component {
               <Route path="/notice" component={Notice} />
               <Route path="/community" component={Community} />
               <Route path="/tutor" component={Tutor} />
+              <Route path="/chatting" component={Chatting} />
               <Route exact path="/admin" component={AdminHome} />
               <Route path="/admin/main" component={AdminMain} />
               <Route path="/admin/community" component={AdminCommunity} />

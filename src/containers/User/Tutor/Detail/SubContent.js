@@ -6,60 +6,84 @@ import starImg from '../../../../static/images/Common/star.png';
 import communicationImg from '../../../../static/images/Common/communication.png';
 import maleImg from '../../../../static/images/Common/male.png';
 import femaleImg from '../../../../static/images/Common/female.png';
+import Modal from '../../../../components/Modal';
 import Common from '../../../../stores/Common/Common';
 
 @inject('Auth', 'Common')
 @observer
 class SubContent extends Component {
+  openModal = () => {
+    Common.modalActive = false;
+  };
+  closeModal = () => {
+    Common.modalActive = true;
+  };
+
   render() {
     return (
-      <Container width={Common.width}>
-        <Header>
-          <Number>
-            <View>
-              <img src={viewImg} />
-              <div>74</div>
-            </View>
-            <Rating>
-              <img src={starImg} />
-              <div>4.2</div>
-            </Rating>
-          </Number>
-          <Registration type={true}>모집중</Registration>
-        </Header>
-        <Main>
-          <SubMain>
-            <Label type="name">홍길동</Label>
-            <img src={maleImg} />
-          </SubMain>
+      <>
+        <Container width={Common.width}>
+          <Header>
+            <Number>
+              <View>
+                <img src={viewImg} />
+                <div>74</div>
+              </View>
+              <Rating>
+                <img src={starImg} />
+                <div>4.2</div>
+              </Rating>
+            </Number>
+            <Registration type={true}>모집중</Registration>
+          </Header>
+          <Main>
+            <SubMain>
+              <Label type="name">홍길동</Label>
+              <img src={maleImg} />
+            </SubMain>
 
-          <SubMain>
-            <Label>학력</Label>
-            <Content>가천대학교 컴퓨터공학과</Content>
-          </SubMain>
+            <SubMain>
+              <Label>학력</Label>
+              <Content>가천대학교 컴퓨터공학과</Content>
+            </SubMain>
 
-          <SubMain>
-            <Label>과목</Label>
-            <Content>영어, 수학,dsf sdfsdfsdfsdfsdfsdf</Content>
-          </SubMain>
+            <SubMain>
+              <Label>과목</Label>
+              <Content>영어, 수학,dsf sdfsdfsdfsdfsdfsdf</Content>
+            </SubMain>
 
-          <SubMain>
-            <Label>지역</Label>
-            <Content>경기도 의왕시</Content>
-          </SubMain>
+            <SubMain>
+              <Label>지역</Label>
+              <Content>경기도 의왕시</Content>
+            </SubMain>
 
-          <SubMain>
-            <Label>비용</Label>
-            <Content>시급 20000원</Content>
-          </SubMain>
-        </Main>
-        <ButtonBox>
-          <Button>
-            <img src={communicationImg} />
-            <div>1:1 문의</div>
-          </Button>
-        </ButtonBox>
-      </Container>
+            <SubMain>
+              <Label>비용</Label>
+              <Content>시급 20000원</Content>
+            </SubMain>
+          </Main>
+          <ButtonBox>
+            <Button
+              onClick={() => {
+                console.info('click');
+                // Common.modalActive = true;
+                window.location.href = '/chatting';
+              }}
+            >
+              <img src={communicationImg} />
+              <div>1:1 문의</div>
+            </Button>
+          </ButtonBox>
+        </Container>
+        {/* {Common.modalActive === true && (
+          <Modal
+            // width={width}
+            open={this.openModal}
+            close={this.closeModal}
+          />
+        )} */}
+        <Modal />
+      </>
     );
   }
 }

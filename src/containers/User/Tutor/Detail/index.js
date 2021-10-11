@@ -5,6 +5,7 @@ import MainContainer from './DetailContent';
 import SubContainer from './SubContent';
 import MobileContent from './MobileContent';
 import Common from '../../../../stores/Common/Common';
+import Modal from '../../../../components/Modal';
 
 @inject('Auth', 'Common')
 @observer
@@ -18,6 +19,7 @@ class index extends Component {
             <>
               <MainBox />
               <SubBox />
+              {/* <Modal /> */}
             </>
           ) : (
             <MobileContent />
