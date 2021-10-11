@@ -1,5 +1,8 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
+import { useHistory } from 'react-router';
+import { Route } from 'react-router-dom';
 
+import Common from '../Common/Common';
 import * as AccountAPI from '../../axios/Account/Account';
 
 class Auth {
@@ -13,6 +16,8 @@ class Auth {
   @observable step = 1;
   @observable userType = 0;
   @observable domainType = 1;
+
+  @observable temp = '';
 
   @observable signupId = ''; // 아이디
   @observable checkSignupId = false;
@@ -352,6 +357,10 @@ class Auth {
   @observable loginId = '';
   @observable loginPassowrd = '';
   @observable loginAuth = false;
+
+  /* login한 유저의 아이디와 타입 */
+  @observable loggedUserId = null;
+  @observable loggedUserType = '';
 
   getStep = () => {
     console.log(this.step);
@@ -942,6 +951,7 @@ class Auth {
         console.info(e.response);
       });
   };
+  const;
 
   @action checkLoginData = async () => {
     if (!this.loginId) {
@@ -956,6 +966,9 @@ class Auth {
   };
 
   @action login = async () => {
+    // const history = useHistory();
+    this.temp = 'sfdfsdf';
+    Common.temp = 'sdfsdfsdf';
     const req = {
       data: {
         id: this.loginId,
@@ -970,15 +983,37 @@ class Auth {
       .then(async (res) => {
         console.info(res);
         console.info(res.headers);
+        console.info(res.data.data.id);
+        console.info(res.data.data.grade);
         console.info(Object.keys(res.headers));
 
         // window.location.href = '/';
         if (res.data.success) {
           alert('로그인에 성공하셨습니다.');
-          this.token = res.headers.authorization;
+          this.token = await res.headers.authorization;
           console.info(this.token);
+          this.loggedUserId = await res.data.data.id;
+          this.loggedUserType = await res.data.data.grade;
           localStorage.setItem('token', this.token);
+          localStorage.setItem('userId', res.data.data.id);
+          localStorage.setItem('userType', res.data.data.type);
+          // setTimeout(() => {
+          //   // window.location.href = '/';
+          //   // window.location.replace('/');
+          //   // Route.push('/');
+          //   window.location.pathname = '/';
+          // }, 5000);
+          // window.history.forward('/');
+          // if (this.loggedUserId) {
           window.location.href = '/';
+          // window.history.pushState(null, null, '/');
+          // window.location.reload();
+          // history.push({
+          //   pathname: '/',
+          // });
+          // }
+          console.info(this.loggedUserId);
+          console.info(this.loggedUserType);
         } else {
           await alert(res.data.message);
         }

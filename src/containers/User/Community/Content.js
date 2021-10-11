@@ -11,6 +11,7 @@ import {
 import Community from '../../../stores/Community/Community';
 import searchImg from '../../../static/images/Admin/Main/search.png';
 import Pagination from '../../../components/Pagination';
+import Auth from '../../../stores/Account/Auth';
 
 const dummydata = [
   {
@@ -56,11 +57,13 @@ const dummydata = [
   },
 ];
 
-@inject('Community')
+@inject('Community', 'Auth')
 @observer
 class Content extends Component {
   componentDidMount = () => {
     Community.getCommunityList(Community.communityCurrentPage);
+    console.info(Auth.token);
+    console.info(localStorage.getItem('token'));
   };
   render() {
     console.info('render!!');

@@ -2,6 +2,7 @@ import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 import * as NoticeAPI from '../../axios/Comuunity/Notice';
 import * as FaqAPI from '../../axios/Comuunity/Faq';
 import * as CommunityAPI from '../../axios/Comuunity/Community';
+import Auth from '../Account/Auth';
 
 class Community {
   constructor() {
@@ -347,9 +348,12 @@ class Community {
   /* community 작성하는 함수 */
   @action setCommunity = async () => {
     console.info('community 작성 버튼 클릭');
-
+    console.info(Auth.token);
+    console.log(Auth.loggedUserId);
+    console.info(Auth.loggedUserType);
+    console.info(localStorage.getItem('token'));
     const formData = new FormData();
-    formData.append('userId', 'teacher1');
+    formData.append('userId', Auth.loggedUserId);
     formData.append('title', this.communityTitle);
     formData.append('content', this.communityContent);
     formData.append('secret', 'OPEN');
@@ -361,16 +365,27 @@ class Community {
     const req = {
       data: formData,
       headers: {
-        Authorization: this.Authorization,
+        Authorization: Auth.token,
       },
     };
 
     await CommunityAPI.setCommunity(req)
       .then(async (res) => {
         console.info(res);
-        alert('글 작성을 완료하였습니다');
-        this.communityWritingState = 0;
-        this.communityState = 1;
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          this.communityWritingState = 0;
+          this.communityState = 1;
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          alert('글 작성을 완료하였습니다');
+          this.communityWritingState = 0;
+          this.communityState = 1;
+        }
+
+        // this.communityWritingState = 0;
+        // this.communityState = 1;
       })
       .catch((e) => {
         alert('글 작성하는 데 실패하였습니다');

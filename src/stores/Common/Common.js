@@ -6,6 +6,7 @@ class Common {
     makeObservable(this);
   }
   @observable width = null;
+  @observable temp = null;
   @observable budgetAry = [
     {
       label: '10만원',
