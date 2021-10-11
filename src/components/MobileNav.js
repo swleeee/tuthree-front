@@ -7,6 +7,7 @@ import close_ic from '../static/images/Home/close-button.png';
 import hamburger_ic from '../static/images/Home/hamburger.png';
 import logo_ic from '../static/images/Home/video-conference.png';
 import Auth from '../stores/Account/Auth';
+import Tutor from '../stores/Matching/Tutor';
 
 import {
   BrowserRouter as Router,
@@ -15,7 +16,7 @@ import {
   Link as Connection,
 } from 'react-router-dom';
 
-@inject('Auth')
+@inject('Auth', 'Tutor')
 @observer
 class MobileNav extends React.Component {
   state = {
@@ -68,7 +69,11 @@ class MobileNav extends React.Component {
                     <Link mobile={true} to="/notice">
                       공지사항
                     </Link>
-                    <Link mobile={true} to="/tutor">
+                    <Link
+                      mobile={true}
+                      to="/tutor"
+                      onClick={() => (Tutor.state = 0)}
+                    >
                       과외찾기
                     </Link>
                     <Link mobile={true} to="/tutee">

@@ -14,8 +14,9 @@ import {
 import personImg from '../static/images/person.png';
 import Community from '../stores/Community/Community';
 import Auth from '../stores/Account/Auth';
+import Tutor from '../stores/Matching/Tutor';
 
-@inject('Community', 'Auth')
+@inject('Community', 'Auth', 'Tutor')
 @observer
 class Nav extends Component {
   state = {
@@ -46,7 +47,9 @@ class Nav extends Component {
               >
                 공지사항
               </Link>
-              <Link to="/tutor">과외찾기</Link>
+              <Link to="/tutor" onClick={() => (Tutor.state = 0)}>
+                과외찾기
+              </Link>
               <Link to="/tutee">학생찾기</Link>
               <Link
                 to="/community"

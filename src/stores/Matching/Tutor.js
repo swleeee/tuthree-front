@@ -1,4 +1,5 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
+import * as TutorAPI from '../../axios/Matching/Tutor';
 
 class Tutor {
   constructor() {
@@ -18,6 +19,13 @@ class Tutor {
   @observable selectedLowerSubject = '';
   @observable lowerSubjectAry = [];
   @observable selectedSubject = []; // 과목
+
+  @observable tutorState = 1; // 1 : 조회, 2 : 작성, 3 : 세부 조회
+  @observable tutorList = []; // tutor 페이지 당 목록 데이터
+  @observable tutorListTotalCount = 0; // tutor 전체 개수
+  @observable tutorTotalPage = 0; // tutor 전체 페이지 수
+  @observable tutorCurrentPage = 1; // tutor 현재 페이지
+  @observable tutorCurrentSet = parseInt((this.tutorCurrentPage - 1) / 5) + 1; // tutor 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
 
   @observable tutorDetailAry = [];
 
@@ -187,6 +195,61 @@ class Tutor {
   @action pushToDetail = (item, idx) => {
     this.tutorDetailAry.push(item);
     this.state = 1;
+    console.info(toJS(this.tutorDetailAry));
+  };
+
+  @action getTutorList = async (id) => {
+    console.info('init');
+    const req = {
+      id: id ? id : 1,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    TutorAPI.getTutorList(req)
+      .then(async (res) => {
+        console.info(res);
+        this.tutorList = await res.data.data;
+        this.tutorListTotalCount = await res.data.list;
+        this.tutorTotalPage = await Math.ceil(this.tutorListTotalCount / 10);
+
+        this.tutorCurrentSet = parseInt((this.tutorCurrentPage - 1) / 5) + 1; // tutor 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
+
+        await this.tutorList.map(async (item, idx) => {
+          item.checked = false;
+        });
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* commuinity 상세 페이지로 이동하는 함수 */
+  @action getTutorDetailList = async (item, idx = 0, type = '') => {
+    // this.tutorDetailAry.push(item);
+    console.info(item.postId);
+    this.state = 1;
+    console.info(this.communityState);
+    const req = {
+      id: item.postId,
+      // headers: {
+      //   Authorization: this.Authorization,
+      // },
+    };
+
+    await TutorAPI.getDetailTutorList(req)
+      .then(async (res) => {
+        console.info(res);
+        this.tutorDetailAry = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+
+    // await this.communityDetailList.push(item);
     console.info(toJS(this.tutorDetailAry));
   };
 }

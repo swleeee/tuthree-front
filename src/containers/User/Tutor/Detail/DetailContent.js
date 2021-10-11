@@ -46,19 +46,7 @@ class DetailContent extends Component {
           </ImgBox>
           <Introduction>
             <Name>소개</Name>
-            <Content>
-              ㄴㅇㄹㄴㅇㄹㅇㄴㄹㄴㅇㄹㄴㅇㄹsdsdjfsdklfjsdl
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-            </Content>
+            <Content>{Tutor.tutorDetailAry.detail}</Content>
           </Introduction>
           <ReviewContainer>
             <Name>리뷰</Name>

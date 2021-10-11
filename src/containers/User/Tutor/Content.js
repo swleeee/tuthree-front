@@ -143,6 +143,9 @@ const dummyData = [
 @inject('Tutor')
 @observer
 class Content extends Component {
+  componentDidMount = () => {
+    Tutor.getTutorList(Tutor.tutorCurrentPage);
+  };
   render() {
     return (
       <Container>
@@ -153,7 +156,7 @@ class Content extends Component {
             <span>303명</span>의 선생님이 있습니다.
           </Header>
           <CardContainer>
-            {dummyData.map((item, idx) => {
+            {/* {dummyData.map((item, idx) => {
               return (
                 <div
                   onClick={async () => {
@@ -174,7 +177,31 @@ class Content extends Component {
                   />
                 </div>
               );
-            })}
+            })} */}
+
+            {Tutor.tutorList &&
+              Tutor.tutorList.map((item, idx) => {
+                return (
+                  <div
+                    onClick={async () => {
+                      console.info('dsfdfd');
+                      await Tutor.getTutorDetailList(item, idx);
+                    }}
+                  >
+                    <Card
+                      type="teacher"
+                      name={item.name}
+                      gender={item.gender}
+                      rating={item.star}
+                      school={`${item.school} ${item.major}`}
+                      subject={item.subject}
+                      location={item.location}
+                      budget={item.cost}
+                      registration={item.registration}
+                    />
+                  </div>
+                );
+              })}
           </CardContainer>
         </MainBox>
       </Container>

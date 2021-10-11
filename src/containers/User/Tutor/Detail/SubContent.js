@@ -8,8 +8,9 @@ import maleImg from '../../../../static/images/Common/male.png';
 import femaleImg from '../../../../static/images/Common/female.png';
 import Modal from '../../../../components/Modal';
 import Common from '../../../../stores/Common/Common';
+import Tutor from '../../../../stores/Matching/Tutor';
 
-@inject('Auth', 'Common')
+@inject('Auth', 'Common', 'Tutor')
 @observer
 class SubContent extends Component {
   openModal = () => {
@@ -31,20 +32,30 @@ class SubContent extends Component {
               </View>
               <Rating>
                 <img src={starImg} />
-                <div>4.2</div>
+                <div>{Tutor.tutorDetailAry.star}</div>
               </Rating>
             </Number>
-            <Registration type={true}>모집중</Registration>
+            <Registration type={Tutor.tutorDetailAry.registration !== 'CLOSE'}>
+              {Tutor.tutorDetailAry.registration === 'CLOSE'
+                ? '모집마감'
+                : '모집중'}
+            </Registration>
           </Header>
           <Main>
             <SubMain>
-              <Label type="name">홍길동</Label>
-              <img src={maleImg} />
+              <Label type="name">{Tutor.tutorDetailAry.name}</Label>
+              {Tutor.tutorDetailAry.sex === 'MALE' ? (
+                <img src={maleImg} />
+              ) : (
+                <img src={femaleImg} />
+              )}
             </SubMain>
 
             <SubMain>
               <Label>학력</Label>
-              <Content>가천대학교 컴퓨터공학과</Content>
+              <Content>
+                {Tutor.tutorDetailAry.school} {Tutor.tutorDetailAry.major}
+              </Content>
             </SubMain>
 
             <SubMain>
@@ -59,7 +70,7 @@ class SubContent extends Component {
 
             <SubMain>
               <Label>비용</Label>
-              <Content>시급 20000원</Content>
+              <Content>{Tutor.tutorDetailAry.cost}</Content>
             </SubMain>
           </Main>
           <ButtonBox>
@@ -156,10 +167,11 @@ const Registration = styled.div`
   align-items: center;
   padding: 4px 15px;
   box-sizing: border-box;
-  font-size: 10px;
-  font-weight: bold;
+  font-size: 11px;
+  // font-weight: bold;
+  color: ${(props) => (props.type ? 'black' : 'white')};
   > div {
-    color: ${(props) => (props.type ? 'black' : 'white')};
+    // color: ${(props) => (props.type ? 'black' : 'white')};
   }
 `;
 const Main = styled.div``;
