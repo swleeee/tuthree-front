@@ -996,7 +996,7 @@ class Auth {
           this.loggedUserType = await res.data.data.grade;
           localStorage.setItem('token', this.token);
           localStorage.setItem('userId', res.data.data.id);
-          localStorage.setItem('userType', res.data.data.type);
+          localStorage.setItem('userType', res.data.data.grade);
           // setTimeout(() => {
           //   // window.location.href = '/';
           //   // window.location.replace('/');
@@ -1014,6 +1014,7 @@ class Auth {
           // }
           console.info(this.loggedUserId);
           console.info(this.loggedUserType);
+          console.info(localStorage.getItem('userType'));
         } else {
           await alert(res.data.message);
         }

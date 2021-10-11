@@ -10,17 +10,15 @@ import Auth from '../../../stores/Account/Auth';
 @observer
 class index extends Component {
   componentDidMount = () => {
-    console.info('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
     if (localStorage.getItem('userId')) {
-      console.info('bbbbbbbbbbb');
       Auth.loggedUserId = localStorage.getItem('userId');
       Auth.loggedUserType = localStorage.getItem('userType');
       Auth.token = localStorage.getItem('token');
 
       localStorage.removeItem('userId');
       localStorage.removeItem('userType');
-    } else {
-      console.info('ccccccccccc');
+
+      console.info(Auth.loggedUserType);
     }
   };
   render() {

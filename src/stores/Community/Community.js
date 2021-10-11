@@ -399,7 +399,7 @@ class Community {
     console.info(toJS(this.communityFileAry[0]));
     console.info(toJS(this.communityFileAry[1]));
     const formData = new FormData();
-    formData.append('userId', 'teacher1');
+    formData.append('userId', Auth.loggedUserId);
 
     formData.append('title', this.communityTitle);
     formData.append('content', this.communityContent);
@@ -412,7 +412,7 @@ class Community {
     const req = {
       data: formData,
       headers: {
-        Authorization: this.Authorization,
+        Authorization: Auth.token,
       },
       id: id,
     };
@@ -420,9 +420,18 @@ class Community {
     await CommunityAPI.putCommunity(req)
       .then(async (res) => {
         console.info(res);
-        alert('글 수정이 완료되었습니다');
-        this.communityWritingState = 0;
-        this.communityState = 1;
+
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          this.communityWritingState = 0;
+          this.communityState = 1;
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          alert('글 수정이 완료되었습니다');
+          this.communityWritingState = 0;
+          this.communityState = 1;
+        }
       })
       .catch((e) => {
         alert('글 수정을 실패하였습니다');

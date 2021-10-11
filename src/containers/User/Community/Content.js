@@ -63,6 +63,8 @@ class Content extends Component {
   componentDidMount = () => {
     Community.getCommunityList(Community.communityCurrentPage);
     console.info(Auth.token);
+    console.info(Auth.loggedUserType);
+    console.info(Auth.loggedUserId);
     console.info(localStorage.getItem('token'));
   };
   render() {
@@ -110,11 +112,13 @@ class Content extends Component {
             총 <span>{Community.communityListTotalCount}</span>개
           </Count>
 
-          <ButtonBox>
-            <Button onClick={() => (Community.communityState = 2)}>
-              <div>글 작성</div>
-            </Button>
-          </ButtonBox>
+          {Auth.loggedUserType === 'teacher' && (
+            <ButtonBox>
+              <Button onClick={() => (Community.communityState = 2)}>
+                <div>글 작성</div>
+              </Button>
+            </ButtonBox>
+          )}
         </Header>
         <MainBox>
           <Line title={true}>
