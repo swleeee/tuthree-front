@@ -49,3 +49,12 @@ export function login(req) {
     data: req.data,
   });
 }
+
+export function logout(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/logout`,
+    // params: req.params ? req.params : null,
+    // headers: req.headers ? req.headers : null,
+  });
+}

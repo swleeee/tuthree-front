@@ -99,42 +99,49 @@ const chatList = [
     name: 'user1',
     content: 'sdfsdfdsfdsfsdf',
     writeDt: '2021-09-29',
+    type: 'me',
   },
   {
     id: 4,
     name: 'user1',
     content: 'sdfsdfdsfdsfsdf',
     writeDt: '2021-09-29',
+    type: 'you',
   },
   {
     id: 4,
     name: 'user1',
     content: 'sdfsdfdsfdsfsdf',
     writeDt: '2021-09-29',
+    type: 'me',
   },
   {
     id: 4,
     name: 'user1',
     content: 'sdfsdfdsfdsfsdf',
     writeDt: '2021-09-29',
+    type: 'you',
   },
   {
     id: 4,
     name: 'user1',
     content: 'sdfsdfdsfdsfsdf',
     writeDt: '2021-09-29',
+    type: 'you',
   },
   {
     id: 4,
     name: 'user1',
     content: 'sdfsdfdsfdsfsdf',
     writeDt: '2021-09-29',
+    type: 'me',
   },
   {
     id: 4,
     name: 'user1',
     content: 'sdfsdfdsfdsfsdf',
     writeDt: '2021-09-29',
+    type: 'me',
   },
 ];
 
@@ -229,7 +236,7 @@ const Label = styled.div`
     font-weight: bold;
   }
   padding: 10px 12px;
-  box-sizing: border- box;
+  box-sizing: border-box;
   border-bottom: 2px solid #707070;
 `;
 const UserList = styled.div`
@@ -243,7 +250,7 @@ const UserList = styled.div`
 
 const UserListItem = styled.div`
   padding: 10px 12px;
-  box-sizing: border- box;
+  box-sizing: border-box;
   border-bottom: 2px solid #707070;
   display: flex;
   align-items: center;
@@ -295,6 +302,7 @@ const UserContent = styled.div`
 const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 90%;
 `;
 
 const ChatHeader = styled.div``;
@@ -302,10 +310,11 @@ const ChatMain = styled.div``;
 const ChatListItem = styled.div`
   padding: 10px 12px;
   box-sizing: border- box;
-  border-bottom: 2px solid #707070;
+  // border-bottom: 2px solid #707070;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 97%;
+  justify-content: flex-end;
 `;
 const ChatItem = styled.div``;
 const ChatLabel = styled.div``;

@@ -9,6 +9,7 @@ class Auth {
   @observable Authorization =
     'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzEwNTYxOCwiZXhwIjoxNjMzMTA5MjE4LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.KuHs-qPG3gL0jdJzozeAWtf1q3I-w_96YconIIwNE7s';
 
+  @observable token = '';
   @observable step = 1;
   @observable userType = 0;
   @observable domainType = 1;
@@ -974,10 +975,27 @@ class Auth {
         // window.location.href = '/';
         if (res.data.success) {
           alert('로그인에 성공하셨습니다.');
+          this.token = res.headers.authorization;
+          console.info(this.token);
+          localStorage.setItem('token', this.token);
           window.location.href = '/';
         } else {
           await alert(res.data.message);
         }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action logout = async () => {
+    await AccountAPI.logout()
+      .then((res) => {
+        console.info(res);
+        alert('로그아웃 되었습니다.');
+        localStorage.removeItem('token');
+        window.location.href = '/';
       })
       .catch((e) => {
         console.info(e);

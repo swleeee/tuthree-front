@@ -13,10 +13,19 @@ import {
 
 import personImg from '../static/images/person.png';
 import Community from '../stores/Community/Community';
+import Auth from '../stores/Account/Auth';
 
-@inject('Community')
+@inject('Community', 'Auth')
 @observer
 class Nav extends Component {
+  state = {
+    token: null,
+    is_profile: false,
+  };
+  componentDidMount = async () => {
+    const token = await localStorage.getItem('token');
+    this.setState({ token: token });
+  };
   render() {
     return (
       <OuterContainer>
@@ -54,11 +63,54 @@ class Nav extends Component {
               {/* <img src={personImg} alt="마이페이지" /> */}
             </Menu>
             <Menu
-              style={{ width: '20%', justifyContent: 'right', float: 'right' }}
+              style={{ width: '25%', justifyContent: 'right', float: 'right' }}
             >
-              <Link to="/login" style={{ width: '20%', marginLeft: '0px' }}>
-                <Img src={personImg} alt="마이페이지" />
-              </Link>
+              {this.state.token ? (
+                <div
+                  style={{ width: '20%', marginLeft: '0px', cursor: 'pointer' }}
+                  onClick={() => {
+                    console.info(this.state.token);
+                    console.info('is_profile');
+                    this.setState({ is_profile: !this.state.is_profile });
+                    console.info(this.state.is_profile);
+                  }}
+                >
+                  <Img src={personImg} alt="마이페이지" />
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  style={{ width: '30%', marginLeft: '0px' }}
+                  onClick={() => console.info('login')}
+                >
+                  <Button bd={true} height={36} pd={true}>
+                    <div>로그인</div>
+                  </Button>
+                </Link>
+              )}
+
+              {this.state.is_profile && (
+                <ProfileMenu>
+                  <div>
+                    <div>
+                      <Button
+                        onClick={() => {
+                          console.info('logout');
+                          Auth.logout();
+                        }}
+                      >
+                        <div>로그아웃</div>
+                      </Button>
+                    </div>
+
+                    <div>
+                      <Button>
+                        <div>마이페이지</div>
+                      </Button>
+                    </div>
+                  </div>
+                </ProfileMenu>
+              )}
             </Menu>
           </Item>
         </InnerContainer>
@@ -152,4 +204,82 @@ const Img = styled.img`
   // margin: 0 100px;
   float: right;
   // border: 3px solid green;
+`;
+
+const ProfileMenu = styled.div`
+  position: absolute;
+  background-color: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 40px;
+  // width: 14em;
+  width: 7em;
+  transform: translateX(40px);
+  // border: 2px solid #000;
+  box-shadow: 0 3px 10px 2px rgba(0, 0, 0, 0.45);
+  z-index: 2;
+  > div {
+    > div {
+      with: 100%;
+      cursor: pointer;
+      height: 50px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    > div:nth-of-type(1) {
+      border-bottom: 1px solid #707070;
+    }
+  }
+  // > div:nth-of-type(2) {
+  //   // cursor: pointer;
+  //   padding: 17px 0;
+  //   display: flex;
+  //   flex-direction: column;
+
+  //   > div {
+  //     padding: 6px 20px;
+
+  //     :hover {
+  //       background-color: #f3f3f3;
+  //       > p {
+  //         color: #707070;
+  //       }
+  //     }
+  //   }
+  // }
+  // > div:nth-of-type(3) {
+  //   cursor: pointer;
+  //   padding: 6px;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   // border-bottom: 2px solid red;
+  // }
+  // p {
+  //   color: #414550;
+  //   font-weight: 500;
+  // }
+`;
+
+const Button = styled.button`
+  background: none;
+  border: none;
+  // border-bottom: 2px solid red;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // height: 50px;
+  width: 100%;
+  border: ${(props) => (props.bd ? '1px solid #aaa' : 'none')};
+  border-radius: ${(props) => (props.bd ? '50' : '0')}px;
+  height: ${(props) => (props.height ? props.height : '0')}px;
+  box-sizing: border-box;
+  // padding: ${(props) => (props.pd ? '5' : '0')}px;
+  > div {
+    font-size: 16px;
+    font-weight: 500;
+  }
 `;
