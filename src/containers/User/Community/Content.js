@@ -8,10 +8,10 @@ import {
   Link as Connection,
 } from 'react-router-dom';
 
-import Community from '../../../stores/Community/Community';
+// import Community from '../../../stores/Community/Community';
 import searchImg from '../../../static/images/Admin/Main/search.png';
 import Pagination from '../../../components/Pagination';
-import Auth from '../../../stores/Account/Auth';
+// import Auth from '../../../stores/Account/Auth';
 
 const dummydata = [
   {
@@ -61,22 +61,29 @@ const dummydata = [
 @observer
 class Content extends Component {
   componentDidMount = () => {
-    Community.getCommunityList(Community.communityCurrentPage);
-    console.info(Auth.token);
-    console.info(Auth.loggedUserType);
-    console.info(Auth.loggedUserId);
+    console.info(this.props.Auth);
+    console.info(this.props.Auth);
+    console.info('sdfsdf');
+    this.props.Community.getCommunityList(
+      this.props.Community.communityCurrentPage
+    );
+    console.info(this.props.Auth.token);
+    console.info(this.props.Auth.loggedUserType);
+    console.info(this.props.Auth.loggedUserId);
     console.info(localStorage.getItem('token'));
   };
   render() {
     console.info('render!!');
-    console.info(Community.communityErrorMessage);
-    console.info(Community.communityErrorMessage === '');
+    console.info(this.props.Community.communityErrorMessage);
+    console.info(this.props.Community.communityErrorMessage === '');
     return (
       <Container>
         <SearchBox>
           <Input
             placeholder="제목 및 내용을 입력하세요."
-            onChange={(e) => Community.onChangeHandler(e, 'community')}
+            onChange={(e) =>
+              this.props.Community.onChangeHandler(e, 'community')
+            }
             onFocus={(e) => (e.target.placeholder = '')}
             onBlur={(e) =>
               (e.target.placeholder = '제목 및 내용을 입력하세요.')
@@ -85,12 +92,12 @@ class Content extends Component {
           <Search
             onClick={() => {
               console.info('dsfdsf');
-              Community.communityErrorMessage = '';
-              if (Community.communitySearchValue === '') {
-                Community.communitySearchFinalValue = '';
-                Community.getCommunityList(1);
+              this.props.Community.communityErrorMessage = '';
+              if (this.props.Community.communitySearchValue === '') {
+                this.props.Community.communitySearchFinalValue = '';
+                this.props.Community.getCommunityList(1);
               } else {
-                Community.searchCommunity(1);
+                this.props.Community.searchCommunity(1);
               }
             }}
           >
@@ -98,23 +105,23 @@ class Content extends Component {
           </Search>
         </SearchBox>
         <SearchArea
-          active={Community.communitySearchFinalValue === ''}
-          error={Community.communityErrorMessage === ''}
+          active={this.props.Community.communitySearchFinalValue === ''}
+          error={this.props.Community.communityErrorMessage === ''}
         >
           <div>
-            "<span>{`${Community.communitySearchFinalValue}`}</span>" 로 검색한
-            결과입니다
+            "<span>{`${this.props.Community.communitySearchFinalValue}`}</span>"
+            로 검색한 결과입니다
           </div>
-          <div>{Community.communityErrorMessage}</div>
+          <div>{this.props.Community.communityErrorMessage}</div>
         </SearchArea>
         <Header>
           <Count>
-            총 <span>{Community.communityListTotalCount}</span>개
+            총 <span>{this.props.Community.communityListTotalCount}</span>개
           </Count>
 
-          {Auth.loggedUserType === 'teacher' && (
+          {this.props.Auth.loggedUserType === 'teacher' && (
             <ButtonBox>
-              <Button onClick={() => (Community.communityState = 2)}>
+              <Button onClick={() => (this.props.Community.communityState = 2)}>
                 <div>글 작성</div>
               </Button>
             </ButtonBox>
@@ -139,7 +146,7 @@ class Content extends Component {
             dummydata.map((item, idx) => {
               return (
                 <Line
-                  onClick={() => Community.pushToCommunityDetail(item, idx)}
+                  onClick={() => this.props.Community.pushToCommunityDetail(item, idx)}
                 >
                   <Number>{idx}</Number>
                   <Title>{item.title}</Title>
@@ -149,14 +156,18 @@ class Content extends Component {
                 </Line>
               );
             })} */}
-          {Community.communityList &&
-            Community.communityList.map((item, idx) => {
+          {this.props.Community.communityList &&
+            this.props.Community.communityList.map((item, idx) => {
               return (
                 <Line
-                  onClick={() => Community.pushToCommunityDetail(item, idx)}
+                  onClick={() =>
+                    this.props.Community.pushToCommunityDetail(item, idx)
+                  }
                 >
                   <Number>
-                    {idx + 1 + 10 * (Community.communityCurrentPage - 1)}
+                    {idx +
+                      1 +
+                      10 * (this.props.Community.communityCurrentPage - 1)}
                   </Number>
 
                   <Title>{item.title}</Title>
@@ -169,9 +180,9 @@ class Content extends Component {
         </MainBox>
         <Pagination
           type="Community"
-          currentSet={Community.communityCurrentSet}
-          currentPage={Community.communityCurrentPage}
-          totalPage={Community.communityTotalPage}
+          currentSet={this.props.Community.communityCurrentSet}
+          currentPage={this.props.Community.communityCurrentPage}
+          totalPage={this.props.Community.communityTotalPage}
         />
       </Container>
     );

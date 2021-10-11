@@ -26,6 +26,8 @@ class Nav extends Component {
   componentDidMount = async () => {
     const token = await localStorage.getItem('token');
     this.setState({ token: token });
+    console.info(this.state.token);
+    console.info(this.props.Auth);
   };
   render() {
     return (
@@ -68,7 +70,7 @@ class Nav extends Component {
             <Menu
               style={{ width: '25%', justifyContent: 'right', float: 'right' }}
             >
-              {this.state.token ? (
+              {Auth.token ? (
                 <div
                   style={{ width: '20%', marginLeft: '0px', cursor: 'pointer' }}
                   onClick={() => {

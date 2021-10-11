@@ -1,4 +1,13 @@
-import { observable, action, makeObservable, toJS, decorate } from 'mobx';
+import {
+  observable,
+  action,
+  makeObservable,
+  toJS,
+  decorate,
+  autorun,
+  reaction,
+  computed,
+} from 'mobx';
 import { useHistory } from 'react-router';
 import { Route } from 'react-router-dom';
 
@@ -359,7 +368,7 @@ class Auth {
   @observable loginAuth = false;
 
   /* login한 유저의 아이디와 타입 */
-  @observable loggedUserId = null;
+  @observable loggedUserId = '';
   @observable loggedUserType = '';
 
   getStep = () => {
@@ -1030,6 +1039,8 @@ class Auth {
       .then((res) => {
         console.info(res);
         alert('로그아웃 되었습니다.');
+        // this.loggedUserId = '';
+        // this.loggedUserType = '';
         localStorage.removeItem('token');
         window.location.href = '/';
       })
@@ -1039,5 +1050,18 @@ class Auth {
       });
   };
 }
+
+// autorun(() => {
+//   console.info('autorun');
+//   console.info(Auth.loggedUserId);
+//   console.info(Auth);
+// });
+
+// reaction(
+//   () => Auth.loggedUserId,
+//   (loggedUserId) => {
+//     console.info(`${loggedUserId}`);
+//   }
+// );
 
 export default new Auth();

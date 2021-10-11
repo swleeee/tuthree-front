@@ -26,8 +26,10 @@ import stores from './stores';
 import './stores/index';
 import './App.css';
 import Common from './stores/Common/Common';
+// import Auth from './stores/Account/Auth';
 import NavContainer from './components/Nav';
 import MovileNavContainer from './components/MobileNav';
+import Auth from './stores/Account/Auth';
 
 // @inject('Common')
 @observer
@@ -36,9 +38,19 @@ class App extends React.Component {
     width: null,
   };
   async componentDidMount() {
+    console.info('diddiddid');
     window.addEventListener('resize', this.updateDimensions);
+    console.info(localStorage.getItem('token'));
+    console.info(localStorage.getItem('userId'));
+    console.info(localStorage.getItem('userType'));
     // this.setState({ ...this.state, width: window.innerWidth - 10 });
+    console.info(Auth);
     Common.width = window.innerWidth - 10;
+    if (localStorage.getItem('token')) {
+      Auth.token = localStorage.getItem('token');
+      Auth.loggedUserId = localStorage.getItem('userId');
+      Auth.loggedUserType = localStorage.getItem('userType');
+    }
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateDimensions);
@@ -60,19 +72,18 @@ class App extends React.Component {
                 <MovileNavContainer />
               ))} */}
 
-            <div>
-              <Route exact path="/" component={Home} />
-              <Route path="/signup" component={Signup} />
-              <Route path="/login" component={Login} />
-              <Route path="/forgotten" component={Forgotten} />
-              <Route path="/notice" component={Notice} />
-              <Route path="/community" component={Community} />
-              <Route path="/tutor" component={Tutor} />
-              <Route path="/chatting" component={Chatting} />
-              <Route exact path="/admin" component={AdminHome} />
-              <Route path="/admin/main" component={AdminMain} />
-              <Route path="/admin/community" component={AdminCommunity} />
-            </div>
+            <Route exact path="/" component={Home} />
+
+            <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} />
+            <Route path="/forgotten" component={Forgotten} />
+            <Route path="/notice" component={Notice} />
+            <Route path="/community" component={Community} />
+            <Route path="/tutor" component={Tutor} />
+            <Route path="/chatting" component={Chatting} />
+            <Route exact path="/admin" component={AdminHome} />
+            <Route path="/admin/main" component={AdminMain} />
+            <Route path="/admin/community" component={AdminCommunity} />
           </BrowserRouter>
         </Provider>
       </div>
