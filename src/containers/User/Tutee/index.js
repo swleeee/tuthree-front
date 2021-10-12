@@ -4,12 +4,12 @@ import InnerContainer from '../../../components/InnerContainer';
 import OuterContainer from '../../../components/OuterContainer';
 import Content from './Content';
 import DetailContent from './Detail/index';
-import Tutee from '../../../stores/Matching/Tutee';
 
 @inject('Tutee')
 @observer
 class index extends Component {
   render() {
+    const { Tutee } = this.props;
     return (
       <>
         <OuterContainer>

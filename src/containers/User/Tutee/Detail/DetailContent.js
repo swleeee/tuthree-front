@@ -32,10 +32,11 @@ const reviewData = [
   },
 ];
 
-@inject('Tutor')
+@inject('Tutee')
 @observer
 class DetailContent extends Component {
   render() {
+    const { Tutee } = this.props;
     return (
       <Container>
         <MainContent>
@@ -46,7 +47,7 @@ class DetailContent extends Component {
           </ImgBox>
           <Introduction>
             <Name>소개</Name>
-            <Content>{Tutor.tutorDetailAry.detail}</Content>
+            <Content>{Tutee.tuteeDetailAry.detail}</Content>
           </Introduction>
           <ReviewContainer>
             <Name>리뷰</Name>

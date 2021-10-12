@@ -8,9 +8,8 @@ import maleImg from '../../../../static/images/Common/male.png';
 import femaleImg from '../../../../static/images/Common/female.png';
 import Modal from '../../../../components/Modal';
 import Common from '../../../../stores/Common/Common';
-import Tutor from '../../../../stores/Matching/Tutor';
 
-@inject('Auth', 'Common', 'Tutor')
+@inject('Auth', 'Common', 'Tutee')
 @observer
 class SubContent extends Component {
   openModal = () => {
@@ -21,6 +20,7 @@ class SubContent extends Component {
   };
 
   render() {
+    const { Tutee } = this.props;
     return (
       <>
         <Container width={Common.width}>
@@ -32,19 +32,19 @@ class SubContent extends Component {
               </View>
               <Rating>
                 <img src={starImg} />
-                <div>{Tutor.tutorDetailAry.star}</div>
+                <div>{Tutee.tuteeDetailAry.star}</div>
               </Rating>
             </Number>
-            <Registration type={Tutor.tutorDetailAry.registration !== 'CLOSE'}>
-              {Tutor.tutorDetailAry.registration === 'CLOSE'
+            <Registration type={Tutee.tuteeDetailAry.registration !== 'CLOSE'}>
+              {Tutee.tuteeDetailAry.registration === 'CLOSE'
                 ? '모집마감'
                 : '모집중'}
             </Registration>
           </Header>
           <Main>
             <SubMain>
-              <Label type="name">{Tutor.tutorDetailAry.name}</Label>
-              {Tutor.tutorDetailAry.sex === 'MALE' ? (
+              <Label type="name">{Tutee.tuteeDetailAry.name}</Label>
+              {Tutee.tuteeDetailAry.sex === 'MALE' ? (
                 <img src={maleImg} />
               ) : (
                 <img src={femaleImg} />
@@ -54,7 +54,7 @@ class SubContent extends Component {
             <SubMain>
               <Label>학력</Label>
               <Content>
-                {Tutor.tutorDetailAry.school} {Tutor.tutorDetailAry.major}
+                {Tutee.tuteeDetailAry.school} {Tutee.tuteeDetailAry.major}
               </Content>
             </SubMain>
 
@@ -70,7 +70,7 @@ class SubContent extends Component {
 
             <SubMain>
               <Label>비용</Label>
-              <Content>{Tutor.tutorDetailAry.cost}</Content>
+              <Content>{Tutee.tuteeDetailAry.cost}</Content>
             </SubMain>
           </Main>
           <ButtonBox>

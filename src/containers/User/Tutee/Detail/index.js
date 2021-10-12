@@ -6,14 +6,15 @@ import SubContainer from './SubContent';
 import MobileContent from './MobileContent';
 import Common from '../../../../stores/Common/Common';
 import Modal from '../../../../components/Modal';
-import Tutor from '../../../../stores/Matching/Tutor';
+// import Tutor from '../../../../stores/Matching/Tutor';
 
-@inject('Auth', 'Common', 'Tutor')
+@inject('Auth', 'Common', 'Tutee')
 @observer
 class index extends Component {
   componentWillUnmount = () => {
-    Tutor.tutorDetailAry = [];
-    Tutor.state = 0;
+    const { Tutee } = this.props;
+    Tutee.tutorDetailAry = [];
+    Tutee.state = 0;
   };
   render() {
     console.info(Common.width);

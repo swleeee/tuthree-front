@@ -190,7 +190,7 @@ class Content extends Component {
                     }}
                   >
                     <Card
-                      type="teacher"
+                      type="tutor"
                       name={item.name}
                       gender={item.gender}
                       rating={item.star}

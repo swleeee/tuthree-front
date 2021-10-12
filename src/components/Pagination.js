@@ -9,11 +9,11 @@ import AdminCommunity from '../stores/Admin/Community';
 import Community from '../stores/Community/Community';
 import Tutor from '../stores/Matching/Tutor';
 
-@inject('AdminCommunity', 'Community', 'Tutor')
+@inject('AdminCommunity', 'Community', 'Tutor', 'Tutee')
 @observer
 class Pagination extends Component {
   pageMoveHandler = async (e) => {
-    const { type, Tutor } = this.props;
+    const { type, Tutor, Tutee } = this.props;
     console.info(type);
     switch (type) {
       case 'AdminNotice':
@@ -34,13 +34,16 @@ class Pagination extends Component {
       case 'Tutor':
         await Tutor.movePage(e);
         break;
+      case 'Tutee':
+        await Tutee.movePage(e);
+        break;
       default:
         break;
     }
   };
 
   pagePrevHandler = async () => {
-    const { type, Tutor } = this.props;
+    const { type, Tutor, Tutee } = this.props;
     switch (type) {
       case 'AdminNotice':
         await AdminCommunity.pagePrev();
@@ -61,13 +64,16 @@ class Pagination extends Component {
       case 'Tutor':
         await Tutor.pagePrev();
         break;
+      case 'Tutee':
+        await Tutee.pagePrev();
+        break;
       default:
         break;
     }
   };
 
   pageNextHandler = async () => {
-    const { type, Tutor } = this.props;
+    const { type, Tutor, Tutee } = this.props;
     switch (type) {
       case 'AdminNotice':
         await AdminCommunity.pageNext();
@@ -86,6 +92,9 @@ class Pagination extends Component {
         break;
       case 'Tutor':
         await Tutor.pageNext();
+        break;
+      case 'Tutee':
+        await Tutee.pageNext();
         break;
       default:
         break;

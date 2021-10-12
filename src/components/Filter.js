@@ -141,7 +141,7 @@ const customStyles = {
   },
 };
 
-@inject('Common', 'Tutor')
+@inject('Common', 'Tutor', 'Tutee')
 @observer
 class Filter extends Component {
   valuetext = (value) => {
@@ -155,189 +155,378 @@ class Filter extends Component {
 
   render() {
     console.info('ren');
+    const { type, Tutee } = this.props;
     return (
       <Container>
-        <ItemBox>
-          <Label>지역</Label>
-          <Content>
-            <SelectBox>
-              <Select
-                styles={
-                  Common.width > 767.98 ? customStyles : mobileCustomStyles
-                }
-                value={{
-                  name: Tutor.selectedUpperLocation
-                    ? Tutor.selectedUpperLocation
-                    : '시/도',
-                  gugun: Tutor.selectedUpperLocation,
-                }}
-                onChange={(e) => Tutor.handleChange(e, 'upperLocation')}
-                getOptionLabel={(option) => option.name}
-                options={LocationList}
-                //  isSearchable={false}
-                placeholder="시/도"
-                // ml="15"
-                domainType={Tutor.domainType}
-              />
-
-              <Select
-                width={220}
-                id="lowerLocation"
-                styles={
-                  Common.width > 767.98 ? customStyles : mobileCustomStyles
-                }
-                value={{
-                  name: Tutor.selectedLowerLocation
-                    ? Tutor.selectedLowerLocation
-                    : '시/군/구',
-                  gugun: Tutor.selectedLowerLocation,
-                }}
-                temp={Tutor.selectedLowerLocation}
-                onChange={(e) => Tutor.handleChange(e, 'lowerLocation')}
-                getOptionLabel={(option) => option.name}
-                // options={locationAry[Tutor.locationIndex].value}
-                options={Tutor.lowerLocationAry}
-                isSearchable={false}
-                placeholder={Tutor.selectedLowerLocation}
-                // placeholder={`ㅣㅣ`}
-                // onFocus={() => (this.placeholder = '')}
-                ml={Common.width > 767.98 && '15'}
-                domainType={Tutor.domainType}
-              />
-            </SelectBox>
-            <SelectArea>
-              {Tutor.selectedLocation.map((item, idx) => {
-                return (
-                  <div
-                    onClick={() => {
-                      console.info('sdf');
-                      Tutor.selectedLocation.splice(idx, 1);
+        {type === 'tutor' ? (
+          <>
+            <ItemBox>
+              <Label>지역</Label>
+              <Content>
+                <SelectBox>
+                  <Select
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    value={{
+                      name: Tutor.selectedUpperLocation
+                        ? Tutor.selectedUpperLocation
+                        : '시/도',
+                      gugun: Tutor.selectedUpperLocation,
                     }}
-                  >
-                    <div>{item}</div>
-                    <img src={deleteImg} />
-                  </div>
-                );
-              })}
-            </SelectArea>
-          </Content>
-        </ItemBox>
-        <ItemBox>
-          <Label>과목</Label>
-          <Content>
-            {' '}
-            <SelectBox>
-              <Select
-                styles={
-                  Common.width > 767.98 ? customStyles : mobileCustomStyles
-                }
-                value={{
-                  label: Tutor.selectedUpperSubject
-                    ? Tutor.selectedUpperSubject
-                    : '상위 과목',
-                  value: Tutor.selectedUpperSubject,
-                }}
-                onChange={(e) => Tutor.handleChange(e, 'upperSubject')}
-                getOptionLabel={(option) => option.label}
-                options={SubjectList}
-                //  isSearchable={false}
-                placeholder="시/도"
-                // ml="15"
-                domainType={Tutor.domainType}
-              />
+                    onChange={(e) => Tutor.handleChange(e, 'upperLocation')}
+                    getOptionLabel={(option) => option.name}
+                    options={LocationList}
+                    //  isSearchable={false}
+                    placeholder="시/도"
+                    // ml="15"
+                    domainType={Tutor.domainType}
+                  />
 
-              <Select
-                width={220}
-                id="lowerLocation"
-                styles={
-                  Common.width > 767.98 ? customStyles : mobileCustomStyles
-                }
-                value={{
-                  label: Tutor.selectedLowerSubject
-                    ? Tutor.selectedLowerSubject
-                    : '하위 과목',
-                  value: Tutor.selectedLowerSubject,
-                }}
-                onChange={(e) => Tutor.handleChange(e, 'lowerSubject')}
-                getOptionLabel={(option) => option.label}
-                // options={locationAry[Tutor.locationIndex].value}
-                options={Tutor.lowerSubjectAry}
-                isSearchable={false}
-                placeholder={Tutor.selectedLowerSubject}
-                // placeholder={`ㅣㅣ`}
-                // onFocus={() => (this.placeholder = '')}
-                ml={Common.width > 767.98 && '15'}
-                domainType={Tutor.domainType}
-              />
-            </SelectBox>
-            <SelectArea>
-              {Tutor.selectedSubject.map((item, idx) => {
-                return (
-                  <div
-                    onClick={() => {
-                      Tutor.selectedSubject.splice(idx, 1);
+                  <Select
+                    width={220}
+                    id="lowerLocation"
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    value={{
+                      name: Tutor.selectedLowerLocation
+                        ? Tutor.selectedLowerLocation
+                        : '시/군/구',
+                      gugun: Tutor.selectedLowerLocation,
                     }}
-                  >
-                    <div>{item}</div>
-                    <img src={deleteImg} />
-                  </div>
-                );
-              })}
-            </SelectArea>
-          </Content>
-        </ItemBox>
-        <ItemBox>
-          <Label mb={45}>예산</Label>
-          <Content>
-            <BoxContainer>
-              <Slider
-                color="warning"
-                getAriaLabel={() => 'Temperature range'}
-                value={Tutor.budgetValue}
-                onChange={this.handleChange}
-                valueLabelDisplay="auto"
-                getAriaValueText={this.valuetext}
-                valueLabelDisplay="on"
-                valueLabelFormat={(value) => <div>{`${value}만원`}</div>}
-                // marks={Tutor.budgetMark}
-              />
-            </BoxContainer>
-            <SelectBox>
-              <Select
-                //  id={this.props.id}
-                //  className={this.props.className}
-                styles={
-                  Common.width > 767.98 ? customStyles : mobileCustomStyles
-                }
-                //  value={value}
-                onChange={(e) => Tutor.handleChange(e, 'budgetType')}
-                getOptionLabel={(option) => option.label}
-                options={Tutor.budgetTypeAry}
-                //  isSearchable={false}
-                placeholder="선택하세요."
-                ml="50"
-                domainType={Tutor.domainType}
-              />
-            </SelectBox>
-          </Content>
-        </ItemBox>
-        <ButtonBox>
-          <Button
-            color="#000000"
-            bc="#aaaaaa"
-            border="1px solid rgba(0, 0, 0, 0.1)"
-          >
-            <div>취소</div>
-          </Button>
-          <Button
-            color="#fff"
-            bc="rgba(235, 114, 82, 1)"
-            // border="1px solid #707070"
-            right={true}
-          >
-            <div>적용</div>
-          </Button>
-        </ButtonBox>
+                    temp={Tutor.selectedLowerLocation}
+                    onChange={(e) => Tutor.handleChange(e, 'lowerLocation')}
+                    getOptionLabel={(option) => option.name}
+                    // options={locationAry[Tutor.locationIndex].value}
+                    options={Tutor.lowerLocationAry}
+                    isSearchable={false}
+                    placeholder={Tutor.selectedLowerLocation}
+                    // placeholder={`ㅣㅣ`}
+                    // onFocus={() => (this.placeholder = '')}
+                    ml={Common.width > 767.98 && '15'}
+                    domainType={Tutor.domainType}
+                  />
+                </SelectBox>
+                <SelectArea>
+                  {Tutor.selectedLocation.map((item, idx) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          console.info('sdf');
+                          Tutor.selectedLocation.splice(idx, 1);
+                        }}
+                      >
+                        <div>{item}</div>
+                        <img src={deleteImg} />
+                      </div>
+                    );
+                  })}
+                </SelectArea>
+              </Content>
+            </ItemBox>
+            <ItemBox>
+              <Label>과목</Label>
+              <Content>
+                {' '}
+                <SelectBox>
+                  <Select
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    value={{
+                      label: Tutor.selectedUpperSubject
+                        ? Tutor.selectedUpperSubject
+                        : '상위 과목',
+                      value: Tutor.selectedUpperSubject,
+                    }}
+                    onChange={(e) => Tutor.handleChange(e, 'upperSubject')}
+                    getOptionLabel={(option) => option.label}
+                    options={SubjectList}
+                    //  isSearchable={false}
+                    placeholder="시/도"
+                    // ml="15"
+                    domainType={Tutor.domainType}
+                  />
+
+                  <Select
+                    width={220}
+                    id="lowerLocation"
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    value={{
+                      label: Tutor.selectedLowerSubject
+                        ? Tutor.selectedLowerSubject
+                        : '하위 과목',
+                      value: Tutor.selectedLowerSubject,
+                    }}
+                    onChange={(e) => Tutor.handleChange(e, 'lowerSubject')}
+                    getOptionLabel={(option) => option.label}
+                    // options={locationAry[Tutor.locationIndex].value}
+                    options={Tutor.lowerSubjectAry}
+                    isSearchable={false}
+                    placeholder={Tutor.selectedLowerSubject}
+                    // placeholder={`ㅣㅣ`}
+                    // onFocus={() => (this.placeholder = '')}
+                    ml={Common.width > 767.98 && '15'}
+                    domainType={Tutor.domainType}
+                  />
+                </SelectBox>
+                <SelectArea>
+                  {Tutor.selectedSubject.map((item, idx) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          Tutor.selectedSubject.splice(idx, 1);
+                        }}
+                      >
+                        <div>{item}</div>
+                        <img src={deleteImg} />
+                      </div>
+                    );
+                  })}
+                </SelectArea>
+              </Content>
+            </ItemBox>
+            <ItemBox>
+              <Label mb={45}>예산</Label>
+              <Content>
+                <BoxContainer>
+                  <Slider
+                    color="warning"
+                    getAriaLabel={() => 'Temperature range'}
+                    value={Tutor.budgetValue}
+                    onChange={this.handleChange}
+                    valueLabelDisplay="auto"
+                    getAriaValueText={this.valuetext}
+                    valueLabelDisplay="on"
+                    valueLabelFormat={(value) => <div>{`${value}만원`}</div>}
+                    // marks={Tutor.budgetMark}
+                  />
+                </BoxContainer>
+                <SelectBox>
+                  <Select
+                    //  id={this.props.id}
+                    //  className={this.props.className}
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    //  value={value}
+                    onChange={(e) => Tutor.handleChange(e, 'budgetType')}
+                    getOptionLabel={(option) => option.label}
+                    options={Tutor.budgetTypeAry}
+                    //  isSearchable={false}
+                    placeholder="선택하세요."
+                    ml="50"
+                    domainType={Tutor.domainType}
+                  />
+                </SelectBox>
+              </Content>
+            </ItemBox>
+            <ButtonBox>
+              <Button
+                color="#000000"
+                bc="#aaaaaa"
+                border="1px solid rgba(0, 0, 0, 0.1)"
+              >
+                <div>취소</div>
+              </Button>
+              <Button
+                color="#fff"
+                bc="rgba(235, 114, 82, 1)"
+                // border="1px solid #707070"
+                right={true}
+              >
+                <div>적용</div>
+              </Button>
+            </ButtonBox>
+          </>
+        ) : (
+          <>
+            <ItemBox>
+              <Label>지역</Label>
+              <Content>
+                <SelectBox>
+                  <Select
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    value={{
+                      name: Tutor.selectedUpperLocation
+                        ? Tutor.selectedUpperLocation
+                        : '시/도',
+                      gugun: Tutor.selectedUpperLocation,
+                    }}
+                    onChange={(e) => Tutor.handleChange(e, 'upperLocation')}
+                    getOptionLabel={(option) => option.name}
+                    options={LocationList}
+                    //  isSearchable={false}
+                    placeholder="시/도"
+                    // ml="15"
+                    domainType={Tutor.domainType}
+                  />
+
+                  <Select
+                    width={220}
+                    id="lowerLocation"
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    value={{
+                      name: Tutor.selectedLowerLocation
+                        ? Tutor.selectedLowerLocation
+                        : '시/군/구',
+                      gugun: Tutor.selectedLowerLocation,
+                    }}
+                    temp={Tutor.selectedLowerLocation}
+                    onChange={(e) => Tutor.handleChange(e, 'lowerLocation')}
+                    getOptionLabel={(option) => option.name}
+                    // options={locationAry[Tutor.locationIndex].value}
+                    options={Tutor.lowerLocationAry}
+                    isSearchable={false}
+                    placeholder={Tutor.selectedLowerLocation}
+                    // placeholder={`ㅣㅣ`}
+                    // onFocus={() => (this.placeholder = '')}
+                    ml={Common.width > 767.98 && '15'}
+                    domainType={Tutor.domainType}
+                  />
+                </SelectBox>
+                <SelectArea>
+                  {Tutor.selectedLocation.map((item, idx) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          console.info('sdf');
+                          Tutor.selectedLocation.splice(idx, 1);
+                        }}
+                      >
+                        <div>{item}</div>
+                        <img src={deleteImg} />
+                      </div>
+                    );
+                  })}
+                </SelectArea>
+              </Content>
+            </ItemBox>
+            <ItemBox>
+              <Label>과목</Label>
+              <Content>
+                {' '}
+                <SelectBox>
+                  <Select
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    value={{
+                      label: Tutor.selectedUpperSubject
+                        ? Tutor.selectedUpperSubject
+                        : '상위 과목',
+                      value: Tutor.selectedUpperSubject,
+                    }}
+                    onChange={(e) => Tutor.handleChange(e, 'upperSubject')}
+                    getOptionLabel={(option) => option.label}
+                    options={SubjectList}
+                    //  isSearchable={false}
+                    placeholder="시/도"
+                    // ml="15"
+                    domainType={Tutor.domainType}
+                  />
+
+                  <Select
+                    width={220}
+                    id="lowerLocation"
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    value={{
+                      label: Tutor.selectedLowerSubject
+                        ? Tutor.selectedLowerSubject
+                        : '하위 과목',
+                      value: Tutor.selectedLowerSubject,
+                    }}
+                    onChange={(e) => Tutor.handleChange(e, 'lowerSubject')}
+                    getOptionLabel={(option) => option.label}
+                    // options={locationAry[Tutor.locationIndex].value}
+                    options={Tutor.lowerSubjectAry}
+                    isSearchable={false}
+                    placeholder={Tutor.selectedLowerSubject}
+                    // placeholder={`ㅣㅣ`}
+                    // onFocus={() => (this.placeholder = '')}
+                    ml={Common.width > 767.98 && '15'}
+                    domainType={Tutor.domainType}
+                  />
+                </SelectBox>
+                <SelectArea>
+                  {Tutor.selectedSubject.map((item, idx) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          Tutor.selectedSubject.splice(idx, 1);
+                        }}
+                      >
+                        <div>{item}</div>
+                        <img src={deleteImg} />
+                      </div>
+                    );
+                  })}
+                </SelectArea>
+              </Content>
+            </ItemBox>
+            <ItemBox>
+              <Label mb={45}>예산</Label>
+              <Content>
+                <BoxContainer>
+                  <Slider
+                    color="warning"
+                    getAriaLabel={() => 'Temperature range'}
+                    value={Tutor.budgetValue}
+                    onChange={this.handleChange}
+                    valueLabelDisplay="auto"
+                    getAriaValueText={this.valuetext}
+                    valueLabelDisplay="on"
+                    valueLabelFormat={(value) => <div>{`${value}만원`}</div>}
+                    // marks={Tutor.budgetMark}
+                  />
+                </BoxContainer>
+                <SelectBox>
+                  <Select
+                    //  id={this.props.id}
+                    //  className={this.props.className}
+                    styles={
+                      Common.width > 767.98 ? customStyles : mobileCustomStyles
+                    }
+                    //  value={value}
+                    onChange={(e) => Tutor.handleChange(e, 'budgetType')}
+                    getOptionLabel={(option) => option.label}
+                    options={Tutor.budgetTypeAry}
+                    //  isSearchable={false}
+                    placeholder="선택하세요."
+                    ml="50"
+                    domainType={Tutor.domainType}
+                  />
+                </SelectBox>
+              </Content>
+            </ItemBox>
+            <ButtonBox>
+              <Button
+                color="#000000"
+                bc="#aaaaaa"
+                border="1px solid rgba(0, 0, 0, 0.1)"
+              >
+                <div>취소</div>
+              </Button>
+              <Button
+                color="#fff"
+                bc="rgba(235, 114, 82, 1)"
+                // border="1px solid #707070"
+                right={true}
+              >
+                <div>적용</div>
+              </Button>
+            </ButtonBox>
+          </>
+        )}
       </Container>
     );
   }

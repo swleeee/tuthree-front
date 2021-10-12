@@ -36,10 +36,11 @@ const reviewData = [
   },
 ];
 
-@inject('Tutor')
+@inject('Tutee')
 @observer
 class MobileContent extends Component {
   render() {
+    const { Tutee } = this.props;
     return (
       <Container>
         <Number>
@@ -49,9 +50,13 @@ class MobileContent extends Component {
           </View>
           <TotalRating>
             <img src={starImg} />
-            <div>4.2</div>
+            <div>{Tutee.tuteeDetailAry.star}</div>
           </TotalRating>
-          <Registration type={true}>모집중</Registration>
+          <Registration type={Tutee.tuteeDetailAry.registration !== 'CLOSE'}>
+            {Tutee.tuteeDetailAry.registration === 'CLOSE'
+              ? '모집마감'
+              : '모집중'}
+          </Registration>
         </Number>
         <MainContent>
           <Header>
@@ -63,18 +68,22 @@ class MobileContent extends Component {
             <ItemBox>
               <Name mb={16}>
                 <Label type="name" mr={15}>
-                  홍길동
+                  {Tutee.tuteeDetailAry.name}
                 </Label>
-                <img src={maleImg} />
+                {Tutee.tuteeDetailAry.sex === 'MALE' ? (
+                  <img src={maleImg} />
+                ) : (
+                  <img src={femaleImg} />
+                )}
               </Name>
               <Name>
                 <Label>학력</Label>
-                <Content>가천대학교 컴퓨터공학과</Content>
+                <Content>{Tutee.tuteeDetailAry.school}</Content>
               </Name>
 
               <Name>
                 <Label>비용</Label>
-                <Content>시급 20000원</Content>
+                <Content>{Tutee.tuteeDetailAry.cost}</Content>
               </Name>
             </ItemBox>
           </Header>
@@ -92,17 +101,7 @@ class MobileContent extends Component {
           <Section>
             <Label mb={10}>소개</Label>
             <Content bd={true} pd={true}>
-              ㄴㅇㄹㄴㅇㄹㅇㄴㄹㄴㅇㄹㄴㅇㄹsdsdjfsdklfjsdl
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
+              {Tutee.tuteeDetailAry.detail}
             </Content>
           </Section>
           <ReviewContainer>

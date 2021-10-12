@@ -20,14 +20,14 @@ class Tutee {
   @observable lowerSubjectAry = [];
   @observable selectedSubject = []; // 과목
 
-  @observable tutorState = 1; // 1 : 조회, 2 : 작성, 3 : 세부 조회
-  @observable tutorList = []; // tutee 페이지 당 목록 데이터
-  @observable tutorListTotalCount = 0; // tutee 전체 개수
-  @observable tutorTotalPage = 0; // tutee 전체 페이지 수
-  @observable tutorCurrentPage = 1; // tutee 현재 페이지
-  @observable tutorCurrentSet = parseInt((this.tutorCurrentPage - 1) / 5) + 1; // tutee 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
+  @observable tuteeState = 1; // 1 : 조회, 2 : 작성, 3 : 세부 조회
+  @observable tuteeList = []; // tutee 페이지 당 목록 데이터
+  @observable tuteeListTotalCount = 0; // tutee 전체 개수
+  @observable tuteeTotalPage = 0; // tutee 전체 페이지 수
+  @observable tuteeCurrentPage = 1; // tutee 현재 페이지
+  @observable tuteeCurrentSet = parseInt((this.tuteeCurrentPage - 1) / 5) + 1; // tutee 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
 
-  @observable tutorDetailAry = [];
+  @observable tuteeDetailAry = [];
 
   @observable budgetType = '';
 
@@ -193,9 +193,9 @@ class Tutee {
     }
   };
   @action pushToDetail = (item, idx) => {
-    this.tutorDetailAry.push(item);
+    this.tuteeDetailAry.push(item);
     this.state = 1;
-    console.info(toJS(this.tutorDetailAry));
+    console.info(toJS(this.tuteeDetailAry));
   };
 
   @action getTuteeList = async (id) => {
@@ -210,13 +210,13 @@ class Tutee {
     TuteeAPI.getTuteeList(req)
       .then(async (res) => {
         console.info(res);
-        this.tutorList = await res.data.data;
-        this.tutorListTotalCount = await res.data.list;
-        this.tutorTotalPage = await Math.ceil(this.tutorListTotalCount / 10);
+        this.tuteeList = await res.data.data;
+        this.tuteeListTotalCount = await res.data.list;
+        this.tuteeTotalPage = await Math.ceil(this.tuteeListTotalCount / 10);
 
-        this.tutorCurrentSet = parseInt((this.tutorCurrentPage - 1) / 5) + 1; // tutee 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
+        this.tuteeCurrentSet = parseInt((this.tuteeCurrentPage - 1) / 5) + 1; // tutee 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
 
-        await this.tutorList.map(async (item, idx) => {
+        await this.tuteeList.map(async (item, idx) => {
           item.checked = false;
         });
       })
@@ -228,7 +228,7 @@ class Tutee {
 
   /* commuinity 상세 페이지로 이동하는 함수 */
   @action getTuteeDetailList = async (item, idx = 0, type = '') => {
-    // this.tutorDetailAry.push(item);
+    // this.tuteeDetailAry.push(item);
     console.info(item.postId);
     this.state = 1;
     console.info(this.communityState);
@@ -242,7 +242,7 @@ class Tutee {
     await TuteeAPI.getDetailTuteeList(req)
       .then(async (res) => {
         console.info(res);
-        this.tutorDetailAry = await res.data.data;
+        this.tuteeDetailAry = await res.data.data;
       })
       .catch((e) => {
         console.info(e);
@@ -250,7 +250,32 @@ class Tutee {
       });
 
     // await this.communityDetailList.push(item);
-    console.info(toJS(this.tutorDetailAry));
+    console.info(toJS(this.tuteeDetailAry));
+  };
+
+  /* 선생님 클릭한 페이지로 이동하는 함수 */
+  @action movePage = async (e) => {
+    const newPage = e.target.innerText * 1;
+    this.tuteeCurrentPage = newPage;
+    await this.getTuteeList(this.tuteeCurrentPage);
+  };
+
+  /* 선생님 다음 페이지로 이동하는 함수 */
+  @action pageNext = async () => {
+    if (this.tuteeCurrentPage < this.tuteeTotalPage) {
+      const nextPage = this.tuteeCurrentPage + 1;
+      this.tuteeCurrentPage = nextPage;
+      await this.getTuteeList(this.tuteeCurrentPage);
+    }
+  };
+
+  /* 선생님 이전 페이지로 이동하는 함수 */
+  @action pagePrev = async () => {
+    if (this.tuteeCurrentPage > 1) {
+      const newPage = this.tuteeCurrentPage - 1;
+      this.tuteeCurrentPage = newPage;
+      await this.getTuteeList(this.tuteeCurrentPage);
+    }
   };
 }
 

@@ -38,9 +38,9 @@ class Card extends Component {
               {rating}
             </Label>
           </Box>
+          {type === 'tutor' && <Label>{school}</Label>}
+          {type === 'tutor' && <Label>{subject}</Label>}
 
-          <Label>{school}</Label>
-          <Label>{subject}</Label>
           <Label>{location}</Label>
           <Box>
             {' '}
