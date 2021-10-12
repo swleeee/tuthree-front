@@ -2,6 +2,7 @@ import Auth from './Account/Auth';
 import Common from './Common/Common';
 import Community from './Community/Community';
 import Tutor from './Matching/Tutor';
+import Tutee from './Matching/Tutee';
 import AdminAuth from './Admin/Auth';
 import AdminUser from './Admin/User';
 import AdminCommunity from './Admin/Community';
@@ -11,6 +12,7 @@ export default {
   Common,
   Community,
   Tutor,
+  Tutee,
   AdminAuth,
   AdminUser,
   AdminCommunity,
