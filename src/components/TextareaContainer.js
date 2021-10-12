@@ -20,7 +20,8 @@ class TextareaContainer extends Component {
     row: 1,
   };
   requestHandler = (event) => {
-    const { type } = this.props;
+    const { type, mxh } = this.props;
+    console.info(mxh);
     const textareaLineHeight = 34;
     const { minRows, maxRows } = this.state;
     const previousRows = event.target.rows;
@@ -72,8 +73,9 @@ class TextareaContainer extends Component {
   };
 
   render() {
-    const { type, placeholder, value } = this.props;
+    const { type, placeholder, value, mxh, mih } = this.props;
     console.info(type);
+    console.info(mxh);
     return (
       <Provider Auth={authStore}>
         <Textarea
@@ -91,6 +93,8 @@ class TextareaContainer extends Component {
           className={'textarea'}
           placeholderStyle={{ fontWeight: '400' }}
           onChange={this.requestHandler}
+          mxh={mxh}
+          mih={mih}
         />
       </Provider>
     );
@@ -116,8 +120,11 @@ const Textarea = styled.textarea`
   border-radius: 5px;
   overflow: auto;
   height: auto;
-  min-height: 300px;
+  min-height: ${(props) => (props.mih ? props.mih : '300')}px;
   font-family: inherit;
+  outline: none;
+  // max-height: ${(props) => (props.mxh ? props.mxh : '')}px
+  max-height: 100px;
   :focus {
     outline: none;
   }

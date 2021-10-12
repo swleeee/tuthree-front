@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer, Provider } from 'mobx-react';
 import styled from 'styled-components';
+import Textarea from '../../../components/TextareaContainer';
 
 const userList = [
   {
@@ -13,7 +14,7 @@ const userList = [
   {
     id: 1,
     name: 'user1',
-    content: 'sdfsdfdsfdsfsdf',
+    content: 'sd',
     writeDt: '2021-09-29',
   },
 
@@ -97,7 +98,7 @@ const chatList = [
   {
     id: 4,
     name: 'user1',
-    content: 'sdfsdfdsfdsfsdf',
+    content: 'sdddddddddddddddddddddddddddddddddddddddddd',
     writeDt: '2021-09-29',
     type: 'me',
   },
@@ -125,7 +126,8 @@ const chatList = [
   {
     id: 4,
     name: 'user1',
-    content: 'sdfsdfdsfdsfsdf',
+    content:
+      'sdfsdfdsfdsfsdsdfsdfdsfdsfsdfdsssssssssssssssssssssssssssdfsdfdsfdsfsdfdsssssssssssssssssssssssssssdfsdfdsfdsfsdfdsssssssssssssssssssssssssssdfsdfdsfdsfsdfdsssssssssssssssssssssssssssdfsdfdsfdsfsdfdsssssssssssssssssssssssssssdfsdfdsfdsfsdfdsssssssssssssssssssssssssssdfsdfdsfdsfsdfdsssssssssssssssssssssssssssdfsdfdsfdsfsdfdsssssssssssssssssssssssssssdfsdfdsfdsfsdfdsssssssssssssssssssssssssssdfsdfdsfdsfsdfdsssssssssssssssssssssssssssdfsdfdsfdsfsdfdssssssssssssssssssssssssssf',
     writeDt: '2021-09-29',
     type: 'you',
   },
@@ -139,9 +141,31 @@ const chatList = [
   {
     id: 4,
     name: 'user1',
+    content:
+      'ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+    writeDt: '2021-09-29',
+    type: 'me',
+  },
+  {
+    id: 4,
+    name: 'user1',
     content: 'sdfsdfdsfdsfsdf',
     writeDt: '2021-09-29',
     type: 'me',
+  },
+  {
+    id: 4,
+    name: 'user1',
+    content: 'sdfsdfdsfdsfsdf',
+    writeDt: '2021-09-29',
+    type: 'me',
+  },
+  {
+    id: 4,
+    name: 'user1',
+    content: 'sdfsdfdsfdsfsdf',
+    writeDt: '2021-09-29',
+    type: 'you',
   },
 ];
 
@@ -181,27 +205,37 @@ class Content extends Component {
             {chatList &&
               chatList.map((item, idx) => {
                 return (
-                  <ChatListItem>
-                    <ImgBox width={55} height={55} mr={10}>
+                  <ChatListItem type={item.type === 'me'}>
+                    <ImgBox
+                      width={55}
+                      height={55}
+                      mr={10}
+                      type={item.type === 'me'}
+                    >
                       <div>
                         <div>IMG</div>
                       </div>
                     </ImgBox>
-                    <ChatItem>
-                      <ChatLabel>
-                        <ChatName>{item.name}</ChatName>
-                        <ChatWriteDt>{item.writeDt}</ChatWriteDt>
+                    <ChatItem type={item.type === 'me'}>
+                      <ChatLabel type={item.type === 'me'}>
+                        <ChatName type={item.type === 'me'}>
+                          {item.name}
+                        </ChatName>
+                        <ChatContent type={item.type === 'me'}>
+                          <div></div>
+                          {item.content}
+                        </ChatContent>
                       </ChatLabel>
-                      <ChatContent>{item.content}</ChatContent>
+                      <ChatWriteDt>{item.writeDt}</ChatWriteDt>
                     </ChatItem>
                   </ChatListItem>
                 );
               })}
           </ChatMain>
           <ChatWritingBox>
-            <input />
+            <Textarea mxh={40} mih={40} />
             <Button>
-              <div> 전송</div>
+              <div>전송</div>
             </Button>
           </ChatWritingBox>
         </ChatContainer>
@@ -256,10 +290,12 @@ const UserListItem = styled.div`
   align-items: center;
 `;
 const ImgBox = styled.div`
-  display: flex;
+  display: ${(props) => (props.type ? 'none' : 'flex')};
   justify-content: center;
+  align-self: flex-start;
   margin-bottom: ${(props) => (props.mb ? props.mb : '0')}px;
   margin-right: ${(props) => (props.mr ? props.mr : '0')}px;
+
   > div {
     display: flex;
     justify-content: center;
@@ -297,6 +333,8 @@ const UserWriteDt = styled.div`
 `;
 const UserContent = styled.div`
   font-size: 14px;
+  // width:50%;
+  // word-break: break-all;
 `;
 
 const ChatContainer = styled.div`
@@ -306,21 +344,90 @@ const ChatContainer = styled.div`
 `;
 
 const ChatHeader = styled.div``;
-const ChatMain = styled.div``;
+const ChatMain = styled.div`
+  border-bottom: 1px solid #000;
+  overflow: auto;
+  height: 88%;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
 const ChatListItem = styled.div`
   padding: 10px 12px;
-  box-sizing: border- box;
+  box-sizing: border-box;
   // border-bottom: 2px solid #707070;
   display: flex;
   align-items: center;
-  width: 97%;
-  justify-content: flex-end;
+  // width: ${(props) => (props.type ? '97%' : '50%')};
+  justify-content: ${(props) => (props.type ? 'flex-end' : 'flex-start')};
+  word-break: break-all;
+  margin: 15px 0;
 `;
-const ChatItem = styled.div``;
-const ChatLabel = styled.div``;
-const ChatName = styled.div``;
-const ChatWriteDt = styled.div``;
-const ChatContent = styled.div``;
+const ChatItem = styled.div`
+  display: flex;
+  flex-direction: ${(props) => (props.type ? 'row-reverse' : '')};
+`;
+const ChatLabel = styled.div`
+  margin-right: ${(props) => (props.type ? '0' : '15px')};
+  margin-left: ${(props) => (props.type ? '15px' : '0')};
+  width: 70%;
+`;
+const ChatName = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  display: ${(props) => (props.type ? 'none' : '')};
+  text-align: ${(props) => (props.type ? 'right' : 'left')};
+`;
+const ChatWriteDt = styled.div`
+  align-self: flex-end;
+  font-size: 13px;
+  color: #999999;
+  min-width: 70px;
+`;
+const ChatContent = styled.div`
+  font-size: 14px;
+  // width: 50%;
+  flex-direction: ${(props) => (props.type ? 'row-reverse' : '')};
+  background-color: #ccc;
+  border-radius: 3px;
+  padding: 5px 8px;
+  position: relative;
+  > div:nth-of-type(1) {
+    width: 15px;
+    height: 12px;
+    position: absolute;
+    // border: 2px solid red;
+    background-color: #ccc;
+    left: ${(props) => (props.type ? '' : '-8px')};
+    right: ${(props) => (props.type ? '-8px' : '')};
+    border-radius: ${(props) => (props.type ? '0 0 100% 0' : '0 0 0 100%')};
+    // clip: rect(0, 8px, 4px, 9px);
+  }
+`;
 
-const ChatWritingBox = styled.div``;
-const Button = styled.button``;
+const ChatWritingBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 4px 10px;
+  box-sizing: border-box;
+`;
+const Button = styled.button`
+  background-color: rgba(235, 114, 82, 0.7);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  width: 70px;
+  height: 40px;
+`;
+
+const Input = styled.input`
+  border: 1px solid #707070;
+  width: 80%;
+  height: 40px;
+  outline: none;
+  padding: 5px 8px;
+  box-sizing: border-box;
+`;
