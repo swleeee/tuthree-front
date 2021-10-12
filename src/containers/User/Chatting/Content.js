@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer, Provider } from 'mobx-react';
 import styled from 'styled-components';
+import defaultImg from '../../../static/images/Common/defaultUser.png';
 import Textarea from '../../../components/TextareaContainer';
 
 const userList = [
@@ -184,7 +185,8 @@ class Content extends Component {
                   <UserListItem>
                     <ImgBox width={55} height={55} mr={10}>
                       <div>
-                        <div>IMG</div>
+                        {/* <div>IMG</div> */}
+                        <img src={defaultImg} />
                       </div>
                     </ImgBox>
                     <UserItem>
@@ -218,7 +220,8 @@ class Content extends Component {
                       type={item.type === 'me'}
                     >
                       <div>
-                        <div>IMG</div>
+                        {/* <div>IMG</div> */}
+                        <img src={defaultImg} />
                       </div>
                     </ImgBox>
                     <ChatItem type={item.type === 'me'}>
@@ -267,6 +270,16 @@ const ChatList = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 32%;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 30%;
+  }
 `;
 
 const Label = styled.div`
@@ -297,6 +310,17 @@ const UserListItem = styled.div`
   border-bottom: 2px solid #707070;
   display: flex;
   align-items: center;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    padding: 3px 5px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    padding: 6px 8px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    padding: 8px 10px;
+  }
 `;
 const ImgBox = styled.div`
   display: ${(props) => (props.type ? 'none' : 'flex')};
@@ -313,11 +337,40 @@ const ImgBox = styled.div`
     width: ${(props) => (props.width ? props.width : '0')}px;
     height: ${(props) => (props.height ? props.height : '0')}px;
 
-    background-color: #ccc;
-    border: 1px solid #707070;
+    // background-color: #ccc;
+    // border: 1px solid #707070;
     > div {
       font-size: 20px;
       font-weight: bold;
+    }
+    > img {
+      width: 56px;
+      height: 56px;
+    }
+  }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      > img {
+        width: ${(props) => (props.width ? props.width - 20 : '0')}px;
+        height: ${(props) => (props.height ? props.height - 20 : '0')}px;
+      }
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      > img {
+        width: ${(props) => (props.width ? props.width - 12 : '0')}px;
+        height: ${(props) => (props.height ? props.height - 12 : '0')}px;
+      }
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      > img {
+        width: ${(props) => (props.width ? props.width - 6 : '0')}px;
+        height: ${(props) => (props.height ? props.height - 6 : '0')}px;
+      }
     }
   }
 `;
@@ -335,21 +388,62 @@ const UserLabel = styled.div`
 const UserName = styled.div`
   font-size: 18px;
   font-weight: 500;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 14px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 16px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 17px;
+  }
 `;
 const UserWriteDt = styled.div`
   font-size: 13px;
   color: #999999;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 9px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 11px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 12px;
+  }
 `;
 const UserContent = styled.div`
   font-size: 14px;
   // width:50%;
   // word-break: break-all;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 10px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 12px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 13px;
+  }
 `;
 
 const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 83%;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 85%;
+  }
 `;
 
 const ChatHeader = styled.div`
@@ -376,6 +470,20 @@ const ChatListItem = styled.div`
   justify-content: ${(props) => (props.type ? 'flex-end' : 'flex-start')};
   word-break: break-all;
   margin: 15px 0;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    padding: 6px 8px;
+    margin: 8px 0;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    padding: 8px 10px;
+    margin: 11px 0;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    padding: 9px 11px;
+    margin: 13px 0;
+  }
 `;
 const ChatItem = styled.div`
   display: flex;
@@ -391,12 +499,34 @@ const ChatName = styled.div`
   font-weight: 500;
   display: ${(props) => (props.type ? 'none' : '')};
   text-align: ${(props) => (props.type ? 'right' : 'left')};
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 14px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 16px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 17px;
+  }
 `;
 const ChatWriteDt = styled.div`
   align-self: flex-end;
   font-size: 13px;
   color: #999999;
   min-width: 70px;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 9px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 11px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 12px;
+  }
 `;
 const ChatContent = styled.div`
   font-size: 14px;
@@ -416,6 +546,16 @@ const ChatContent = styled.div`
     right: ${(props) => (props.type ? '-8px' : '')};
     border-radius: ${(props) => (props.type ? '0 0 100% 0' : '0 0 0 100%')};
     // clip: rect(0, 8px, 4px, 9px);
+  }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 10px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 12px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 13px;
   }
 `;
 
@@ -471,5 +611,25 @@ const CtlBtn = styled.button`
   > div {
     font-size: 16px;
     font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    height: 28px;
+    > div {
+      font-size: 12px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    height: 32px;
+    > div {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    height: 36px;
+    > div {
+      font-size: 15px;
+    }
   }
 `;
