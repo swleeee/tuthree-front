@@ -8,7 +8,7 @@ class Community {
     makeObservable(this);
   }
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzNDA0NDAzMiwiZXhwIjoxNjM0MDQ3NjMyLCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.PsK_Xc5uY42tlbz7Sd6ZDRSQMEjHMRizcNojH1I3V9M';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzNDA1MjQ2OSwiZXhwIjoxNjM0MDU2MDY5LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.rtlc16mICxV0vX8rpneEIzYM-jd4ErIcEZOM07dTSb4';
   @observable type = 1; // FAQ : 1, 공지사항 : 2, 커뮤니티 : 3
   @observable state = 1; // 조회 : 1, 글 쓰기 : 2, 글 수정 : 3
 
@@ -49,6 +49,9 @@ class Community {
   @observable faqWritingState = 0; // (0 : 글작성 / 1 : 글수정)
 
   // =============================================================
+
+  @observable checkCommunityState = 0;
+  @observable checkCommunityAry = []; // Community 체크박스 선택하면 배열 안에 공지사항 id가 들어감
 
   @observable communityState = 1; // 1 : 조회, 2 : 작성, 3 : 세부 조회
   @observable communityList = []; // community 페이지 당 목록 데이터
@@ -309,6 +312,21 @@ class Community {
         // console.info(this.checkData(id));
         this.checkData(type, item, idx);
         break;
+
+      case 'community':
+        index = this.checkCommunityAry.indexOf(parseInt(id));
+        // this.checkAry
+
+        console.info(index);
+        if (index === -1) {
+          this.checkCommunityAry.push(parseInt(id));
+        } else {
+          this.checkCommunityAry.splice(index, 1);
+        }
+        console.info(toJS(this.checkCommunityAry));
+        // console.info(this.checkData(id));
+        this.checkData(type, item, idx);
+        break;
       default:
         break;
     }
@@ -335,6 +353,16 @@ class Community {
           this.faqList[idx].checked = false;
         } else {
           this.faqList[idx].checked = true;
+        }
+        break;
+
+      case 'community':
+        console.info(idx);
+        console.info(toJS(this.communityList[idx]));
+        if (this.communityList[idx].checked) {
+          this.communityList[idx].checked = false;
+        } else {
+          this.communityList[idx].checked = true;
         }
         break;
       default:
@@ -385,6 +413,21 @@ class Community {
         this.state = 1;
         this.faqWritingState = 0;
         this.faqDelState = 1;
+        break;
+
+      case 'community':
+        await Promise.all(
+          this.checkCommunityAry.map(async (item, idx) => {
+            console.info(item);
+
+            await this.delCommunity(item);
+          })
+        );
+
+        this.getCommunityList();
+        this.checkCommunityAry = [];
+        this.state = 1;
+        this.communityDelState = 1;
         break;
       default:
         break;
@@ -641,7 +684,7 @@ class Community {
         },
       };
 
-      CommunityAPI.getCommunity(req)
+      await CommunityAPI.getCommunity(req)
         .then(async (res) => {
           console.info(res);
           this.communityList = await res.data.data;
@@ -656,6 +699,8 @@ class Community {
           await this.communityList.map(async (item, idx) => {
             item.checked = false;
           });
+
+          console.info(toJS(this.communityList));
         })
         .catch((e) => {
           console.info(e);
@@ -676,10 +721,15 @@ class Community {
     await CommunityAPI.delCommunity(req)
       .then((res) => {
         console.info(res);
-        alert('글 삭제가 완료되었습니다');
-        this.communityState = 1;
-        this.communityWritingState = 0;
-        this.getCommunityList();
+
+        if (this.communityDelState === 1) {
+          this.checkCommunityAry = [];
+          alert('해당 커뮤니티 글이 삭제되었습니다');
+          this.state = 1;
+          this.communityState = 1;
+          this.communityWritingState = 0;
+          this.getCommunityList();
+        }
       })
       .catch((e) => {
         alert('글 삭제를 실패하였습니다');

@@ -21,95 +21,293 @@ class DetailContent extends Component {
   render() {
     console.info(toJS(AdminCommunity.communityDetailList));
     return (
-      <Container>
-        <Item>
-          <Section>
-            <SubSection width={100}>
-              <Name>
-                <div>제목</div>
-              </Name>
-              <Content>
-                {AdminCommunity.communityDetailList &&
-                  AdminCommunity.communityDetailList.title}
-              </Content>
-            </SubSection>
-            <SubSection width={30} bl={true}>
-              <Name>
-                <div>작성자</div>
-              </Name>
-              <Content width={30}>
-                {AdminCommunity.communityDetailList &&
-                  AdminCommunity.communityDetailList.userId}
-              </Content>
-            </SubSection>
+      <>
+        {Common.width > 1299.98 ? (
+          <Container>
+            <Item>
+              <Section>
+                <SubSection width={100}>
+                  <Name>
+                    <div>제목</div>
+                  </Name>
+                  <Content>
+                    {AdminCommunity.communityDetailList &&
+                      AdminCommunity.communityDetailList.title}
+                  </Content>
+                </SubSection>
+                <SubSection width={30} bl={true}>
+                  <Name>
+                    <div>작성자</div>
+                  </Name>
+                  <Content width={30}>
+                    {AdminCommunity.communityDetailList &&
+                      AdminCommunity.communityDetailList.userId}
+                  </Content>
+                </SubSection>
 
-            <SubSection width={40} bl={true}>
-              <Name>
-                <div>날짜</div>
-              </Name>
-              <Content width={40}>
-                {AdminCommunity.communityDetailList &&
-                  AdminCommunity.communityDetailList.writeAt}
-              </Content>
-            </SubSection>
-          </Section>
+                <SubSection width={40} bl={true}>
+                  <Name>
+                    <div>날짜</div>
+                  </Name>
+                  <Content width={40}>
+                    {AdminCommunity.communityDetailList &&
+                      AdminCommunity.communityDetailList.writeAt}
+                  </Content>
+                </SubSection>
+              </Section>
 
-          <Section bl={true}>
-            <Name>
-              <div>파일</div>
-            </Name>
-            <Content height={50} file={true}>
-              {AdminCommunity.communityDetailFileAry &&
-                AdminCommunity.communityDetailFileAry.map((item, idx) => {
-                  return (
-                    <FileContent>
-                      <img src={fileImg} />
-                      <a href={`${ROOT_URL}/community/download/${item.id}`}>
-                        {item.name}
-                      </a>
-                    </FileContent>
-                  );
-                })}
-            </Content>
-          </Section>
+              <Section bl={true}>
+                <Name>
+                  <div>파일</div>
+                </Name>
+                <Content height={50} file={true}>
+                  {AdminCommunity.communityDetailFileAry &&
+                    AdminCommunity.communityDetailFileAry.map((item, idx) => {
+                      return (
+                        <FileContent>
+                          <img src={fileImg} />
+                          <a href={`${ROOT_URL}/community/download/${item.id}`}>
+                            {item.name}
+                          </a>
+                        </FileContent>
+                      );
+                    })}
+                </Content>
+              </Section>
 
-          <Section mb={true}>
-            <Name>
-              <div>내용</div>
-            </Name>
-            <Content height={500}>
-              {AdminCommunity.communityDetailList &&
-                AdminCommunity.communityDetailList.content}
-            </Content>
-          </Section>
-          <ButtonBox>
-            <Button
-              color="#fff"
-              bcolor="rgb(235, 114, 82)"
-              onClick={() => (AdminCommunity.state = 1)}
-            >
-              <div>목록</div>
-            </Button>
+              <Section mb={true}>
+                <Name>
+                  <div>내용</div>
+                </Name>
+                <Content height={500}>
+                  {AdminCommunity.communityDetailList &&
+                    AdminCommunity.communityDetailList.content}
+                </Content>
+              </Section>
+              <ButtonBox>
+                <Button
+                  color="#fff"
+                  bcolor="rgb(235, 114, 82)"
+                  onClick={() => (AdminCommunity.state = 1)}
+                >
+                  <div>목록</div>
+                </Button>
 
-            <Button
-              color="#fff"
-              bcolor="#ff0000"
-              onClick={() => {
-                AdminCommunity.delAdmin(AdminCommunity.communityDetailList.id);
-              }}
-            >
-              <div>삭제</div>
-            </Button>
+                <Button
+                  color="#fff"
+                  bcolor="#ff0000"
+                  onClick={() => {
+                    AdminCommunity.delAdmin(
+                      AdminCommunity.communityDetailList.id
+                    );
+                  }}
+                >
+                  <div>삭제</div>
+                </Button>
 
-            {/* <Button
+                {/* <Button
+        color="#fff"
+        bcolor="rgb(235, 114, 82)"              
+      >
+        <div>등록</div>
+      </Button> */}
+              </ButtonBox>
+            </Item>
+          </Container>
+        ) : Common.width > 767.98 ? (
+          <Container>
+            <Item>
+              <Section>
+                <SubSection width={100} type="title">
+                  <Name>
+                    <div>제목</div>
+                  </Name>
+                  <Content>
+                    {AdminCommunity.communityDetailList &&
+                      AdminCommunity.communityDetailList.title}
+                  </Content>
+                </SubSection>
+              </Section>
+
+              <Section>
+                <SubSection width={60}>
+                  <Name>
+                    <div>작성자</div>
+                  </Name>
+                  <Content width={60}>
+                    {AdminCommunity.communityDetailList &&
+                      AdminCommunity.communityDetailList.userId}
+                  </Content>
+                </SubSection>
+
+                <SubSection width={40} bl={true}>
+                  <Name>
+                    <div>날짜</div>
+                  </Name>
+                  <Content width={40}>
+                    {AdminCommunity.communityDetailList &&
+                      AdminCommunity.communityDetailList.writeAt}
+                  </Content>
+                </SubSection>
+              </Section>
+
+              <Section bl={true}>
+                <Name>
+                  <div>파일</div>
+                </Name>
+                <Content height={50} file={true}>
+                  {AdminCommunity.communityDetailFileAry &&
+                    AdminCommunity.communityDetailFileAry.map((item, idx) => {
+                      return (
+                        <FileContent>
+                          <img src={fileImg} />
+                          <a href={`${ROOT_URL}/community/download/${item.id}`}>
+                            {item.name}
+                          </a>
+                        </FileContent>
+                      );
+                    })}
+                </Content>
+              </Section>
+
+              <Section mb={true}>
+                <Name>
+                  <div>내용</div>
+                </Name>
+                <Content height={500}>
+                  {AdminCommunity.communityDetailList &&
+                    AdminCommunity.communityDetailList.content}
+                </Content>
+              </Section>
+              <ButtonBox>
+                <Button
+                  color="#fff"
+                  bcolor="rgb(235, 114, 82)"
+                  onClick={() => (AdminCommunity.state = 1)}
+                >
+                  <div>목록</div>
+                </Button>
+
+                <Button
+                  color="#fff"
+                  bcolor="#ff0000"
+                  onClick={() => {
+                    AdminCommunity.delAdmin(
+                      AdminCommunity.communityDetailList.id
+                    );
+                  }}
+                >
+                  <div>삭제</div>
+                </Button>
+
+                {/* <Button
               color="#fff"
               bcolor="rgb(235, 114, 82)"              
             >
               <div>등록</div>
             </Button> */}
-          </ButtonBox>
-        </Item>
-      </Container>
+              </ButtonBox>
+            </Item>
+          </Container>
+        ) : (
+          <Container>
+            <Item>
+              <Section>
+                <SubSection width={100}>
+                  <Name>
+                    <div>제목</div>
+                  </Name>
+                  <Content>
+                    {AdminCommunity.communityDetailList &&
+                      AdminCommunity.communityDetailList.title}
+                  </Content>
+                </SubSection>
+              </Section>
+
+              <Section>
+                <SubSection width={100}>
+                  <Name>
+                    <div>작성자</div>
+                  </Name>
+                  <Content width={100}>
+                    {AdminCommunity.communityDetailList &&
+                      AdminCommunity.communityDetailList.userId}
+                  </Content>
+                </SubSection>
+              </Section>
+
+              <Section>
+                <SubSection width={100}>
+                  <Name>
+                    <div>날짜</div>
+                  </Name>
+                  <Content width={100}>
+                    {AdminCommunity.communityDetailList &&
+                      AdminCommunity.communityDetailList.writeAt}
+                  </Content>
+                </SubSection>
+              </Section>
+
+              <Section bl={true}>
+                <Name>
+                  <div>파일</div>
+                </Name>
+                <Content height={50} file={true}>
+                  {AdminCommunity.communityDetailFileAry &&
+                    AdminCommunity.communityDetailFileAry.map((item, idx) => {
+                      return (
+                        <FileContent>
+                          <img src={fileImg} />
+                          <a href={`${ROOT_URL}/community/download/${item.id}`}>
+                            {item.name}
+                          </a>
+                        </FileContent>
+                      );
+                    })}
+                </Content>
+              </Section>
+
+              <Section mb={true}>
+                <Name>
+                  <div>내용</div>
+                </Name>
+                <Content height={500}>
+                  {AdminCommunity.communityDetailList &&
+                    AdminCommunity.communityDetailList.content}
+                </Content>
+              </Section>
+              <ButtonBox>
+                <Button
+                  color="#fff"
+                  bcolor="rgb(235, 114, 82)"
+                  onClick={() => (AdminCommunity.state = 1)}
+                >
+                  <div>목록</div>
+                </Button>
+
+                <Button
+                  color="#fff"
+                  bcolor="#ff0000"
+                  onClick={() => {
+                    AdminCommunity.delAdmin(
+                      AdminCommunity.communityDetailList.id
+                    );
+                  }}
+                >
+                  <div>삭제</div>
+                </Button>
+
+                {/* <Button
+              color="#fff"
+              bcolor="rgb(235, 114, 82)"              
+            >
+              <div>등록</div>
+            </Button> */}
+              </ButtonBox>
+            </Item>
+          </Container>
+        )}
+      </>
     );
   }
 }
@@ -128,6 +326,17 @@ const Item = styled.div`
   width: 80%;
   height: 100%;
   //   border: 2px solid black;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 92%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 88%;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 85%;
+  }
 `;
 
 const Section = styled.div`
@@ -145,6 +354,15 @@ const SubSection = styled.div`
   //   border: 2px solid black;
   display: flex;
   border-left: ${(props) => (props.bl ? '1px solid #707070' : '')};
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    // width: ${(props) => (props.type === 'title' ? '70' : '40')}%;
+  }
 `;
 
 const Name = styled.div`
@@ -161,6 +379,30 @@ const Name = styled.div`
   > div {
     font-size: 24px;
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 80px;
+    min-width: 80px;
+    flex-grow: 0;
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 90px;
+    min-width: 90px;
+    flex-grow: 0;
+    > div {
+      font-size: 17px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    flex-grow: 0;
+    > div {
+      font-size: 20px;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -171,6 +413,18 @@ const Content = styled.div`
   display: flex;
   align-items: center;
   width: ${(props) => (props.width ? props.width : '100')}%;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-grow: 4;
+    min-height: ${(props) => (props.height ? props.height : '50')}px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    flex-grow: 5;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    fle
+    
 `;
 
 const Select = styled(SelectComponent)`

@@ -20,7 +20,13 @@ class Content extends Component {
   componentDidMount = () => {
     AdminCommunity.getCommunityList(AdminCommunity.communityCurrentPage);
   };
+  componentWillUnmount = () => {
+    AdminCommunity.communitySearchValue = '';
+    AdminCommunity.communityErrorMessage = '';
+    AdminCommunity.communitySearchFinalValue = '';
+  };
   render() {
+    console.info('rrrrr');
     return (
       <Container>
         <Item>
@@ -64,10 +70,10 @@ class Content extends Component {
             </Count>
             <ButtonBox>
               <WriteBtn
-                // onClick={async () => {
-                //   AdminCommunity.noticeDelState = 2;
-                //   await AdminCommunity.delCheckedData('faq');
-                // }}
+                onClick={async () => {
+                  AdminCommunity.commuinityDelState = 2;
+                  await AdminCommunity.delCheckedData('community');
+                }}
                 // mr={15}
                 color="#707070"
               >
@@ -101,7 +107,7 @@ class Content extends Component {
                         onClick={(e) => {
                           e.stopPropagation();
                           AdminCommunity.checkDataHandler(
-                            'faq',
+                            'community',
                             item,
                             item.id,
                             idx
@@ -224,6 +230,12 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 95%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 90%;
+  }
 `;
 const SearchBox = styled.div`
   width: 50%;
@@ -437,6 +449,17 @@ const Check = styled.div`
       height: 18px;
     }
   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 21px;
+    > div {
+      width: 16px;
+      height: 16px;
+      > img {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
 `;
 
 const Number = styled.div`
@@ -466,6 +489,7 @@ const Date = styled.div`
   //   border: 2px solid green;
   flex-grow: 1;
   width: 3%;
+  word-break: break-all;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     flex-wrap: wrap;
@@ -478,7 +502,7 @@ const Management = styled.div`
   flex-grow: 2;
   //   display: ${(props) => (props.title ? 'block' : 'flex')};
   //   justify-content: ${(props) => (props.title ? '' : 'flex-end')};
-  width: 5%;
+  width: 3%;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     display: flex;
@@ -487,11 +511,11 @@ const Management = styled.div`
     width: 2%;
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
-    width: 10%;
+    width: 1%;
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
-    width: 7%;
+    width: 1%;
   }
 `;
 
@@ -584,13 +608,20 @@ const SearchArea = styled.div`
 const Id = styled.div`
   flex-grow: 1;
   width: 3%;
+  word-break: break-all;
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 5%;
+  }
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 3%;
+  }
 `;
 
 const View = styled.div`
   flex-grow: 1;
   width: 3%;
-
+  word-break: break-all;
   @media (min-width: 768px) and (max-width: 991.98px) {
-    width: 3%;
+    width: 1%;
   }
 `;
