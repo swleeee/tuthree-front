@@ -7,7 +7,7 @@ class Community {
     makeObservable(this);
   }
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzY1ODk2NCwiZXhwIjoxNjMzNjYyNTY0LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.Frs_y729dFISaeQ800JMwE-IWmAOUDMm_WuDqtnT-oo';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzNDA0NDAzMiwiZXhwIjoxNjM0MDQ3NjMyLCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.PsK_Xc5uY42tlbz7Sd6ZDRSQMEjHMRizcNojH1I3V9M';
   @observable type = 1; // FAQ : 1, 공지사항 : 2, 커뮤니티 : 3
   @observable state = 1; // 조회 : 1, 글 쓰기 : 2, 글 수정 : 3
 
@@ -136,8 +136,8 @@ class Community {
     const req = {
       data: {
         adminId: {
-          id: 'admin1',
-          pwd: 'admin1',
+          id: 'tuthree10',
+          pwd: 'tuthree10',
         },
         title: this.noticeTitle,
         content: this.noticeContent,
@@ -171,8 +171,8 @@ class Community {
       id: id,
       data: {
         adminId: {
-          id: 'admin1',
-          pwd: 'admin1',
+          id: 'tuthree10',
+          pwd: 'tuthree10',
         },
         title: this.noticeTitle,
         content: this.noticeContent,
@@ -215,6 +215,7 @@ class Community {
         console.info(res);
         alert('해당 공지사항 글이 삭제되었습니다.');
         if (this.noticeDelState === 1) {
+          this.checkAry = [];
           this.state = 1;
           this.noticeWritingState = 0;
           this.getAdminNoticeList();
@@ -339,6 +340,7 @@ class Community {
 
         console.info(toJS(this.noticeList));
         this.getAdminNoticeList();
+        this.checkAry = [];
         this.state = 1;
         this.noticeWritingState = 0;
         this.noticeDelState = 1;
@@ -346,6 +348,7 @@ class Community {
       case 'faq':
         console.info('sdfsdf');
         console.info(this.faqDelState);
+        console.info(toJS(this.checkFaqAry));
         await Promise.all(
           this.checkFaqAry.map(async (item, idx) => {
             console.info(item);
@@ -356,6 +359,7 @@ class Community {
 
         console.info(toJS(this.faqList));
         this.getAdminFaqList();
+        this.checkFaqAry = [];
         this.state = 1;
         this.faqWritingState = 0;
         this.faqDelState = 1;
@@ -443,8 +447,8 @@ class Community {
     const req = {
       data: {
         adminId: {
-          id: 'admin2',
-          pwd: 'admin2',
+          id: 'tuthree10',
+          pwd: 'tuthree10',
         },
         title: this.faqTitle,
         content: this.faqContent,
@@ -496,8 +500,8 @@ class Community {
       id: id,
       data: {
         adminId: {
-          id: 'admin1',
-          pwd: 'admin1',
+          id: 'tuthree10',
+          pwd: 'tuthree10',
         },
         title: this.faqTitle,
         content: this.faqContent,
@@ -536,6 +540,7 @@ class Community {
       .then((res) => {
         console.info(res);
         if (this.faqDelState === 1) {
+          this.checkFaqAry = [];
           alert('해당 FAQ 글이 삭제되었습니다.');
           this.state = 1;
           this.faqWritingState = 0;
