@@ -198,6 +198,11 @@ class Content extends Component {
                 );
               })}
           </UserList>
+          <ButtonBox>
+            <CtlBtn>
+              <div>과외등록하기</div>
+            </CtlBtn>
+          </ButtonBox>
         </ChatList>
         <ChatContainer>
           <ChatHeader>홍길동</ChatHeader>
@@ -233,7 +238,7 @@ class Content extends Component {
               })}
           </ChatMain>
           <ChatWritingBox>
-            <Textarea mxh={40} mih={40} />
+            <Textarea mxh={40} mih={40} placeholder={`메시지를 입력하세요`} />
             <Button>
               <div>전송</div>
             </Button>
@@ -259,6 +264,9 @@ const ChatList = styled.div`
   // border: 2px solid red;
   border-right: 1px solid #000;
   width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Label = styled.div`
@@ -276,7 +284,8 @@ const Label = styled.div`
 const UserList = styled.div`
   // height: auto;
   overflow: auto;
-  height: 93%;
+  // height: 80%;
+  height: 100%;
   ::-webkit-scrollbar {
     display: none;
   }
@@ -343,7 +352,12 @@ const ChatContainer = styled.div`
   width: 90%;
 `;
 
-const ChatHeader = styled.div``;
+const ChatHeader = styled.div`
+  font-size: 30px;
+  font-weight: bold;
+  padding: 5px 7px;
+  box-sizing: border-box;
+`;
 const ChatMain = styled.div`
   border-bottom: 1px solid #000;
   overflow: auto;
@@ -430,4 +444,32 @@ const Input = styled.input`
   outline: none;
   padding: 5px 8px;
   box-sizing: border-box;
+`;
+
+const ButtonBox = styled.div`
+  padding: 15px 8px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  // height: 100%;
+  border-top: 1px solid #000;
+`;
+const CtlBtn = styled.button`
+  cursor: pointer;
+  background-color: rgba(235, 114, 82, 0.7);
+  // border: 1px solid #707070;
+  border: none;
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  width: 80%;
+  height: 40px;
+  > div {
+    font-size: 16px;
+    font-weight: bold;
+  }
 `;

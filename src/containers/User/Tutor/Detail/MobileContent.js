@@ -8,6 +8,7 @@ import viewImg from '../../../../static/images/Common/visibility.png';
 import communicationImg from '../../../../static/images/Common/communication.png';
 import maleImg from '../../../../static/images/Common/male.png';
 import femaleImg from '../../../../static/images/Common/female.png';
+import defaultImg from '../../../../static/images/Common/defaultUser.png';
 
 const reviewData = [
   {
@@ -49,32 +50,41 @@ class MobileContent extends Component {
           </View>
           <TotalRating>
             <img src={starImg} />
-            <div>4.2</div>
+            <div>{Tutor.tutorDetailAry.star}</div>
           </TotalRating>
-          <Registration type={true}>모집중</Registration>
+          <Registration type={Tutor.tutorDetailAry.registration !== 'CLOSE'}>
+            {Tutor.tutorDetailAry.registration === 'CLOSE'
+              ? '모집마감'
+              : '모집중'}
+          </Registration>
         </Number>
         <MainContent>
           <Header>
             <ImgBox width={130} height={130} mb={40}>
               <div>
-                <div>Img</div>
+                {/* <div>Img</div> */}
+                <img src={defaultImg} />
               </div>
             </ImgBox>
             <ItemBox>
               <Name mb={16}>
                 <Label type="name" mr={15}>
-                  홍길동
+                  {Tutor.tutorDetailAry.name}
                 </Label>
-                <img src={maleImg} />
+                {Tutor.tutorDetailAry.sex === 'MALE' ? (
+                  <img src={maleImg} />
+                ) : (
+                  <img src={femaleImg} />
+                )}
               </Name>
               <Name>
                 <Label>학력</Label>
-                <Content>가천대학교 컴퓨터공학과</Content>
+                <Content>{Tutor.tutorDetailAry.school}</Content>
               </Name>
 
               <Name>
                 <Label>비용</Label>
-                <Content>시급 20000원</Content>
+                <Content>{Tutor.tutorDetailAry.cost}</Content>
               </Name>
             </ItemBox>
           </Header>
@@ -92,17 +102,7 @@ class MobileContent extends Component {
           <Section>
             <Label mb={10}>소개</Label>
             <Content bd={true} pd={true}>
-              ㄴㅇㄹㄴㅇㄹㅇㄴㄹㄴㅇㄹㄴㅇㄹsdsdjfsdklfjsdl
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
-              dsfsdkfsdjfklsdfsldkjfsdlfjkdlsfdskjfkldsjfkldsjfkljdsfsdkfjsdlkfjsdkfjsdkljfklsdsdfkljsdjlfksdj
+              {Tutor.tutorDetailAry.detail}
             </Content>
           </Section>
           <ReviewContainer>
@@ -141,7 +141,8 @@ class MobileContent extends Component {
                           style={{ justifyContent: 'flex-start' }}
                         >
                           <div>
-                            <div>Img</div>
+                            {/* <div>Img</div> */}
+                            <img src={defaultImg} />
                           </div>
                         </ImgBox>
                         <ReviewLabel>
@@ -203,11 +204,24 @@ const ImgBox = styled.div`
     width: ${(props) => (props.width ? props.width : '0')}px;
     height: ${(props) => (props.height ? props.height : '0')}px;
 
-    background-color: #ccc;
-    border: 1px solid #707070;
+    // background-color: #ccc;
+    // border: 1px solid #707070;
     > div {
       font-size: 20px;
       font-weight: bold;
+    }
+    > img {
+      width: ${(props) => (props.width ? props.width : '128')}px;
+      height: ${(props) => (props.height ? props.height : '128')}px;
+    }
+  }
+  @media (min-width: 0px) and (max-width: 392px) {
+    > div {
+      width: 100%;
+      > img {
+        width: ${(props) => (props.width ? props.width - 20 : '92')}px;
+        height: ${(props) => (props.height ? props.height - 20 : '92')}px;
+      }
     }
   }
 `;

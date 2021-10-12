@@ -4,6 +4,7 @@ import { inject, observer, Provider } from 'mobx-react';
 import Tutor from '../../../../stores/Matching/Tutor';
 import emptyStarImg from '../../../../static/images/Common/emptyStar.png';
 import starImg from '../../../../static/images/Common/star.png';
+import defaultImg from '../../../../static/images/Common/defaultUser.png';
 
 const reviewData = [
   {
@@ -42,79 +43,14 @@ class DetailContent extends Component {
         <MainContent>
           <ImgBox width={300} height={300} mb={60}>
             <div>
-              <div>Img</div>
+              {/* <div>Img</div> */}
+              <img src={defaultImg} />
             </div>
           </ImgBox>
           <Introduction>
             <Name>소개</Name>
             <Content>{Tutee.tuteeDetailAry.detail}</Content>
           </Introduction>
-          <ReviewContainer>
-            <Name>리뷰</Name>
-            <ReviewHeader>
-              <SubHeader mb={8}>
-                <Count>
-                  <span>33개</span>의 리뷰가 있습니다
-                </Count>
-                <SortingBox>
-                  <span>최신순</span>
-                  <span>높은평점순</span>
-                  <span>낮은평점순</span>
-                </SortingBox>
-              </SubHeader>
-              <SubHeader>
-                <Rating>
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={emptyStarImg} />
-                  <div>4.2 | 5.0</div>
-                </Rating>
-              </SubHeader>
-            </ReviewHeader>
-            <ReviewMainBox>
-              {reviewData &&
-                reviewData.map((item, idx) => {
-                  return (
-                    <Item>
-                      <SubItem>
-                        <ImgBox
-                          width={112}
-                          height={112}
-                          style={{ justifyContent: 'flex-start' }}
-                        >
-                          <div>
-                            <div>Img</div>
-                          </div>
-                        </ImgBox>
-                        <ReviewLabel>
-                          <ReviewSubLabel>
-                            <ReviewName>{item.name}</ReviewName>
-                            <ReviewWritingDt>{item.writingDt}</ReviewWritingDt>
-                          </ReviewSubLabel>
-                          <ReviewSubLabel>
-                            <ReviewRating>
-                              <img src={starImg} />
-                              <img src={starImg} />
-                              <img src={starImg} />
-                              <img src={starImg} />
-                              <img src={emptyStarImg} />
-                              <div>{item.rating}</div>
-                            </ReviewRating>
-                          </ReviewSubLabel>
-                        </ReviewLabel>
-                      </SubItem>
-                      <SubItem>
-                        <ReviewContent>
-                          <div>{item.content}</div>
-                        </ReviewContent>
-                      </SubItem>
-                    </Item>
-                  );
-                })}
-            </ReviewMainBox>
-          </ReviewContainer>
         </MainContent>
       </Container>
     );
@@ -155,11 +91,35 @@ const ImgBox = styled.div`
     width: ${(props) => (props.width ? props.width : '0')}px;
     height: ${(props) => (props.height ? props.height : '0')}px;
 
-    background-color: #ccc;
-    border: 1px solid #707070;
+    // background-color: #ccc;
+    // border: 1px solid #707070;
     > div {
       font-size: 30px;
       font-weight: bold;
+    }
+    > img {
+      width: 256px;
+      height: 256px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    margin-bottom: ${(props) => (props.mb ? props.mb - 20 : '0')}px;
+    > div {
+      img {
+        width: 192px;
+        height: 192px;
+      }
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    margin-bottom: ${(props) => (props.mb ? props.mb - 10 : '0')}px;
+    > div {
+      img {
+        width: 228px;
+        height: 228px;
+      }
     }
   }
 `;

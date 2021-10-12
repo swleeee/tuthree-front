@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import starImg from '../static/images/Common/star.png';
 import maleImg from '../static/images/Common/male.png';
 import femaleImg from '../static/images/Common/female.png';
+import defaultImg from '../static/images/Common/defaultUser.png';
 
 class Card extends Component {
   render() {
@@ -20,7 +21,8 @@ class Card extends Component {
     return (
       <Container>
         <Img>
-          <div>Img</div>
+          <img src={defaultImg} />
+          {/* <div>Img</div> */}
         </Img>
         <Content>
           <Box>
@@ -72,6 +74,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 50px;
+  box-shadow: 0 6px 15px 1px rgba(0, 0, 0, 0.5);
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     margin: 0 15px 20px 15px;
@@ -81,11 +84,12 @@ const Container = styled.div`
 const Img = styled.div`
   width: 100%;
   height: 150px;
-  background-color: #ccc;
+  // background-color: #aaa;
   display: flex;
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid #707070;
+  overflow: hidden;
   > div {
     font-size: 20px;
     font-weight: bold;

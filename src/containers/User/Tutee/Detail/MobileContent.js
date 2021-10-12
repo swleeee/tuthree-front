@@ -8,6 +8,7 @@ import viewImg from '../../../../static/images/Common/visibility.png';
 import communicationImg from '../../../../static/images/Common/communication.png';
 import maleImg from '../../../../static/images/Common/male.png';
 import femaleImg from '../../../../static/images/Common/female.png';
+import defaultImg from '../../../../static/images/Common/defaultUser.png';
 
 const reviewData = [
   {
@@ -62,7 +63,8 @@ class MobileContent extends Component {
           <Header>
             <ImgBox width={130} height={130} mb={40}>
               <div>
-                <div>Img</div>
+                {/* <div>Img</div> */}
+                <img src={defaultImg} />
               </div>
             </ImgBox>
             <ItemBox>
@@ -104,72 +106,6 @@ class MobileContent extends Component {
               {Tutee.tuteeDetailAry.detail}
             </Content>
           </Section>
-          <ReviewContainer>
-            <Label>리뷰</Label>
-            <ReviewHeader>
-              <SubHeader mb={8}>
-                <Count>
-                  <span>33개</span>의 리뷰가 있습니다
-                </Count>
-                <SortingBox>
-                  <span>최신순</span>
-                  <span>높은평점순</span>
-                  <span>낮은평점순</span>
-                </SortingBox>
-              </SubHeader>
-              <SubHeader>
-                <Rating>
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={emptyStarImg} />
-                  <div>4.2 | 5.0</div>
-                </Rating>
-              </SubHeader>
-            </ReviewHeader>
-            <ReviewMainBox>
-              {reviewData &&
-                reviewData.map((item, idx) => {
-                  return (
-                    <Item>
-                      <SubItem>
-                        <ImgBox
-                          width={96}
-                          height={96}
-                          style={{ justifyContent: 'flex-start' }}
-                        >
-                          <div>
-                            <div>Img</div>
-                          </div>
-                        </ImgBox>
-                        <ReviewLabel>
-                          <ReviewSubLabel>
-                            <ReviewName>{item.name}</ReviewName>
-                            <ReviewWritingDt>{item.writingDt}</ReviewWritingDt>
-                          </ReviewSubLabel>
-                          <ReviewSubLabel>
-                            <ReviewRating>
-                              <img src={starImg} />
-                              <img src={starImg} />
-                              <img src={starImg} />
-                              <img src={starImg} />
-                              <img src={emptyStarImg} />
-                              <div>{item.rating}</div>
-                            </ReviewRating>
-                          </ReviewSubLabel>
-                        </ReviewLabel>
-                      </SubItem>
-                      <SubItem>
-                        <ReviewContent>
-                          <div>{item.content}</div>
-                        </ReviewContent>
-                      </SubItem>
-                    </Item>
-                  );
-                })}
-            </ReviewMainBox>
-          </ReviewContainer>
         </MainContent>
       </Container>
     );
@@ -202,11 +138,20 @@ const ImgBox = styled.div`
     width: ${(props) => (props.width ? props.width : '0')}px;
     height: ${(props) => (props.height ? props.height : '0')}px;
 
-    background-color: #ccc;
-    border: 1px solid #707070;
+    // background-color: #ccc;
+    // border: 1px solid #707070;
     > div {
       font-size: 20px;
       font-weight: bold;
+    }
+  }
+  @media (min-width: 0px) and (max-width: 392px) {
+    > div {
+      width: 100%;
+      > img {
+        width: 92px;
+        height: 92px;
+      }
     }
   }
 `;

@@ -4,6 +4,7 @@ import { inject, observer, Provider } from 'mobx-react';
 import Tutor from '../../../../stores/Matching/Tutor';
 import emptyStarImg from '../../../../static/images/Common/emptyStar.png';
 import starImg from '../../../../static/images/Common/star.png';
+import defaultImg from '../../../../static/images/Common/defaultUser.png';
 
 const reviewData = [
   {
@@ -41,7 +42,8 @@ class DetailContent extends Component {
         <MainContent>
           <ImgBox width={300} height={300} mb={60}>
             <div>
-              <div>Img</div>
+              {/* <div>Img</div> */}
+              <img src={defaultImg} />
             </div>
           </ImgBox>
           <Introduction>
@@ -84,7 +86,8 @@ class DetailContent extends Component {
                           style={{ justifyContent: 'flex-start' }}
                         >
                           <div>
-                            <div>Img</div>
+                            {/* <div>Img</div> */}
+                            <img src={defaultImg} />
                           </div>
                         </ImgBox>
                         <ReviewLabel>
@@ -154,11 +157,35 @@ const ImgBox = styled.div`
     width: ${(props) => (props.width ? props.width : '0')}px;
     height: ${(props) => (props.height ? props.height : '0')}px;
 
-    background-color: #ccc;
-    border: 1px solid #707070;
+    // background-color: #ccc;
+    // border: 1px solid #707070;
     > div {
       font-size: 30px;
       font-weight: bold;
+    }
+    > img {
+      width: ${(props) => (props.width ? props.width : '256')}px;
+      height: ${(props) => (props.height ? props.height : '256')}px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    margin-bottom: ${(props) => (props.mb ? props.mb - 20 : '0')}px;
+    > div {
+      > img {
+        width: ${(props) => (props.width ? props.width - 10 : '192')}px;
+        height: ${(props) => (props.height ? props.height - 10 : '192')}px;
+      }
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    margin-bottom: ${(props) => (props.mb ? props.mb - 10 : '0')}px;
+    > div {
+      img {
+        width: ${(props) => (props.width ? props.width - 5 : '228')}px;
+        height: ${(props) => (props.height ? props.height - 5 : '228')}px;
+      }
     }
   }
 `;
