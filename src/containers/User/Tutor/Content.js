@@ -4,6 +4,7 @@ import Filter from '../../../components/Filter';
 import Card from '../../../components/Card';
 import { inject, observer, Provider } from 'mobx-react';
 import Tutor from '../../../stores/Matching/Tutor';
+import Pagination from '../../../components/Pagination';
 
 const dummyData = [
   {
@@ -204,6 +205,12 @@ class Content extends Component {
               })}
           </CardContainer>
         </MainBox>
+        <Pagination
+          type="Tutor"
+          currentSet={Tutor.tutorCurrentSet}
+          currentPage={Tutor.tutorCurrentPage}
+          totalPage={Tutor.tutorTotalPage}
+        />
       </Container>
     );
   }

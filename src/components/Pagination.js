@@ -7,12 +7,13 @@ import nextImg from '../static/images/Common/next.png';
 
 import AdminCommunity from '../stores/Admin/Community';
 import Community from '../stores/Community/Community';
+import Tutor from '../stores/Matching/Tutor';
 
-@inject('AdminCommunity', 'Community')
+@inject('AdminCommunity', 'Community', 'Tutor')
 @observer
 class Pagination extends Component {
   pageMoveHandler = async (e) => {
-    const { type } = this.props;
+    const { type, Tutor } = this.props;
     console.info(type);
     switch (type) {
       case 'AdminNotice':
@@ -30,13 +31,16 @@ class Pagination extends Component {
       case 'Community':
         await Community.moveCommunityPage(e);
         break;
+      case 'Tutor':
+        await Tutor.movePage(e);
+        break;
       default:
         break;
     }
   };
 
   pagePrevHandler = async () => {
-    const { type } = this.props;
+    const { type, Tutor } = this.props;
     switch (type) {
       case 'AdminNotice':
         await AdminCommunity.pagePrev();
@@ -54,13 +58,16 @@ class Pagination extends Component {
       case 'Community':
         await Community.pageCommunityPrev();
         break;
+      case 'Tutor':
+        await Tutor.pagePrev();
+        break;
       default:
         break;
     }
   };
 
   pageNextHandler = async () => {
-    const { type } = this.props;
+    const { type, Tutor } = this.props;
     switch (type) {
       case 'AdminNotice':
         await AdminCommunity.pageNext();
@@ -76,6 +83,9 @@ class Pagination extends Component {
         break;
       case 'Community':
         await Community.pageCommunityNext();
+        break;
+      case 'Tutor':
+        await Tutor.pageNext();
         break;
       default:
         break;

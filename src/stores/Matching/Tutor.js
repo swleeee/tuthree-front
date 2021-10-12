@@ -252,6 +252,31 @@ class Tutor {
     // await this.communityDetailList.push(item);
     console.info(toJS(this.tutorDetailAry));
   };
+
+  /* 선생님 클릭한 페이지로 이동하는 함수 */
+  @action movePage = async (e) => {
+    const newPage = e.target.innerText * 1;
+    this.tutorCurrentPage = newPage;
+    await this.getTutorList(this.tutorCurrentPage);
+  };
+
+  /* 선생님 다음 페이지로 이동하는 함수 */
+  @action pageNext = async () => {
+    if (this.tutorCurrentPage < this.tutorTotalPage) {
+      const nextPage = this.tutorCurrentPage + 1;
+      this.tutorCurrentPage = nextPage;
+      await this.getTutorList(this.tutorCurrentPage);
+    }
+  };
+
+  /* 선생님 이전 페이지로 이동하는 함수 */
+  @action pagePrev = async () => {
+    if (this.tutorCurrentPage > 1) {
+      const newPage = this.tutorCurrentPage - 1;
+      this.tutorCurrentPage = newPage;
+      await this.getTutorList(this.tutorCurrentPage);
+    }
+  };
 }
 
 export default new Tutor();

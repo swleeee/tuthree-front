@@ -198,7 +198,7 @@ class Tutee {
     console.info(toJS(this.tutorDetailAry));
   };
 
-  @action getTutorList = async (id) => {
+  @action getTuteeList = async (id) => {
     console.info('init');
     const req = {
       id: id ? id : 1,
@@ -207,7 +207,7 @@ class Tutee {
       },
     };
 
-    TutorAPI.getTutorList(req)
+    TuteeAPI.getTuteeList(req)
       .then(async (res) => {
         console.info(res);
         this.tutorList = await res.data.data;
@@ -227,7 +227,7 @@ class Tutee {
   };
 
   /* commuinity 상세 페이지로 이동하는 함수 */
-  @action getTutorDetailList = async (item, idx = 0, type = '') => {
+  @action getTuteeDetailList = async (item, idx = 0, type = '') => {
     // this.tutorDetailAry.push(item);
     console.info(item.postId);
     this.state = 1;
@@ -239,7 +239,7 @@ class Tutee {
       // },
     };
 
-    await TutorAPI.getDetailTutorList(req)
+    await TuteeAPI.getDetailTuteeList(req)
       .then(async (res) => {
         console.info(res);
         this.tutorDetailAry = await res.data.data;
