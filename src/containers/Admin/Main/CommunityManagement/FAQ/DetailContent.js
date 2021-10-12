@@ -223,11 +223,11 @@ class DetailContent extends Component {
                   </Section>
 
                   <Section>
-                    <SubSection width={70}>
+                    <SubSection width={100}>
                       <Name>
                         <div>분류</div>
                       </Name>
-                      <Content width={70}>
+                      <Content width={100}>
                         {AdminCommunity.faqDetailList &&
                           AdminCommunity.faqDetailList.type}
                       </Content>
@@ -235,11 +235,11 @@ class DetailContent extends Component {
                   </Section>
 
                   <Section>
-                    <SubSection width={40}>
+                    <SubSection width={100}>
                       <Name>
                         <div>날짜</div>
                       </Name>
-                      <Content width={40}>
+                      <Content width={100}>
                         {AdminCommunity.faqDetailList &&
                           AdminCommunity.faqDetailList.writeAt}
                       </Content>

@@ -233,7 +233,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  // min-height: 100vh;
   width: 100%;
 `;
 
@@ -241,6 +241,16 @@ const Item = styled.div`
   width: 80%;
   height: 100%;
   //   border: 2px solid black;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 92%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 88%;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 85%;
+  }
 `;
 
 const Section = styled.div`
@@ -264,6 +274,24 @@ const Name = styled.div`
 
   > div {
     font-size: 24px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 15%;
+    > div {
+      font-size: 17px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: 20px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      font-size: 22px;
+    }
   }
 `;
 
@@ -315,6 +343,22 @@ const Button = styled.button`
   cursor: pointer;
   > div {
     font-size: 20px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 160px;
+    height: 48px;
+    margin: 0 30px;
+    > div {
+      font-size: 16px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 180px;
+    height: 52px;
+    > div {
+      font-size: 18px;
+    }
   }
 `;
 

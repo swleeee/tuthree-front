@@ -261,6 +261,13 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 95%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 90%;
+  }
 `;
 const SearchBox = styled.div`
   width: 50%;
@@ -396,7 +403,7 @@ const WriteBtn = styled.button`
   cursor: pointer;
   margin-right: ${(props) => (props.mr ? props.mr : '')}px;
   @media (min-width: 0px) and (max-width: 767.98px) {
-    width: 50px;
+    width: 70px;
     height: 23px;
     font-size: 11px;
   }
@@ -471,6 +478,17 @@ const Check = styled.div`
       display: ${(props) => (props.active ? 'block' : 'none')};
       width: 18px;
       height: 18px;
+    }
+  }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 21px;
+    > div {
+      width: 16px;
+      height: 16px;
+      > img {
+        width: 12px;
+        height: 12px;
+      }
     }
   }
 `;
