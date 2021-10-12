@@ -277,7 +277,7 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   // height: 50px;
-  width: 100%;
+  width: 100px;
   border: ${(props) => (props.bd ? '1px solid #aaa' : 'none')};
   border-radius: ${(props) => (props.bd ? '50' : '0')}px;
   height: ${(props) => (props.height ? props.height : '0')}px;
