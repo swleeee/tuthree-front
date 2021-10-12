@@ -261,6 +261,13 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 95%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 90%;
+  }
 `;
 const SearchBox = styled.div`
   width: 50%;
@@ -422,6 +429,7 @@ const MainBox = styled.div`
 `;
 
 const Line = styled.div`
+  cursor: pointer;
   width: 100%;
   height: 60px;
   display: flex;
@@ -471,6 +479,18 @@ const Check = styled.div`
       display: ${(props) => (props.active ? 'block' : 'none')};
       width: 18px;
       height: 18px;
+    }
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 21px;
+    > div {
+      width: 16px;
+      height: 16px;
+      > img {
+        width: 12px;
+        height: 12px;
+      }
     }
   }
 `;

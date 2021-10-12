@@ -1,11 +1,30 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-
+import { inject, observer } from 'mobx-react';
 import Banner from './Banner';
 import MainContainer from './Content';
 import Footer from '../../../components/Footer';
+import Auth from '../../../stores/Account/Auth';
 
+@inject('Auth')
+@observer
 class index extends Component {
+  componentDidMount = () => {
+    console.info(Auth.loggedUserId);
+    console.info(Auth.loggedUserType);
+    console.info(this.props.Auth.loggedUserId);
+    console.info(this.props.Auth.loggedUserType);
+    if (localStorage.getItem('userId')) {
+      Auth.loggedUserId = localStorage.getItem('userId');
+      Auth.loggedUserType = localStorage.getItem('userType');
+      Auth.token = localStorage.getItem('token');
+
+      // localStorage.removeItem('userId');
+      // localStorage.removeItem('userType');
+
+      console.info(Auth.loggedUserType);
+    }
+  };
   render() {
     return (
       <>

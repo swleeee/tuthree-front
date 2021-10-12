@@ -2,6 +2,7 @@ import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 import * as NoticeAPI from '../../axios/Comuunity/Notice';
 import * as FaqAPI from '../../axios/Comuunity/Faq';
 import * as CommunityAPI from '../../axios/Comuunity/Community';
+import Auth from '../Account/Auth';
 
 class Community {
   constructor() {
@@ -10,7 +11,7 @@ class Community {
   @observable type = 1;
   @observable state = 1;
   @observable Authorization =
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzYyNjExMywiZXhwIjoxNjMzNjI5NzEzLCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.tq2TTKCEymrrUvXwrCi_vmK1TbutNLZwmLtRjZaTI2g';
+    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzY1ODk3NywiZXhwIjoxNjMzNjYyNTc3LCJ1c2VySWQiOiJ0ZWFjaGVyMSIsIkdyYWRlIjoidGVhY2hlciJ9.a8s5pCBhZhosj2wBCdOAFYcI_-qJ6Vu32FQZ20gW3Dw';
 
   @observable noticeList = []; // 공지사항 페이지 당 목록 데이터
   @observable noticeListTotalCount = 0; // 공지사항 전체 개수
@@ -347,9 +348,12 @@ class Community {
   /* community 작성하는 함수 */
   @action setCommunity = async () => {
     console.info('community 작성 버튼 클릭');
-
+    console.info(Auth.token);
+    console.log(Auth.loggedUserId);
+    console.info(Auth.loggedUserType);
+    console.info(localStorage.getItem('token'));
     const formData = new FormData();
-    formData.append('userId', 'teacher1');
+    formData.append('userId', Auth.loggedUserId);
     formData.append('title', this.communityTitle);
     formData.append('content', this.communityContent);
     formData.append('secret', 'OPEN');
@@ -361,16 +365,27 @@ class Community {
     const req = {
       data: formData,
       headers: {
-        Authorization: this.Authorization,
+        Authorization: Auth.token,
       },
     };
 
     await CommunityAPI.setCommunity(req)
       .then(async (res) => {
         console.info(res);
-        alert('글 작성을 완료하였습니다');
-        this.communityWritingState = 0;
-        this.communityState = 1;
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          this.communityWritingState = 0;
+          this.communityState = 1;
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          alert('글 작성을 완료하였습니다');
+          this.communityWritingState = 0;
+          this.communityState = 1;
+        }
+
+        // this.communityWritingState = 0;
+        // this.communityState = 1;
       })
       .catch((e) => {
         alert('글 작성하는 데 실패하였습니다');
@@ -384,7 +399,7 @@ class Community {
     console.info(toJS(this.communityFileAry[0]));
     console.info(toJS(this.communityFileAry[1]));
     const formData = new FormData();
-    formData.append('userId', 'teacher1');
+    formData.append('userId', Auth.loggedUserId);
 
     formData.append('title', this.communityTitle);
     formData.append('content', this.communityContent);
@@ -397,7 +412,7 @@ class Community {
     const req = {
       data: formData,
       headers: {
-        Authorization: this.Authorization,
+        Authorization: Auth.token,
       },
       id: id,
     };
@@ -405,9 +420,18 @@ class Community {
     await CommunityAPI.putCommunity(req)
       .then(async (res) => {
         console.info(res);
-        alert('글 수정이 완료되었습니다');
-        this.communityWritingState = 0;
-        this.communityState = 1;
+
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          this.communityWritingState = 0;
+          this.communityState = 1;
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          alert('글 수정이 완료되었습니다');
+          this.communityWritingState = 0;
+          this.communityState = 1;
+        }
       })
       .catch((e) => {
         alert('글 수정을 실패하였습니다');

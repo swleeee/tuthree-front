@@ -1,9 +1,11 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
+import * as TutorAPI from '../../axios/Matching/Tutor';
 
 class Tutor {
   constructor() {
     makeObservable(this);
   }
+  @observable state = 0;
   @observable domainType = 1;
 
   @observable locationIndex = 0;
@@ -18,6 +20,35 @@ class Tutor {
   @observable lowerSubjectAry = [];
   @observable selectedSubject = []; // 과목
 
+  @observable tutorState = 1; // 1 : 조회, 2 : 작성, 3 : 세부 조회
+  @observable tutorList = []; // tutor 페이지 당 목록 데이터
+  @observable tutorListTotalCount = 0; // tutor 전체 개수
+  @observable tutorTotalPage = 0; // tutor 전체 페이지 수
+  @observable tutorCurrentPage = 1; // tutor 현재 페이지
+  @observable tutorCurrentSet = parseInt((this.tutorCurrentPage - 1) / 5) + 1; // tutor 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
+
+  @observable tutorDetailAry = [];
+
+  @observable budgetType = '';
+
+  @observable budgetTypeAry = [
+    {
+      label: '시급',
+      value: '시급',
+    },
+    {
+      label: '일급',
+      value: '일급',
+    },
+    {
+      label: '주급',
+      value: '주급',
+    },
+    {
+      label: '월급',
+      value: '월급',
+    },
+  ];
   @observable budgetMark = [
     {
       value: 0,
@@ -67,16 +98,18 @@ class Tutor {
   @observable budgetValue = [0, 100];
 
   @action setUpperLocation = (e) => {
-    console.info(e[0]);
-    this.selectedUpperLocation = e.label;
-    // this.midCategorySet = e.detail;
-    console.info(toJS(e[0]));
-    console.info(toJS(this.selectedUpperLocation));
-    this.selectedLowerLocation = e.value[0].label;
+    console.info(e);
+    // console.info(e[0]);
+    // this.selectedUpperLocation = e.label;
+    this.selectedUpperLocation = e.name;
+
+    // console.info(toJS(e[0]));
+    // console.info(toJS(this.selectedUpperLocation));
+    this.selectedLowerLocation = e.gugun[0].name;
   };
 
   @action setLowerLocation = (e) => {
-    this.selectedLowerLocation = e.label;
+    this.selectedLowerLocation = e.name;
     // this.midCategorySet = e.detail;
     console.info(toJS(e));
     console.info(toJS(this.selectedUpperLocation));
@@ -99,16 +132,17 @@ class Tutor {
     console.info(toJS(this.selectedUpperSubject));
     // this.selectedLowerLocation = e.value[0].label;
   };
-
   @action handleChange = (e, type) => {
     switch (type) {
       case 'upperLocation':
+        console.info(e);
         console.info('upperLocation');
+
         this.locationIndex = e.id;
         this.setUpperLocation(e);
         this.lowerLocationAry = [];
 
-        e.value.map((item, idx) => {
+        e.gugun.map((item, idx) => {
           console.info(item);
           this.lowerLocationAry.push(item);
         });
@@ -146,8 +180,7 @@ class Tutor {
 
         break;
       case 'budget':
-        // this.budget = e.value;
-        console.info(e);
+        this.budgetType = e.value;
         break;
       case 'schoolState':
         this.schoolState = e.value;
@@ -157,6 +190,91 @@ class Tutor {
         break;
       default:
         break;
+    }
+  };
+  @action pushToDetail = (item, idx) => {
+    this.tutorDetailAry.push(item);
+    this.state = 1;
+    console.info(toJS(this.tutorDetailAry));
+  };
+
+  @action getTutorList = async (id) => {
+    console.info('init');
+    const req = {
+      id: id ? id : 1,
+      headers: {
+        Authorization: this.Authorization,
+      },
+    };
+
+    TutorAPI.getTutorList(req)
+      .then(async (res) => {
+        console.info(res);
+        this.tutorList = await res.data.data;
+        this.tutorListTotalCount = await res.data.list;
+        this.tutorTotalPage = await Math.ceil(this.tutorListTotalCount / 10);
+
+        this.tutorCurrentSet = parseInt((this.tutorCurrentPage - 1) / 5) + 1; // tutor 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
+
+        await this.tutorList.map(async (item, idx) => {
+          item.checked = false;
+        });
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  /* commuinity 상세 페이지로 이동하는 함수 */
+  @action getTutorDetailList = async (item, idx = 0, type = '') => {
+    // this.tutorDetailAry.push(item);
+    console.info(item.postId);
+    this.state = 1;
+    console.info(this.communityState);
+    const req = {
+      id: item.postId,
+      // headers: {
+      //   Authorization: this.Authorization,
+      // },
+    };
+
+    await TutorAPI.getDetailTutorList(req)
+      .then(async (res) => {
+        console.info(res);
+        this.tutorDetailAry = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+
+    // await this.communityDetailList.push(item);
+    console.info(toJS(this.tutorDetailAry));
+  };
+
+  /* 선생님 클릭한 페이지로 이동하는 함수 */
+  @action movePage = async (e) => {
+    const newPage = e.target.innerText * 1;
+    this.tutorCurrentPage = newPage;
+    await this.getTutorList(this.tutorCurrentPage);
+  };
+
+  /* 선생님 다음 페이지로 이동하는 함수 */
+  @action pageNext = async () => {
+    if (this.tutorCurrentPage < this.tutorTotalPage) {
+      const nextPage = this.tutorCurrentPage + 1;
+      this.tutorCurrentPage = nextPage;
+      await this.getTutorList(this.tutorCurrentPage);
+    }
+  };
+
+  /* 선생님 이전 페이지로 이동하는 함수 */
+  @action pagePrev = async () => {
+    if (this.tutorCurrentPage > 1) {
+      const newPage = this.tutorCurrentPage - 1;
+      this.tutorCurrentPage = newPage;
+      await this.getTutorList(this.tutorCurrentPage);
     }
   };
 }

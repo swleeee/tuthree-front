@@ -19,93 +19,287 @@ class DetailContent extends Component {
   render() {
     console.info(toJS(AdminCommunity.noticeDetailList));
     return (
-      <Container>
-        <Item>
-          <Section>
-            <SubSection width={100}>
-              <Name>
-                <div>제목</div>
-              </Name>
-              <Content>
-                {AdminCommunity.noticeDetailList &&
-                  AdminCommunity.noticeDetailList.title}
-              </Content>
-            </SubSection>
-            <SubSection width={30} bl={true}>
-              <Name>
-                <div>분류</div>
-              </Name>
-              <Content width={30}>
-                {AdminCommunity.noticeDetailList &&
-                  AdminCommunity.noticeDetailList.type}
-              </Content>
-            </SubSection>
+      <>
+        {Common.width > 1300 ? (
+          <>
+            <Container>
+              <Item>
+                <Section>
+                  <SubSection width={100}>
+                    <Name>
+                      <div>제목</div>
+                    </Name>
+                    <Content>
+                      {AdminCommunity.noticeDetailList &&
+                        AdminCommunity.noticeDetailList.title}
+                    </Content>
+                  </SubSection>
+                  <SubSection width={30} bl={true}>
+                    <Name>
+                      <div>분류</div>
+                    </Name>
+                    <Content width={30}>
+                      {AdminCommunity.noticeDetailList &&
+                        AdminCommunity.noticeDetailList.type}
+                    </Content>
+                  </SubSection>
 
-            <SubSection width={40} bl={true}>
-              <Name>
-                <div>날짜</div>
-              </Name>
-              <Content width={40}>
-                {AdminCommunity.noticeDetailList &&
-                  AdminCommunity.noticeDetailList.writeAt}
-              </Content>
-            </SubSection>
-          </Section>
-          <Section mb={true}>
-            <Name>
-              <div>내용</div>
-            </Name>
-            <Content height={500}>
-              {AdminCommunity.noticeDetailList &&
-                AdminCommunity.noticeDetailList.content}
-            </Content>
-          </Section>
-          <ButtonBox>
-            <Button
-              color="#fff"
-              bcolor="rgb(235, 114, 82)"
-              onClick={() => (AdminCommunity.state = 1)}
-            >
-              <div>목록</div>
-            </Button>
+                  <SubSection width={40} bl={true}>
+                    <Name>
+                      <div>날짜</div>
+                    </Name>
+                    <Content width={40}>
+                      {AdminCommunity.noticeDetailList &&
+                        AdminCommunity.noticeDetailList.writeAt}
+                    </Content>
+                  </SubSection>
+                </Section>
+                <Section mb={true}>
+                  <Name>
+                    <div>내용</div>
+                  </Name>
+                  <Content height={500}>
+                    {AdminCommunity.noticeDetailList &&
+                      AdminCommunity.noticeDetailList.content}
+                  </Content>
+                </Section>
+                <ButtonBox>
+                  <Button
+                    color="#fff"
+                    bcolor="rgb(235, 114, 82)"
+                    onClick={() => (AdminCommunity.state = 1)}
+                  >
+                    <div>목록</div>
+                  </Button>
 
-            <Button
-              color="#fff"
-              bcolor="#0b7def"
-              onClick={async () => {
-                AdminCommunity.noticeWritingState = 1;
-                await AdminCommunity.pushToDetail(
-                  AdminCommunity.noticeDetailList,
-                  0,
-                  'modify'
-                );
-                AdminCommunity.state = 2;
-              }}
-            >
-              <div>수정</div>
-            </Button>
+                  <Button
+                    color="#fff"
+                    bcolor="#0b7def"
+                    onClick={async () => {
+                      AdminCommunity.noticeWritingState = 1;
+                      await AdminCommunity.pushToDetail(
+                        AdminCommunity.noticeDetailList,
+                        0,
+                        'modify'
+                      );
+                      AdminCommunity.state = 2;
+                    }}
+                  >
+                    <div>수정</div>
+                  </Button>
 
-            <Button
-              color="#fff"
-              bcolor="#ff0000"
-              onClick={() => {
-                AdminCommunity.delAdminNotice(
-                  AdminCommunity.noticeDetailList.id
-                );
-              }}
-            >
-              <div>삭제</div>
-            </Button>
+                  <Button
+                    color="#fff"
+                    bcolor="#ff0000"
+                    onClick={() => {
+                      AdminCommunity.delAdminNotice(
+                        AdminCommunity.noticeDetailList.id
+                      );
+                    }}
+                  >
+                    <div>삭제</div>
+                  </Button>
 
-            {/* <Button
+                  {/* <Button
               color="#fff"
               bcolor="rgb(235, 114, 82)"              
             >
               <div>등록</div>
             </Button> */}
-          </ButtonBox>
-        </Item>
-      </Container>
+                </ButtonBox>
+              </Item>
+            </Container>
+          </>
+        ) : Common.width > 767.98 ? (
+          <>
+            <Container>
+              <Item>
+                <Section>
+                  <SubSection width={100} type="title">
+                    <Name>
+                      <div>제목</div>
+                    </Name>
+                    <Content>
+                      {AdminCommunity.noticeDetailList &&
+                        AdminCommunity.noticeDetailList.title}
+                    </Content>
+                  </SubSection>
+                </Section>
+                <Section>
+                  <SubSection width={30}>
+                    <Name>
+                      <div>분류</div>
+                    </Name>
+                    <Content width={30}>
+                      {AdminCommunity.noticeDetailList &&
+                        AdminCommunity.noticeDetailList.type}
+                    </Content>
+                  </SubSection>
+
+                  <SubSection width={40} bl={true}>
+                    <Name>
+                      <div>날짜</div>
+                    </Name>
+                    <Content width={40}>
+                      {AdminCommunity.noticeDetailList &&
+                        AdminCommunity.noticeDetailList.writeAt}
+                    </Content>
+                  </SubSection>
+                </Section>
+
+                <Section mb={true}>
+                  <Name>
+                    <div>내용</div>
+                  </Name>
+                  <Content height={500}>
+                    {AdminCommunity.noticeDetailList &&
+                      AdminCommunity.noticeDetailList.content}
+                  </Content>
+                </Section>
+                <ButtonBox>
+                  <Button
+                    color="#fff"
+                    bcolor="rgb(235, 114, 82)"
+                    onClick={() => (AdminCommunity.state = 1)}
+                  >
+                    <div>목록</div>
+                  </Button>
+
+                  <Button
+                    color="#fff"
+                    bcolor="#0b7def"
+                    onClick={async () => {
+                      AdminCommunity.noticeWritingState = 1;
+                      await AdminCommunity.pushToDetail(
+                        AdminCommunity.noticeDetailList,
+                        0,
+                        'modify'
+                      );
+                      AdminCommunity.state = 2;
+                    }}
+                  >
+                    <div>수정</div>
+                  </Button>
+
+                  <Button
+                    color="#fff"
+                    bcolor="#ff0000"
+                    onClick={() => {
+                      AdminCommunity.delAdminNotice(
+                        AdminCommunity.noticeDetailList.id
+                      );
+                    }}
+                  >
+                    <div>삭제</div>
+                  </Button>
+
+                  {/* <Button
+              color="#fff"
+              bcolor="rgb(235, 114, 82)"              
+            >
+              <div>등록</div>
+            </Button> */}
+                </ButtonBox>
+              </Item>
+            </Container>
+          </>
+        ) : (
+          <>
+            <Container>
+              <Item>
+                <Section>
+                  <SubSection width={100} type="title">
+                    <Name>
+                      <div>제목</div>
+                    </Name>
+                    <Content>
+                      {AdminCommunity.noticeDetailList &&
+                        AdminCommunity.noticeDetailList.title}
+                    </Content>
+                  </SubSection>
+                </Section>
+
+                <Section>
+                  <SubSection width={100}>
+                    <Name>
+                      <div>분류</div>
+                    </Name>
+                    <Content width={100}>
+                      {AdminCommunity.noticeDetailList &&
+                        AdminCommunity.noticeDetailList.type}
+                    </Content>
+                  </SubSection>
+                </Section>
+
+                <Section>
+                  <SubSection width={100}>
+                    <Name>
+                      <div>날짜</div>
+                    </Name>
+                    <Content width={100}>
+                      {AdminCommunity.noticeDetailList &&
+                        AdminCommunity.noticeDetailList.writeAt}
+                    </Content>
+                  </SubSection>
+                </Section>
+                <Section mb={true}>
+                  <Name>
+                    <div>내용</div>
+                  </Name>
+                  <Content height={500}>
+                    {AdminCommunity.noticeDetailList &&
+                      AdminCommunity.noticeDetailList.content}
+                  </Content>
+                </Section>
+                <ButtonBox>
+                  <Button
+                    color="#fff"
+                    bcolor="rgb(235, 114, 82)"
+                    onClick={() => (AdminCommunity.state = 1)}
+                  >
+                    <div>목록</div>
+                  </Button>
+
+                  <Button
+                    color="#fff"
+                    bcolor="#0b7def"
+                    onClick={async () => {
+                      AdminCommunity.noticeWritingState = 1;
+                      await AdminCommunity.pushToDetail(
+                        AdminCommunity.noticeDetailList,
+                        0,
+                        'modify'
+                      );
+                      AdminCommunity.state = 2;
+                    }}
+                  >
+                    <div>수정</div>
+                  </Button>
+
+                  <Button
+                    color="#fff"
+                    bcolor="#ff0000"
+                    onClick={() => {
+                      AdminCommunity.delAdminNotice(
+                        AdminCommunity.noticeDetailList.id
+                      );
+                    }}
+                  >
+                    <div>삭제</div>
+                  </Button>
+
+                  {/* <Button
+              color="#fff"
+              bcolor="rgb(235, 114, 82)"              
+            >
+              <div>등록</div>
+            </Button> */}
+                </ButtonBox>
+              </Item>
+            </Container>
+          </>
+        )}
+      </>
     );
   }
 }
@@ -124,6 +318,17 @@ const Item = styled.div`
   width: 80%;
   height: 100%;
   //   border: 2px solid black;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 92%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 88%;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 85%;
+  }
 `;
 
 const Section = styled.div`
@@ -141,6 +346,15 @@ const SubSection = styled.div`
   //   border: 2px solid black;
   display: flex;
   border-left: ${(props) => (props.bl ? '1px solid #707070' : '')};
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: ${(props) => (props.type === 'title' ? '70' : '40')}%;
+  }
 `;
 
 const Name = styled.div`
@@ -157,6 +371,30 @@ const Name = styled.div`
   > div {
     font-size: 24px;
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 80px;
+    min-width: 80px;
+    flex-grow: 0;
+    > div {
+      font-size: 15px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 90px;
+    min-width: 90px;
+    flex-grow: 0;
+    > div {
+      font-size: 18px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    flex-grow: 0;
+    > div {
+      font-size: 21px;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -167,6 +405,17 @@ const Content = styled.div`
   display: flex;
   align-items: center;
   width: ${(props) => (props.width ? props.width : '100')}%;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-grow: 4;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    flex-grow: 5;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    flex-grow: 6;
+  }
 `;
 
 const Select = styled(SelectComponent)`

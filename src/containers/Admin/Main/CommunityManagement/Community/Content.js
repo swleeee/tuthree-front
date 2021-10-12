@@ -14,20 +14,26 @@ import searchImg from '../../../../../static/images/Admin/Main/search.png';
 import checkImg from '../../../../../static/images/Common/check.png';
 import Pagination from '../../../../../components/Pagination';
 
-@inject('Community')
+@inject('Community', 'AdminCommunity')
 @observer
 class Content extends Component {
   componentDidMount = () => {
-    Community.getCommunityList(Community.communityCurrentPage);
+    AdminCommunity.getCommunityList(AdminCommunity.communityCurrentPage);
+  };
+  componentWillUnmount = () => {
+    AdminCommunity.communitySearchValue = '';
+    AdminCommunity.communityErrorMessage = '';
+    AdminCommunity.communitySearchFinalValue = '';
   };
   render() {
+    console.info('rrrrr');
     return (
       <Container>
         <Item>
           <SearchBox>
             <Input
               placeholder="제목 및 내용을 입력하세요."
-              onChange={(e) => Community.onChangeHandler(e, 'community')}
+              onChange={(e) => AdminCommunity.onChangeHandler(e, 'community')}
               onFocus={(e) => (e.target.placeholder = '')}
               onBlur={(e) =>
                 (e.target.placeholder = '제목 및 내용을 입력하세요.')
@@ -36,12 +42,12 @@ class Content extends Component {
             <Search
               onClick={() => {
                 console.info('dsfdsf');
-                Community.communityErrorMessage = '';
-                if (Community.communitySearchValue === '') {
-                  Community.communitySearchFinalValue = '';
-                  Community.getCommunityList(1);
+                AdminCommunity.communityErrorMessage = '';
+                if (AdminCommunity.communitySearchValue === '') {
+                  AdminCommunity.communitySearchFinalValue = '';
+                  AdminCommunity.getCommunityList(1);
                 } else {
-                  Community.searchCommunity(1);
+                  AdminCommunity.searchCommunity(1);
                 }
               }}
             >
@@ -49,25 +55,25 @@ class Content extends Component {
             </Search>
           </SearchBox>
           <SearchArea
-            active={Community.communitySearchFinalValue === ''}
-            error={Community.communityErrorMessage === ''}
+            active={AdminCommunity.communitySearchFinalValue === ''}
+            error={AdminCommunity.communityErrorMessage === ''}
           >
             <div>
-              "<span>{`${Community.communitySearchFinalValue}`}</span>" 로
+              "<span>{`${AdminCommunity.communitySearchFinalValue}`}</span>" 로
               검색한 결과입니다
             </div>
-            <div>{Community.communityErrorMessage}</div>
+            <div>{AdminCommunity.communityErrorMessage}</div>
           </SearchArea>
           <Header>
             <Count>
-              총 <span>{Community.communityListTotalCount}</span>개
+              총 <span>{AdminCommunity.communityListTotalCount}</span>개
             </Count>
             <ButtonBox>
               <WriteBtn
-                // onClick={async () => {
-                //   AdminCommunity.noticeDelState = 2;
-                //   await AdminCommunity.delCheckedData('faq');
-                // }}
+                onClick={async () => {
+                  AdminCommunity.commuinityDelState = 2;
+                  await AdminCommunity.delCheckedData('community');
+                }}
                 // mr={15}
                 color="#707070"
               >
@@ -88,18 +94,20 @@ class Content extends Component {
               <Management title={true}>관리</Management>
             </Line>
 
-            {Community.communityList &&
-              Community.communityList.map((item, idx) => {
+            {AdminCommunity.communityList &&
+              AdminCommunity.communityList.map((item, idx) => {
                 return (
                   <Line
-                    onClick={() => Community.pushToCommunityDetail(item, idx)}
+                    onClick={() =>
+                      AdminCommunity.pushToCommunityDetail(item, idx)
+                    }
                   >
                     <Check active={item.checked}>
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
                           AdminCommunity.checkDataHandler(
-                            'faq',
+                            'community',
                             item,
                             item.id,
                             idx
@@ -110,7 +118,7 @@ class Content extends Component {
                       </div>
                     </Check>
                     <Number>
-                      {idx + 1 + 10 * (Community.communityCurrentPage - 1)}
+                      {idx + 1 + 10 * (AdminCommunity.communityCurrentPage - 1)}
                     </Number>
                     <Title>{item.title}</Title>
                     <Id>{item.userId}</Id>
@@ -121,7 +129,7 @@ class Content extends Component {
                         del={true}
                         onClick={(e) => {
                           e.stopPropagation();
-                          Community.delCommunity(item.id);
+                          AdminCommunity.delCommunity(item.id);
                         }}
                       >
                         <div>삭제</div>
@@ -196,10 +204,10 @@ class Content extends Component {
               })} */}
           </MainBox>
           <Pagination
-            type="Community"
-            currentSet={Community.communityCurrentSet}
-            currentPage={Community.communityCurrentPage}
-            totalPage={Community.communityTotalPage}
+            type="AdminCommunity"
+            currentSet={AdminCommunity.communityCurrentSet}
+            currentPage={AdminCommunity.communityCurrentPage}
+            totalPage={AdminCommunity.communityTotalPage}
           />
         </Item>
       </Container>
@@ -222,6 +230,12 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 95%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 90%;
+  }
 `;
 const SearchBox = styled.div`
   width: 50%;
@@ -383,6 +397,7 @@ const MainBox = styled.div`
 `;
 
 const Line = styled.div`
+  cursor: pointer;
   width: 100%;
   height: 60px;
   display: flex;
@@ -434,6 +449,17 @@ const Check = styled.div`
       height: 18px;
     }
   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 21px;
+    > div {
+      width: 16px;
+      height: 16px;
+      > img {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
 `;
 
 const Number = styled.div`
@@ -463,6 +489,7 @@ const Date = styled.div`
   //   border: 2px solid green;
   flex-grow: 1;
   width: 3%;
+  word-break: break-all;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     flex-wrap: wrap;
@@ -475,7 +502,7 @@ const Management = styled.div`
   flex-grow: 2;
   //   display: ${(props) => (props.title ? 'block' : 'flex')};
   //   justify-content: ${(props) => (props.title ? '' : 'flex-end')};
-  width: 5%;
+  width: 3%;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     display: flex;
@@ -484,11 +511,11 @@ const Management = styled.div`
     width: 2%;
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
-    width: 10%;
+    width: 1%;
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
-    width: 7%;
+    width: 1%;
   }
 `;
 
@@ -581,13 +608,20 @@ const SearchArea = styled.div`
 const Id = styled.div`
   flex-grow: 1;
   width: 3%;
+  word-break: break-all;
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 5%;
+  }
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 3%;
+  }
 `;
 
 const View = styled.div`
   flex-grow: 1;
   width: 3%;
-
+  word-break: break-all;
   @media (min-width: 768px) and (max-width: 991.98px) {
-    width: 3%;
+    width: 1%;
   }
 `;

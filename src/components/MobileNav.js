@@ -6,6 +6,8 @@ import route from 'react-router-dom';
 import close_ic from '../static/images/Home/close-button.png';
 import hamburger_ic from '../static/images/Home/hamburger.png';
 import logo_ic from '../static/images/Home/video-conference.png';
+import Auth from '../stores/Account/Auth';
+import Tutor from '../stores/Matching/Tutor';
 
 import {
   BrowserRouter as Router,
@@ -14,7 +16,7 @@ import {
   Link as Connection,
 } from 'react-router-dom';
 
-// @inject("Auth", "Partner", "Home", "Common")
+@inject('Auth', 'Tutor')
 @observer
 class MobileNav extends React.Component {
   state = {
@@ -22,6 +24,10 @@ class MobileNav extends React.Component {
     url: '/',
     is_profile: false,
     is_open: false,
+  };
+  componentDidMount = async () => {
+    const token = await localStorage.getItem('token');
+    this.setState({ token: token });
   };
 
   menuClick = () => {
@@ -63,7 +69,11 @@ class MobileNav extends React.Component {
                     <Link mobile={true} to="/notice">
                       공지사항
                     </Link>
-                    <Link mobile={true} to="/tutor">
+                    <Link
+                      mobile={true}
+                      to="/tutor"
+                      onClick={() => (Tutor.state = 0)}
+                    >
                       과외찾기
                     </Link>
                     <Link mobile={true} to="/tutee">
@@ -84,15 +94,37 @@ class MobileNav extends React.Component {
                   </Menu>
                 </ModalContent>
               </>
-              <ModalContent2>
-                <Link mobile={true} to="/mypage" style={{ marginRight: '0px' }}>
-                  마이페이지
-                </Link>
+              {this.state.token ? (
+                <ModalContent2>
+                  <Link
+                    mobile={true}
+                    to="/mypage"
+                    style={{ marginRight: '0px' }}
+                  >
+                    마이페이지
+                  </Link>
 
-                <Link mobile={true} to="/" style={{ marginRight: '0px' }}>
-                  로그아웃
-                </Link>
-              </ModalContent2>
+                  <Link
+                    mobile={true}
+                    to="/"
+                    style={{ marginRight: '0px' }}
+                    onClick={() => Auth.logout()}
+                  >
+                    로그아웃
+                  </Link>
+                </ModalContent2>
+              ) : (
+                <ModalContent2>
+                  <Link
+                    mobile={true}
+                    to="/login"
+                    style={{ marginRight: '0px' }}
+                  >
+                    로그인
+                  </Link>
+                </ModalContent2>
+              )}
+
               {/* {Auth.logged_in_user ? (
                 <Footer>
                   <div> 로그아웃 </div>

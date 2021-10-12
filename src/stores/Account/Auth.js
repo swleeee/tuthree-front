@@ -1,5 +1,17 @@
-import { observable, action, makeObservable, toJS, decorate } from 'mobx';
+import {
+  observable,
+  action,
+  makeObservable,
+  toJS,
+  decorate,
+  autorun,
+  reaction,
+  computed,
+} from 'mobx';
+import { useHistory } from 'react-router';
+import { Route } from 'react-router-dom';
 
+import Common from '../Common/Common';
 import * as AccountAPI from '../../axios/Account/Account';
 
 class Auth {
@@ -9,9 +21,12 @@ class Auth {
   @observable Authorization =
     'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzEwNTYxOCwiZXhwIjoxNjMzMTA5MjE4LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.KuHs-qPG3gL0jdJzozeAWtf1q3I-w_96YconIIwNE7s';
 
+  @observable token = '';
   @observable step = 1;
   @observable userType = 0;
   @observable domainType = 1;
+
+  @observable temp = '';
 
   @observable signupId = ''; // 아이디
   @observable checkSignupId = false;
@@ -78,6 +93,25 @@ class Auth {
     {
       label: '100만원 이상',
       value: 1000000,
+    },
+  ];
+
+  @observable budgetTypeAry = [
+    {
+      label: '시급',
+      value: '시급',
+    },
+    {
+      label: '일급',
+      value: '일급',
+    },
+    {
+      label: '주급',
+      value: '주급',
+    },
+    {
+      label: '월급',
+      value: '월급',
     },
   ];
   @observable stateSchoolAry = [
@@ -311,6 +345,7 @@ class Auth {
   @observable selectedSubject = []; // 과목
 
   @observable budget = 0; // 예산
+  @observable budgetType = ''; // 예산 유형(시급, 일금, 주급, 월급)
   @observable school = ''; // 학교
   @observable major = ''; // 학교
   @observable schoolState = 0; // 재학상태
@@ -331,6 +366,10 @@ class Auth {
   @observable loginId = '';
   @observable loginPassowrd = '';
   @observable loginAuth = false;
+
+  /* login한 유저의 아이디와 타입 */
+  @observable loggedUserId = '';
+  @observable loggedUserType = '';
 
   getStep = () => {
     console.log(this.step);
@@ -368,6 +407,7 @@ class Auth {
     this.selectedSubject = []; // 과목
 
     this.budget = 0; // 예산
+    this.budgetType = '';
     this.school = ''; // 학교
     this.major = ''; // 학교
     this.schoolState = 0; // 재학상태
@@ -485,7 +525,7 @@ class Auth {
 
         break;
       case 'budget':
-        this.budget = e.value;
+        this.budgetType = e.value;
         break;
       case 'schoolState':
         this.schoolState = e.value;
@@ -708,7 +748,7 @@ class Auth {
       formData.append(`subject`, this.selectedSubject[i]);
     }
 
-    formData.append('cost', this.budget);
+    formData.append('cost', this.budget + this.budgetType);
     // formData.append('cost', 200000);
     formData.append('school', this.school);
     // formData.append('school', '가천대');
@@ -799,7 +839,7 @@ class Auth {
       formData.append(`subject`, this.selectedSubject[i]);
     }
 
-    formData.append('cost', this.budget);
+    formData.append('cost', this.budget + this.budgetType);
     // formData.append('cost', 200000);
     formData.append('school', this.grade);
     // formData.append('school', '가천대');
@@ -920,6 +960,7 @@ class Auth {
         console.info(e.response);
       });
   };
+  const;
 
   @action checkLoginData = async () => {
     if (!this.loginId) {
@@ -934,6 +975,9 @@ class Auth {
   };
 
   @action login = async () => {
+    // const history = useHistory();
+    this.temp = 'sfdfsdf';
+    Common.temp = 'sdfsdfsdf';
     const req = {
       data: {
         id: this.loginId,
@@ -948,11 +992,38 @@ class Auth {
       .then(async (res) => {
         console.info(res);
         console.info(res.headers);
+        console.info(res.data.data.id);
+        console.info(res.data.data.grade);
         console.info(Object.keys(res.headers));
 
         // window.location.href = '/';
         if (res.data.success) {
-          // window.location.href = '/';
+          alert('로그인에 성공하셨습니다.');
+          this.token = await res.headers.authorization;
+          console.info(this.token);
+          this.loggedUserId = await res.data.data.id;
+          this.loggedUserType = await res.data.data.grade;
+          localStorage.setItem('token', this.token);
+          localStorage.setItem('userId', res.data.data.id);
+          localStorage.setItem('userType', res.data.data.grade);
+          // setTimeout(() => {
+          //   // window.location.href = '/';
+          //   // window.location.replace('/');
+          //   // Route.push('/');
+          //   window.location.pathname = '/';
+          // }, 5000);
+          // window.history.forward('/');
+          // if (this.loggedUserId) {
+          window.location.href = '/';
+          // window.history.pushState(null, null, '/');
+          // window.location.reload();
+          // history.push({
+          //   pathname: '/',
+          // });
+          // }
+          console.info(this.loggedUserId);
+          console.info(this.loggedUserType);
+          console.info(localStorage.getItem('userType'));
         } else {
           await alert(res.data.message);
         }
@@ -962,6 +1033,35 @@ class Auth {
         console.info(e.response);
       });
   };
+
+  @action logout = async () => {
+    await AccountAPI.logout()
+      .then((res) => {
+        console.info(res);
+        alert('로그아웃 되었습니다.');
+        // this.loggedUserId = '';
+        // this.loggedUserType = '';
+        localStorage.removeItem('token');
+        window.location.href = '/';
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
 }
+
+// autorun(() => {
+//   console.info('autorun');
+//   console.info(Auth.loggedUserId);
+//   console.info(Auth);
+// });
+
+// reaction(
+//   () => Auth.loggedUserId,
+//   (loggedUserId) => {
+//     console.info(`${loggedUserId}`);
+//   }
+// );
 
 export default new Auth();

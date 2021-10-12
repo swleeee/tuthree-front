@@ -7,12 +7,13 @@ import nextImg from '../static/images/Common/next.png';
 
 import AdminCommunity from '../stores/Admin/Community';
 import Community from '../stores/Community/Community';
+import Tutor from '../stores/Matching/Tutor';
 
-@inject('AdminCommunity', 'Community')
+@inject('AdminCommunity', 'Community', 'Tutor', 'Tutee')
 @observer
 class Pagination extends Component {
   pageMoveHandler = async (e) => {
-    const { type } = this.props;
+    const { type, Tutor, Tutee } = this.props;
     console.info(type);
     switch (type) {
       case 'AdminNotice':
@@ -21,6 +22,10 @@ class Pagination extends Component {
       case 'AdminFaq':
         await AdminCommunity.moveFaqPage(e);
         break;
+      case 'AdminCommunity':
+        await AdminCommunity.moveCommunityPage(e);
+        break;
+
       case 'Notice':
         await Community.moveNoticePage(e);
         break;
@@ -30,13 +35,19 @@ class Pagination extends Component {
       case 'Community':
         await Community.moveCommunityPage(e);
         break;
+      case 'Tutor':
+        await Tutor.movePage(e);
+        break;
+      case 'Tutee':
+        await Tutee.movePage(e);
+        break;
       default:
         break;
     }
   };
 
   pagePrevHandler = async () => {
-    const { type } = this.props;
+    const { type, Tutor, Tutee } = this.props;
     switch (type) {
       case 'AdminNotice':
         await AdminCommunity.pagePrev();
@@ -44,6 +55,9 @@ class Pagination extends Component {
 
       case 'AdminFaq':
         await AdminCommunity.pageFaqPrev();
+        break;
+      case 'AdminCommunity':
+        await AdminCommunity.pageCommunityPrev();
         break;
       case 'Notice':
         await Community.pageNoticePrev();
@@ -54,19 +68,28 @@ class Pagination extends Component {
       case 'Community':
         await Community.pageCommunityPrev();
         break;
+      case 'Tutor':
+        await Tutor.pagePrev();
+        break;
+      case 'Tutee':
+        await Tutee.pagePrev();
+        break;
       default:
         break;
     }
   };
 
   pageNextHandler = async () => {
-    const { type } = this.props;
+    const { type, Tutor, Tutee } = this.props;
     switch (type) {
       case 'AdminNotice':
         await AdminCommunity.pageNext();
         break;
       case 'AdminFaq':
         await AdminCommunity.pageFaqNext();
+        break;
+      case 'AdminCommunity':
+        await AdminCommunity.pageCommunityNext();
         break;
       case 'Notice':
         await Community.pageNoticeNext();
@@ -76,6 +99,12 @@ class Pagination extends Component {
         break;
       case 'Community':
         await Community.pageCommunityNext();
+        break;
+      case 'Tutor':
+        await Tutor.pageNext();
+        break;
+      case 'Tutee':
+        await Tutee.pageNext();
         break;
       default:
         break;

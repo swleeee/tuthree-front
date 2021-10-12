@@ -8,9 +8,10 @@ import TextAreaContainer from '../../../components/TextareaContainer';
 import viewImg from '../../../static/images/Common/visibility.png';
 import { ROOT_URL } from '../../../axios/index';
 import fileImg from '../../../static/images/Common/files.png';
+import Auth from '../../../stores/Account/Auth';
 import { toJS } from 'mobx';
 
-@inject('Community', 'Common')
+@inject('Community', 'Common', 'Auth')
 @observer
 class DetailContent extends Component {
   componentWillUnmount = () => {
@@ -142,31 +143,38 @@ class DetailContent extends Component {
           </Section>
         </Item>
         <ButtonBox>
-          <Button
-            color="#fff"
-            bcolor="blue"
-            onClick={async () => {
-              Community.communityState = 2;
-              Community.communityWritingState = 1;
-              // await Community.pushToCommunityDetail(
-              //   Community.communityDetailList,
-              //   0,
-              //   'modify'
-              // );
-            }}
-          >
-            <div>수정</div>
-          </Button>
-          <Button
-            color="#fff"
-            bcolor="red"
-            onClick={async () => {
-              // console.info(toJS(Community.communityDetailList));
-              await Community.delCommunity(Community.communityDetailList.id);
-            }}
-          >
-            <div>삭제</div>
-          </Button>
+          {Auth.loggedUserId === Community.communityDetailList.userId && (
+            <>
+              <Button
+                color="#fff"
+                bcolor="blue"
+                onClick={async () => {
+                  Community.communityState = 2;
+                  Community.communityWritingState = 1;
+                  // await Community.pushToCommunityDetail(
+                  //   Community.communityDetailList,
+                  //   0,
+                  //   'modify'
+                  // );
+                }}
+              >
+                <div>수정</div>
+              </Button>
+              <Button
+                color="#fff"
+                bcolor="red"
+                onClick={async () => {
+                  // console.info(toJS(Community.communityDetailList));
+                  await Community.delCommunity(
+                    Community.communityDetailList.id
+                  );
+                }}
+              >
+                <div>삭제</div>
+              </Button>
+            </>
+          )}
+
           <Button
             color="#fff"
             bcolor="rgb(235, 114, 82)"

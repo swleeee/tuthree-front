@@ -8,12 +8,19 @@ import Common from '../../../stores/Common/Common';
 import TextAreaContainer from '../../../components/TextareaContainer';
 import FileUpload from '../../../components/FileUpload';
 import { toJS } from 'mobx';
+import Auth from '../../../stores/Account/Auth';
 
-@inject('AdminCommunity', 'Common', 'Community')
+@inject('AdminCommunity', 'Common', 'Community', 'Auth')
 @observer
 class Writing extends Component {
   componentDidMount = () => {
     console.info('didmount');
+    console.info(Common);
+    console.info(Auth);
+    console.info(Auth.token);
+    console.info(Common.width);
+    console.info(Auth.loggedUserId);
+    console.info(Auth.loggedUserType);
     if (Community.communityWritingState === 1) {
       console.info(toJS(Community.communityDetailList));
       console.info(toJS(Community.communityDetailFileAry));
@@ -122,6 +129,7 @@ class Writing extends Component {
               onClick={() => {
                 console.info('click');
                 if (Community.communityWritingState === 0) {
+                  console.info(Auth.token);
                   Community.setCommunity();
                 } else {
                   Community.putCommunity(Community.communityDetailList.id);
