@@ -11,6 +11,9 @@ import FaqContainer from './FAQ';
 import FaqWritingContainer from './FAQ/Writing';
 import FaqDetailContainer from './FAQ/DetailContent';
 
+import CommunityContainer from './Community';
+import CommunityDetailContainer from './Community/DetailContent';
+
 @inject('AdminCommunity')
 @observer
 class Content extends Component {
@@ -59,6 +62,14 @@ class Content extends Component {
 
         {AdminCommunity.type === 2 && AdminCommunity.state === 3 && (
           <NoticeDetailContainer />
+        )}
+
+        {AdminCommunity.type === 3 && AdminCommunity.state === 1 && (
+          <CommunityContainer />
+        )}
+
+        {AdminCommunity.type === 3 && AdminCommunity.state === 3 && (
+          <CommunityDetailContainer />
         )}
       </Container>
     );

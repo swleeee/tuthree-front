@@ -14,11 +14,11 @@ import searchImg from '../../../../../static/images/Admin/Main/search.png';
 import checkImg from '../../../../../static/images/Common/check.png';
 import Pagination from '../../../../../components/Pagination';
 
-@inject('Community')
+@inject('Community', 'AdminCommunity')
 @observer
 class Content extends Component {
   componentDidMount = () => {
-    Community.getCommunityList(Community.communityCurrentPage);
+    AdminCommunity.getCommunityList(AdminCommunity.communityCurrentPage);
   };
   render() {
     return (
@@ -27,7 +27,7 @@ class Content extends Component {
           <SearchBox>
             <Input
               placeholder="제목 및 내용을 입력하세요."
-              onChange={(e) => Community.onChangeHandler(e, 'community')}
+              onChange={(e) => AdminCommunity.onChangeHandler(e, 'community')}
               onFocus={(e) => (e.target.placeholder = '')}
               onBlur={(e) =>
                 (e.target.placeholder = '제목 및 내용을 입력하세요.')
@@ -36,12 +36,12 @@ class Content extends Component {
             <Search
               onClick={() => {
                 console.info('dsfdsf');
-                Community.communityErrorMessage = '';
-                if (Community.communitySearchValue === '') {
-                  Community.communitySearchFinalValue = '';
-                  Community.getCommunityList(1);
+                AdminCommunity.communityErrorMessage = '';
+                if (AdminCommunity.communitySearchValue === '') {
+                  AdminCommunity.communitySearchFinalValue = '';
+                  AdminCommunity.getCommunityList(1);
                 } else {
-                  Community.searchCommunity(1);
+                  AdminCommunity.searchCommunity(1);
                 }
               }}
             >
@@ -49,18 +49,18 @@ class Content extends Component {
             </Search>
           </SearchBox>
           <SearchArea
-            active={Community.communitySearchFinalValue === ''}
-            error={Community.communityErrorMessage === ''}
+            active={AdminCommunity.communitySearchFinalValue === ''}
+            error={AdminCommunity.communityErrorMessage === ''}
           >
             <div>
-              "<span>{`${Community.communitySearchFinalValue}`}</span>" 로
+              "<span>{`${AdminCommunity.communitySearchFinalValue}`}</span>" 로
               검색한 결과입니다
             </div>
-            <div>{Community.communityErrorMessage}</div>
+            <div>{AdminCommunity.communityErrorMessage}</div>
           </SearchArea>
           <Header>
             <Count>
-              총 <span>{Community.communityListTotalCount}</span>개
+              총 <span>{AdminCommunity.communityListTotalCount}</span>개
             </Count>
             <ButtonBox>
               <WriteBtn
@@ -88,11 +88,13 @@ class Content extends Component {
               <Management title={true}>관리</Management>
             </Line>
 
-            {Community.communityList &&
-              Community.communityList.map((item, idx) => {
+            {AdminCommunity.communityList &&
+              AdminCommunity.communityList.map((item, idx) => {
                 return (
                   <Line
-                    onClick={() => Community.pushToCommunityDetail(item, idx)}
+                    onClick={() =>
+                      AdminCommunity.pushToCommunityDetail(item, idx)
+                    }
                   >
                     <Check active={item.checked}>
                       <div
@@ -110,7 +112,7 @@ class Content extends Component {
                       </div>
                     </Check>
                     <Number>
-                      {idx + 1 + 10 * (Community.communityCurrentPage - 1)}
+                      {idx + 1 + 10 * (AdminCommunity.communityCurrentPage - 1)}
                     </Number>
                     <Title>{item.title}</Title>
                     <Id>{item.userId}</Id>
@@ -121,7 +123,7 @@ class Content extends Component {
                         del={true}
                         onClick={(e) => {
                           e.stopPropagation();
-                          Community.delCommunity(item.id);
+                          AdminCommunity.delCommunity(item.id);
                         }}
                       >
                         <div>삭제</div>
@@ -196,10 +198,10 @@ class Content extends Component {
               })} */}
           </MainBox>
           <Pagination
-            type="Community"
-            currentSet={Community.communityCurrentSet}
-            currentPage={Community.communityCurrentPage}
-            totalPage={Community.communityTotalPage}
+            type="AdminCommunity"
+            currentSet={AdminCommunity.communityCurrentSet}
+            currentPage={AdminCommunity.communityCurrentPage}
+            totalPage={AdminCommunity.communityTotalPage}
           />
         </Item>
       </Container>
@@ -383,6 +385,7 @@ const MainBox = styled.div`
 `;
 
 const Line = styled.div`
+  cursor: pointer;
   width: 100%;
   height: 60px;
   display: flex;

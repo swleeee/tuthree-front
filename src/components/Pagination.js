@@ -22,6 +22,10 @@ class Pagination extends Component {
       case 'AdminFaq':
         await AdminCommunity.moveFaqPage(e);
         break;
+      case 'AdminCommunity':
+        await AdminCommunity.moveCommunityPage(e);
+        break;
+
       case 'Notice':
         await Community.moveNoticePage(e);
         break;
@@ -52,6 +56,9 @@ class Pagination extends Component {
       case 'AdminFaq':
         await AdminCommunity.pageFaqPrev();
         break;
+      case 'AdminCommunity':
+        await AdminCommunity.pageCommunityPrev();
+        break;
       case 'Notice':
         await Community.pageNoticePrev();
         break;
@@ -80,6 +87,9 @@ class Pagination extends Component {
         break;
       case 'AdminFaq':
         await AdminCommunity.pageFaqNext();
+        break;
+      case 'AdminCommunity':
+        await AdminCommunity.pageCommunityNext();
         break;
       case 'Notice':
         await Community.pageNoticeNext();
