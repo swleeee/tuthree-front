@@ -105,6 +105,18 @@ class MobileContent extends Component {
               {Tutor.tutorDetailAry.detail}
             </Content>
           </Section>
+          <ButtonBox>
+            <Button
+              onClick={() => {
+                console.info('click');
+                // Common.modalActive = true;
+                window.location.href = '/chatting';
+              }}
+            >
+              <img src={communicationImg} />
+              <div>1:1 문의</div>
+            </Button>
+          </ButtonBox>
           <ReviewContainer>
             <Label>리뷰</Label>
             <ReviewHeader>
@@ -181,7 +193,7 @@ class MobileContent extends Component {
 export default MobileContent;
 
 const Container = styled.div`
-  margin-right: 20px;
+  // margin-right: 20px;
   width: 95%;
   display: flex;
   flex-direction: column;
@@ -413,4 +425,35 @@ const Label = styled.div`
   font-size: ${(props) => (props.type === 'name' ? '20' : '14')}px;
   margin-right: ${(props) => (props.mr ? props.mr : '5')}px;
   margin-bottom: ${(props) => (props.mb ? props.mb : '0')}px;
+`;
+
+const ButtonBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+`;
+const Button = styled.button`
+  cursor: pointer;
+  width: 80%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // border: 1px solid #707070;
+  border: none;
+  border-radius: 24px;
+  position: relative;
+  background-color: rgba(235, 114, 82, 0.7);
+  > img {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+  }
+  > div {
+    // color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+  }
 `;

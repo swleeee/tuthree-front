@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer, Provider } from 'mobx-react';
 import styled from 'styled-components';
 import Content from './Content';
+import MobileContent from './MobileContent';
 import Common from '../../../stores/Common/Common';
 import InnerContainer from '../../../components/InnerContainer';
 import OuterContainer from '../../../components/OuterContainer';
@@ -15,7 +16,7 @@ class index extends Component {
       <>
         <OuterContainer>
           <InnerContainer>
-            <Content />
+            {Common.width > 767.98 ? <Content /> : <MobileContent />}
           </InnerContainer>
         </OuterContainer>
       </>

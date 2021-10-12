@@ -226,14 +226,19 @@ const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #707070;
+  // border: 1px solid #707070;
+  border: none;
   border-radius: 24px;
   position: relative;
-  background-color: #fff;
+  background-color: rgba(235, 114, 82, 0.7);
   > img {
     position: absolute;
     top: 50%;
     left: 10%;
     transform: translateY(-50%);
+  }
+  > div {
+    font-size: 16px;
+    font-weight: bold;
   }
 `;
