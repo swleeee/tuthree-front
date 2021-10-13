@@ -3,6 +3,7 @@ import { inject, observer, Provider } from 'mobx-react';
 import styled from 'styled-components';
 import defaultImg from '../../../static/images/Common/defaultUser.png';
 import Textarea from '../../../components/TextareaContainer';
+import InfoWriting from './InfoWriting';
 
 const userList = [
   {
@@ -170,10 +171,34 @@ const chatList = [
   },
 ];
 
+@inject('Auth', 'Common')
+@observer
 class Content extends Component {
+  openModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = false;
+  };
+  closeModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = true;
+  };
   render() {
+    const { Common } = this.props;
+    console.info(Common.modalActive);
     return (
-      <Container>
+      <Container state={Common.modalActive}>
+        {Common.modalActive === true && (
+          <Layer>
+            <div>
+              <InfoWriting
+                // width={width}
+                open={this.openModal}
+                close={this.closeModal}
+              />
+            </div>
+          </Layer>
+        )}
+
         <ChatList>
           <Label>
             <div>Chatting</div>
@@ -201,7 +226,12 @@ class Content extends Component {
               })}
           </UserList>
           <ButtonBox>
-            <CtlBtn>
+            <CtlBtn
+              onClick={() => {
+                window.scrollTo(0, 0);
+                Common.modalActive = true;
+              }}
+            >
               <div>과외등록하기</div>
             </CtlBtn>
           </ButtonBox>
@@ -257,11 +287,13 @@ export default Content;
 const Container = styled.div`
   margin: 100px 0;
   width: 100%;
-  height: 800px;
+  // height: 800px;
+  height: ${(props) => (props.state ? '59vh' : '100vh')};
   border: 2px solid #000;
   border-radius: 5px;
   display: flex;
-  // overflow: auto;
+  overflow: hidden;
+  // position: fixed;
 `;
 const ChatList = styled.div`
   // border: 2px solid red;
@@ -631,5 +663,26 @@ const CtlBtn = styled.button`
     > div {
       font-size: 15px;
     }
+  }
+`;
+
+const Layer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  // opacity: 0.1;
+  background-color: rgba(0, 0, 0, 0.5);
+  // overflow-y: scroll !important;
+  // height: auto;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 100vh;
+    height: 100%;
+    overflow-y: scroll !important;
   }
 `;

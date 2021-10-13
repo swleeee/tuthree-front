@@ -5,6 +5,7 @@ import defaultImg from '../../../static/images/Common/defaultUser.png';
 import Textarea from '../../../components/TextareaContainer';
 import userListImg from '../../../static/images/Common/userlist.png';
 import close_ic from '../../../static/images/Home/close-button.png';
+import InfoWriting from './InfoWriting';
 
 const userList = [
   {
@@ -172,6 +173,8 @@ const chatList = [
   },
 ];
 
+@inject('Auth', 'Common')
+@observer
 class Content extends Component {
   state = {
     is_open: false,
@@ -185,10 +188,32 @@ class Content extends Component {
       this.setState({ ...this.state, is_open: true });
     }
   };
+
+  openModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = false;
+  };
+  closeModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = true;
+  };
+
   render() {
     const { is_open } = this.state;
+    const { Common } = this.props;
     return (
-      <Container>
+      <Container state={Common.modalActive}>
+        {Common.modalActive === true && (
+          <Layer>
+            <div>
+              <InfoWriting
+                // width={width}
+                open={this.openModal}
+                close={this.closeModal}
+              />
+            </div>
+          </Layer>
+        )}
         {is_open && (
           <Modal>
             <ProfileMenu
@@ -231,7 +256,12 @@ class Content extends Component {
                     })}
                 </UserList>
                 <ButtonBox>
-                  <CtlBtn>
+                  <CtlBtn
+                    onClick={() => {
+                      window.scrollTo(0, 0);
+                      Common.modalActive = true;
+                    }}
+                  >
                     <div>과외등록하기</div>
                   </CtlBtn>
                 </ButtonBox>
@@ -764,4 +794,22 @@ const ModalContent = styled.button`
   //     color: #111111;
   //     cursor: pointer;
   //   }
+`;
+
+const Layer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  // opacity: 0.1;
+  background-color: rgba(0, 0, 0, 0.5);
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 100vh;
+    height: 100%;
+  }
 `;
