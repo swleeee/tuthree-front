@@ -1,5 +1,6 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 import * as TutorAPI from '../../axios/Matching/Tutor';
+import * as ReviewAPI from '../../axios/Matching/Review';
 
 class Tutor {
   constructor() {
@@ -29,6 +30,9 @@ class Tutor {
   @observable tutorCurrentSet = parseInt((this.tutorCurrentPage - 1) / 5) + 1; // tutor 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
 
   @observable tutorDetailAry = [];
+
+  @observable tutorReviewAry = [];
+  @observable tutorReviewCount = 0;
 
   @observable budgetType = '';
 
@@ -245,6 +249,7 @@ class Tutor {
       .then(async (res) => {
         console.info(res);
         this.tutorDetailAry = await res.data.data;
+        await this.getTutorReview(res.data.data.postId);
         this.state = 1;
       })
       .catch((e) => {
@@ -279,6 +284,27 @@ class Tutor {
       this.tutorCurrentPage = newPage;
       await this.getTutorList(this.tutorCurrentPage);
     }
+  };
+
+  @action getTutorReview = async (id) => {
+    console.info(id);
+    const req = {
+      id: id,
+      // headers: {
+      //   Authorization: this.Authorization,
+      // },
+    };
+
+    await ReviewAPI.getTutorReview(req)
+      .then(async (res) => {
+        console.info(res);
+        this.tutorReviewAry = await res.data.data;
+        this.tutorReviewCount = res.data.data.length;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
   };
 }
 

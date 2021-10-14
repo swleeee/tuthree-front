@@ -36,6 +36,10 @@ const reviewData = [
 @inject('Tutor')
 @observer
 class DetailContent extends Component {
+  componentWillUnmount = () => {
+    Tutor.tutorReviewAry = [];
+    Tutor.tutorReviewCount = 0;
+  };
   render() {
     return (
       <Container>
@@ -55,27 +59,31 @@ class DetailContent extends Component {
             <ReviewHeader>
               <SubHeader mb={8}>
                 <Count>
-                  <span>33개</span>의 리뷰가 있습니다
+                  <span>{Tutor.tutorReviewCount}개</span>의 리뷰가 있습니다
                 </Count>
-                <SortingBox>
-                  <span>최신순</span>
-                  <span>높은평점순</span>
-                  <span>낮은평점순</span>
-                </SortingBox>
+                {Tutor.tutorReviewCount !== 0 && (
+                  <SortingBox>
+                    <span>최신순</span>
+                    <span>높은평점순</span>
+                    <span>낮은평점순</span>
+                  </SortingBox>
+                )}
               </SubHeader>
-              <SubHeader>
-                <Rating>
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={emptyStarImg} />
-                  <div>4.2 | 5.0</div>
-                </Rating>
-              </SubHeader>
+              {Tutor.tutorReviewCount !== 0 && (
+                <SubHeader>
+                  <Rating>
+                    <img src={starImg} />
+                    <img src={starImg} />
+                    <img src={starImg} />
+                    <img src={starImg} />
+                    <img src={emptyStarImg} />
+                    <div>{Tutor.tutorDetailAry.star} | 5.0</div>
+                  </Rating>
+                </SubHeader>
+              )}
             </ReviewHeader>
             <ReviewMainBox>
-              {reviewData &&
+              {/* {reviewData &&
                 reviewData.map((item, idx) => {
                   return (
                     <Item>
@@ -86,7 +94,7 @@ class DetailContent extends Component {
                           style={{ justifyContent: 'flex-start' }}
                         >
                           <div>
-                            {/* <div>Img</div> */}
+                            
                             <img src={defaultImg} />
                           </div>
                         </ImgBox>
@@ -103,6 +111,55 @@ class DetailContent extends Component {
                               <img src={starImg} />
                               <img src={emptyStarImg} />
                               <div>{item.rating}</div>
+                            </ReviewRating>
+                          </ReviewSubLabel>
+                        </ReviewLabel>
+                      </SubItem>
+                      <SubItem>
+                        <ReviewContent>
+                          <div>{item.content}</div>
+                        </ReviewContent>
+                      </SubItem>
+                    </Item>
+                  );
+                })} */}
+
+              {Tutor.tutorReviewAry &&
+                Tutor.tutorReviewAry.map((item, idx) => {
+                  return (
+                    <Item>
+                      {console.info(item.userId.length)}
+                      {console.info(typeof item.userId)}
+                      {console.info(
+                        item.userId.substr(0, 2) +
+                          '*'.repeat(item.userId.length - 3)
+                      )}
+                      <SubItem>
+                        <ImgBox
+                          width={112}
+                          height={112}
+                          style={{ justifyContent: 'flex-start' }}
+                        >
+                          <div>
+                            <img src={defaultImg} />
+                          </div>
+                        </ImgBox>
+                        <ReviewLabel>
+                          <ReviewSubLabel>
+                            <ReviewName>
+                              {item.userId.substr(0, 2) +
+                                '*'.repeat(item.userId.length - 2)}
+                            </ReviewName>
+                            <ReviewWritingDt>{item.writeAt}</ReviewWritingDt>
+                          </ReviewSubLabel>
+                          <ReviewSubLabel>
+                            <ReviewRating>
+                              <img src={starImg} />
+                              <img src={starImg} />
+                              <img src={starImg} />
+                              <img src={starImg} />
+                              <img src={emptyStarImg} />
+                              <div>{item.star}</div>
                             </ReviewRating>
                           </ReviewSubLabel>
                         </ReviewLabel>
