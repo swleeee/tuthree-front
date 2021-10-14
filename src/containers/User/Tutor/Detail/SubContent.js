@@ -35,7 +35,7 @@ class SubContent extends Component {
 
   render() {
     const { Matching } = this.props;
-    console.info(Matching.isCheckBookmark);
+    // console.info(Matching.isCheckBookmark);
     return (
       <>
         <Container width={Common.width}>
@@ -75,12 +75,30 @@ class SubContent extends Component {
 
             <SubMain>
               <Label>과목</Label>
-              <Content>영어, 수학,dsf sdfsdfsdfsdfsdfsdf</Content>
+              <Content>
+                {Tutor.tutorDetailAry.subject &&
+                  Tutor.tutorDetailAry.subject.map((item, idx) => {
+                    return (
+                      <MultipleBox type="subject">
+                        <div>{item}</div>
+                      </MultipleBox>
+                    );
+                  })}
+              </Content>
             </SubMain>
 
             <SubMain>
               <Label>지역</Label>
-              <Content>경기도 의왕시</Content>
+              <Content>
+                {Tutor.tutorDetailAry.region &&
+                  Tutor.tutorDetailAry.region.map((item, idx) => {
+                    return (
+                      <MultipleBox type="region">
+                        <div>{item}</div>
+                      </MultipleBox>
+                    );
+                  })}
+              </Content>
             </SubMain>
 
             <SubMain>
@@ -231,6 +249,7 @@ const Label = styled.div`
   font-size: ${(props) => (props.type === 'name' ? '32' : '20')}px;
   font-weight: bold;
   margin-right: 20px;
+  min-width: 50px;
 
   @media (min-width: 768px) and (max-width: 991.98px) {
     min-width: 36px;
@@ -290,5 +309,23 @@ const Button = styled.button`
     font-weight: bold;
     color: ${(props) =>
       props.color ? props.color : props.check ? '#fff' : '#000'};
+  }
+`;
+
+const MultipleBox = styled.div`
+  display: inline-flex;
+  align-items: center;
+  background-color: ${(props) =>
+    props.type === 'region' ? '#a596c4' : '#7eb1a8'};
+  border-radius: 30px;
+  padding: 3px 10px;
+  box-sizing: border-box;
+  margin-right: 5px;
+  margin-bottom: 5px;
+
+  > div {
+    font-size: 12px;
+    margin-right: 5px;
+    color: #000;
   }
 `;
