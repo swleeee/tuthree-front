@@ -19,8 +19,7 @@ class Card extends Component {
       budget,
       registration,
     } = this.props;
-    // console.info(subject);
-    console.info(toJS(location));
+
     return (
       <Container>
         <Img>

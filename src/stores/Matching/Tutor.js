@@ -21,6 +21,7 @@ class Tutor {
   @observable selectedSubject = []; // 과목
 
   @observable tutorState = 1; // 1 : 조회, 2 : 작성, 3 : 세부 조회
+  @observable tutorTotalCount = 0;
   @observable tutorList = []; // tutor 페이지 당 목록 데이터
   @observable tutorListTotalCount = 0; // tutor 전체 개수
   @observable tutorTotalPage = 0; // tutor 전체 페이지 수
@@ -210,9 +211,10 @@ class Tutor {
     TutorAPI.getTutorList(req)
       .then(async (res) => {
         console.info(res);
+        this.tutorTotalCount = await res.data.list;
         this.tutorList = await res.data.data;
         this.tutorListTotalCount = await res.data.list;
-        this.tutorTotalPage = await Math.ceil(this.tutorListTotalCount / 10);
+        this.tutorTotalPage = await Math.ceil(this.tutorListTotalCount / 12);
 
         this.tutorCurrentSet = parseInt((this.tutorCurrentPage - 1) / 5) + 1; // tutor 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
 

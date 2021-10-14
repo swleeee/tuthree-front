@@ -21,6 +21,7 @@ class Tutee {
   @observable selectedSubject = []; // 과목
 
   @observable tuteeState = 1; // 1 : 조회, 2 : 작성, 3 : 세부 조회
+  @observable tuteeTotalCount = 0;
   @observable tuteeList = []; // tutee 페이지 당 목록 데이터
   @observable tuteeListTotalCount = 0; // tutee 전체 개수
   @observable tuteeTotalPage = 0; // tutee 전체 페이지 수
@@ -210,9 +211,10 @@ class Tutee {
     TuteeAPI.getTuteeList(req)
       .then(async (res) => {
         console.info(res);
+        this.tuteeTotalCount = await res.data.list;
         this.tuteeList = await res.data.data;
         this.tuteeListTotalCount = await res.data.list;
-        this.tuteeTotalPage = await Math.ceil(this.tuteeListTotalCount / 10);
+        this.tuteeTotalPage = await Math.ceil(this.tuteeListTotalCount / 12);
 
         this.tuteeCurrentSet = parseInt((this.tuteeCurrentPage - 1) / 5) + 1; // tutee 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
 
