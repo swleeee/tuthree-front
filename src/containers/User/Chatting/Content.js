@@ -250,26 +250,27 @@ class Content extends Component {
             {Auth.loggedUserType === 'teacher' ? (
               Chatting.writingState === 1 ? (
                 <CtlBtn
-                  state={Chatting.enrollmentState === 1}
+                  state={Chatting.enrollmentState === 2}
                   onClick={() => {
-                    if (Chatting.enrollmentState === 1) {
-                      window.scrollTo(0, 0);
-                      Common.modalActive = true;
-                      Common.modalState = 1;
-                    }
+                    // if (Chatting.enrollmentState === 1) {
+                    window.scrollTo(0, 0);
+                    Common.modalActive = true;
+                    Common.modalState = 1;
+                    // }
                   }}
                 >
                   <div>과외등록하기</div>
                 </CtlBtn>
               ) : (
                 <CtlBtn
-                  state={Chatting.enrollmentState === 1}
-                  onClick={() => {
-                    if (Chatting.enrollmentState === 1) {
-                      window.scrollTo(0, 0);
-                      Common.modalActive = true;
-                      Common.modalState = 1;
-                    }
+                  state={Chatting.enrollmentState === 2}
+                  onClick={async () => {
+                    // if (Chatting.enrollmentState === 1) {
+                    await Chatting.getTutoringInfo();
+                    window.scrollTo(0, 0);
+                    Common.modalActive = true;
+                    Common.modalState = 1;
+                    // }
                   }}
                 >
                   <div>과외 정보 수정하기</div>

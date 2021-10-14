@@ -11,6 +11,16 @@ export function setTutoringInfo(req) {
   });
 }
 
+export function putTutoringInfo(req) {
+  return axios({
+    method: 'PUT',
+    url: `${ROOT_URL}/room/alter`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
 export function getTutoringInfo(req) {
   return axios({
     method: 'GET',

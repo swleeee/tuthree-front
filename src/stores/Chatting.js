@@ -275,6 +275,119 @@ class Chatting {
       });
   };
 
+  @action putTutoringInfo = async (teacherId = '', studentId = '') => {
+    let timeObj = {};
+    let weekTimeObj = {
+      mon: [],
+      tue: [],
+      wed: [],
+      thu: [],
+      fri: [],
+      sat: [],
+      sun: [],
+    };
+
+    let timeAry = [];
+    console.info(Auth.token);
+    console.info(Auth.loggedUserId);
+    console.info(this.detailContent);
+    console.info(this.weekendValue);
+    // console.info(toJS(Tutee.tuteeDetailAry));
+    console.info(this.studentId);
+    console.info(toJS(this.startTimeAry));
+    console.info(toJS(this.endTimeAry));
+    console.info(localStorage.getItem('otherPersonId'));
+    // await Promise.all(
+
+    this.selectedWeekTime.map((item, idx) => {
+      console.info('=====================================================');
+      timeObj = {};
+      console.info(toJS(this.startTimeAry[idx]));
+      console.info(toJS(this.endTimeAry[idx]));
+      // timeObj[this.weekendValue] = thi.startTimeValue;
+      timeObj['start'] = this.startTimeAry[idx];
+      timeObj['end'] = this.endTimeAry[idx];
+      // timeAry.push(timeObj);
+      console.info(toJS(timeAry));
+
+      // weekendObj[this.weekendValueAry[idx]] = timeObj;
+      // console.info(timeObj);
+      weekTimeObj[this.weekendValueAry[idx]].push(timeObj);
+      console.info(toJS(weekTimeObj));
+    });
+    // );
+
+    console.info(timeObj);
+    // console.info(weekendObj);
+    // console.info(JSON.stringify(weekendObj));
+    console.info(toJS(weekTimeObj));
+
+    console.info(toJS(this.selectedSubject));
+    // schedule["se"]
+    // this.selectedSubject.map((item, idx) => {
+
+    // })
+
+    const req = {
+      data: {
+        // schedule: {
+        //   tue: {
+        //     start: '20:00',
+        //     end: '24:00',
+        //   },
+        //   mon: {
+        //     start: '17:00',
+        //     end: '20:00',
+        //   },
+        // },
+        // schedule: JSON.stringify(weekendObj),
+        // schedule: weekendObj,
+        schedule: weekTimeObj,
+
+        // subject: ['math', 'kor', 'eng'],
+        subject: this.selectedSubject,
+
+        // subject: {
+        //   id: 'tuthree10',
+        //   pwd: 'tuthree10',
+        // },
+        // subject: 'math',
+        // day: this.weekendValue,
+        // day: 'mon',
+        // cost: '월급 200000',
+        cost: this.budgetType + ' ' + this.budget,
+        // detail: 'sdfsdfsdf',
+        detail: this.detailContent,
+      },
+      headers: {
+        Authorization: Auth.token,
+      },
+      params: {
+        teacherId: Auth.loggedUserId,
+        // studentId: 'hYji0pYOZc',
+        studentId: localStorage.getItem('otherPersonId'),
+      },
+    };
+    console.info(req.data);
+    console.info(toJS(req.data));
+    MatchingAPI.putTutoringInfo(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          alert(
+            '과외 정보 수정이 완료되었습니다. 학생이 최종 수락하기까지 기다려주세요.'
+          );
+
+          Common.modalActive = false;
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        alert('과외 정보를 수정하는데 실패하였습니다. 다시 시도해주세요.');
+      });
+  };
+
   @action getTutoringInfo = async () => {
     this.resetTutoringInfo();
     console.info(Auth.token);
@@ -286,8 +399,14 @@ class Chatting {
       },
       params: {
         // teacherId: 'test111',
-        teacherId: localStorage.getItem('otherPersonId'),
-        studentId: Auth.loggedUserId,
+        teacherId:
+          Auth.loggedUserType === 'teacher'
+            ? Auth.loggedUserId
+            : localStorage.getItem('otherPersonId'),
+        studentId:
+          Auth.loggedUserType === 'student'
+            ? Auth.loggedUserId
+            : localStorage.getItem('otherPersonId'),
         // studentId: 'lZmooJ8Ydd',
       },
     };
@@ -334,6 +453,15 @@ class Chatting {
               break;
           }
 
+          value.map(async (item, idx) => {
+            console.info(toJS(item));
+            console.info(toJS(item.start));
+
+            await this.selectedWeekTime.push(
+              `${weekend} ${item.start} ~ ${item.end}`
+            );
+          });
+
           for (const [subKey, subValue] of Object.entries(value)) {
             console.info(`${subKey}: ${subValue}`);
             console.info(subKey.value);
@@ -344,9 +472,9 @@ class Chatting {
               endTime = subValue;
             }
           }
-          await this.selectedWeekTime.push(
-            `${weekend} ${startTime} ~ ${endTime}`
-          );
+          // await this.selectedWeekTime.push(
+          //   `${weekend} ${startTime} ~ ${endTime}`
+          // );
         }
         // this.selectedWeekTime.push(res.data.data.infpo)
         this.selectedSubject = await res.data.data.info.subject;
@@ -407,11 +535,15 @@ class Chatting {
       },
     };
     await MatchingAPI.matchTutoring(req)
-      .then(async (res) => {
+      .then((res) => {
         console.info(res);
-        if (res.data.data.message === '수업이 성사되지 않았습니다') {
+        console.info(res.data);
+        console.info(res.data.message);
+        if (res.data.message === '수업이 성사되지 않았습니다.') {
+          console.info('수정O');
           this.writingState = 2;
         } else {
+          console.info('수정X');
           this.writingState = 1;
         }
         // await alert(res.data.data.message);
