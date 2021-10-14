@@ -19,3 +19,30 @@ export function getTutoringInfo(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function setBookmark(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/bookmark/add`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function getBookmark(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/bookmark`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function delBookmark(req) {
+  return axios({
+    method: 'DELETE',
+    url: `${ROOT_URL}/bookmark/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}

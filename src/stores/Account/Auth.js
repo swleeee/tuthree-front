@@ -748,7 +748,7 @@ class Auth {
       formData.append(`subject`, this.selectedSubject[i]);
     }
 
-    formData.append('cost', this.budget + this.budgetType);
+    formData.append('cost', this.budgetType + ' ' + this.budget);
     // formData.append('cost', 200000);
     formData.append('school', this.school);
     // formData.append('school', '가천대');
@@ -839,7 +839,8 @@ class Auth {
       formData.append(`subject`, this.selectedSubject[i]);
     }
 
-    formData.append('cost', this.budget + this.budgetType);
+    formData.append('cost', this.budgetType + ' ' + this.budget);
+
     // formData.append('cost', 200000);
     formData.append('school', this.grade);
     // formData.append('school', '가천대');
