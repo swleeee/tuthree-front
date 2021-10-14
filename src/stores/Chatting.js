@@ -1,4 +1,7 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
+import Auth from './Account/Auth';
+import Common from './Common/Common';
+import * as MatchingAPI from '../axios/Matching/Matching';
 
 class Chatting {
   constructor() {
@@ -70,6 +73,9 @@ class Chatting {
 
   @observable detailContent = '';
 
+  @observable teacherId = '';
+  @observable studentId = '';
+
   @action setUpperSubject = (e) => {
     console.info(e[0]);
     this.selectedUpperSubject = e.label;
@@ -120,6 +126,48 @@ class Chatting {
       default:
         break;
     }
+  };
+  @action setTutoringInfo = async (teacherId = '', studentId = '') => {
+    console.info(Auth.token);
+    console.info(Auth.loggedUserId);
+    console.info(this.detailContent);
+    console.info(this.weekendValue);
+    const req = {
+      data: {
+        // subject: {
+        //   id: 'tuthree10',
+        //   pwd: 'tuthree10',
+        // },
+        subject: 'math',
+        day: this.weekendValue,
+        // day: 'mon',
+        cost: '월급 200000',
+        start: '17:00',
+        end: '20:00',
+        // detail: 'sdfsdfsdf',
+        detail: this.detailContent,
+      },
+      headers: {
+        Authorization: Auth.token,
+      },
+      params: {
+        teacherId: Auth.loggedUserId,
+        studentId: 'hYji0pYOZc',
+      },
+    };
+    MatchingAPI.setTutoringInfo(req)
+      .then((res) => {
+        console.info(res);
+        alert(
+          '과외 등록이 완료되었습니다. 학생이 최종 수락하기까지 기다려주세요.'
+        );
+        Common.modalActive = false;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        alert('과외 등록을 실패하였습니다. 다시 시도해주세요.');
+      });
   };
 }
 

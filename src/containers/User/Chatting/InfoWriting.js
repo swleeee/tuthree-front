@@ -337,8 +337,12 @@ class InfoWriting extends React.Component {
                         />
                       </Content>
                     </DetailBox>
-                    <Button>
-                      <div>등록</div>
+                    <Button
+                      onClick={() => {
+                        Chatting.setTutoringInfo();
+                      }}
+                    >
+                      <div>과외 등록</div>
                     </Button>
                   </Main>
                   {/* <Footer>
@@ -595,8 +599,12 @@ class InfoWriting extends React.Component {
                         />
                       </Content>
                     </DetailBox>
-                    <Button>
-                      <div>등록</div>
+                    <Button
+                      onClick={() => {
+                        Chatting.setTutoringInfo();
+                      }}
+                    >
+                      <div>과외 등록</div>
                     </Button>
                   </Main>
                   {/* <Footer>
