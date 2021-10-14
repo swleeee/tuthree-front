@@ -199,6 +199,12 @@ class Content extends Component {
     Common.modalActive = true;
   };
 
+  componentDidMount = async () => {
+    const { Common, Auth, Chatting } = this.props;
+    console.info(Chatting.studentId);
+    await Chatting.getDetailClass();
+  };
+
   render() {
     const { is_open } = this.state;
     const { Common, Auth, Chatting } = this.props;
@@ -270,21 +276,27 @@ class Content extends Component {
                 <ButtonBox>
                   {Auth.loggedUserType === 'teacher' ? (
                     <CtlBtn
+                      state={Chatting.enrollmentState === 1}
                       onClick={() => {
-                        window.scrollTo(0, 0);
-                        Common.modalActive = true;
-                        Common.modalState = 1;
+                        if (Chatting.enrollmentState === 1) {
+                          window.scrollTo(0, 0);
+                          Common.modalActive = true;
+                          Common.modalState = 1;
+                        }
                       }}
                     >
                       <div>과외등록하기</div>
                     </CtlBtn>
                   ) : (
                     <CtlBtn
+                      state={Chatting.enrollmentState === 1}
                       onClick={async () => {
-                        await Chatting.getTutoringInfo();
-                        window.scrollTo(0, 0);
-                        // Common.modalActive = true;
-                        // Common.modalState = 2;
+                        if (Chatting.enrollmentState === 1) {
+                          await Chatting.getTutoringInfo();
+                          window.scrollTo(0, 0);
+                          // Common.modalActive = true;
+                          // Common.modalState = 2;
+                        }
                       }}
                     >
                       <div>수락하기</div>
@@ -710,8 +722,9 @@ const ButtonBox = styled.div`
   border-top: 1px solid #000;
 `;
 const CtlBtn = styled.button`
-  cursor: pointer;
-  background-color: rgba(235, 114, 82, 0.7);
+  cursor: ${(props) => (props.state ? 'pointer' : 'initial')};
+  background-color: ${(props) =>
+    props.state ? 'rgba(235, 114, 82, 0.7)' : '#777'};
   // border: 1px solid #707070;
   border: none;
   box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.3);
@@ -721,6 +734,7 @@ const CtlBtn = styled.button`
   border-radius: 20px;
   width: 80%;
   height: 36px;
+  opacity: ${(props) => (props.state ? '1' : '0.5')};
   > div {
     font-size: 14px;
     font-weight: bold;

@@ -3,6 +3,7 @@ import Auth from './Account/Auth';
 import Tutee from './Matching/Tutee';
 import Common from './Common/Common';
 import * as MatchingAPI from '../axios/Matching/Matching';
+import * as ClassAPI from '../axios/Managing/Class';
 
 class Chatting {
   constructor() {
@@ -10,6 +11,7 @@ class Chatting {
   }
   @observable domainType = 1;
 
+  @observable enrollmentState = 1; // 1. 기본 상태, 2. 이미 매칭되어 못하는 상태
   @observable selectedUpperSubject = '';
   @observable selectedLowerSubject = '';
   @observable selectedSubject = []; // 과목
@@ -350,6 +352,63 @@ class Chatting {
         await alert(res.data.data.message);
         Common.modalActive = false;
         Common.modalState = 1;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action getClass = async () => {
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      params: {
+        id: Auth.loggedUserId,
+        status: 'OPEN',
+      },
+    };
+    ClassAPI.getClass(req)
+      .then((res) => {
+        console.info(res);
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action getDetailClass = async () => {
+    console.info(Auth.loggedUserId);
+    console.info(Auth.loggedUserType);
+    console.info(localStorage.getItem('otherPersonId'));
+
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      params: {
+        studentId:
+          Auth.loggedUserType === 'student'
+            ? Auth.loggedUserId
+            : localStorage.getItem('otherPersonId'),
+        teacherId:
+          Auth.loggedUserType === 'teacher'
+            ? Auth.loggedUserId
+            : localStorage.getItem('otherPersonId'),
+        // teacherId: 'test111',
+      },
+    };
+    console.info(req.params);
+    ClassAPI.getDetailClass(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.data) {
+          this.enrollmentState = 2;
+        } else {
+          this.enrollmentState = 1;
+        }
       })
       .catch((e) => {
         console.info(e);
