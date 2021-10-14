@@ -169,6 +169,30 @@ class Chatting {
         alert('과외 등록을 실패하였습니다. 다시 시도해주세요.');
       });
   };
+
+  @action getTutoringInfo = () => {
+    console.info(Auth.token);
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      params: {
+        teacherId: 'test111',
+        //   studentId: Auth.loggedUserId,
+        studentId: 'lZmooJ8Ydd',
+      },
+    };
+    MatchingAPI.getTutoringInfo(req)
+      .then((res) => {
+        console.info(res);
+
+        // Common.modalActive = false;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
 }
 
 export default new Chatting();

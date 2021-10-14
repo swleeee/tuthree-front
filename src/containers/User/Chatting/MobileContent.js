@@ -6,6 +6,7 @@ import Textarea from '../../../components/TextareaContainer';
 import userListImg from '../../../static/images/Common/userlist.png';
 import close_ic from '../../../static/images/Home/close-button.png';
 import InfoWriting from './InfoWriting';
+import Info from './Info';
 
 const userList = [
   {
@@ -200,13 +201,24 @@ class Content extends Component {
 
   render() {
     const { is_open } = this.state;
-    const { Common } = this.props;
+    const { Common, Auth } = this.props;
     return (
       <Container state={Common.modalActive}>
-        {Common.modalActive === true && (
+        {Common.modalActive === true && Common.modalState === 1 && (
           <Layer>
             <div>
               <InfoWriting
+                // width={width}
+                open={this.openModal}
+                close={this.closeModal}
+              />
+            </div>
+          </Layer>
+        )}
+        {Common.modalActive === true && Common.modalState === 2 && (
+          <Layer>
+            <div>
+              <Info
                 // width={width}
                 open={this.openModal}
                 close={this.closeModal}
@@ -256,14 +268,27 @@ class Content extends Component {
                     })}
                 </UserList>
                 <ButtonBox>
-                  <CtlBtn
-                    onClick={() => {
-                      window.scrollTo(0, 0);
-                      Common.modalActive = true;
-                    }}
-                  >
-                    <div>과외등록하기</div>
-                  </CtlBtn>
+                  {Auth.loggedUserType === 'teacher' ? (
+                    <CtlBtn
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                        Common.modalActive = true;
+                        Common.modalState = 1;
+                      }}
+                    >
+                      <div>과외등록하기</div>
+                    </CtlBtn>
+                  ) : (
+                    <CtlBtn
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                        Common.modalActive = true;
+                        Common.modalState = 2;
+                      }}
+                    >
+                      <div>수락하기</div>
+                    </CtlBtn>
+                  )}
                 </ButtonBox>
               </ChatList>
               {/* </ModalContent> */}
