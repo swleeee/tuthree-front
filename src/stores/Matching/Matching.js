@@ -1,5 +1,8 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 import * as MatchingAPI from '../../axios/Matching/Matching';
+import Auth from '../Account/Auth';
+import Tutee from './Tutee';
+import Tutor from './Tutor';
 
 class Matching {
   constructor() {
@@ -9,20 +12,28 @@ class Matching {
   @observable bookmarkId = '';
   @observable isCheckBookmark = false;
 
-  @action setBookmark = () => {
+  @action setBookmark = async (type) => {
+    console.info(Auth.loggedUserId);
+    // console.info(Tutee.tut)
     const req = {
       params: {
-        from: 'lZmooJ8Ydd',
-        to: 'test112',
+        // from: 'lZmooJ8Ydd',
+        from: Auth.loggedUserId,
+        // to: 'test112',
+        to:
+          type === 'tutor'
+            ? Tutor.tutorDetailAry.userId
+            : Tutee.tuteeDetailAry.userId,
       },
       //   headers: {
       //     Authorization: this.Authorization,
       //   },
     };
-    MatchingAPI.setBookmark(req)
-      .then((res) => {
+    await MatchingAPI.setBookmark(req)
+      .then(async (res) => {
         console.info(res);
-        this.checkBookmark();
+        await this.getBookmark();
+        await this.checkBookmark(type);
       })
       .catch((e) => {
         console.info(e);
@@ -31,9 +42,11 @@ class Matching {
   };
 
   @action getBookmark = async () => {
+    this.bookmarkAry = [];
     const req = {
       params: {
-        userId: 'lZmooJ8Ydd',
+        // userId: 'lZmooJ8Ydd',
+        userId: Auth.loggedUserId,
       },
       //   headers: {
       //     Authorization: this.Authorization,
@@ -51,13 +64,21 @@ class Matching {
       });
   };
 
-  @action checkBookmark = () => {
+  @action checkBookmark = (type) => {
+    // console.info(Tutor.tutorDetailAry.userId);
+    let userId = '';
+    if (type === 'tutor') {
+      userId = Tutor.tutorDetailAry.userId;
+    } else {
+      userId = Tutee.tuteeDetailAry.userId;
+    }
     this.bookmarkAry &&
       this.bookmarkAry[0] &&
       this.bookmarkAry[0].map((item, idx) => {
         console.info(toJS(item));
         // console.info(item.indexOf('test112'));
-        if (item.user2 === 'test112') {
+        // if (item.user2 === 'test112') {
+        if (item.user2 === userId) {
           this.bookmarkId = item.id;
           this.isCheckBookmark = true;
           return true;

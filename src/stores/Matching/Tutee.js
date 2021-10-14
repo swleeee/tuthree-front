@@ -230,7 +230,7 @@ class Tutee {
   @action getTuteeDetailList = async (item, idx = 0, type = '') => {
     // this.tuteeDetailAry.push(item);
     console.info(item.postId);
-    this.state = 1;
+
     console.info(this.communityState);
     const req = {
       id: item.postId,
@@ -243,6 +243,7 @@ class Tutee {
       .then(async (res) => {
         console.info(res);
         this.tuteeDetailAry = await res.data.data;
+        this.state = 1;
       })
       .catch((e) => {
         console.info(e);

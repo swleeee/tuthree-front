@@ -25,7 +25,7 @@ class SubContent extends Component {
   componentDidMount = async () => {
     const { Matching } = this.props;
     await Matching.getBookmark();
-    await Matching.checkBookmark();
+    await Matching.checkBookmark('tutor');
   };
   componentWillUnmount = () => {
     const { Matching } = this.props;
@@ -93,20 +93,26 @@ class SubContent extends Component {
               // bg="#888"
               bd="1px solid #707070"
               check={Matching.isCheckBookmark}
-              onClick={() => {
+              onClick={async () => {
                 console.info('click');
                 // Common.modalActive = true;
                 // window.location.href = '/chatting';
                 console.info(Matching.bookmarkId);
 
                 if (Matching.isCheckBookmark) {
+                  await Matching.checkBookmark('tutor');
                   Matching.delBookmark(Matching.bookmarkId);
                 } else {
-                  Matching.setBookmark();
+                  Matching.setBookmark('tutor');
                 }
               }}
             >
-              <img src={bookMarkWhiteImg} />
+              {Matching.isCheckBookmark ? (
+                <img src={bookMarkDarkImg} />
+              ) : (
+                <img src={bookMarkWhiteImg} />
+              )}
+
               <div>북마크</div>
             </Button>
             <Button

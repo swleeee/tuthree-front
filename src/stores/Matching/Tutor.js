@@ -230,7 +230,7 @@ class Tutor {
   @action getTutorDetailList = async (item, idx = 0, type = '') => {
     // this.tutorDetailAry.push(item);
     console.info(item.postId);
-    this.state = 1;
+
     console.info(this.communityState);
     const req = {
       id: item.postId,
@@ -243,6 +243,7 @@ class Tutor {
       .then(async (res) => {
         console.info(res);
         this.tutorDetailAry = await res.data.data;
+        this.state = 1;
       })
       .catch((e) => {
         console.info(e);
