@@ -268,7 +268,7 @@ class Step3StudentContainer extends Component {
 
                     domainType={2}
                     placeholder="급여(ex: 350000, 650000)"
-                    onChange={(e) => this.inputHandler(e.target, 'budget')}
+                    onChange={(e) => Auth.handleChange(e.target, 'budget')}
                     onFocus={(e) => (e.target.placeholder = '')}
                     onBlur={(e) =>
                       (e.target.placeholder = '급여(ex: 350000, 650000)')
@@ -282,7 +282,7 @@ class Step3StudentContainer extends Component {
                       Common.width > 767.98 ? customStyles : mobileCustomStyles
                     }
                     //  value={value}
-                    onChange={(e) => Auth.handleChange(e, 'budget')}
+                    onChange={(e) => Auth.handleChange(e, 'budgetType')}
                     getOptionLabel={(option) => option.label}
                     options={Auth.budgetTypeAry}
                     //  isSearchable={false}

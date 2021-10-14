@@ -525,6 +525,10 @@ class Auth {
 
         break;
       case 'budget':
+        this.budget = e.value;
+        break;
+
+      case 'budgetType':
         this.budgetType = e.value;
         break;
       case 'schoolState':
@@ -734,21 +738,21 @@ class Auth {
 
     for (let i = 0; i < this.selectedLocation.length; i++) {
       console.info(this.selectedLocation[i]);
-      formData.append(`region`, this.selectedLocation[i]);
+      formData.append(`regionL`, this.selectedLocation[i]);
     }
 
     // formData.append(`region`, this.selectedLocation[0]);
     // formData.append(`region`, this.selectedLocation[1]);
 
     formData.append('registration', 'OPEN');
-    formData.append('subject', this.selectedSubject[0]);
+    // formData.append('subject', this.selectedSubject[0]);
     // formData.append('subject', '수학');
 
     for (let i = 0; i < this.selectedSubject.length; i++) {
-      formData.append(`subject`, this.selectedSubject[i]);
+      formData.append(`subjectL`, this.selectedSubject[i]);
     }
 
-    formData.append('cost', this.budget + this.budgetType);
+    formData.append('cost', this.budgetType + ' ' + this.budget);
     // formData.append('cost', 200000);
     formData.append('school', this.school);
     // formData.append('school', '가천대');
@@ -825,21 +829,22 @@ class Auth {
     // formData.append('region', '수원시');
 
     for (let i = 0; i < this.selectedLocation.length; i++) {
-      formData.append(`region`, this.selectedLocation[i]);
+      formData.append(`regionL`, this.selectedLocation[i]);
     }
 
     // formData.append(`region`, this.selectedLocation[0]);
     // formData.append(`region`, this.selectedLocation[1]);
 
     formData.append('registration', 'OPEN');
-    formData.append('subject', this.selectedSubject[0]);
+    // formData.append('subject', this.selectedSubject[0]);
     // formData.append('subject', '수학');
 
     for (let i = 0; i < this.selectedSubject.length; i++) {
-      formData.append(`subject`, this.selectedSubject[i]);
+      formData.append(`subjectL`, this.selectedSubject[i]);
     }
 
-    formData.append('cost', this.budget + this.budgetType);
+    formData.append('cost', this.budgetType + ' ' + this.budget);
+
     // formData.append('cost', 200000);
     formData.append('school', this.grade);
     // formData.append('school', '가천대');

@@ -51,6 +51,7 @@ class Common {
   ];
 
   @observable modalActive = false;
+  @observable modalState = 1; // 1 : teacher / 2 : student
 }
 
 export default new Common();

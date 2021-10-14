@@ -328,7 +328,7 @@ class Step3TeacherContainer extends Component {
                       Common.width > 767.98 ? customStyles : mobileCustomStyles
                     }
                     //  value={value}
-                    onChange={(e) => Auth.handleChange(e, 'budget')}
+                    onChange={(e) => Auth.handleChange(e, 'budgetType')}
                     getOptionLabel={(option) => option.label}
                     options={Auth.budgetTypeAry}
                     //  isSearchable={false}

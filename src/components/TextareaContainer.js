@@ -10,7 +10,7 @@ const placeholderText = `예) 수/금 16시, 주말 시간 가능(협의 가능)
                             개념 설명부터 실전 문제 풀이까지 꼼꼼하게 해드립니다.
                             `;
 
-@inject('AdminCommunity', 'Community')
+@inject('AdminCommunity', 'Community', 'Chatting')
 @observer
 class TextareaContainer extends Component {
   state = {
@@ -20,9 +20,9 @@ class TextareaContainer extends Component {
     row: 1,
   };
   requestHandler = (event) => {
-    const { type, mxh } = this.props;
+    const { type, mxh, Chatting } = this.props;
     console.info(mxh);
-    const textareaLineHeight = 34;
+    const textareaLineHeight = 17;
     const { minRows, maxRows } = this.state;
     const previousRows = event.target.rows;
     event.target.rows = minRows; // reset number of rows in textarea
@@ -64,6 +64,11 @@ class TextareaContainer extends Component {
       case 'communityContent':
         Community.communityContent = event.target.value;
         break;
+      case 'tutoring':
+        Chatting.detailContent = event.target.value;
+        console.info(Chatting.detailContent);
+        break;
+
       default:
         break;
     }
@@ -73,12 +78,13 @@ class TextareaContainer extends Component {
   };
 
   render() {
-    const { type, placeholder, value, mxh, mih } = this.props;
+    const { type, placeholder, value, mxh, mih, bd } = this.props;
     console.info(type);
     console.info(mxh);
     return (
       <Provider Auth={authStore}>
         <Textarea
+          bd={bd}
           type={type}
           placeholder={`${placeholder}`}
           onFocus={(e) => (e.target.placeholder = '')}
@@ -106,15 +112,17 @@ export default TextareaContainer;
 const Textarea = styled.textarea`
   resize: none;
   border: ${(props) =>
-    props.type === 'teacherSignup' || props.type === 'studentSignup'
+    props.type === 'teacherSignup' ||
+    props.type === 'studentSignup' ||
+    props.type === 'tutoring'
       ? '1px solid #c7c7c7'
       : 'none'};
   width: 100%;
   // max-width: 630px;
   padding: 14px 10px;
   box-sizing: border-box;
-  font-size: 15px;
-  line-height: 34px;
+  font-size: 13px;
+  line-height: 17px;
   letter-spzcing: -0.45px;
   color: #282c36;
   border-radius: 5px;
@@ -128,8 +136,10 @@ const Textarea = styled.textarea`
   :focus {
     outline: none;
   }
-  :placeholder {
+  ::placeholder {
     font-weight: 300;
+    font-size: 13px;
+    line-height: 22px;
   }
   white-space: pre-line;
 
@@ -138,12 +148,14 @@ const Textarea = styled.textarea`
       props.type === 'teacherSignup' || props.type === 'studentSignup'
         ? '630px'
         : 'nopne'};
+    font-size: 11px;
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     max-width: ${(props) =>
       props.type === 'teacherSignup' || props.type === 'studentSignup'
         ? '450px'
         : 'none'};
+    font-size: 12px;
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {

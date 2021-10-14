@@ -156,7 +156,7 @@ class Content extends Component {
         <Filter type="tutee" />
         <MainBox>
           <Header>
-            <span>266명</span>의 학생이 있습니다.
+            <span>{Tutee.tuteeTotalCount}명</span>의 학생이 있습니다.
           </Header>
           <CardContainer>
             {/* {dummyData.map((item, idx) => {
@@ -198,7 +198,7 @@ class Content extends Component {
                       rating={item.star}
                       school={`${item.school} ${item.major}`}
                       subject={item.subject}
-                      location={item.location}
+                      location={item.region}
                       budget={item.cost}
                       registration={item.registration}
                     />

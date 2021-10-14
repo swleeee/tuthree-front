@@ -8,8 +8,10 @@ import maleImg from '../../../../static/images/Common/male.png';
 import femaleImg from '../../../../static/images/Common/female.png';
 import Modal from '../../../../components/Modal';
 import Common from '../../../../stores/Common/Common';
+import bookMarkWhiteImg from '../../../../static/images/Common/bookmarkWhite.png';
+import bookMarkDarkImg from '../../../../static/images/Common/bookmarkDark.png';
 
-@inject('Auth', 'Common', 'Tutee')
+@inject('Auth', 'Common', 'Tutee', 'Matching')
 @observer
 class SubContent extends Component {
   openModal = () => {
@@ -19,8 +21,19 @@ class SubContent extends Component {
     Common.modalActive = true;
   };
 
+  componentDidMount = async () => {
+    const { Matching } = this.props;
+    await Matching.getBookmark();
+    await Matching.checkBookmark('tutee');
+  };
+  componentWillUnmount = () => {
+    const { Matching } = this.props;
+    Matching.bookmarkAry = [];
+    Matching.isCheckBookmark = false;
+  };
+
   render() {
-    const { Tutee } = this.props;
+    const { Tutee, Matching } = this.props;
     return (
       <>
         <Container width={Common.width}>
@@ -60,12 +73,30 @@ class SubContent extends Component {
 
             <SubMain>
               <Label>과목</Label>
-              <Content>영어, 수학,dsf sdfsdfsdfsdfsdfsdf</Content>
+              <Content>
+                {Tutee.tuteeDetailAry.subject &&
+                  Tutee.tuteeDetailAry.subject.map((item, idx) => {
+                    return (
+                      <MultipleBox type="subject">
+                        <div>{item}</div>
+                      </MultipleBox>
+                    );
+                  })}
+              </Content>
             </SubMain>
 
             <SubMain>
               <Label>지역</Label>
-              <Content>경기도 의왕시</Content>
+              <Content>
+                {Tutee.tuteeDetailAry.region &&
+                  Tutee.tuteeDetailAry.region.map((item, idx) => {
+                    return (
+                      <MultipleBox type="region">
+                        <div>{item}</div>
+                      </MultipleBox>
+                    );
+                  })}
+              </Content>
             </SubMain>
 
             <SubMain>
@@ -75,11 +106,40 @@ class SubContent extends Component {
           </Main>
           <ButtonBox>
             <Button
+              // bg="#888"
+              bd="1px solid #707070"
+              check={Matching.isCheckBookmark}
+              onClick={async () => {
+                console.info('click');
+                // Common.modalActive = true;
+                // window.location.href = '/chatting';
+                console.info(Matching.bookmarkId);
+
+                if (Matching.isCheckBookmark) {
+                  await Matching.checkBookmark('tutee');
+                  Matching.delBookmark(Matching.bookmarkId);
+                } else {
+                  Matching.setBookmark('tutee');
+                }
+              }}
+            >
+              {Matching.isCheckBookmark ? (
+                <img src={bookMarkDarkImg} />
+              ) : (
+                <img src={bookMarkWhiteImg} />
+              )}
+
+              <div>북마크</div>
+            </Button>
+
+            <Button
+              bg="rgba(235, 114, 82, 0.7)"
               onClick={() => {
                 console.info('click');
                 // Common.modalActive = true;
                 window.location.href = '/chatting';
               }}
+              color="#000"
             >
               <img src={communicationImg} />
               <div>1:1 문의</div>
@@ -188,6 +248,7 @@ const Label = styled.div`
   font-size: ${(props) => (props.type === 'name' ? '32' : '20')}px;
   font-weight: bold;
   margin-right: 20px;
+  min-width: 50px;
 
   @media (min-width: 768px) and (max-width: 991.98px) {
     min-width: 36px;
@@ -215,6 +276,7 @@ const Content = styled.div`
 `;
 const ButtonBox = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 30px;
@@ -227,18 +289,42 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   // border: 1px solid #707070;
-  border: none;
+  border: ${(props) => (props.bd ? (props.check ? 'none' : props.bd) : 'none')};
   border-radius: 24px;
   position: relative;
-  background-color: rgba(235, 114, 82, 0.7);
+  background-color: ${(props) =>
+    props.bg ? props.bg : props.check ? '#78a87e' : '#fff'};
+  margin-bottom: 10px;
   > img {
     position: absolute;
     top: 50%;
     left: 10%;
     transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
   }
   > div {
     font-size: 16px;
     font-weight: bold;
+    color: ${(props) =>
+      props.color ? props.color : props.check ? '#fff' : '#000'};
+  }
+`;
+
+const MultipleBox = styled.div`
+  display: inline-flex;
+  align-items: center;
+  background-color: ${(props) =>
+    props.type === 'region' ? '#a596c4' : '#7eb1a8'};
+  border-radius: 30px;
+  padding: 3px 10px;
+  box-sizing: border-box;
+  margin-right: 5px;
+  margin-bottom: 5px;
+
+  > div {
+    font-size: 12px;
+    margin-right: 5px;
+    color: #000;
   }
 `;

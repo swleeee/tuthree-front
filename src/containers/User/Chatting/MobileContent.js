@@ -5,6 +5,8 @@ import defaultImg from '../../../static/images/Common/defaultUser.png';
 import Textarea from '../../../components/TextareaContainer';
 import userListImg from '../../../static/images/Common/userlist.png';
 import close_ic from '../../../static/images/Home/close-button.png';
+import InfoWriting from './InfoWriting';
+import Info from './Info';
 
 const userList = [
   {
@@ -172,6 +174,8 @@ const chatList = [
   },
 ];
 
+@inject('Auth', 'Common', 'Chatting')
+@observer
 class Content extends Component {
   state = {
     is_open: false,
@@ -185,10 +189,49 @@ class Content extends Component {
       this.setState({ ...this.state, is_open: true });
     }
   };
+
+  openModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = false;
+  };
+  closeModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = true;
+  };
+
+  componentDidMount = async () => {
+    const { Common, Auth, Chatting } = this.props;
+    console.info(Chatting.studentId);
+    await Chatting.getDetailClass();
+  };
+
   render() {
     const { is_open } = this.state;
+    const { Common, Auth, Chatting } = this.props;
     return (
-      <Container>
+      <Container state={Common.modalActive}>
+        {Common.modalActive === true && Common.modalState === 1 && (
+          <Layer>
+            <div>
+              <InfoWriting
+                // width={width}
+                open={this.openModal}
+                close={this.closeModal}
+              />
+            </div>
+          </Layer>
+        )}
+        {Common.modalActive === true && Common.modalState === 2 && (
+          <Layer>
+            <div>
+              <Info
+                // width={width}
+                open={this.openModal}
+                close={this.closeModal}
+              />
+            </div>
+          </Layer>
+        )}
         {is_open && (
           <Modal>
             <ProfileMenu
@@ -231,9 +274,34 @@ class Content extends Component {
                     })}
                 </UserList>
                 <ButtonBox>
-                  <CtlBtn>
-                    <div>과외등록하기</div>
-                  </CtlBtn>
+                  {Auth.loggedUserType === 'teacher' ? (
+                    <CtlBtn
+                      state={Chatting.enrollmentState === 1}
+                      onClick={() => {
+                        if (Chatting.enrollmentState === 1) {
+                          window.scrollTo(0, 0);
+                          Common.modalActive = true;
+                          Common.modalState = 1;
+                        }
+                      }}
+                    >
+                      <div>과외등록하기</div>
+                    </CtlBtn>
+                  ) : (
+                    <CtlBtn
+                      state={Chatting.enrollmentState === 1}
+                      onClick={async () => {
+                        if (Chatting.enrollmentState === 1) {
+                          await Chatting.getTutoringInfo();
+                          window.scrollTo(0, 0);
+                          // Common.modalActive = true;
+                          // Common.modalState = 2;
+                        }
+                      }}
+                    >
+                      <div>수락하기</div>
+                    </CtlBtn>
+                  )}
                 </ButtonBox>
               </ChatList>
               {/* </ModalContent> */}
@@ -654,8 +722,9 @@ const ButtonBox = styled.div`
   border-top: 1px solid #000;
 `;
 const CtlBtn = styled.button`
-  cursor: pointer;
-  background-color: rgba(235, 114, 82, 0.7);
+  cursor: ${(props) => (props.state ? 'pointer' : 'initial')};
+  background-color: ${(props) =>
+    props.state ? 'rgba(235, 114, 82, 0.7)' : '#777'};
   // border: 1px solid #707070;
   border: none;
   box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.3);
@@ -665,6 +734,7 @@ const CtlBtn = styled.button`
   border-radius: 20px;
   width: 80%;
   height: 36px;
+  opacity: ${(props) => (props.state ? '1' : '0.5')};
   > div {
     font-size: 14px;
     font-weight: bold;
@@ -764,4 +834,22 @@ const ModalContent = styled.button`
   //     color: #111111;
   //     cursor: pointer;
   //   }
+`;
+
+const Layer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  // opacity: 0.1;
+  background-color: rgba(0, 0, 0, 0.5);
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 100vh;
+    height: 100%;
+  }
 `;

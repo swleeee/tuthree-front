@@ -4,6 +4,7 @@ import starImg from '../static/images/Common/star.png';
 import maleImg from '../static/images/Common/male.png';
 import femaleImg from '../static/images/Common/female.png';
 import defaultImg from '../static/images/Common/defaultUser.png';
+import { toJS } from 'mobx';
 
 class Card extends Component {
   render() {
@@ -18,6 +19,7 @@ class Card extends Component {
       budget,
       registration,
     } = this.props;
+
     return (
       <Container>
         <Img>
@@ -35,15 +37,36 @@ class Card extends Component {
                 <img src={femaleImg} />
               )}
             </Label>
-            <Label mr={5}>
-              <img src={starImg} />
-              {rating}
-            </Label>
+            {type === 'tutor' && (
+              <Label mr={5}>
+                <img src={starImg} />
+                {rating}
+              </Label>
+            )}
           </Box>
           {type === 'tutor' && <Label>{school}</Label>}
-          {type === 'tutor' && <Label>{subject}</Label>}
+          <Label value="multiple">
+            {subject &&
+              subject.map((item, idx) => {
+                return (
+                  <MutlipleBox type="subject">
+                    <div>{item}</div>
+                  </MutlipleBox>
+                );
+              })}
+          </Label>
 
-          <Label>{location}</Label>
+          <Label value="multiple">
+            {location &&
+              location.map((item, idx) => {
+                return (
+                  <MutlipleBox type="region">
+                    <div>{item}</div>
+                  </MutlipleBox>
+                );
+              })}
+          </Label>
+
           <Box>
             {' '}
             <Label>{budget}</Label>
@@ -68,7 +91,8 @@ export default Card;
 const Container = styled.div`
   cursor: pointer;
   width: 250px;
-  height: 350px;
+  height: auto;
+  min-height: 350px;
   border: 2px solid #707070;
   border-radius: 3px;
   display: flex;
@@ -126,5 +150,23 @@ const Recruitment = styled.div`
   > div {
     color: ${(props) => (props.type ? 'black' : 'white')};
     font-size: 12px;
+  }
+`;
+
+const MutlipleBox = styled.div`
+  display: inline-flex;
+  align-items: center;
+  background-color: ${(props) =>
+    props.type === 'region' ? '#a596c4' : '#7eb1a8'};
+  border-radius: 30px;
+  padding: 3px 10px;
+  box-sizing: border-box;
+  margin-right: 5px;
+  margin-bottom: 5px;
+
+  > div {
+    font-size: 12px;
+    margin-right: 5px;
+    color: #000;
   }
 `;

@@ -9,6 +9,8 @@ import communicationImg from '../../../../static/images/Common/communication.png
 import maleImg from '../../../../static/images/Common/male.png';
 import femaleImg from '../../../../static/images/Common/female.png';
 import defaultImg from '../../../../static/images/Common/defaultUser.png';
+import bookMarkWhiteImg from '../../../../static/images/Common/bookmarkWhite.png';
+import bookMarkDarkImg from '../../../../static/images/Common/bookmarkDark.png';
 
 const reviewData = [
   {
@@ -37,26 +39,70 @@ const reviewData = [
   },
 ];
 
-@inject('Tutor')
+@inject('Tutor', 'Matching')
 @observer
 class MobileContent extends Component {
+  componentDidMount = async () => {
+    const { Matching } = this.props;
+    await Matching.getBookmark();
+    await Matching.checkBookmark('tutor');
+  };
+  componentWillUnmount = () => {
+    const { Matching } = this.props;
+    Matching.bookmarkAry = [];
+    Matching.isCheckBookmark = false;
+    Tutor.tutorReviewAry = [];
+    Tutor.tutorReviewCount = 0;
+  };
   render() {
+    const { Matching } = this.props;
     return (
       <Container>
         <Number>
-          <View>
-            <img src={viewImg} />
-            <div>74</div>
-          </View>
-          <TotalRating>
-            <img src={starImg} />
-            <div>{Tutor.tutorDetailAry.star}</div>
-          </TotalRating>
-          <Registration type={Tutor.tutorDetailAry.registration !== 'CLOSE'}>
-            {Tutor.tutorDetailAry.registration === 'CLOSE'
-              ? '모집마감'
-              : '모집중'}
-          </Registration>
+          <div>
+            <Button
+              // bg="#888"
+              width={70}
+              bd="1px solid #707070"
+              check={Matching.isCheckBookmark}
+              onClick={async () => {
+                console.info('click');
+                // Common.modalActive = true;
+                // window.location.href = '/chatting';
+                console.info(Matching.bookmarkId);
+
+                if (Matching.isCheckBookmark) {
+                  await Matching.checkBookmark('tutor');
+                  Matching.delBookmark(Matching.bookmarkId);
+                } else {
+                  Matching.setBookmark('tutor');
+                }
+              }}
+            >
+              {Matching.isCheckBookmark ? (
+                <img src={bookMarkDarkImg} />
+              ) : (
+                <img src={bookMarkWhiteImg} />
+              )}
+
+              <div>북마크</div>
+            </Button>
+          </div>
+          <div>
+            <View>
+              <img src={viewImg} />
+              <div>74</div>
+            </View>
+            <TotalRating>
+              <img src={starImg} />
+              <div>{Tutor.tutorDetailAry.star}</div>
+            </TotalRating>
+            <Registration type={Tutor.tutorDetailAry.registration !== 'CLOSE'}>
+              {Tutor.tutorDetailAry.registration === 'CLOSE'
+                ? '모집마감'
+                : '모집중'}
+            </Registration>
+          </div>
         </Number>
         <MainContent>
           <Header>
@@ -91,12 +137,30 @@ class MobileContent extends Component {
 
           <Section>
             <Label>과목</Label>
-            <Content>영어, 수학,dsf sdfsdfsdfsdfsdfsdf</Content>
+            <Content>
+              {Tutor.tutorDetailAry.subject &&
+                Tutor.tutorDetailAry.subject.map((item, idx) => {
+                  return (
+                    <MultipleBox type="subject">
+                      <div>{item}</div>
+                    </MultipleBox>
+                  );
+                })}
+            </Content>
           </Section>
 
           <Section>
             <Label>지역</Label>
-            <Content>경기도 의왕시</Content>
+            <Content>
+              {Tutor.tutorDetailAry.region &&
+                Tutor.tutorDetailAry.region.map((item, idx) => {
+                  return (
+                    <MultipleBox type="region">
+                      <div>{item}</div>
+                    </MultipleBox>
+                  );
+                })}
+            </Content>
           </Section>
 
           <Section>
@@ -107,6 +171,8 @@ class MobileContent extends Component {
           </Section>
           <ButtonBox>
             <Button
+              bg="rgba(235, 114, 82, 0.7)"
+              color="#000"
               onClick={() => {
                 console.info('click');
                 // Common.modalActive = true;
@@ -122,27 +188,31 @@ class MobileContent extends Component {
             <ReviewHeader>
               <SubHeader mb={8}>
                 <Count>
-                  <span>33개</span>의 리뷰가 있습니다
+                  <span>{Tutor.tutorReviewCount}개</span>의 리뷰가 있습니다
                 </Count>
-                <SortingBox>
-                  <span>최신순</span>
-                  <span>높은평점순</span>
-                  <span>낮은평점순</span>
-                </SortingBox>
+                {Tutor.tutorReviewCount !== 0 && (
+                  <SortingBox>
+                    <span>최신순</span>
+                    <span>높은평점순</span>
+                    <span>낮은평점순</span>
+                  </SortingBox>
+                )}
               </SubHeader>
-              <SubHeader>
-                <Rating>
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={starImg} />
-                  <img src={emptyStarImg} />
-                  <div>4.2 | 5.0</div>
-                </Rating>
-              </SubHeader>
+              {Tutor.tutorReviewCount !== 0 && (
+                <SubHeader>
+                  <Rating>
+                    <img src={starImg} />
+                    <img src={starImg} />
+                    <img src={starImg} />
+                    <img src={starImg} />
+                    <img src={emptyStarImg} />
+                    <div>{Tutor.tutorDetailAry.star} | 5.0</div>
+                  </Rating>
+                </SubHeader>
+              )}
             </ReviewHeader>
             <ReviewMainBox>
-              {reviewData &&
+              {/* {reviewData &&
                 reviewData.map((item, idx) => {
                   return (
                     <Item>
@@ -153,7 +223,7 @@ class MobileContent extends Component {
                           style={{ justifyContent: 'flex-start' }}
                         >
                           <div>
-                            {/* <div>Img</div> */}
+                            
                             <img src={defaultImg} />
                           </div>
                         </ImgBox>
@@ -170,6 +240,55 @@ class MobileContent extends Component {
                               <img src={starImg} />
                               <img src={emptyStarImg} />
                               <div>{item.rating}</div>
+                            </ReviewRating>
+                          </ReviewSubLabel>
+                        </ReviewLabel>
+                      </SubItem>
+                      <SubItem>
+                        <ReviewContent>
+                          <div>{item.content}</div>
+                        </ReviewContent>
+                      </SubItem>
+                    </Item>
+                  );
+                })} */}
+
+              {Tutor.tutorReviewAry &&
+                Tutor.tutorReviewAry.map((item, idx) => {
+                  return (
+                    <Item>
+                      {console.info(item.userId.length)}
+                      {console.info(typeof item.userId)}
+                      {console.info(
+                        item.userId.substr(0, 2) +
+                          '*'.repeat(item.userId.length - 3)
+                      )}
+                      <SubItem>
+                        <ImgBox
+                          width={112}
+                          height={112}
+                          style={{ justifyContent: 'flex-start' }}
+                        >
+                          <div>
+                            <img src={defaultImg} />
+                          </div>
+                        </ImgBox>
+                        <ReviewLabel>
+                          <ReviewSubLabel>
+                            <ReviewName>
+                              {item.userId.substr(0, 2) +
+                                '*'.repeat(item.userId.length - 2)}
+                            </ReviewName>
+                            <ReviewWritingDt>{item.writeAt}</ReviewWritingDt>
+                          </ReviewSubLabel>
+                          <ReviewSubLabel>
+                            <ReviewRating>
+                              <img src={starImg} />
+                              <img src={starImg} />
+                              <img src={starImg} />
+                              <img src={starImg} />
+                              <img src={emptyStarImg} />
+                              <div>{item.star}</div>
                             </ReviewRating>
                           </ReviewSubLabel>
                         </ReviewLabel>
@@ -200,7 +319,7 @@ const Container = styled.div`
   border: 2px solid #000;
   border-radius: 10px;
   //   height: 1200px;
-  padding: 20px 15px;
+  padding: 15px 10px;
   box-sizing: border-box;
 `;
 const MainContent = styled.div``;
@@ -368,8 +487,17 @@ const Name = styled.div`
 const Number = styled.div`
   display: flex;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 30px;
+  > div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  > div:nth-of-type(2) {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
 `;
 const View = styled.div`
   display: flex;
@@ -391,8 +519,9 @@ const TotalRating = styled.div`
   }
 `;
 const Registration = styled.div`
-  //   width: 60px;
-  //   height: 20px;
+  width: 75px;
+  height: 20px;
+  // width: 80%;
   border-radius: 18px;
   background-color: ${(props) =>
     props.type ? 'rgba(0, 85, 225, 0.6)' : 'rgba(255, 0, 0, 0.6)'};
@@ -403,10 +532,9 @@ const Registration = styled.div`
   box-sizing: border-box;
   font-size: 10px;
   font-weight: bold;
-  margin-left: 25px;
-  > div {
-    color: ${(props) => (props.type ? 'black' : 'white')};
-  }
+  margin-left: 15px;
+
+  color: ${(props) => (props.type ? 'black' : 'white')};
 `;
 const Main = styled.div``;
 const SubMain = styled.div`
@@ -435,25 +563,51 @@ const ButtonBox = styled.div`
 `;
 const Button = styled.button`
   cursor: pointer;
-  width: 80%;
-  height: 40px;
+  width: ${(props) => (props.width ? props.width : '80')}%;
+  min-width: 90px;
+  height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   // border: 1px solid #707070;
-  border: none;
+  border: ${(props) => (props.bd ? (props.check ? 'none' : props.bd) : 'none')};
   border-radius: 24px;
   position: relative;
-  background-color: rgba(235, 114, 82, 0.7);
+  background-color: ${(props) =>
+    props.bg ? props.bg : props.check ? '#78a87e' : '#fff'};
   > img {
     position: absolute;
     top: 50%;
     left: 10%;
     transform: translateY(-50%);
+    
+    width: 14px;
+    height: 14px;
+  }
   }
   > div {
     // color: #fff;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: bold;
+    color: ${(props) =>
+      props.color ? props.color : props.check ? '#fff' : '#000'};
+  }
+`;
+
+const MultipleBox = styled.div`
+  display: inline-flex;
+  align-items: center;
+  background-color: ${(props) =>
+    props.type === 'region' ? '#a596c4' : '#7eb1a8'};
+  border-radius: 30px;
+  padding: 3px 10px;
+  box-sizing: border-box;
+  margin-right: 5px;
+  margin-bottom: 5px;
+
+  > div {
+    font-size: 11px;
+    margin-right: 5px;
+    color: #000;
   }
 `;
