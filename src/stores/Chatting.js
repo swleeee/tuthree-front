@@ -328,6 +328,34 @@ class Chatting {
         alert('과외 정보를 가져올 수 없습니다.');
       });
   };
+  @action matchTutoring = async () => {
+    // console.info(Auth.loggedUserType);
+    console.info(Auth.loggedUserId);
+    console.info(localStorage.getItem('otherPersonId'));
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      params: {
+        // teacherId: 'test111',
+        teacherId: localStorage.getItem('otherPersonId'),
+        studentId: Auth.loggedUserId,
+        grade: 'student',
+        // studentId: 'lZmooJ8Ydd',
+      },
+    };
+    await MatchingAPI.matchTutoring(req)
+      .then(async (res) => {
+        console.info(res);
+        await alert(res.data.data.message);
+        Common.modalActive = false;
+        Common.modalState = 1;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
 }
 
 export default new Chatting();

@@ -20,6 +20,15 @@ export function getTutoringInfo(req) {
   });
 }
 
+export function matchTutoring(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/info/accept`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
 export function setBookmark(req) {
   return axios({
     method: 'GET',

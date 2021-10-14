@@ -165,11 +165,22 @@ class Info extends React.Component {
                       <Content content={true}>{Chatting.detailContent}</Content>
                     </DetailBox>
                     <ButtonBox>
-                      <Button bg="#888" color="#fff">
+                      <Button
+                        bg="#888"
+                        color="#fff"
+                        onClick={() => {
+                          Common.modalActive = false;
+                          // Common.modalState = 1;
+                        }}
+                      >
                         <div>취소하기</div>
                       </Button>
 
-                      <Button>
+                      <Button
+                        onClick={() => {
+                          Chatting.matchTutoring();
+                        }}
+                      >
                         <div>수락하기</div>
                       </Button>
                     </ButtonBox>
@@ -249,7 +260,14 @@ class Info extends React.Component {
                       <Content content={true}>{Chatting.detailContent}</Content>
                     </DetailBox>
                     <ButtonBox>
-                      <Button bg="#888" color="#fff">
+                      <Button
+                        bg="#888"
+                        color="#fff"
+                        onClick={() => {
+                          Common.modalActive = false;
+                          // Common.modalState = 1;
+                        }}
+                      >
                         <div>취소하기</div>
                       </Button>
 
@@ -495,6 +513,7 @@ const TimeLabel = styled.div`
 `;
 
 const Button = styled.button`
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
