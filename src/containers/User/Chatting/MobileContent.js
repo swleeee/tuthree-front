@@ -174,7 +174,7 @@ const chatList = [
   },
 ];
 
-@inject('Auth', 'Common')
+@inject('Auth', 'Common', 'Chatting')
 @observer
 class Content extends Component {
   state = {
@@ -201,7 +201,7 @@ class Content extends Component {
 
   render() {
     const { is_open } = this.state;
-    const { Common, Auth } = this.props;
+    const { Common, Auth, Chatting } = this.props;
     return (
       <Container state={Common.modalActive}>
         {Common.modalActive === true && Common.modalState === 1 && (
@@ -280,10 +280,11 @@ class Content extends Component {
                     </CtlBtn>
                   ) : (
                     <CtlBtn
-                      onClick={() => {
+                      onClick={async () => {
+                        await Chatting.getTutoringInfo();
                         window.scrollTo(0, 0);
-                        Common.modalActive = true;
-                        Common.modalState = 2;
+                        // Common.modalActive = true;
+                        // Common.modalState = 2;
                       }}
                     >
                       <div>수락하기</div>

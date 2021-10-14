@@ -73,6 +73,7 @@ class Chatting {
     },
   ];
 
+  @observable cost = '';
   @observable budget = 0; // 예산
   @observable budgetType = ''; // 예산 유형(시급, 일금, 주급, 월급)
 
@@ -80,6 +81,26 @@ class Chatting {
 
   @observable teacherId = '';
   @observable studentId = '';
+
+  @observable infoAry = [];
+
+  @action resetTutoringInfo = () => {
+    this.detailContent = '';
+    this.budget = 0; // 예산
+    this.budgetType = ''; // 예산 유형(시급, 일금, 주급, 월급)
+    this.selectedUpperSubject = '';
+    this.selectedLowerSubject = '';
+    this.selectedSubject = []; // 과목
+
+    this.startTimeValue = '';
+    this.startTimeAry = [];
+    this.endTimeValue = '';
+    this.endTimeAry = [];
+    this.selectedWeekTime = [];
+    this.weekendLabel = '';
+    this.weekendValue = '';
+    this.weekendValueAry = [];
+  };
 
   @action setUpperSubject = (e) => {
     console.info(e[0]);
@@ -220,27 +241,91 @@ class Chatting {
       });
   };
 
-  @action getTutoringInfo = () => {
+  @action getTutoringInfo = async () => {
+    this.resetTutoringInfo();
     console.info(Auth.token);
+    console.info(localStorage.getItem('otherPersonId'));
+    console.info(Auth.loggedUserId);
     const req = {
       headers: {
         Authorization: Auth.token,
       },
       params: {
-        teacherId: 'test111',
-        //   studentId: Auth.loggedUserId,
-        studentId: 'lZmooJ8Ydd',
+        // teacherId: 'test111',
+        teacherId: localStorage.getItem('otherPersonId'),
+        studentId: Auth.loggedUserId,
+        // studentId: 'lZmooJ8Ydd',
       },
     };
-    MatchingAPI.getTutoringInfo(req)
-      .then((res) => {
+    await MatchingAPI.getTutoringInfo(req)
+      .then(async (res) => {
         console.info(res);
+        Common.modalActive = true;
+        Common.modalState = 2;
+        let weekend = '';
+        let startTime = '';
+        let endTime = '';
+        this.cost = res.data.data.cost;
+        this.detailContent = res.data.data.detail;
+        this.infoAry = await res.data.data.info.schedule;
 
+        console.info(toJS(this.infoAry));
+        console.info(toJS(Object.keys(this.infoAry).length));
+        // for(let i=0; i<)
+        for (const [key, value] of Object.entries(this.infoAry)) {
+          console.info(`${key}: ${value}`);
+          switch (key) {
+            case 'mon':
+              weekend = '월요일';
+              break;
+            case 'tue':
+              weekend = '화요일';
+              break;
+            case 'wed':
+              weekend = '수요일';
+              break;
+            case 'thu':
+              weekend = '목요일';
+              break;
+            case 'fri':
+              weekend = '금요일';
+              break;
+            case 'sat':
+              weekend = '토요일';
+              break;
+            case 'sim':
+              weekend = '일요일';
+              break;
+            default:
+              break;
+          }
+
+          for (const [subKey, subValue] of Object.entries(value)) {
+            console.info(`${subKey}: ${subValue}`);
+            console.info(subKey.value);
+            if (subKey === 'start') {
+              startTime = subValue;
+            }
+            if (subKey === 'end') {
+              endTime = subValue;
+            }
+          }
+          await this.selectedWeekTime.push(
+            `${weekend} ${startTime} ~ ${endTime}`
+          );
+        }
+        // this.selectedWeekTime.push(res.data.data.infpo)
+        this.selectedSubject = await res.data.data.info.subject;
         // Common.modalActive = false;
+        console.info(this.cost);
+        console.info(this.detailContent);
+        console.info(toJS(this.selectedWeekTime));
+        console.info(toJS(this.selectedSubject));
       })
       .catch((e) => {
         console.info(e);
         console.info(e.response);
+        alert('과외 정보를 가져올 수 없습니다.');
       });
   };
 }

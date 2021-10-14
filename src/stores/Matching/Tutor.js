@@ -250,6 +250,7 @@ class Tutor {
         console.info(res);
         this.tutorDetailAry = await res.data.data;
         await this.getTutorReview(res.data.data.postId);
+        localStorage.setItem('otherPersonId', res.data.data.userId);
         this.state = 1;
       })
       .catch((e) => {

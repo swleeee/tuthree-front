@@ -130,21 +130,39 @@ class Info extends React.Component {
                   <Main>
                     <WhenBox>
                       <Label>요일/시간</Label>
-                      <Content></Content>
+                      <Content>
+                        {Chatting.selectedWeekTime &&
+                          Chatting.selectedWeekTime.map((item, idx) => {
+                            return (
+                              <MultipleBox type="region">
+                                <div>{item}</div>
+                              </MultipleBox>
+                            );
+                          })}
+                      </Content>
                     </WhenBox>
 
                     <BudgetBox>
                       <Label>급여</Label>
-                      <Content></Content>
+                      <Content>{Chatting.cost}</Content>
                     </BudgetBox>
                     <SubjectBox>
                       <Label>과목</Label>
-                      <Content></Content>
+                      <Content>
+                        {Chatting.selectedSubject &&
+                          Chatting.selectedSubject.map((item, idx) => {
+                            return (
+                              <MultipleBox type="subject">
+                                <div>{item}</div>
+                              </MultipleBox>
+                            );
+                          })}
+                      </Content>
                     </SubjectBox>
 
                     <DetailBox>
                       <Label>세부사항</Label>
-                      <Content content={true}></Content>
+                      <Content content={true}>{Chatting.detailContent}</Content>
                     </DetailBox>
                     <ButtonBox>
                       <Button bg="#888" color="#fff">
@@ -195,242 +213,64 @@ class Info extends React.Component {
                   <Header>과외 등록하기</Header>
                   <Main>
                     <WhenBox>
-                      <Label>요일</Label>
+                      <Label>요일/시간</Label>
                       <Content>
-                        <Weekend>
-                          <Select
-                            mr={20}
-                            width={80}
-                            styles={
-                              Common.width > 767.98
-                                ? customStyles
-                                : mobileCustomStyles
-                            }
-                            //   value={{
-                            //     label: Chatting.selectedUpperSubject
-                            //       ? Chatting.selectedUpperSubject
-                            //       : '상위 과목',
-                            //     value: Chatting.selectedUpperSubject,
-                            //   }}
-                            onChange={(e) =>
-                              Chatting.handleChange(e, 'weekend')
-                            }
-                            getOptionLabel={(option) => option.label}
-                            options={Chatting.weekendAry}
-                            //  isSearchable={false}
-                            placeholder="요일"
-                            // ml="15"
-                            domainType={Chatting.domainType}
-                          />
-                        </Weekend>
+                        {Chatting.selectedWeekTime &&
+                          Chatting.selectedWeekTime.map((item, idx) => {
+                            return (
+                              <MultipleBox type="region">
+                                <div>{item}</div>
+                              </MultipleBox>
+                            );
+                          })}
                       </Content>
                     </WhenBox>
-                    <WhenBox>
-                      <Label>시간</Label>
-                      <Content>
-                        <Time>
-                          <TimeLabel type="start">시작시간</TimeLabel>
-                          <TimePickerContainer type="start" /> <span> ~ </span>
-                          <TimePickerContainer type="end" />
-                          <TimeLabel type="end">종료시간</TimeLabel>
-                        </Time>
-                        <ImgBox
-                          onClick={() => {
-                            if (Chatting.startTimeValue.indexOf('-') > -1) {
-                              alert('시작 시간을 다시 입력해주세요.');
-                            } else if (
-                              Chatting.endTimeValue.indexOf('-') > -1
-                            ) {
-                              alert('종료 시간을 다시 입력해주세요.');
-                            } else if (
-                              Chatting.startTimeValue >= Chatting.endTimeValue
-                            ) {
-                              alert('시간을 다시 입력해주세요.');
-                            } else {
-                              console.info(Chatting.startTimeValue);
-                              console.info(Chatting.endTimeValue);
-                              console.info(
-                                Chatting.startTimeValue.indexOf('-')
-                              );
-                              Chatting.selectedWeekTime.push(
-                                `${Chatting.weekendLabel} ${Chatting.startTimeValue} ~ ${Chatting.endTimeValue}`
-                              );
-                            }
-                          }}
-                        >
-                          <img src={addImg} />
-                        </ImgBox>
-                      </Content>
-                    </WhenBox>
-                    <Description>
-                      <div>
-                        {' '}
-                        * 요일과 시작시간 및 종료시간을 입력하시고 우측 버튼을
-                        눌러서 추가하세요.
-                      </div>
-                    </Description>
-                    <SelectedArea>
-                      {Chatting.selectedWeekTime &&
-                        Chatting.selectedWeekTime.map((item, idx) => {
-                          return (
-                            <div
-                              onClick={() => {
-                                console.info('sdf');
-                                Chatting.selectedWeekTime.splice(idx, 1);
-                              }}
-                            >
-                              <div>{item}</div>
-                              <img src={deleteImg} />
-                            </div>
-                          );
-                        })}
-                    </SelectedArea>
+
                     <BudgetBox>
                       <Label>급여</Label>
-                      <Content>
-                        <Input
-                          //  width="80"
-
-                          domainType={2}
-                          placeholder="급여(ex: 350000)"
-                          onChange={(e) =>
-                            Chatting.handleChange(e.target, 'budget')
-                          }
-                          onFocus={(e) => (e.target.placeholder = '')}
-                          onBlur={(e) =>
-                            (e.target.placeholder = '급여(ex: 350000)')
-                          }
-                        />
-                        <span>원</span>
-                        <Select
-                          width={115}
-                          //  id={this.props.id}
-                          //  className={this.props.className}
-                          styles={
-                            Common.width > 767.98
-                              ? customStyles
-                              : mobileCustomStyles
-                          }
-                          //  value={value}
-                          onChange={(e) =>
-                            Chatting.handleChange(e, 'budgetType')
-                          }
-                          getOptionLabel={(option) => option.label}
-                          options={Chatting.budgetTypeAry}
-                          //  isSearchable={false}
-                          placeholder="선택하세요."
-                          ml="25"
-                          domainType={Chatting.domainType}
-                        />
-                      </Content>
+                      <Content>{Chatting.cost}</Content>
                     </BudgetBox>
                     <SubjectBox>
                       <Label>과목</Label>
                       <Content>
-                        <Select
-                          width={120}
-                          styles={
-                            Common.width > 767.98
-                              ? customStyles
-                              : mobileCustomStyles
-                          }
-                          value={{
-                            label: Chatting.selectedUpperSubject
-                              ? Chatting.selectedUpperSubject
-                              : '상위 과목',
-                            value: Chatting.selectedUpperSubject,
-                          }}
-                          onChange={(e) =>
-                            Chatting.handleChange(e, 'upperSubject')
-                          }
-                          getOptionLabel={(option) => option.label}
-                          options={SubjectList}
-                          //  isSearchable={false}
-                          placeholder="시/도"
-                          // ml="15"
-                          mr="5"
-                          domainType={Chatting.domainType}
-                        />
-
-                        <Select
-                          width={140}
-                          id="lowerLocation"
-                          styles={
-                            Common.width > 767.98
-                              ? customStyles
-                              : mobileCustomStyles
-                          }
-                          value={{
-                            label: Chatting.selectedLowerSubject
-                              ? Chatting.selectedLowerSubject
-                              : '하위 과목',
-                            value: Chatting.selectedLowerSubject,
-                          }}
-                          onChange={(e) =>
-                            Chatting.handleChange(e, 'lowerSubject')
-                          }
-                          getOptionLabel={(option) => option.label}
-                          // options={locationAry[Chatting.locationIndex].value}
-                          options={Chatting.lowerSubjectAry}
-                          isSearchable={false}
-                          placeholder={Chatting.selectedLowerSubject}
-                          // placeholder={`ㅣㅣ`}
-                          // onFocus={() => (this.placeholder = '')}
-                          ml={Common.width > 767.98 && '15'}
-                          domainType={Chatting.domainType}
-                        />
+                        {Chatting.selectedSubject &&
+                          Chatting.selectedSubject.map((item, idx) => {
+                            return (
+                              <MultipleBox type="subject">
+                                <div>{item}</div>
+                              </MultipleBox>
+                            );
+                          })}
                       </Content>
                     </SubjectBox>
-                    <SelectedArea>
-                      {Chatting.selectedSubject &&
-                        Chatting.selectedSubject.map((item, idx) => {
-                          return (
-                            <div
-                              onClick={() => {
-                                console.info('sdf');
-                                Chatting.selectedSubject.splice(idx, 1);
-                              }}
-                            >
-                              <div>{item}</div>
-                              <img src={deleteImg} />
-                            </div>
-                          );
-                        })}
-                    </SelectedArea>
+
                     <DetailBox>
                       <Label>세부사항</Label>
-                      <Content content={true}>
-                        <TextArea
-                          mih={100}
-                          bd={true}
-                          type="tutoring"
-                          placeholder="예) 수/금 16시, 주말 시간 가능(협의 가능)
-                          시급 2만원
-                          개념 설명부터 실전 문제 풀이까지 꼼꼼하게 해드립니다."
-                        />
-                      </Content>
+                      <Content content={true}>{Chatting.detailContent}</Content>
                     </DetailBox>
-                    <Button
-                      onClick={() => {
-                        Chatting.setTutoringInfo();
-                      }}
-                    >
-                      <div>과외 등록</div>
-                    </Button>
+                    <ButtonBox>
+                      <Button bg="#888" color="#fff">
+                        <div>취소하기</div>
+                      </Button>
+
+                      <Button>
+                        <div>수락하기</div>
+                      </Button>
+                    </ButtonBox>
                   </Main>
                   {/* <Footer>
-                    <div
-                      className="close"
-                      onClick={(e) => {
-                        console.info('close');
-                        e.stopPropagation();
-                        Common.modalActive = false;
-                        // this.props.close();
-                      }}
-                    >
-                      <span>닫기</span>
-                    </div>
-                  </Footer> */}
+         <div
+           className="close"
+           onClick={(e) => {
+             console.info('close');
+             e.stopPropagation();
+             Common.modalActive = false;
+             // this.props.close();
+           }}
+         >
+           <span>닫기</span>
+         </div>
+       </Footer> */}
                 </Container>
               </>
             ) : null}
@@ -509,7 +349,7 @@ const Container = styled.div`
   //border: 1px solid blue;
   @media (min-width: 0px) and (max-width: 767.98px) {
     max-width: 100%;
-    width: 90%;
+    width: 85%;
     height: 40%;
   }
 `;
@@ -585,6 +425,9 @@ const WhenBox = styled.div`
   //   border: 2px solid blue;
   margin: 20px 0 5px 0;
   width: 100%;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-direction: column;
+  }
 `;
 const Label = styled.div`
   width: 20%;
@@ -593,7 +436,7 @@ const Label = styled.div`
   text-align: left;
   margin-bottom: 5px;
   @media (min-width: 0px) and (max-width: 767.98px) {
-    width: 18%;
+    width: 100%;
     font-size: 14px;
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
@@ -611,7 +454,15 @@ const Content = styled.div`
   justify-content: flex-start;
   align-items: center;
   //   border: 2px solid green;
+  border: 1px solid #ccc;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  font-size: 14px;
   @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 5px 8px;
+    font-size: 12px;
     > span {
       margin: 0 12px 0 0;
       font-size: 12px;
@@ -661,6 +512,13 @@ const Button = styled.button`
     align-items: center;
     color: ${(props) => (props.color ? props.color : '#000')};
   }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      width: 80px;
+      height: 30px;
+      font-size: 12px;
+    }
+  }
 `;
 const SelectedArea = styled.div`
   width: 600px;
@@ -704,6 +562,9 @@ const BudgetBox = styled.div`
   //   border: 2px solid blue;
   width: 100%;
   margin: 20px 0;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-direction: column;
+  }
 `;
 const SubjectBox = styled.div`
   display: flex;
@@ -712,6 +573,9 @@ const SubjectBox = styled.div`
   //   border: 2px solid blue;
   width: 100%;
   margin: 20px 0;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-direction: column;
+  }
 `;
 const DetailBox = styled.div`
   display: flex;
@@ -831,4 +695,22 @@ const Description = styled.div`
 const ButtonBox = styled.div`
   display: flex;
   width: 100%;
+`;
+
+const MultipleBox = styled.div`
+  display: inline-flex;
+  align-items: center;
+  background-color: ${(props) =>
+    props.type === 'region' ? '#a596c4' : '#7eb1a8'};
+  border-radius: 30px;
+  padding: 3px 10px;
+  box-sizing: border-box;
+  margin-right: 5px;
+  margin-bottom: 5px;
+
+  > div {
+    font-size: 12px;
+    margin-right: 5px;
+    color: #000;
+  }
 `;

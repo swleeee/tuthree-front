@@ -255,11 +255,11 @@ class Content extends Component {
               </CtlBtn>
             ) : (
               <CtlBtn
-                onClick={() => {
-                  Chatting.getTutoringInfo();
+                onClick={async () => {
+                  await Chatting.getTutoringInfo();
                   window.scrollTo(0, 0);
-                  Common.modalActive = true;
-                  Common.modalState = 2;
+                  // Common.modalActive = true;
+                  // Common.modalState = 2;
                 }}
               >
                 <div>수락하기</div>
