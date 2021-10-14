@@ -229,7 +229,7 @@ class InfoWriting extends React.Component {
                       <Content>
                         <Input
                           //  width="80"
-
+                          value={Chatting.budget ? Chatting.budget : ''}
                           domainType={2}
                           placeholder="급여(ex: 350000)"
                           onChange={(e) =>
@@ -250,7 +250,10 @@ class InfoWriting extends React.Component {
                               ? customStyles
                               : mobileCustomStyles
                           }
-                          //  value={value}
+                          value={{
+                            label: Chatting.budgetType,
+                            value: Chatting.budgetType,
+                          }}
                           onChange={(e) =>
                             Chatting.handleChange(e, 'budgetType')
                           }
@@ -340,6 +343,7 @@ class InfoWriting extends React.Component {
                         <TextArea
                           mih={100}
                           bd={true}
+                          value={Chatting.detailContent}
                           type="tutoring"
                           placeholder="예) 수/금 16시, 주말 시간 가능(협의 가능)
                시급 2만원
@@ -347,13 +351,23 @@ class InfoWriting extends React.Component {
                         />
                       </Content>
                     </DetailBox>
-                    <Button
-                      onClick={() => {
-                        Chatting.setTutoringInfo();
-                      }}
-                    >
-                      <div>과외 등록</div>
-                    </Button>
+                    {Chatting.writingState === 1 ? (
+                      <Button
+                        onClick={() => {
+                          Chatting.setTutoringInfo();
+                        }}
+                      >
+                        <div>과외 정보 등록</div>
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => {
+                          Chatting.putTutoringInfo();
+                        }}
+                      >
+                        <div>과외 정보 수정</div>
+                      </Button>
+                    )}
                   </Main>
                   {/* <Footer>
          <div
@@ -603,6 +617,7 @@ class InfoWriting extends React.Component {
                           mih={100}
                           bd={true}
                           type="tutoring"
+                          value={Chatting.detailContent}
                           placeholder="예) 수/금 16시, 주말 시간 가능(협의 가능)
                           시급 2만원
                           개념 설명부터 실전 문제 풀이까지 꼼꼼하게 해드립니다."

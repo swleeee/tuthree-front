@@ -179,6 +179,8 @@ class Chatting {
     console.info(this.studentId);
     console.info(toJS(this.startTimeAry));
     console.info(toJS(this.endTimeAry));
+    console.info(toJS(this.startTimeAry));
+    console.info(toJS(this.endTimeAry));
     console.info(localStorage.getItem('otherPersonId'));
     // await Promise.all(
 
@@ -258,9 +260,10 @@ class Chatting {
     console.info(req.data);
     console.info(toJS(req.data));
     MatchingAPI.setTutoringInfo(req)
-      .then((res) => {
+      .then(async (res) => {
         console.info(res);
         if (res.data.success) {
+          await this.checkInfoWriting();
           alert(
             '과외 등록이 완료되었습니다. 학생이 최종 수락하기까지 기다려주세요.'
           );
@@ -288,10 +291,13 @@ class Chatting {
     };
 
     let timeAry = [];
+    console.info(toJS(this.selectedWeekTime));
+    console.info(toJS(this.selectedSubject));
     console.info(Auth.token);
     console.info(Auth.loggedUserId);
     console.info(this.detailContent);
     console.info(this.weekendValue);
+    console.info(toJS(this.weekendValueAry));
     // console.info(toJS(Tutee.tuteeDetailAry));
     console.info(this.studentId);
     console.info(toJS(this.startTimeAry));
@@ -419,6 +425,12 @@ class Chatting {
         let startTime = '';
         let endTime = '';
         this.cost = res.data.data.cost;
+        console.info(toJS(this.cost));
+        console.info(this.cost.length);
+        this.budgetType = this.cost.slice(0, 2);
+        this.budget = this.cost.slice(3, this.cost.length);
+        console.info(toJS(this.budgetType));
+        console.info(toJS(this.budget));
         this.detailContent = res.data.data.detail;
         this.infoAry = await res.data.data.info.schedule;
 
@@ -427,6 +439,11 @@ class Chatting {
         // for(let i=0; i<)
         for (const [key, value] of Object.entries(this.infoAry)) {
           console.info(`${key}: ${value}`);
+          console.info(toJS(value));
+          console.info(toJS(value.length));
+          // if (value.length) {
+          //   this.weekendValueAry.push(key);
+          // }
           switch (key) {
             case 'mon':
               weekend = '월요일';
@@ -456,6 +473,9 @@ class Chatting {
           value.map(async (item, idx) => {
             console.info(toJS(item));
             console.info(toJS(item.start));
+            this.weekendValueAry.push(key);
+            await this.startTimeAry.push(item.start);
+            await this.endTimeAry.push(item.end);
 
             await this.selectedWeekTime.push(
               `${weekend} ${item.start} ~ ${item.end}`

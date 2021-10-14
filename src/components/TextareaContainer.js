@@ -66,6 +66,7 @@ class TextareaContainer extends Component {
         break;
       case 'tutoring':
         Chatting.detailContent = event.target.value;
+        console.info(Chatting.detailContent);
         break;
 
       default:
