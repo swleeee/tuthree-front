@@ -187,6 +187,9 @@ class Content extends Component {
     const { Common, Auth, Chatting } = this.props;
     console.info(Chatting.studentId);
     await Chatting.getDetailClass();
+    if (Auth.loggedUserType === 'teacher') {
+      await Chatting.checkInfoWriting();
+    }
   };
   render() {
     const { Common, Auth, Chatting } = this.props;
@@ -245,18 +248,33 @@ class Content extends Component {
           </UserList>
           <ButtonBox>
             {Auth.loggedUserType === 'teacher' ? (
-              <CtlBtn
-                state={Chatting.enrollmentState === 1}
-                onClick={() => {
-                  if (Chatting.enrollmentState === 1) {
-                    window.scrollTo(0, 0);
-                    Common.modalActive = true;
-                    Common.modalState = 1;
-                  }
-                }}
-              >
-                <div>과외등록하기</div>
-              </CtlBtn>
+              Chatting.writingState === 1 ? (
+                <CtlBtn
+                  state={Chatting.enrollmentState === 1}
+                  onClick={() => {
+                    if (Chatting.enrollmentState === 1) {
+                      window.scrollTo(0, 0);
+                      Common.modalActive = true;
+                      Common.modalState = 1;
+                    }
+                  }}
+                >
+                  <div>과외등록하기</div>
+                </CtlBtn>
+              ) : (
+                <CtlBtn
+                  state={Chatting.enrollmentState === 1}
+                  onClick={() => {
+                    if (Chatting.enrollmentState === 1) {
+                      window.scrollTo(0, 0);
+                      Common.modalActive = true;
+                      Common.modalState = 1;
+                    }
+                  }}
+                >
+                  <div>과외 정보 수정하기</div>
+                </CtlBtn>
+              )
             ) : (
               <CtlBtn
                 state={Chatting.enrollmentState === 1}

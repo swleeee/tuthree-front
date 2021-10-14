@@ -11,6 +11,7 @@ class Chatting {
   }
   @observable domainType = 1;
 
+  @observable writingState = 1; // 1. 글 작성, 2 : 글 수정
   @observable enrollmentState = 1; // 1. 기본 상태, 2. 이미 매칭되어 못하는 상태
   @observable selectedUpperSubject = '';
   @observable selectedLowerSubject = '';
@@ -156,31 +157,57 @@ class Chatting {
     }
   };
   @action setTutoringInfo = async (teacherId = '', studentId = '') => {
-    let weekendObj = {};
+    // let weekendObj = {};
     let timeObj = {};
-    let weekTimeObj = {};
+
+    let weekTimeObj = {
+      mon: [],
+      tue: [],
+      wed: [],
+      thu: [],
+      fri: [],
+      sat: [],
+      sun: [],
+    };
     const schedule = {};
+    let timeAry = [];
     console.info(Auth.token);
     console.info(Auth.loggedUserId);
     console.info(this.detailContent);
     console.info(this.weekendValue);
     // console.info(toJS(Tutee.tuteeDetailAry));
     console.info(this.studentId);
+    console.info(toJS(this.startTimeAry));
+    console.info(toJS(this.endTimeAry));
     console.info(localStorage.getItem('otherPersonId'));
+    // await Promise.all(
+
     this.selectedWeekTime.map((item, idx) => {
-      console.info(item);
-      console.info(this.startTimeValue);
-      console.info(this.endTimeValue);
-      console.info(this.weekendValue);
+      console.info('=====================================================');
+      // console.info(item);
+      // console.info(this.startTimeValue);
+      // console.info(this.endTimeValue);
+      // console.info(this.weekendValue);
+      timeObj = {};
+      console.info(toJS(this.startTimeAry[idx]));
+      console.info(toJS(this.endTimeAry[idx]));
       // timeObj[this.weekendValue] = thi.startTimeValue;
       timeObj['start'] = this.startTimeAry[idx];
       timeObj['end'] = this.endTimeAry[idx];
-      weekendObj[this.weekendValueAry[idx]] = timeObj;
+      // timeAry.push(timeObj);
+      console.info(toJS(timeAry));
+
+      // weekendObj[this.weekendValueAry[idx]] = timeObj;
+      // console.info(timeObj);
+      weekTimeObj[this.weekendValueAry[idx]].push(timeObj);
+      console.info(toJS(weekTimeObj));
     });
+    // );
 
     console.info(timeObj);
-    console.info(weekendObj);
-    console.info(JSON.stringify(weekendObj));
+    // console.info(weekendObj);
+    // console.info(JSON.stringify(weekendObj));
+    console.info(toJS(weekTimeObj));
 
     console.info(toJS(this.selectedSubject));
     // schedule["se"]
@@ -201,7 +228,8 @@ class Chatting {
         //   },
         // },
         // schedule: JSON.stringify(weekendObj),
-        schedule: weekendObj,
+        // schedule: weekendObj,
+        schedule: weekTimeObj,
 
         // subject: ['math', 'kor', 'eng'],
         subject: this.selectedSubject,
@@ -228,13 +256,17 @@ class Chatting {
       },
     };
     console.info(req.data);
+    console.info(toJS(req.data));
     MatchingAPI.setTutoringInfo(req)
       .then((res) => {
         console.info(res);
-        alert(
-          '과외 등록이 완료되었습니다. 학생이 최종 수락하기까지 기다려주세요.'
-        );
-        Common.modalActive = false;
+        if (res.data.success) {
+          alert(
+            '과외 등록이 완료되었습니다. 학생이 최종 수락하기까지 기다려주세요.'
+          );
+
+          Common.modalActive = false;
+        }
       })
       .catch((e) => {
         console.info(e);
@@ -352,6 +384,39 @@ class Chatting {
         await alert(res.data.data.message);
         Common.modalActive = false;
         Common.modalState = 1;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action checkInfoWriting = async () => {
+    console.info(Auth.loggedUserId);
+    console.info(localStorage.getItem('otherPersonId'));
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      params: {
+        // teacherId: 'test111',
+        teacherId: Auth.loggedUserId,
+        studentId: localStorage.getItem('otherPersonId'),
+        grade: 'teacher',
+        // studentId: 'lZmooJ8Ydd',
+      },
+    };
+    await MatchingAPI.matchTutoring(req)
+      .then(async (res) => {
+        console.info(res);
+        if (res.data.data.message === '수업이 성사되지 않았습니다') {
+          this.writingState = 2;
+        } else {
+          this.writingState = 1;
+        }
+        // await alert(res.data.data.message);
+        // Common.modalActive = false;
+        // Common.modalState = 1;
       })
       .catch((e) => {
         console.info(e);
