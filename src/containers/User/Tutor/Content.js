@@ -196,7 +196,7 @@ class Content extends Component {
                       rating={item.star}
                       school={`${item.school} ${item.major}`}
                       subject={item.subject}
-                      location={item.location}
+                      location={item.region}
                       budget={item.cost}
                       registration={item.registration}
                     />
