@@ -191,9 +191,14 @@ class Content extends Component {
       await Chatting.checkInfoWriting();
     }
   };
+  componentWillUnmount = () => {
+    const { Common, Auth, Chatting } = this.props;
+  };
   render() {
     const { Common, Auth, Chatting } = this.props;
     console.info(Common.modalActive);
+    console.info(Chatting.enrollmentState);
+    console.info(Chatting.writingState);
     return (
       <Container state={Common.modalActive}>
         {Common.modalActive === true && Common.modalState === 1 && (
@@ -247,36 +252,41 @@ class Content extends Component {
               })}
           </UserList>
           <ButtonBox>
-            {Auth.loggedUserType === 'teacher' ? (
-              Chatting.writingState === 1 ? (
-                <CtlBtn
-                  state={Chatting.enrollmentState === 2}
-                  onClick={() => {
-                    // if (Chatting.enrollmentState === 1) {
+            {Auth.loggedUserType === 'teacher' && Chatting.writingState === 1 && (
+              <CtlBtn
+                state={Chatting.enrollmentState === 1}
+                onClick={() => {
+                  if (Chatting.enrollmentState === 1) {
                     window.scrollTo(0, 0);
                     Common.modalActive = true;
                     Common.modalState = 1;
-                    // }
-                  }}
-                >
-                  <div>과외등록하기</div>
-                </CtlBtn>
-              ) : (
-                <CtlBtn
-                  state={Chatting.enrollmentState === 2}
-                  onClick={async () => {
-                    // if (Chatting.enrollmentState === 1) {
+                  }
+                }}
+              >
+                <div>과외 등록하기</div>
+              </CtlBtn>
+            )}
+            {Auth.loggedUserType === 'teacher' && Chatting.writingState === 2 && (
+              <CtlBtn
+                state={Chatting.enrollmentState === 1}
+                onClick={async () => {
+                  if (Chatting.enrollmentState === 1) {
                     await Chatting.getTutoringInfo();
                     window.scrollTo(0, 0);
                     Common.modalActive = true;
                     Common.modalState = 1;
-                    // }
-                  }}
-                >
+                  }
+                }}
+              >
+                {Chatting.enrollmentState === 2 ? (
+                  <div>과외 등록하기</div>
+                ) : (
                   <div>과외 정보 수정하기</div>
-                </CtlBtn>
-              )
-            ) : (
+                )}
+              </CtlBtn>
+            )}
+
+            {Auth.loggedUserType === 'student' && (
               <CtlBtn
                 state={Chatting.enrollmentState === 1}
                 onClick={async () => {

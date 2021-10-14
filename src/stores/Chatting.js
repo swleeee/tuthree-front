@@ -529,7 +529,7 @@ class Chatting {
     await MatchingAPI.matchTutoring(req)
       .then(async (res) => {
         console.info(res);
-        await alert(res.data.data.message);
+        await alert(res.data.message);
         Common.modalActive = false;
         Common.modalState = 1;
       })
@@ -540,6 +540,7 @@ class Chatting {
   };
 
   @action checkInfoWriting = async () => {
+    this.writingState = 1;
     console.info(Auth.loggedUserId);
     console.info(localStorage.getItem('otherPersonId'));
     const req = {
@@ -621,10 +622,13 @@ class Chatting {
     ClassAPI.getDetailClass(req)
       .then((res) => {
         console.info(res);
-        if (res.data.data) {
-          this.enrollmentState = 2;
-        } else {
+        console.info(res.data.statusCode);
+        if (res.data.statusCode === 403) {
+          console.info('y');
           this.enrollmentState = 1;
+        } else {
+          console.info('n');
+          this.enrollmentState = 2;
         }
       })
       .catch((e) => {
