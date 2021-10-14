@@ -184,6 +184,13 @@ class InfoWriting extends React.Component {
                               Chatting.selectedWeekTime.push(
                                 `${Chatting.weekendLabel} ${Chatting.startTimeValue} ~ ${Chatting.endTimeValue}`
                               );
+                              Chatting.startTimeAry.push(
+                                Chatting.startTimeValue
+                              );
+                              Chatting.endTimeAry.push(Chatting.endTimeValue);
+                              Chatting.weekendValueAry.push(
+                                Chatting.weekendValue
+                              );
                             }
                           }}
                         >
@@ -206,6 +213,9 @@ class InfoWriting extends React.Component {
                               onClick={() => {
                                 console.info('sdf');
                                 Chatting.selectedWeekTime.splice(idx, 1);
+                                Chatting.startTimeAry.splice(idx, 1);
+                                Chatting.endTimeAry.splice(idx, 1);
+                                Chatting.weekendValueAry.splice(idx, 1);
                               }}
                             >
                               <div>{item}</div>

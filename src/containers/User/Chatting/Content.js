@@ -183,6 +183,10 @@ class Content extends Component {
     const { Common } = this.props;
     Common.modalActive = true;
   };
+  componentDidMount = () => {
+    const { Common, Auth, Chatting } = this.props;
+    console.info(Chatting.studentId);
+  };
   render() {
     const { Common, Auth, Chatting } = this.props;
     console.info(Common.modalActive);

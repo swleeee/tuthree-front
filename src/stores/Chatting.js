@@ -1,5 +1,6 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 import Auth from './Account/Auth';
+import Tutee from './Matching/Tutee';
 import Common from './Common/Common';
 import * as MatchingAPI from '../axios/Matching/Matching';
 
@@ -14,10 +15,14 @@ class Chatting {
   @observable selectedSubject = []; // 과목
 
   @observable startTimeValue = '';
+  @observable startTimeAry = [];
   @observable endTimeValue = '';
+  @observable endTimeAry = [];
   @observable selectedWeekTime = [];
   @observable weekendLabel = '';
   @observable weekendValue = '';
+  @observable weekendValueAry = [];
+
   @observable weekendAry = [
     {
       label: '월요일',
@@ -128,22 +133,65 @@ class Chatting {
     }
   };
   @action setTutoringInfo = async (teacherId = '', studentId = '') => {
+    let weekendObj = {};
+    let timeObj = {};
+    let weekTimeObj = {};
+    const schedule = {};
     console.info(Auth.token);
     console.info(Auth.loggedUserId);
     console.info(this.detailContent);
     console.info(this.weekendValue);
+    // console.info(toJS(Tutee.tuteeDetailAry));
+    console.info(this.studentId);
+    console.info(localStorage.getItem('otherPersonId'));
+    this.selectedWeekTime.map((item, idx) => {
+      console.info(item);
+      console.info(this.startTimeValue);
+      console.info(this.endTimeValue);
+      console.info(this.weekendValue);
+      // timeObj[this.weekendValue] = thi.startTimeValue;
+      timeObj['start'] = this.startTimeAry[idx];
+      timeObj['end'] = this.endTimeAry[idx];
+      weekendObj[this.weekendValueAry[idx]] = timeObj;
+    });
+
+    console.info(timeObj);
+    console.info(weekendObj);
+    console.info(JSON.stringify(weekendObj));
+
+    console.info(toJS(this.selectedSubject));
+    // schedule["se"]
+    // this.selectedSubject.map((item, idx) => {
+
+    // })
+
     const req = {
       data: {
+        // schedule: {
+        //   tue: {
+        //     start: '20:00',
+        //     end: '24:00',
+        //   },
+        //   mon: {
+        //     start: '17:00',
+        //     end: '20:00',
+        //   },
+        // },
+        // schedule: JSON.stringify(weekendObj),
+        schedule: weekendObj,
+
+        // subject: ['math', 'kor', 'eng'],
+        subject: this.selectedSubject,
+
         // subject: {
         //   id: 'tuthree10',
         //   pwd: 'tuthree10',
         // },
-        subject: 'math',
-        day: this.weekendValue,
+        // subject: 'math',
+        // day: this.weekendValue,
         // day: 'mon',
-        cost: '월급 200000',
-        start: '17:00',
-        end: '20:00',
+        // cost: '월급 200000',
+        cost: this.budgetType + ' ' + this.budget,
         // detail: 'sdfsdfsdf',
         detail: this.detailContent,
       },
@@ -152,9 +200,11 @@ class Chatting {
       },
       params: {
         teacherId: Auth.loggedUserId,
-        studentId: 'hYji0pYOZc',
+        // studentId: 'hYji0pYOZc',
+        studentId: localStorage.getItem('otherPersonId'),
       },
     };
+    console.info(req.data);
     MatchingAPI.setTutoringInfo(req)
       .then((res) => {
         console.info(res);

@@ -1,5 +1,6 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 import * as TuteeAPI from '../../axios/Matching/Tutee';
+import Chatting from '../Chatting';
 
 class Tutee {
   constructor() {
@@ -231,6 +232,7 @@ class Tutee {
   /* commuinity 상세 페이지로 이동하는 함수 */
   @action getTuteeDetailList = async (item, idx = 0, type = '') => {
     // this.tuteeDetailAry.push(item);
+    // Chatting.studentId = '';
     console.info(item.postId);
 
     console.info(this.communityState);
@@ -245,6 +247,9 @@ class Tutee {
       .then(async (res) => {
         console.info(res);
         this.tuteeDetailAry = await res.data.data;
+        Chatting.studentId = res.data.data.userId;
+        console.info(Chatting.studentId);
+        localStorage.setItem('otherPersonId', res.data.data.userId);
         this.state = 1;
       })
       .catch((e) => {
