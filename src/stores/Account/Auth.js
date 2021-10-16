@@ -46,6 +46,7 @@ class Auth {
   @observable signupAuthOne = false;
   @observable signupAuthTwo = false;
   @observable signupComplete = false;
+  @observable registrationState = true;
 
   @observable locationIndex = 0;
   @observable selectedUpperLocation = '';

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import UserInfoContainer from './UserInfo';
+import TutoringInfoContainer from './TutoringInfo';
 
 @inject('MyPage', 'Common')
 @observer
@@ -27,7 +28,10 @@ class Content extends Component {
             <div>회원 탈퇴</div>
           </Item>
         </TabBox>
-        <MainBox>{MyPage.state === 1 && <UserInfoContainer />}</MainBox>
+        <MainBox>
+          {MyPage.state === 1 && <UserInfoContainer />}
+          {MyPage.state === 2 && <TutoringInfoContainer />}
+        </MainBox>
       </Container>
     );
   }
