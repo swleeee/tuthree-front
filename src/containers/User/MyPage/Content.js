@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import UserInfoContainer from './UserInfo';
 import TutoringInfoContainer from './TutoringInfo';
+import AltPasswordContainer from './AltPassword';
 
 @inject('MyPage', 'Common')
 @observer
@@ -31,6 +32,7 @@ class Content extends Component {
         <MainBox>
           {MyPage.state === 1 && <UserInfoContainer />}
           {MyPage.state === 2 && <TutoringInfoContainer />}
+          {MyPage.state === 3 && <AltPasswordContainer />}
         </MainBox>
       </Container>
     );
