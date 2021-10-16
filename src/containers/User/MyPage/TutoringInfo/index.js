@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import TutorContent from './TutorContent';
+import TuteeContent from './TuteeContent';
 
 class index extends Component {
   render() {
-    return <TutorContent />;
+    return (
+      <>
+        {/* <TutorContent /> */}
+        <TuteeContent />
+      </>
+    );
   }
 }
 
