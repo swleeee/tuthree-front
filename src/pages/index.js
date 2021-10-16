@@ -7,6 +7,7 @@ export { default as Community } from './Community';
 export { default as Tutor } from './Tutor';
 export { default as Tutee } from './Tutee';
 export { default as Chatting } from './Chatting';
+export { default as MyPage } from './MyPage';
 export { default as AdminHome } from './Admin/Home';
 export { default as AdminMain } from './Admin/Main';
 export { default as AdminCommunity } from './Admin/Community';
