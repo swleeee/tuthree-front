@@ -2,66 +2,76 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
+import Completion from './Completion';
 
 @inject('MyPage', 'Common', 'Auth')
 @observer
 class Content extends Component {
-  inputHandler = (e, type) => {
-    console.info(e.value);
+  openModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = false;
+  };
+  closeModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = true;
   };
   render() {
     const { MyPage, Auth, Common } = this.props;
     return (
       <Container>
+        {Common.modalActive && (
+          <Layer>
+            <div>
+              <Completion
+                // width={width}
+                open={this.openModal}
+                close={this.closeModal}
+              />
+            </div>
+          </Layer>
+        )}
         <Header>
-          <div>비밀번호 변경</div>
+          <div>회원 탈퇴</div>
+          <Description>
+            고객님의 소중한 개인정보보호를 위해서 본인확인을 진행합니다.
+          </Description>
+          <Main></Main>
         </Header>
+
         <Main>
           <Item>
-            <Label>기존 비밀번호</Label>
+            <Label>비밀번호</Label>
             <ContentBox>
               <Input
-                placeholder="기존 비밀번호를 입력하세요."
-                onChange={(e) => this.inputHandler(e.target, 'origin')}
+                placeholder="비밀번호를 입력하세요."
+                onChange={(e) => this.inputHandler(e.target, 'password')}
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) =>
-                  (e.target.placeholder = '기존 비밀번호를 입력하세요.')
+                  (e.target.placeholder = '비밀번호를 입력하세요.')
                 }
               />
             </ContentBox>
           </Item>
 
           <Item>
-            <Label>새 비밀번호</Label>
+            <Label>비밀번호 확인</Label>
             <ContentBox>
               <Input
-                placeholder="새 비밀번호를 입력하세요."
-                onChange={(e) => this.inputHandler(e.target, 'new')}
-                onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) =>
-                  (e.target.placeholder = '새 비밀번호를 입력하세요.')
+                placeholder="비밀번호를 한 번 더 입력하세요."
+                onChange={(e) =>
+                  this.inputHandler(e.target, 'password_confirm')
                 }
-              />
-            </ContentBox>
-          </Item>
-
-          <Item>
-            <Label>새 비밀번호 확인</Label>
-            <ContentBox>
-              <Input
-                placeholder="새 비밀번호를 한 번 더 입력하세요."
-                onChange={(e) => this.inputHandler(e.target, 'new2')}
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) =>
-                  (e.target.placeholder = '새 비밀번호를 한 번 더 입력하세요.')
+                  (e.target.placeholder = '비밀번호를 한 번 더 입력하세요.')
                 }
               />
             </ContentBox>
           </Item>
         </Main>
         <ButtonBox>
-          <Button>
-            <div>변경</div>
+          <Button onClick={() => (Common.modalActive = true)}>
+            <div>회원탈퇴</div>
           </Button>
         </ButtonBox>
       </Container>
@@ -87,28 +97,28 @@ const Header = styled.div`
   border-left: 1px solid #888;
   //   border-right: 1px solid #888;
   border-bottom: 2px solid #333;
-  > div {
+  > div:nth-of-type(1) {
     font-size: 32px;
     font-weight: bold;
   }
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     padding: 12px 24px;
-    > div {
+    > div:nth-of-type(1) {
       font-size: 24px;
     }
     border-left: none;
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     padding: 16px 32px;
-    > div {
+    > div:nth-of-type(1) {
       font-size: 24px;
     }
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
     padding: 18px 36px;
-    > div {
+    > div:nth-of-type(1) {
       font-size: 28px;
     }
   }
@@ -182,6 +192,7 @@ const ButtonBox = styled.div`
   align-items: center;
 `;
 const Button = styled.button`
+  cursor: pointer;
   margin-top: 60px;
   background-color: rgb(235, 114, 82);
   border: none;
@@ -248,5 +259,31 @@ const Input = styled.input`
     width: ${(props) => (props.domainType === 2 ? '220px' : '440px')};
     height: 40px;
     margin-left: ${(props) => (props.ml === 2 ? '15px' : '0px')};
+  }
+`;
+
+const Description = styled.div`
+  font-size: 13px;
+  color: #999;
+`;
+
+const Layer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  // opacity: 0.1;
+  background-color: rgba(0, 0, 0, 0.5);
+  // overflow-y: scroll !important;
+  // height: auto;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 100vh;
+    height: 100%;
+    overflow-y: scroll !important;
   }
 `;

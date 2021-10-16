@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import UserInfoContainer from './UserInfo';
 import TutoringInfoContainer from './TutoringInfo';
 import AltPasswordContainer from './AltPassword';
+import WithDrawalContainer from './Withdrawal';
 
 @inject('MyPage', 'Common')
 @observer
@@ -22,10 +23,10 @@ class Content extends Component {
           <Item onClick={() => (MyPage.state = 3)} active={MyPage.state === 3}>
             <div>비밀 번호 변경</div>
           </Item>
-          <Item onClick={() => (MyPage.state = 4)} active={MyPage.state === 4}>
+          {/* <Item onClick={() => (MyPage.state = 4)} active={MyPage.state === 4}>
             <div>알림 설정</div>
-          </Item>
-          <Item onClick={() => (MyPage.state = 5)} active={MyPage.state === 5}>
+          </Item> */}
+          <Item onClick={() => (MyPage.state = 4)} active={MyPage.state === 4}>
             <div>회원 탈퇴</div>
           </Item>
         </TabBox>
@@ -33,6 +34,7 @@ class Content extends Component {
           {MyPage.state === 1 && <UserInfoContainer />}
           {MyPage.state === 2 && <TutoringInfoContainer />}
           {MyPage.state === 3 && <AltPasswordContainer />}
+          {MyPage.state === 4 && <WithDrawalContainer />}
         </MainBox>
       </Container>
     );
