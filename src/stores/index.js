@@ -6,6 +6,7 @@ import Tutee from './Matching/Tutee';
 import Chatting from './Chatting';
 import Matching from './Matching/Matching';
 import MyPage from './MyPage/MyPage';
+import MyClass from './MyClass/MyClass';
 import AdminAuth from './Admin/Auth';
 import AdminUser from './Admin/User';
 import AdminCommunity from './Admin/Community';
@@ -19,6 +20,7 @@ export default {
   Chatting,
   Matching,
   MyPage,
+  MyClass,
   AdminAuth,
   AdminUser,
   AdminCommunity,
