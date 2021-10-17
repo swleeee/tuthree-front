@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { inject, observer, Provider } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import ClassCard from '../../../components/ClassCard';
 
 const dummyData = [
@@ -83,8 +83,11 @@ const dummyData = [
   },
 ];
 
+@inject('MyClass')
+@observer
 class Content extends Component {
   render() {
+    const { MyClass } = this.props;
     return (
       <Container>
         <Header>
@@ -97,7 +100,7 @@ class Content extends Component {
         <Main>
           {dummyData.map((item, idx) => {
             return (
-              <div>
+              <div onClick={() => (MyClass.state = 2)}>
                 <ClassCard
                   number={item.id}
                   id={idx}

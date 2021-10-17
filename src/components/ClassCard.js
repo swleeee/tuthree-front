@@ -18,7 +18,8 @@ class ClassCard extends Component {
       <Container>
         <img
           src={moreImg}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             if (MyClass.moreState === -1) {
               //   this.setState({ moreState: id });
               MyClass.moreState = id;
