@@ -272,6 +272,7 @@ const CardContainer = styled.div`
   display: inline-flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  width: 100%;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     justify-content: center;

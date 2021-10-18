@@ -214,10 +214,34 @@ class Tutee {
     console.info('init');
     const req = {
       id: id ? id : 1,
+      params: {
+        start: this.budgetType + ' ' + this.lowerBudget,
+        end: this.budgetType + ' ' + this.upperBudget,
+        region: this.selectedLocation.join(', '),
+        subject: this.selectedSubject.join(', '),
+      },
       headers: {
         Authorization: this.Authorization,
       },
     };
+
+    if (this.selectedSubject.length === 0) {
+      delete req.params.subject;
+    }
+
+    if (this.selectedLocation.length === 0) {
+      delete req.params.region;
+    }
+
+    if (!this.lowerBudget) {
+      delete req.params.start;
+    }
+
+    if (!this.upperBudget) {
+      delete req.params.end;
+    }
+
+    console.info(req);
 
     TuteeAPI.getTuteeList(req)
       .then(async (res) => {

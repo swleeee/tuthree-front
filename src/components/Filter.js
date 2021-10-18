@@ -360,18 +360,18 @@ class Filter extends Component {
                       Common.width > 767.98 ? customStyles : mobileCustomStyles
                     }
                     value={{
-                      name: Tutor.selectedUpperLocation
-                        ? Tutor.selectedUpperLocation
+                      name: Tutee.selectedUpperLocation
+                        ? Tutee.selectedUpperLocation
                         : '시/도',
-                      gugun: Tutor.selectedUpperLocation,
+                      gugun: Tutee.selectedUpperLocation,
                     }}
-                    onChange={(e) => Tutor.handleChange(e, 'upperLocation')}
+                    onChange={(e) => Tutee.handleChange(e, 'upperLocation')}
                     getOptionLabel={(option) => option.name}
                     options={LocationList}
                     //  isSearchable={false}
                     placeholder="시/도"
                     // ml="15"
-                    domainType={Tutor.domainType}
+                    domainType={Tutee.domainType}
                   />
 
                   <Select
@@ -381,31 +381,31 @@ class Filter extends Component {
                       Common.width > 767.98 ? customStyles : mobileCustomStyles
                     }
                     value={{
-                      name: Tutor.selectedLowerLocation
-                        ? Tutor.selectedLowerLocation
+                      name: Tutee.selectedLowerLocation
+                        ? Tutee.selectedLowerLocation
                         : '시/군/구',
-                      gugun: Tutor.selectedLowerLocation,
+                      gugun: Tutee.selectedLowerLocation,
                     }}
-                    temp={Tutor.selectedLowerLocation}
-                    onChange={(e) => Tutor.handleChange(e, 'lowerLocation')}
+                    temp={Tutee.selectedLowerLocation}
+                    onChange={(e) => Tutee.handleChange(e, 'lowerLocation')}
                     getOptionLabel={(option) => option.name}
-                    // options={locationAry[Tutor.locationIndex].value}
-                    options={Tutor.lowerLocationAry}
+                    // options={locationAry[Tutee.locationIndex].value}
+                    options={Tutee.lowerLocationAry}
                     isSearchable={false}
-                    placeholder={Tutor.selectedLowerLocation}
+                    placeholder={Tutee.selectedLowerLocation}
                     // placeholder={`ㅣㅣ`}
                     // onFocus={() => (this.placeholder = '')}
                     ml={Common.width > 767.98 && '15'}
-                    domainType={Tutor.domainType}
+                    domainType={Tutee.domainType}
                   />
                 </SelectBox>
                 <SelectArea>
-                  {Tutor.selectedLocation.map((item, idx) => {
+                  {Tutee.selectedLocation.map((item, idx) => {
                     return (
                       <div
                         onClick={() => {
                           console.info('sdf');
-                          Tutor.selectedLocation.splice(idx, 1);
+                          Tutee.selectedLocation.splice(idx, 1);
                         }}
                       >
                         <div>{item}</div>
@@ -426,18 +426,18 @@ class Filter extends Component {
                       Common.width > 767.98 ? customStyles : mobileCustomStyles
                     }
                     value={{
-                      label: Tutor.selectedUpperSubject
-                        ? Tutor.selectedUpperSubject
+                      label: Tutee.selectedUpperSubject
+                        ? Tutee.selectedUpperSubject
                         : '상위 과목',
-                      value: Tutor.selectedUpperSubject,
+                      value: Tutee.selectedUpperSubject,
                     }}
-                    onChange={(e) => Tutor.handleChange(e, 'upperSubject')}
+                    onChange={(e) => Tutee.handleChange(e, 'upperSubject')}
                     getOptionLabel={(option) => option.label}
                     options={SubjectList}
                     //  isSearchable={false}
                     placeholder="시/도"
                     // ml="15"
-                    domainType={Tutor.domainType}
+                    domainType={Tutee.domainType}
                   />
 
                   <Select
@@ -447,29 +447,29 @@ class Filter extends Component {
                       Common.width > 767.98 ? customStyles : mobileCustomStyles
                     }
                     value={{
-                      label: Tutor.selectedLowerSubject
-                        ? Tutor.selectedLowerSubject
+                      label: Tutee.selectedLowerSubject
+                        ? Tutee.selectedLowerSubject
                         : '하위 과목',
-                      value: Tutor.selectedLowerSubject,
+                      value: Tutee.selectedLowerSubject,
                     }}
-                    onChange={(e) => Tutor.handleChange(e, 'lowerSubject')}
+                    onChange={(e) => Tutee.handleChange(e, 'lowerSubject')}
                     getOptionLabel={(option) => option.label}
-                    // options={locationAry[Tutor.locationIndex].value}
-                    options={Tutor.lowerSubjectAry}
+                    // options={locationAry[Tutee.locationIndex].value}
+                    options={Tutee.lowerSubjectAry}
                     isSearchable={false}
-                    placeholder={Tutor.selectedLowerSubject}
+                    placeholder={Tutee.selectedLowerSubject}
                     // placeholder={`ㅣㅣ`}
                     // onFocus={() => (this.placeholder = '')}
                     ml={Common.width > 767.98 && '15'}
-                    domainType={Tutor.domainType}
+                    domainType={Tutee.domainType}
                   />
                 </SelectBox>
                 <SelectArea>
-                  {Tutor.selectedSubject.map((item, idx) => {
+                  {Tutee.selectedSubject.map((item, idx) => {
                     return (
                       <div
                         onClick={() => {
-                          Tutor.selectedSubject.splice(idx, 1);
+                          Tutee.selectedSubject.splice(idx, 1);
                         }}
                       >
                         <div>{item}</div>
@@ -487,13 +487,13 @@ class Filter extends Component {
                   <Slider
                     color="warning"
                     getAriaLabel={() => 'Temperature range'}
-                    value={Tutor.budgetValue}
+                    value={Tutee.budgetValue}
                     onChange={this.handleChange}
                     valueLabelDisplay="auto"
                     getAriaValueText={this.valuetext}
                     valueLabelDisplay="on"
                     valueLabelFormat={(value) => <div>{`${value}만원`}</div>}
-                    // marks={Tutor.budgetMark}
+                    // marks={Tutee.budgetMark}
                   />
                 </BoxContainer> */}
                 <SelectBox>
@@ -504,13 +504,13 @@ class Filter extends Component {
                       Common.width > 767.98 ? customStyles : mobileCustomStyles
                     }
                     //  value={value}
-                    onChange={(e) => Tutor.handleChange(e, 'budgetType')}
+                    onChange={(e) => Tutee.handleChange(e, 'budgetType')}
                     getOptionLabel={(option) => option.label}
-                    options={Tutor.budgetTypeAry}
+                    options={Tutee.budgetTypeAry}
                     //  isSearchable={false}
                     placeholder="선택하세요."
                     mr="15"
-                    domainType={Tutor.domainType}
+                    domainType={Tutee.domainType}
                   />
                 </SelectBox>
                 <InputBox>
@@ -547,6 +547,15 @@ class Filter extends Component {
                 color="#000000"
                 bc="#aaaaaa"
                 border="1px solid rgba(0, 0, 0, 0.1)"
+                onClick={() => {
+                  Tutee.budgetType = '';
+                  Tutee.lowerBudget = '';
+                  Tutee.upperBudget = '';
+                  Tutee.selectedSubject = [];
+                  Tutee.selectedLocation = [];
+                  Tutee.tuteeCurrentPage = 1;
+                  Tutee.getTuteeList(1);
+                }}
               >
                 <div>취소</div>
               </Button>
@@ -555,6 +564,24 @@ class Filter extends Component {
                 bc="rgba(235, 114, 82, 1)"
                 // border="1px solid #707070"
                 right={true}
+                onClick={() => {
+                  console.info(
+                    `${Tutee.selectedUpperLocation} ${Tutee.selectedLowerLocation}`
+                  );
+                  console.info(
+                    `${Tutee.selectedUpperSubject} ${Tutee.selectedLowerSubject}`
+                  );
+
+                  console.info(toJS(Tutee.selectedLocation));
+                  console.info(toJS(Tutee.selectedSubject));
+
+                  console.info(Tutee.budgetType);
+                  console.info(Tutee.budgetType + ' ' + Tutee.lowerBudget);
+                  console.info(Tutee.budgetType + ' ' + Tutee.upperBudget);
+                  console.info(Tutee.upperBudget);
+                  Tutee.tuteeCurrentPage = 1;
+                  Tutee.getTuteeList(1);
+                }}
               >
                 <div>적용</div>
               </Button>
