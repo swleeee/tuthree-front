@@ -365,7 +365,7 @@ class Calendar extends React.Component {
 const Container = styled.div`
   //   width: 100vw;
   width: 100%;
-  margin: 100px 0;
+  margin: 10px 0;
   //   height: 100vh;
   //   height: 100%;
   align-items: center;
@@ -427,7 +427,7 @@ const Day = styled.div`
   justify-content: space-around;
   align-items: center;
   border: 2px solid #000;
-  background-color: rgba(235,114,82,0.85);
+  background-color: rgba(103,46,30,0.85);
   color: #fff;
   //   border: 2px solid green;
 //   & div {
@@ -554,7 +554,7 @@ const ButtonBox = styled.div`
 const Button = styled.button`
   width: ${(props) => (props.width ? props.width : '120')}px;
   height: 36px;
-  background-color: rgba(235, 114, 82);
+  background-color: rgba(235, 114, 82, 1);
   color: #fff;
   border: none;
   margin: 0 5px;
