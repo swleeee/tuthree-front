@@ -1,4 +1,11 @@
-import { observable, action, makeObservable, toJS, decorate } from 'mobx';
+import {
+  observable,
+  action,
+  makeObservable,
+  toJS,
+  decorate,
+  reaction,
+} from 'mobx';
 import * as TutorAPI from '../../axios/Matching/Tutor';
 import * as ReviewAPI from '../../axios/Matching/Review';
 
@@ -217,10 +224,43 @@ class Tutor {
     console.info('init');
     const req = {
       id: id ? id : 1,
+      params: {
+        start: this.budgetType + ' ' + this.lowerBudget,
+        end: this.budgetType + ' ' + this.upperBudget,
+        region: this.selectedLocation.join(', '),
+        subject: this.selectedSubject.join(', '),
+      },
       headers: {
         Authorization: this.Authorization,
       },
     };
+
+    if (this.selectedSubject.length === 0) {
+      delete req.params.subject;
+    }
+
+    if (this.selectedLocation.length === 0) {
+      delete req.params.region;
+    }
+
+    if (!this.lowerBudget) {
+      delete req.params.start;
+    }
+
+    if (!this.upperBudget) {
+      delete req.params.end;
+    }
+    // this.selectedLocation &&
+    //   this.selectedLocation.map((item, idx) => {
+    //     // req.params[region], item);
+    //     req.params.region = item;
+    //     req.params.region.push(item);
+    //     req.params.region.push();
+    //   });
+
+    console.info(this.selectedLocation.join(', '));
+    // req.params.region = this.selectedLocation;
+    console.info(req);
 
     TutorAPI.getTutorList(req)
       .then(async (res) => {

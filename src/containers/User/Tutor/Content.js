@@ -148,6 +148,7 @@ class Content extends Component {
     Tutor.getTutorList(Tutor.tutorCurrentPage);
   };
   render() {
+    console.info('tutorlendering');
     return (
       <Container>
         <Name>과외 선생님 찾기</Name>
@@ -270,6 +271,7 @@ const CardContainer = styled.div`
   display: inline-flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  width: 100%;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     justify-content: center;

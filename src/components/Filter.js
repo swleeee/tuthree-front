@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import LocationList from '../sigungu.json';
 import SubjectList from '../subject.json';
+import { toJS } from 'mobx';
 
 const mobileCustomStyles = {
   placeholder: (defaultStyles) => {
@@ -308,6 +309,15 @@ class Filter extends Component {
                 color="#000000"
                 bc="#aaaaaa"
                 border="1px solid rgba(0, 0, 0, 0.1)"
+                onClick={() => {
+                  Tutor.budgetType = '';
+                  Tutor.lowerBudget = '';
+                  Tutor.upperBudget = '';
+                  Tutor.selectedSubject = [];
+                  Tutor.selectedLocation = [];
+                  Tutor.tutorCurrentPage = 1;
+                  Tutor.getTutorList(1);
+                }}
               >
                 <div>취소</div>
               </Button>
@@ -316,6 +326,24 @@ class Filter extends Component {
                 bc="rgba(235, 114, 82, 1)"
                 // border="1px solid #707070"
                 right={true}
+                onClick={() => {
+                  console.info(
+                    `${Tutor.selectedUpperLocation} ${Tutor.selectedLowerLocation}`
+                  );
+                  console.info(
+                    `${Tutor.selectedUpperSubject} ${Tutor.selectedLowerSubject}`
+                  );
+
+                  console.info(toJS(Tutor.selectedLocation));
+                  console.info(toJS(Tutor.selectedSubject));
+
+                  console.info(Tutor.budgetType);
+                  console.info(Tutor.budgetType + ' ' + Tutor.lowerBudget);
+                  console.info(Tutor.budgetType + ' ' + Tutor.upperBudget);
+                  console.info(Tutor.upperBudget);
+                  Tutor.tutorCurrentPage = 1;
+                  Tutor.getTutorList(1);
+                }}
               >
                 <div>적용</div>
               </Button>
