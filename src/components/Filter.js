@@ -15,14 +15,15 @@ const mobileCustomStyles = {
     return {
       ...defaultStyles,
       color: '#000',
-      fontSize: 13,
+      fontSize: 12,
+      //   fontWeight: 'normal',
     };
   },
   dropdownIndicator: () => ({
     backgroundColor: '#fff',
     color: '#000',
-    width: 40,
-    height: 40,
+    width: 14,
+    height: 14,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -32,14 +33,14 @@ const mobileCustomStyles = {
   }),
   option: (provided, state) => ({
     ...provided,
-    color: state.isSelected ? '#000000' : '#555555',
+    color: state.isSelected ? '#000000' : '#999999',
     backgroundColor: '#fff',
     borderRadius: 0,
-    padding: 13,
-    fontSize: 13,
+    padding: 12,
+    fontSize: 12,
   }),
   control: () => ({
-    fontSize: 13,
+    fontSize: 12,
     lineHeight: 1.2,
     border: '1px solid #c7c7c7',
     display: 'flex',
@@ -47,49 +48,7 @@ const mobileCustomStyles = {
   }),
   singleValue: (provided, state) => {
     const opacity = state.isDisabled ? 0.5 : 1;
-    const transition = 'opacity 300ms';
 
-    return { ...provided, opacity, transition };
-  },
-};
-
-const tabletCustomStyles = {
-  placeholder: (defaultStyles) => {
-    return {
-      ...defaultStyles,
-      color: '#000',
-      fontSize: 13,
-    };
-  },
-  dropdownIndicator: () => ({
-    backgroundColor: '#fff',
-    color: '#000',
-    width: 45,
-    height: 45,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }),
-  indicatorSeparator: () => ({
-    display: 'none',
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    color: state.isSelected ? '#000000' : '#555555',
-    backgroundColor: '#fff',
-    borderRadius: 0,
-    padding: 15,
-    fontSize: 15,
-  }),
-  control: () => ({
-    fontSize: 15,
-    lineHeight: 1.2,
-    border: '1px solid #c7c7c7',
-    display: 'flex',
-    height: '100%',
-  }),
-  singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
     const transition = 'opacity 300ms';
 
     return { ...provided, opacity, transition };
@@ -97,18 +56,11 @@ const tabletCustomStyles = {
 };
 
 const customStyles = {
-  placeholder: (defaultStyles) => {
-    return {
-      ...defaultStyles,
-      color: '#000',
-      fontSize: Common.width > 1299.98 ? 16 : 15,
-    };
-  },
   dropdownIndicator: () => ({
     backgroundColor: '#fff',
     color: '#000',
-    width: Common.width > 1299.98 ? 50 : 45,
-    height: Common.width > 1299.98 ? 50 : 45,
+    width: 30,
+    height: 30,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -118,15 +70,15 @@ const customStyles = {
   }),
   option: (provided, state) => ({
     ...provided,
-    color: state.isSelected ? '#000000' : '#555555',
+    color: state.isSelected ? '#000000' : '#999999',
     backgroundColor: '#fff',
     borderRadius: 0,
-    padding: Common.width > 1299.98 ? 16 : 15,
-    fontSize: Common.width > 1299.98 ? 16 : 15,
+    padding: 14,
+    fontSize: 14,
     cursor: 'pointer',
   }),
   control: () => ({
-    fontSize: Common.width > 1299.98 ? 16 : 15,
+    fontSize: 14,
     lineHeight: 1.2,
     border: '1px solid #c7c7c7',
     display: 'flex',
@@ -292,7 +244,7 @@ class Filter extends Component {
             <ItemBox>
               <Label mb={45}>예산</Label>
               <Content>
-                <BoxContainer>
+                {/* <BoxContainer>
                   <Slider
                     color="warning"
                     getAriaLabel={() => 'Temperature range'}
@@ -304,7 +256,7 @@ class Filter extends Component {
                     valueLabelFormat={(value) => <div>{`${value}만원`}</div>}
                     // marks={Tutor.budgetMark}
                   />
-                </BoxContainer>
+                </BoxContainer> */}
                 <SelectBox>
                   <Select
                     //  id={this.props.id}
@@ -318,10 +270,37 @@ class Filter extends Component {
                     options={Tutor.budgetTypeAry}
                     //  isSearchable={false}
                     placeholder="선택하세요."
-                    ml="50"
+                    mr="15"
                     domainType={Tutor.domainType}
                   />
                 </SelectBox>
+                <InputBox>
+                  <Input
+                    //  width="80"
+                    // value={Chatting.budget ? Chatting.budget : ''}
+                    mr={5}
+                    domainType={2}
+                    placeholder="최소 급여"
+                    onChange={(e) =>
+                      Tutor.handleChange(e.target, 'lowerBudget')
+                    }
+                    onFocus={(e) => (e.target.placeholder = '')}
+                    onBlur={(e) => (e.target.placeholder = '최소 급여')}
+                  />
+                  <div> ~ </div>
+                  <Input
+                    //  width="80"
+                    // value={Chatting.budget ? Chatting.budget : ''}
+                    ml={5}
+                    domainType={2}
+                    placeholder="최대 급여"
+                    onChange={(e) =>
+                      Tutor.handleChange(e.target, 'upperBudget')
+                    }
+                    onFocus={(e) => (e.target.placeholder = '')}
+                    onBlur={(e) => (e.target.placeholder = '최대 급여')}
+                  />
+                </InputBox>
               </Content>
             </ItemBox>
             <ButtonBox>
@@ -476,7 +455,7 @@ class Filter extends Component {
             <ItemBox>
               <Label mb={45}>예산</Label>
               <Content>
-                <BoxContainer>
+                {/* <BoxContainer>
                   <Slider
                     color="warning"
                     getAriaLabel={() => 'Temperature range'}
@@ -488,7 +467,7 @@ class Filter extends Component {
                     valueLabelFormat={(value) => <div>{`${value}만원`}</div>}
                     // marks={Tutor.budgetMark}
                   />
-                </BoxContainer>
+                </BoxContainer> */}
                 <SelectBox>
                   <Select
                     //  id={this.props.id}
@@ -502,10 +481,37 @@ class Filter extends Component {
                     options={Tutor.budgetTypeAry}
                     //  isSearchable={false}
                     placeholder="선택하세요."
-                    ml="50"
+                    mr="15"
                     domainType={Tutor.domainType}
                   />
                 </SelectBox>
+                <InputBox>
+                  <Input
+                    //  width="80"
+                    // value={Chatting.budget ? Chatting.budget : ''}
+                    mr={5}
+                    domainType={2}
+                    placeholder="최소 급여"
+                    onChange={(e) =>
+                      Tutee.handleChange(e.target, 'lowerBudget')
+                    }
+                    onFocus={(e) => (e.target.placeholder = '')}
+                    onBlur={(e) => (e.target.placeholder = '최소 급여')}
+                  />
+                  <div> ~ </div>
+                  <Input
+                    //  width="80"
+                    // value={Chatting.budget ? Chatting.budget : ''}
+                    ml={5}
+                    domainType={2}
+                    placeholder="최대 급여"
+                    onChange={(e) =>
+                      Tutee.handleChange(e.target, 'upperBudget')
+                    }
+                    onFocus={(e) => (e.target.placeholder = '')}
+                    onBlur={(e) => (e.target.placeholder = '최대 급여')}
+                  />
+                </InputBox>
               </Content>
             </ItemBox>
             <ButtonBox>
@@ -567,6 +573,7 @@ const Content = styled.div`
   // border: 2px solid red;
   // flex-wrap: wrap;
   width: 100%;
+  // align-items: center;
   @media (min-width: 0px) and (max-width: 767.98px) {
     padding: 0;
     flex-direction: column;
@@ -647,23 +654,24 @@ const Button = styled.button`
 
 const Select = styled(SelectComponent)`
   width: ${(props) => (props.width ? props.width : '170')}px;
-  height: 60px;
+  height: 50px;
   margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+  margin-right: ${(props) => (props.mr ? props.mr : '0')}px;
   display: ${(props) => (props.domainType === 1 ? 'block' : 'none')};
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     width: 100%;
-    height: 40px;
+    height: 35px;
     margin: 5px 0 5px 0;
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     width: ${(props) => (props.width ? props.width - 55 : '155')}px;
-    height: 45px;
+    height: 40px;
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
     width: ${(props) => (props.width ? props.width - 50 : '170')}px;
-    height: 55px;
+    height: 45px;
   }
 `;
 
@@ -743,4 +751,58 @@ const BoxContainer = styled(Box)`
       font-size: 0.675rem;
     }
   }
+`;
+
+const Input = styled.input`
+  border: none;
+  border: 1px solid #c7c7c7;
+  // padding-bottom: 18px;
+  outline: none;
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
+  padding: 0 10px;
+  // text-align: right;
+  ::placeholder {
+    font-size: 12px;
+    text-align: left;
+  }
+  :focus {
+  }
+  margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+  margin-right: ${(props) => (props.mr ? props.mr : '0')}px;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: ${(props) => (props.domainType === 2 ? '85px' : '200px')};
+    // margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+
+    height: 35px;
+    font-size: 12px;
+    // margin-bottom: 10px;
+    padding: 0 5px;
+    ::placeholder {
+      font-size: 10px;
+      text-align: left;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: ${(props) => (props.domainType === 2 ? '130px' : '250px')};
+    height: 40px;
+    // margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+  }
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: ${(props) => (props.domainType === 2 ? '140px' : '300px')};
+    height: 45px;
+    // margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+  }
+  @media (min-width: 1300px) {
+    width: ${(props) => (props.domainType === 2 ? '140px' : '440px')};
+    height: 50px;
+    // margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+  }
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  align-items: center;
 `;

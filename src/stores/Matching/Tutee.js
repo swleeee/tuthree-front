@@ -32,6 +32,8 @@ class Tutee {
   @observable tuteeDetailAry = [];
 
   @observable budgetType = '';
+  @observable lowerBudget = '';
+  @observable upperBudget = '';
 
   @observable budgetTypeAry = [
     {
@@ -181,7 +183,15 @@ class Tutee {
         console.info(e.label);
 
         break;
-      case 'budget':
+      case 'lowerBudget':
+        this.lowerBudget = e.value;
+        break;
+
+      case 'upperBudget':
+        this.upperBudget = e.value;
+        break;
+
+      case 'budgetType':
         this.budgetType = e.value;
         break;
       case 'schoolState':
