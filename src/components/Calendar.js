@@ -176,7 +176,11 @@ class Calendar extends React.Component {
                   if (MyClass.chosenDay === day) {
                     MyClass.chosenDay = -1;
                   } else {
-                    MyClass.chosenDay = day;
+                    if (day) {
+                      MyClass.chosenDay = day;
+                    } else {
+                      MyClass.chosenDay = -1;
+                    }
                   }
                   console.info(MyClass.chosenDay);
                   console.info(day);
