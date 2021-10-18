@@ -99,6 +99,10 @@ const Container = styled.div`
   flex-direction: column;
   margin-bottom: 50px;
   box-shadow: 0 6px 15px 1px rgba(0, 0, 0, 0.5);
+  // margin-right: 45px;
+  margin-left: 22px;
+  margin-right: 22px;
+  // margin-right: 10%;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     margin: 0 15px 20px 15px;

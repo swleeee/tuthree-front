@@ -271,10 +271,32 @@ const Header = styled.div`
 const CardContainer = styled.div`
   display: inline-flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  // justify-content: space-between;
   width: 100%;
-
   @media (min-width: 0px) and (max-width: 767.98px) {
-    justify-content: center;
+    justify-content: space-between;
   }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    justify-content: space-between;
+  }
+
+  // &:after {
+  //   height: 0;
+  //   width: 50%;
+  //   // -, 48, 21
+  //   content: '';
+  // }
+
+  // @media (min-width: 0px) and (max-width: 767.98px) {
+  //   justify-content: center;
+  // }
+
+  // @media (min-width: 1300px) {
+  //   &:after {
+  //     height: 0;
+  //     width: 50%;
+  //     // -, 48, 21
+  //     content: '';
+  //   }
+  // }
 `;
