@@ -45,6 +45,33 @@ class Tutor {
   @observable lowerBudget = '';
   @observable upperBudget = '';
 
+  @observable sortIdx = 0;
+  @observable sortAry = [
+    {
+      label: '최신순',
+      value: 'latest',
+    },
+    {
+      label: '오래된순',
+      value: 'old',
+    },
+    {
+      label: '급여 높은 순',
+      value: 'hprice',
+    },
+    {
+      label: '급여 낮은 순',
+      value: 'lprice',
+    },
+    {
+      label: '별점 높은 순',
+      value: 'hstar',
+    },
+    {
+      label: '별점 낮은 순',
+      value: 'lstar',
+    },
+  ];
   @observable budgetTypeAry = [
     {
       label: '시급',
@@ -229,6 +256,7 @@ class Tutor {
         end: this.budgetType + ' ' + this.upperBudget,
         region: this.selectedLocation.join(', '),
         subject: this.selectedSubject.join(', '),
+        sort: this.sortAry[this.sortIdx].value,
       },
       headers: {
         Authorization: this.Authorization,
