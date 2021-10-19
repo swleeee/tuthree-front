@@ -28,3 +28,12 @@ export function setSchedule(req) {
     data: req.data,
   });
 }
+
+export function getCalendar(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/calendar`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}

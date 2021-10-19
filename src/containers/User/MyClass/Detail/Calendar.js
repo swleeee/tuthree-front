@@ -5,6 +5,7 @@ import Modal from '../../../../components/Modal';
 import previousImg from '../../../../static/images/Common/previous2.png';
 import nextImg from '../../../../static/images/Common/next2.png';
 import ScheduleWriting from './ScheduleWriting';
+import { toJS } from 'mobx';
 import moment from 'moment';
 
 const scheduleStyle = {
@@ -197,25 +198,25 @@ class Calendar extends React.Component {
                       MyClass.selectedDateMoment = '';
                     }
                   }
-                  console.info(MyClass.chosenDay);
-                  console.info(day);
-                  console.info(month);
-                  console.info(week);
-                  console.info(year);
-                  console.info(dateKey);
+                  // console.info(MyClass.chosenDay);
+                  // console.info(day);
+                  // console.info(month);
+                  // console.info(week);
+                  // console.info(year);
+                  // console.info(dateKey);
                   // console.info(new moment(`dateKey`).toUTC);
-                  console.info(
-                    new Date(
-                      Date.UTC(
-                        year,
-                        month < 9 ? '0' + month : month,
-                        day < 10 ? '0' + day : day
-                      )
-                    )
-                  );
+                  // console.info(
+                  //   new Date(
+                  //     Date.UTC(
+                  //       year,
+                  //       month < 9 ? '0' + month : month,
+                  //       day < 10 ? '0' + day : day
+                  //     )
+                  //   )
+                  // );
 
                   // console.info(new moment(`dateKey`).utc().format());
-                  console.info(`${pid} : ${idx}`);
+                  // console.info(`${pid} : ${idx}`);
 
                   // Tue Sep 28 2021 00:00:00 GMT+0900 (한국 표준시)
                 }}
@@ -228,31 +229,46 @@ class Calendar extends React.Component {
                 >
                   {day}
                 </span>
-                {schedules
-                  .filter((schedule) => schedule.date.substr(0, 10) === dateKey)
-                  .sort()
-                  .map((schedule) => {
-                    return (
-                      <>
-                        {
-                          console.info('1')
-                          //   console.info(schedule)
-                        }
-                        <SubItem
-                          style={scheduleStyle}
-                          className={schedule.completed}
-                          key={schedule.desc}
-                          //   onClick={MyClass.openModal}
-                        >
-                          {schedule.desc}
-                          <Modal
-                            isOpen={MyClass.isModalOpen}
-                            close={MyClass.closeModal}
-                          />
-                        </SubItem>
-                      </>
-                    );
-                  })}
+                {MyClass.scheduleAry.map((item, idx) => {
+                  console.info(toJS(item));
+                })}
+                {/* {MyClass.scheduleAry.filter((schedule) => schedule)} */}
+                {/* {console.info(
+                  MyClass.seceduleAry.filter((schedule) => schedule.date.substr(0, 10) === dateKey)
+                )} */}
+                {console.info(toJS(MyClass.scheduleAry))}
+                {console.info(schedules)}
+
+                {console.info(typeof MyClass.scheduleAry)}
+                {console.info(typeof schedules)}
+                {MyClass.scheduleAry &&
+                  MyClass.scheduleAry
+                    .filter(
+                      (schedule) => schedule.date.substr(0, 10) === dateKey
+                    )
+                    .sort()
+                    .map((schedule) => {
+                      return (
+                        <>
+                          {
+                            console.info('1')
+                            //   console.info(schedule)
+                          }
+                          <SubItem
+                            style={scheduleStyle}
+                            className={schedule.type}
+                            key={schedule.schedule}
+                            //   onClick={MyClass.openModal}
+                          >
+                            {schedule.schedule}
+                            <Modal
+                              isOpen={MyClass.isModalOpen}
+                              close={MyClass.closeModal}
+                            />
+                          </SubItem>
+                        </>
+                      );
+                    })}
               </Item>
             );
           })}

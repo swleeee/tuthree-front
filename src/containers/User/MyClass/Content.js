@@ -135,12 +135,13 @@ class Content extends Component {
             MyClass.classAry.map((item, idx) => {
               return (
                 <div
-                  onClick={() => {
+                  onClick={async () => {
                     MyClass.state = 2;
                     MyClass.teacherName = item.teacherName;
                     MyClass.studentName = item.studentName;
                     MyClass.teacherId = item.teacherId;
                     MyClass.studentId = item.studentId;
+                    await MyClass.getCalendar();
                   }}
                 >
                   <ClassCard

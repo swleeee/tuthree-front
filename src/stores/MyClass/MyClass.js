@@ -105,7 +105,29 @@ class MyClass {
     await ClassAPI.setSchedule(req)
       .then(async (res) => {
         console.info(res);
-        this.scheduleAry = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action getCalendar = async () => {
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    const req = {
+      params: {
+        studentId: this.studentId,
+        teacherId: this.teacherId,
+      },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+    };
+    ClassAPI.getCalendar(req)
+      .then((res) => {
+        console.info(res);
+        this.scheduleAry = res.data.data;
       })
       .catch((e) => {
         console.info(e);
