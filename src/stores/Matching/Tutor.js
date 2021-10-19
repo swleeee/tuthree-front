@@ -41,10 +41,6 @@ class Tutor {
   @observable tutorReviewAry = [];
   @observable tutorReviewCount = 0;
 
-  @observable budgetType = '';
-  @observable lowerBudget = '';
-  @observable upperBudget = '';
-
   @observable sortIdx = 0;
   @observable sortAry = [
     {
@@ -72,6 +68,10 @@ class Tutor {
       value: 'lstar',
     },
   ];
+
+  @observable budgetType = '';
+  @observable lowerBudget = '';
+  @observable upperBudget = '';
   @observable budgetTypeAry = [
     {
       label: '시급',

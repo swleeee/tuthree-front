@@ -7,7 +7,6 @@ import Tutor from '../../../stores/Matching/Tutor';
 import Pagination from '../../../components/Pagination';
 import { toJS } from 'mobx';
 import downArrowImg from '../../../static/images/Common/down-arrow.png';
-import upArrowImg from '../../../static/images/Common/up-arrow.png';
 
 const dummyData = [
   {

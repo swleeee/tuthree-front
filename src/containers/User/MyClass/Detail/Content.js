@@ -25,18 +25,23 @@ class Content extends Component {
     return (
       <Container>
         <NavBox>
-          <Nav
-            active={MyClass.detailState === 1 ? true : false}
-            onClick={() => MyClass.onClickNavHandler('calendar')}
-          >
-            <div>캘린더</div>
-          </Nav>
-          <Nav
-            active={MyClass.detailState === 2 ? true : false}
-            onClick={() => MyClass.onClickNavHandler('qa')}
-          >
-            <div>문제지/답안지</div>
-          </Nav>
+          <NavItem>
+            <Nav
+              active={MyClass.detailState === 1 ? true : false}
+              onClick={() => MyClass.onClickNavHandler('calendar')}
+            >
+              <div>캘린더</div>
+            </Nav>
+            <Nav
+              active={MyClass.detailState === 2 ? true : false}
+              onClick={() => MyClass.onClickNavHandler('qa')}
+            >
+              <div>문제지/답안지</div>
+            </Nav>
+          </NavItem>
+          <UserInfo>
+            <div>{MyClass.studentName} Class</div>
+          </UserInfo>
         </NavBox>
 
         {MyClass.detailState && MyClass.detailState === 1 && (
@@ -62,12 +67,14 @@ const Container = styled.div`
 const NavBox = styled.div`
   width: 100%;
   display: flex;
-  height: 50px;
+
   // border: 2px solid black;
   padding-bottom: 10px;
   margin-bottom: 40px;
   border-bottom: 2px solid #aaaaaa;
   margin: 50px 0;
+  justify-content: space-between;
+  align-items: center;
 `;
 const Nav = styled.div`
   cursor: pointer;
@@ -86,5 +93,16 @@ const Nav = styled.div`
     color: ${(props) => (props.active ? '#ffffff' : '#000000')};
     font-weight: bold;
     font-size: 16px;
+  }
+`;
+
+const NavItem = styled.div`
+  display: flex;
+  height: 50px;
+`;
+const UserInfo = styled.div`
+  > div {
+    font-size: 20px;
+    font-weight: bold;
   }
 `;

@@ -92,6 +92,7 @@ export default ClassCard;
 const Container = styled.div`
   cursor: pointer;
   width: 350px;
+  min-height: 200px;
   //   height: auto;
   //   min-height: 350px;
   border: 2px solid #707070;
@@ -132,8 +133,8 @@ const Container = styled.div`
   }
 `;
 const Img = styled.div`
-  width: 40%;
-  height: 150px;
+  width: 50%;
+  // height: 150px;
   // background-color: #aaa;
   display: flex;
   justify-content: center;
@@ -156,6 +157,13 @@ const Img = styled.div`
       //   height: 80%;
     }
   }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    // width: 100%;
+  }
 `;
 const Content = styled.div`
   padding: 15px 15px 0 15px;
@@ -163,6 +171,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 75%;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
   }
@@ -182,6 +191,7 @@ const Label = styled.div`
   font-size: ${(props) => (props.fs ? props.fs : '16')}px;
   font-weight: ${(props) => (props.fw ? props.fw : 'normal')};
   color: ${(props) => (props.color ? props.color : '#000')};
+  width: 100%;
   > img {
     margin-right: ${(props) => (props.mr ? props.mr : '5')}px;
     margin-left: ${(props) => (props.ml ? props.ml : '5')}px;

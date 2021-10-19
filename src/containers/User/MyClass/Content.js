@@ -83,22 +83,40 @@ const dummyData = [
   },
 ];
 
-@inject('MyClass')
+@inject('MyClass', 'Auth')
 @observer
 class Content extends Component {
+  componentDidMount = async () => {
+    const { MyClass, Auth } = this.props;
+    await MyClass.getClass(Auth.loggedUserId);
+  };
   render() {
-    const { MyClass } = this.props;
+    const { MyClass, Auth } = this.props;
     return (
       <Container>
         <Header>
           <Label>MyClass</Label>
-          <SortingBox>
-            <span>현재 수강 학생</span>
-            <span>과거 수강 학생</span>
+          <SortingBox active={MyClass.status}>
+            <span
+              onClick={async () => {
+                MyClass.status = 'OPEN';
+                await MyClass.getClass(Auth.loggedUserId);
+              }}
+            >
+              현재 수강 학생
+            </span>
+            <span
+              onClick={async () => {
+                MyClass.status = 'CLOSE';
+                await MyClass.getClass(Auth.loggedUserId);
+              }}
+            >
+              과거 수강 학생
+            </span>
           </SortingBox>
         </Header>
         <Main>
-          {dummyData.map((item, idx) => {
+          {/* {dummyData.map((item, idx) => {
             return (
               <div onClick={() => (MyClass.state = 2)}>
                 <ClassCard
@@ -112,7 +130,29 @@ class Content extends Component {
                 />
               </div>
             );
-          })}
+          })} */}
+          {MyClass.classAry &&
+            MyClass.classAry.map((item, idx) => {
+              return (
+                <div
+                  onClick={() => {
+                    MyClass.state = 2;
+                    MyClass.teacherName = item.teacherName;
+                    MyClass.studentName = item.studentName;
+                  }}
+                >
+                  <ClassCard
+                    number={item.id}
+                    id={idx}
+                    type="teacher"
+                    name={item.studentName}
+                    date={item.date}
+                    subject={item.subject}
+                    active={item.acitve}
+                  />
+                </div>
+              );
+            })}
         </Main>
       </Container>
     );
@@ -203,30 +243,36 @@ const Main = styled.div`
 `;
 
 const SortingBox = styled.div`
-> span:not(:last-child) {
+  > span:not(:last-child) {
     border-right: 1px solid #888;
-}
+  }
+  >span:nth-of-type(1){
+    color: ${(props) => (props.active === 'OPEN' ? 'blue' : 'black')}; 
+  }
+
+  >span:nth-of-type(2){
+    color: ${(props) => (props.active === 'CLOSE' ? 'blue' : 'black')}; 
+  }
   > span {
-    
+    // color: ${(props) => (props.active ? 'blue' : 'black')}; 
     padding 0 5px;
     box-sizing: border-box;
     font-size: 15px;
   }
   @media (min-width: 0px) and (max-width: 767.98px) {
-    >span{
-        font-size: 11px;
+    > span {
+      font-size: 11px;
     }
-}
+  }
   @media (min-width: 768px) and (max-width: 991.98px) {
-    
-    >span{
-        font-size: 13px;
+    > span {
+      font-size: 13px;
     }
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
-    >span{
-        font-size: 14px;
+    > span {
+      font-size: 14px;
     }
   }
 `;
