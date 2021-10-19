@@ -18,3 +18,13 @@ export function getDetailClass(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function setSchedule(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/room/calendar`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}

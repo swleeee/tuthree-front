@@ -21,8 +21,11 @@ class MyClass {
   @observable classAry = [];
   @observable teacherName = '';
   @observable studentName = '';
+  @observable teacherId = '';
+  @observable studentId = '';
 
   @observable scheduleValue = '';
+  @observable scheduleAry = [];
   @observable selectedDate = '';
   @observable selectedDateMoment = '';
 
@@ -47,7 +50,7 @@ class MyClass {
   @action onChangeHandler = (e, type = '') => {
     switch (type) {
       case 'schedule':
-        console.info(e.target.value);
+        // console.info(e.target.value);
         this.scheduleValue = e.target.value;
         console.info(this.scheduleValue);
         break;
@@ -81,6 +84,34 @@ class MyClass {
         console.info(e.response);
       });
     console.info(toJS(this.classAry));
+  };
+
+  @action setSchedule = async () => {
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    const req = {
+      params: {
+        studentId: this.studentId,
+        teacherId: this.teacherId,
+      },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+      data: {
+        dateAt: this.selectedDate,
+        schedule: this.scheduleValue,
+      },
+    };
+    await ClassAPI.setSchedule(req)
+      .then(async (res) => {
+        console.info(res);
+        this.scheduleAry = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.scheduleAry));
   };
 }
 export default new MyClass();

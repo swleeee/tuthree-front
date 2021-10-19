@@ -276,16 +276,19 @@ class ScheduleWriting extends React.Component {
                         }
                       />
                       <Search
-                      //   onClick={() => {
-                      //     console.info('dsfdsf');
-                      //     AdminCommunity.communityErrorMessage = '';
-                      //     if (AdminCommunity.communitySearchValue === '') {
-                      //       AdminCommunity.communitySearchFinalValue = '';
-                      //       AdminCommunity.getCommunityList(1);
-                      //     } else {
-                      //       AdminCommunity.searchCommunity(1);
-                      //     }
-                      //   }}
+                        //   onClick={() => {
+                        //     console.info('dsfdsf');
+                        //     AdminCommunity.communityErrorMessage = '';
+                        //     if (AdminCommunity.communitySearchValue === '') {
+                        //       AdminCommunity.communitySearchFinalValue = '';
+                        //       AdminCommunity.getCommunityList(1);
+                        //     } else {
+                        //       AdminCommunity.searchCommunity(1);
+                        //     }
+                        //   }}
+                        onClick={() => {
+                          MyClass.setSchedule();
+                        }}
                       >
                         <img src={addImg} />
                       </Search>
