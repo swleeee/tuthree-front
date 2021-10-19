@@ -632,7 +632,7 @@ const Layer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 99;
+  z-index: 399;
   // opacity: 0.1;
   background-color: rgba(0, 0, 0, 0.5);
   // overflow-y: scroll !important;

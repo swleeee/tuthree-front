@@ -326,8 +326,61 @@ class ScheduleWriting extends React.Component {
                   &times;{' '}
                 </button>
                 <Container>
-                  <Header>과외 등록하기</Header>
-                  <Main></Main>
+                  <Header>일정 등록하기</Header>
+                  <Main>
+                    <div>
+                      <DateContainer
+                        selected={MyClass.selectedDateMoment}
+                        // onChange={(value) =>
+                        //   this.onChange(
+                        //     format(value, 'yyyy-MM-dd', {
+                        //       awareOfUnicodeTokens: true,
+                        //     })
+                        //   )
+                        // }
+                        onChange={(date) => this.onChange(date)}
+                        locale="ko"
+                        dateFormat="yyyy-MM-dd"
+                      />
+                    </div>
+
+                    <SearchBox>
+                      <Input
+                        placeholder="일정을 입력하세요."
+                        onChange={(e) => MyClass.onChangeHandler(e, 'schedule')}
+                        onFocus={(e) => (e.target.placeholder = '')}
+                        onBlur={(e) =>
+                          (e.target.placeholder = '일정을 입력하세요.')
+                        }
+                      />
+                      <Search
+                      //   onClick={() => {
+                      //     console.info('dsfdsf');
+                      //     AdminCommunity.communityErrorMessage = '';
+                      //     if (AdminCommunity.communitySearchValue === '') {
+                      //       AdminCommunity.communitySearchFinalValue = '';
+                      //       AdminCommunity.getCommunityList(1);
+                      //     } else {
+                      //       AdminCommunity.searchCommunity(1);
+                      //     }
+                      //   }}
+                      >
+                        <img src={addImg} />
+                      </Search>
+                    </SearchBox>
+                    <ScheduleArea>
+                      {schedules.map((item, idx) => {
+                        return (
+                          <ScheduleItem>
+                            <ScheduleName>
+                              <div>{item.desc}</div>
+                            </ScheduleName>
+                            <img src={deleteImg} />
+                          </ScheduleItem>
+                        );
+                      })}
+                    </ScheduleArea>
+                  </Main>
                 </Container>
               </>
             ) : null}
@@ -615,7 +668,7 @@ const Input = styled.input`
   :focus {
   }
   @media (min-width: 0px) and (max-width: 767.98px) {
-    width: ${(props) => (props.domainType === 2 ? '85px' : '200px')};
+    // width: ${(props) => (props.domainType === 2 ? '85px' : '200px')};
     height: 30px;
     font-size: 12px;
     margin-bottom: 10px;
@@ -626,17 +679,17 @@ const Input = styled.input`
     }
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
-    width: ${(props) => (props.domainType === 2 ? '150px' : '250px')};
+    // width: ${(props) => (props.domainType === 2 ? '150px' : '250px')};
     height: 30px;
     margin-left: ${(props) => (props.ml === 2 ? '10px' : '0px')};
   }
   @media (min-width: 992px) and (max-width: 1299.98px) {
-    width: ${(props) => (props.domainType === 2 ? '160px' : '300px')};
+    // width: ${(props) => (props.domainType === 2 ? '160px' : '300px')};
     height: 30px;
     margin-left: ${(props) => (props.ml === 2 ? '15px' : '0px')};
   }
   @media (min-width: 1300px) {
-    width: ${(props) => (props.domainType === 2 ? '160px' : '440px')};
+    // width: ${(props) => (props.domainType === 2 ? '160px' : '440px')};
     height: 30px;
     margin-left: ${(props) => (props.ml === 2 ? '15px' : '0px')};
   }
@@ -752,6 +805,23 @@ const ScheduleItem = styled.div`
     width: 18px;
     height: 18px;
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      font-size: 11px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: 13px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      font-size: 14px;
+    }
+  }
 `;
 
 const ScheduleName = styled.div`
@@ -772,17 +842,4 @@ const DateContainer = styled(DatePicker)`
   //   border: none;
   position: relative;
   cursor: pointer;
-
-  //   &:after {
-  //     position: absolute;
-  //     // content: url(${calendarImg});
-  //     content: 'sdfsd';
-  //     border-right: solid 2px red;
-  //     // border-left: solid 2px transparent;
-  //     // border-top: solid 2px #f8d05d;
-  //     height: 100%;
-  //     width: 15px;
-  //     text-align: right;
-  //     float: right;
-  //   }
 `;
