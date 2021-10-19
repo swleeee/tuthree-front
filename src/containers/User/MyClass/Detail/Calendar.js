@@ -125,7 +125,7 @@ class Calendar extends React.Component {
     let endDateOfMonth = new Date(year, month + 1, 0).getDate();
     calendarDays = [];
     new_month = [];
-    console.info(calendarDays);
+    // console.info(calendarDays);
     let cnt = 1;
     for (let i = 0; i < 6; i++) {
       var _days = [];
@@ -141,21 +141,21 @@ class Calendar extends React.Component {
       }
       calendarDays.push(_days);
     }
-    console.info(calendarDays);
-    console.info(calendarDays[4][0]);
-    console.info(calendarDays[5][0]);
+    // console.info(calendarDays);
+    // console.info(calendarDays[4][0]);
+    // console.info(calendarDays[5][0]);
     if (!calendarDays[5][0]) {
-      console.info('DDFSDF');
+      // console.info('DDFSDF');
       calendarDays.splice(5, 1);
     }
-    console.info(calendarDays);
+    // console.info(calendarDays);
     //   console.info(week);
     new_month = calendarDays.map((week, pid) => {
-      console.info(pid);
+      // console.info(pid);
       return (
         <Row key={week}>
           {week.map((day, idx) => {
-            console.info(`${pid} : ${idx}`);
+            // console.info(`${pid} : ${idx}`);
             // console.info(week);
             // console.info(day);
             // console.info('=============================');
@@ -167,7 +167,7 @@ class Calendar extends React.Component {
               (day < 10 ? '0' + day : day);
             // console.log(thisyear+"-"+(thismonth<9? "0"+(thismonth+1):(thismonth+1))+"-"+day);
             // console.info(dateKey);
-            console.info(idx == 0);
+            // console.info(idx == 0);
             return (
               <Item
                 // key={dateKey}
@@ -229,18 +229,16 @@ class Calendar extends React.Component {
                 >
                   {day}
                 </span>
-                {MyClass.scheduleAry.map((item, idx) => {
-                  console.info(toJS(item));
-                })}
+
                 {/* {MyClass.scheduleAry.filter((schedule) => schedule)} */}
                 {/* {console.info(
                   MyClass.seceduleAry.filter((schedule) => schedule.date.substr(0, 10) === dateKey)
                 )} */}
-                {console.info(toJS(MyClass.scheduleAry))}
+                {/* {console.info(toJS(MyClass.scheduleAry))}
                 {console.info(schedules)}
 
                 {console.info(typeof MyClass.scheduleAry)}
-                {console.info(typeof schedules)}
+                {console.info(typeof schedules)} */}
                 {MyClass.scheduleAry &&
                   MyClass.scheduleAry
                     .filter(

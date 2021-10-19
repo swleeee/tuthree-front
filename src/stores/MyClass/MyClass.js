@@ -26,6 +26,7 @@ class MyClass {
 
   @observable scheduleValue = '';
   @observable scheduleAry = [];
+  @observable scheduleDetailAry = [];
   @observable selectedDate = '';
   @observable selectedDateMoment = '';
 
@@ -105,6 +106,8 @@ class MyClass {
     await ClassAPI.setSchedule(req)
       .then(async (res) => {
         console.info(res);
+        this.getDetailSchedule();
+        this.getCalendar();
       })
       .catch((e) => {
         console.info(e);
@@ -124,7 +127,7 @@ class MyClass {
         Authorization: Auth.Authorization,
       },
     };
-    ClassAPI.getCalendar(req)
+    ClassAPI.getSchedule(req)
       .then((res) => {
         console.info(res);
         this.scheduleAry = res.data.data;
@@ -134,6 +137,33 @@ class MyClass {
         console.info(e.response);
       });
     console.info(toJS(this.scheduleAry));
+  };
+
+  @action getDetailSchedule = async () => {
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    console.info(this.selectedDate);
+
+    const req = {
+      params: {
+        studentId: this.studentId,
+        teacherId: this.teacherId,
+        date: this.selectedDate,
+      },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+    };
+    await ClassAPI.getDetailSchedule(req)
+      .then((res) => {
+        console.info(res);
+        this.scheduleDetailAry = res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.scheduleDetailAry));
   };
 }
 export default new MyClass();

@@ -170,14 +170,12 @@ const schedules = [
 @inject('Common', 'MyClass')
 @observer
 class ScheduleWriting extends React.Component {
-  //   componentDidMount = () => {
-  //     document.getElementsByTagName('body')[0].style.overflow = 'hidden';
-  //     console.info(document.getElementsByTagName('body'));
-  //   };
-  //   componentWillUnmount = () => {
-  //     document.getElementsByTagName('body')[0].style.overflow = 'auto';
-  //   };
-
+  componentDidMount = () => {
+    const { MyClass } = this.props;
+    if (MyClass.selectedDate) {
+      MyClass.getDetailSchedule();
+    }
+  };
   onChange = (date) => {
     const { MyClass } = this.props;
     // Day.js object
@@ -203,6 +201,7 @@ class ScheduleWriting extends React.Component {
     MyClass.selectedDate = `${year}-${month}-${day}`;
     MyClass.selectedDateMoment = date;
     console.info(MyClass.selectedDateMoment);
+    MyClass.getDetailSchedule();
 
     // to normal Date object
     // console.log(date.toDate());
@@ -294,16 +293,17 @@ class ScheduleWriting extends React.Component {
                       </Search>
                     </SearchBox>
                     <ScheduleArea>
-                      {schedules.map((item, idx) => {
-                        return (
-                          <ScheduleItem>
-                            <ScheduleName>
-                              <div>{item.desc}</div>
-                            </ScheduleName>
-                            <img src={deleteImg} />
-                          </ScheduleItem>
-                        );
-                      })}
+                      {MyClass.scheduleDetailAry &&
+                        MyClass.scheduleDetailAry.map((item, idx) => {
+                          return (
+                            <ScheduleItem>
+                              <ScheduleName>
+                                <div>{item.schedule}</div>
+                              </ScheduleName>
+                              <img src={deleteImg} />
+                            </ScheduleItem>
+                          );
+                        })}
                     </ScheduleArea>
                   </Main>
                 </Container>
@@ -788,6 +788,7 @@ const Search = styled.div`
 const ScheduleArea = styled.div`
   display: flex;
   flex-direction: column;
+  width: 80%;
 `;
 const ScheduleItem = styled.div`
   display: flex;
@@ -797,7 +798,7 @@ const ScheduleItem = styled.div`
   margin-bottom: 5px;
   padding: 8px 5px;
   box-sizing: border-box;
-
+  width: 100%;
   > div {
     font-size: 15px;
     font-weight: 500;

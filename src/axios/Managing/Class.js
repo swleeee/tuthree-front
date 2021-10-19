@@ -29,10 +29,19 @@ export function setSchedule(req) {
   });
 }
 
-export function getCalendar(req) {
+export function getSchedule(req) {
   return axios({
     method: 'GET',
     url: `${ROOT_URL}/room/calendar`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function getDetailSchedule(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/calendar/date`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });
