@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
-import Calendar from '../../../../components/Calendar';
+import Calendar from './Calendar';
 import QAContainer from './QA';
 
 @inject('MyClass')

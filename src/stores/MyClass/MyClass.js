@@ -22,6 +22,10 @@ class MyClass {
   @observable teacherName = '';
   @observable studentName = '';
 
+  @observable scheduleValue = '';
+  @observable selectedDate = '';
+  @observable selectedDateMoment = '';
+
   @action onClickNavHandler = (type) => {
     console.info(type);
     switch (type) {
@@ -39,8 +43,24 @@ class MyClass {
         break;
     }
   };
+
+  @action onChangeHandler = (e, type = '') => {
+    switch (type) {
+      case 'schedule':
+        console.info(e.target.value);
+        this.scheduleValue = e.target.value;
+        console.info(this.scheduleValue);
+        break;
+      default:
+        break;
+    }
+  };
+
   @action getClass = async (id) => {
     console.info(id);
+    if (!id) {
+      window.location.href = '/';
+    }
     console.info(Auth.Authorization);
     const req = {
       params: {

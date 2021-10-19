@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { inject, observer } from 'mobx-react';
-import Modal from './Modal';
-import previousImg from '../static/images/Common/previous2.png';
-import nextImg from '../static/images/Common/next2.png';
+import Modal from '../../../../components/Modal';
+import previousImg from '../../../../static/images/Common/previous2.png';
+import nextImg from '../../../../static/images/Common/next2.png';
+import ScheduleWriting from './ScheduleWriting';
+import moment from 'moment';
 
 const scheduleStyle = {
   // height: '20%',
@@ -113,7 +115,7 @@ const monList = [
 let calendarDays = [];
 let new_month = [];
 
-@inject('MyClass')
+@inject('MyClass', 'Common')
 @observer
 class Calendar extends React.Component {
   makeCalendar = (year, month) => {
@@ -175,19 +177,47 @@ class Calendar extends React.Component {
                 onClick={() => {
                   if (MyClass.chosenDay === day) {
                     MyClass.chosenDay = -1;
+                    MyClass.selectedDate = '';
+                    MyClass.selectedDateMoment = '';
                   } else {
                     if (day) {
                       MyClass.chosenDay = day;
+                      MyClass.selectedDate = dateKey;
+
+                      MyClass.selectedDateMoment = new Date(
+                        Date.UTC(
+                          year,
+                          month < 9 ? '0' + month : month,
+                          day < 10 ? '0' + day : day
+                        )
+                      );
                     } else {
                       MyClass.chosenDay = -1;
+                      MyClass.selectedDate = '';
+                      MyClass.selectedDateMoment = '';
                     }
                   }
                   console.info(MyClass.chosenDay);
                   console.info(day);
                   console.info(month);
                   console.info(week);
+                  console.info(year);
                   console.info(dateKey);
+                  // console.info(new moment(`dateKey`).toUTC);
+                  console.info(
+                    new Date(
+                      Date.UTC(
+                        year,
+                        month < 9 ? '0' + month : month,
+                        day < 10 ? '0' + day : day
+                      )
+                    )
+                  );
+
+                  // console.info(new moment(`dateKey`).utc().format());
                   console.info(`${pid} : ${idx}`);
+
+                  // Tue Sep 28 2021 00:00:00 GMT+0900 (한국 표준시)
                 }}
               >
                 <span
@@ -301,20 +331,29 @@ class Calendar extends React.Component {
     this.makeCalendar(MyClass.year, MyClass.month);
   };
 
-  openModal = () => {
-    //   setModalState({ isModalOpen: true });
-    const { MyClass } = this.props;
-    MyClass.isModalOpen = true;
-  };
+  // openModal = () => {
+  //   //   setModalState({ isModalOpen: true });
+  //   const { MyClass } = this.props;
+  //   MyClass.isModalOpen = true;
+  // };
 
+  // closeModal = () => {
+  //   const { MyClass } = this.props;
+  //   //   setModalState({ isModalOpen: false });
+  //   MyClass.isModalOpen = false;
+  // };
+
+  openModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = false;
+  };
   closeModal = () => {
-    const { MyClass } = this.props;
-    //   setModalState({ isModalOpen: false });
-    MyClass.isModalOpen = false;
+    const { Common } = this.props;
+    Common.modalActive = true;
   };
 
   render() {
-    const { today, history, MyClass } = this.props;
+    const { today, history, MyClass, Common } = this.props;
 
     return (
       <Container>
@@ -330,9 +369,25 @@ class Calendar extends React.Component {
             <Button width={100}>
               <div>화상강의</div>
             </Button>
-            <Button width={100} last={true}>
+            <Button
+              width={100}
+              last={true}
+              onClick={() => (Common.modalActive = true)}
+            >
               <div>일정생성</div>
             </Button>
+
+            {Common.modalActive === true && Common.modalState === 1 && (
+              <Layer>
+                <div>
+                  <ScheduleWriting
+                    // width={width}
+                    open={this.openModal}
+                    close={this.closeModal}
+                  />
+                </div>
+              </Layer>
+            )}
 
             {/* <Button>
               <div>문제지/답지 등록</div>
@@ -556,6 +611,7 @@ const ButtonBox = styled.div`
   display: flex;
 `;
 const Button = styled.button`
+  cursor: pointer;
   width: ${(props) => (props.width ? props.width : '120')}px;
   height: 36px;
   background-color: rgba(235, 114, 82, 1);
@@ -569,5 +625,25 @@ const Button = styled.button`
     font-weight: bold;
   }
 `;
-
+const Layer = styled.div`
+  // position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  // opacity: 0.1;
+  background-color: rgba(0, 0, 0, 0.5);
+  // overflow-y: scroll !important;
+  // height: auto;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 100vh;
+    height: 100%;
+    overflow-y: scroll !important;
+  }
+`;
 export default Calendar;
