@@ -35,6 +35,9 @@ class MyClass {
   @observable reportStartTime = '';
   @observable reportEndTime = '';
   @observable reportContent = '';
+  @observable totalQuestion = 0;
+  @observable questionAry = [];
+  @observable choiceState = false;
 
   @action onClickNavHandler = (type) => {
     console.info(type);
@@ -54,12 +57,38 @@ class MyClass {
     }
   };
 
-  @action onChangeHandler = (e, type = '') => {
+  @action onChangeHandler = (e, type = '', idx = '') => {
     switch (type) {
       case 'schedule':
         // console.info(e.target.value);
         this.scheduleValue = e.target.value;
         console.info(this.scheduleValue);
+        break;
+      case 'make_question':
+        // console.info(e.target.value);
+        this.totalQuestion = e.target.value;
+        this.questionAry = [];
+        for (let i = 0; i < this.totalQuestion; i++) {
+          this.questionAry.push({
+            number: i + 1,
+            type: false,
+            auto: true,
+            answer: '',
+          });
+          //   questionAry[i].question = i + 1;
+          //   questionAry[i].type = 'num';
+          //   questionAry[i].auto = true;
+          //   questionAry[i].answer = '';
+          //   questionAry[i] = i + 1;
+        }
+        console.info(this.totalQuestion);
+        break;
+      case 'make_question_answer':
+        // console.info(e.target.value);
+        console.info(idx);
+        this.questionAry[idx].answer = e.target.value;
+        // this.scheduleValue = e.target.value;
+        console.info(toJS(this.questionAry));
         break;
       default:
         break;

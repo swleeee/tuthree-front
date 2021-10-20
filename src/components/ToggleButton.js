@@ -93,7 +93,7 @@ const CheckBoxLabel = styled.label`
 `;
 const CheckBox = styled.input`
   border: none;
-
+  width: 100%;
   height: 26px;
   @media (min-width: 0px) and (max-width: 767.98px) {
     height: 18px;

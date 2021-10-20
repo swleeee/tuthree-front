@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import AnswerWriting from './Writing/AnswerWriting';
 
 const dummyData = [
   { id: 1, title: '2021-2학기 모의고사 문제지', file: 'werrfewfefewf' },
@@ -27,12 +28,33 @@ class Content extends Component {
     console.info('un2');
     // MyClass.state = 1;
   };
+  openModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = false;
+  };
+  closeModal = () => {
+    const { Common } = this.props;
+    Common.modalActive = true;
+  };
+
   render() {
     const { MyClass, Common } = this.props;
     return (
       <>
         {Common.width > 767.98 ? (
           <Container>
+            {Common.modalActive === true && Common.modalState === 1 && (
+              <Layer>
+                <div>
+                  <AnswerWriting
+                    // width={width}
+                    open={this.openModal}
+                    close={this.closeModal}
+                  />
+                </div>
+              </Layer>
+            )}
+
             <ButtonBox>
               <Button width={160}>
                 <div>문제지/답안지 등록</div>
@@ -90,14 +112,20 @@ class Content extends Component {
                           <div>{item.title}</div>
                         </Question>
                         <Answer
-                          type="header"
+                          type="main"
                           active={
                             (dummyData.length + 1) % 2 === 1
                               ? dummyData.length >= idx + 2
                               : dummyData.length === idx + 1
                           }
                         >
-                          <div>{item.id}</div>
+                          <div
+                            onClick={() => {
+                              Common.modalActive = true;
+                            }}
+                          >
+                            <div>제출</div>
+                          </div>
                         </Answer>
                         {(idx + 1) % 2 === 1 ? (
                           <TuteeAnswer
@@ -131,6 +159,17 @@ class Content extends Component {
           </Container>
         ) : (
           <Container>
+            {Common.modalActive === true && Common.modalState === 1 && (
+              <Layer>
+                <div>
+                  <AnswerWriting
+                    // width={width}
+                    open={this.openModal}
+                    close={this.closeModal}
+                  />
+                </div>
+              </Layer>
+            )}
             <ButtonBox>
               <Button width={160}>
                 <div>문제지/답안지 등록</div>
@@ -168,14 +207,20 @@ class Content extends Component {
                           <div>{item.title}</div>
                         </Question>
                         <Answer
-                          type="header"
+                          type="main"
                           active={
                             (dummyData.length + 1) % 2 === 1
                               ? dummyData.length >= idx + 2
                               : dummyData.length === idx + 1
                           }
                         >
-                          <div>{item.id}</div>
+                          <div
+                            onClick={() => {
+                              Common.modalActive = true;
+                            }}
+                          >
+                            <div>제출</div>
+                          </div>
                         </Answer>
 
                         <TuteeAnswer
@@ -217,7 +262,35 @@ const Table = styled.div`
   display: flex;
   flex-direction: column;
   border: 2px solid black;
+  // div {
+  //   font-size: 16px;
+  // }
+
+  // @media (min-width: 0px) and (max-width: 767.98px) {
+  //   div {
+  //     font-size: 12px;
+  //   }
+  // }
+  // @media (min-width: 768px) and (max-width: 991.98px) {
+  //   div {
+  //     font-size: 14px;
+  //   }
+  // }
+
+  // @media (min-width: 992px) and (max-width: 1299.98px) {
+  //   div {
+  //     font-size: 15px;
+  //   }
+  // }
+`;
+const Header = styled.div`
+  display: flex;
+  width: 100%;
+  //   border: 2px solid blue;
+  background-color: rgba(103, 46, 30, 0.85);
+  border-bottom: 1px solid #000;
   div {
+    color: #fff;
     font-size: 16px;
   }
 
@@ -236,16 +309,6 @@ const Table = styled.div`
     div {
       font-size: 15px;
     }
-  }
-`;
-const Header = styled.div`
-  display: flex;
-  width: 100%;
-  //   border: 2px solid blue;
-  background-color: rgba(103, 46, 30, 0.85);
-  border-bottom: 1px solid #000;
-  div {
-    color: #fff;
   }
 `;
 const Section = styled.div`
@@ -284,17 +347,51 @@ const Answer = styled.div`
   padding: 3px 8px;
   //   width: ${(props) => (props.type === 'header' ? '20%' : '18%')};
   width: 20%;
-  border-right: ${(props) =>
-    props.type === 'header' ? '1px solid #000' : 'none'};
+
+  border-right: 1px solid #000;
   border-bottom: ${(props) => (props.active ? 'none' : '1px solid #707070')};
+
+  > div {
+    // border: 1px solid #707070;
+    // height: 100%;
+    width: ${(props) => (props.type === 'main' ? '50px' : '')};
+    height: ${(props) => (props.type === 'main' ? '20px' : '')};
+    border-radius: ${(props) => (props.type === 'main' ? '15px' : '')};
+    background-color: ${(props) =>
+      props.type === 'main' ? 'rgba(0, 85, 255, 0.6)' : ''};
+    color: ${(props) => (props.type === 'main' ? '#000' : '#fff')};
+    display: ${(props) => (props.type === 'main' ? 'flex' : 'block')};
+    justify-content: center;
+    align-items: center;
+    padding: ${(props) => (props.type === 'main' ? '3px 8px' : '')};
+    box-sizing: border-box;
+    font-size: ${(props) => (props.type === 'main' ? '14px' : '16px')};
+    cursor: ${(props) => (props.type === 'main' ? 'pointer' : 'initial')};
+  }
   @media (min-width: 0px) and (max-width: 767.98px) {
     width: 25%;
+
+    > div {
+      width: ${(props) => (props.type === 'main' ? '42px' : '')};
+      height: ${(props) => (props.type === 'main' ? '16px' : '')};
+      font-size: ${(props) => (props.type === 'main' ? '10px' : '12px')};
+    }
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     width: 23%;
+    > div {
+      width: ${(props) => (props.type === 'main' ? '45px' : '')};
+      height: ${(props) => (props.type === 'main' ? '18px' : '')};
+      font-size: ${(props) => (props.type === 'main' ? '12px' : '14px')};
+    }
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      width: ${(props) => (props.type === 'main' ? '48px' : '')};
+      height: ${(props) => (props.type === 'main' ? '20px' : '')};
+      font-size: ${(props) => (props.type === 'main' ? '13px' : '15px')};
+    }
   }
 `;
 const TuteeAnswer = styled.div`
@@ -366,5 +463,27 @@ const Button = styled.button`
     > div {
       font-size: 14px;
     }
+  }
+`;
+
+const Layer = styled.div`
+  // position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 399;
+  // opacity: 0.1;
+  background-color: rgba(0, 0, 0, 0.5);
+  // overflow-y: scroll !important;
+  // height: auto;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 100vh;
+    height: 100%;
+    overflow-y: scroll !important;
   }
 `;
