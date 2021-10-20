@@ -3,15 +3,29 @@ import styled, { keyframes } from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import TextareaContainer from '../../../../../components/TextareaContainer';
 import TimePicker from '../../../../../components/TimePicker';
+import { toJS } from 'mobx';
 
+@inject('Common', 'MyClass')
+@observer
 class ClassReport extends Component {
   render() {
+    const { Common, MyClass } = this.props;
     return (
       <Container>
         <Line>
           <Label>강의회차</Label>
           <Content width="80%">
-            <Input />
+            <Input
+              ml={15}
+              mr={15}
+              bd={true}
+              width="120px"
+              placeholder="ex) 1"
+              onChange={(e) => MyClass.onChangeHandler(e, 'set_report')}
+              onFocus={(e) => (e.target.placeholder = '')}
+              onBlur={(e) => (e.target.placeholder = 'ex) 1')}
+            />{' '}
+            <span>회차</span>
           </Content>
         </Line>
 
@@ -19,8 +33,8 @@ class ClassReport extends Component {
           <Label>수업시간</Label>
           <Content>
             <TimeLabel type="start">시작시간</TimeLabel>
-            <TimePickerContainer type="start" /> <span> ~ </span>
-            <TimePickerContainer type="end" />
+            <TimePickerContainer type="start" state="report" /> <span> ~ </span>
+            <TimePickerContainer type="end" state="report" />
             <TimeLabel type="end">종료시간</TimeLabel>
           </Content>
         </Line>
@@ -37,7 +51,11 @@ class ClassReport extends Component {
           </Content>
         </Line>
         <ButtonBox>
-          <Button color="#fff" bcolor="rgb(235, 114, 82)">
+          <Button
+            color="#fff"
+            bcolor="rgb(235, 114, 82)"
+            onClick={() => MyClass.setReport()}
+          >
             <div>저장</div>
           </Button>
         </ButtonBox>
@@ -79,6 +97,29 @@ const Label = styled.div`
 const Content = styled.div`
   position: relative;
   width: ${(props) => (props.width ? props.width : '')};
+  display: flex;
+  align-items: center;
+  > span {
+    font-size: 14px;
+    margin-left: 5px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > span {
+      font-size: 11px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > span {
+      font-size: 12px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > span {
+      font-size: 13px;
+    }
+  }
 `;
 
 const TextArea = styled(TextareaContainer)`
@@ -93,7 +134,7 @@ const Input = styled.input`
   // padding-bottom: 18px;
   outline: none;
   font-size: 15px;
-  width: 100%;
+  width: ${(props) => (props.width ? props.width : '100%')};
   box-sizing: border-box;
   display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
   padding: 0 10px;

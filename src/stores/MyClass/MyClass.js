@@ -35,6 +35,7 @@ class MyClass {
   @observable reportStartTime = '';
   @observable reportEndTime = '';
   @observable reportContent = '';
+
   @observable totalQuestion = 0;
   @observable questionAry = [];
   @observable choiceState = false;
@@ -95,6 +96,11 @@ class MyClass {
         // console.info(e.target.value);
         this.scheduleValue = e.target.value;
         console.info(this.scheduleValue);
+        break;
+      case 'set_report':
+        // console.info(e.target.value);
+        this.reportRound = e.target.value;
+        console.info(this.reportRound);
         break;
       default:
         break;
@@ -265,5 +271,151 @@ class MyClass {
       });
     console.info(toJS(this.scheduleDetailAry));
   };
+
+  @action setReport = async () => {
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    console.info(this.selectedDate);
+    console.info(this.reportRound);
+    console.info(this.reportStartTime);
+    console.info(this.reportEndTime);
+    console.info(this.reportContent);
+    const req = {
+      params: {
+        studentId: this.studentId,
+        teacherId: this.teacherId,
+      },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+      data: {
+        date: this.selectedDate,
+        number: this.reportRound,
+        start: this.reportStartTime,
+        end: this.reportEndTime,
+        detail: this.reportContent,
+      },
+    };
+    await ClassAPI.setReport(req)
+      .then(async (res) => {
+        console.info(res);
+        // this.getDetailSchedule();
+        this.getCalendar();
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  // @action putSchedule = async (id) => {
+  //   console.info(this.studentId);
+  //   console.info(this.teacherId);
+  //   console.info(id);
+  //   const req = {
+  //     // params: {
+  //     //   studentId: this.studentId,
+  //     //   teacherId: this.teacherId,
+  //     // },
+  //     headers: {
+  //       Authorization: Auth.Authorization,
+  //     },
+  //     id: id,
+  //     data: {
+  //       dateAt: this.selectedDate,
+  //       schedule: this.scheduleValue,
+  //     },
+  //   };
+  //   await ClassAPI.putSchedule(req)
+  //     .then(async (res) => {
+  //       console.info(res);
+  //       this.getDetailSchedule();
+  //       this.getCalendar();
+  //     })
+  //     .catch((e) => {
+  //       console.info(e);
+  //       console.info(e.response);
+  //     });
+  // };
+
+  // @action delSchedule = async (id) => {
+  //   console.info(this.studentId);
+  //   console.info(this.teacherId);
+  //   console.info(id);
+  //   const req = {
+  //     // params: {
+  //     //   studentId: this.studentId,
+  //     //   teacherId: this.teacherId,
+  //     // },
+  //     headers: {
+  //       Authorization: Auth.Authorization,
+  //     },
+  //     id: id,
+  //   };
+  //   await ClassAPI.delSchedule(req)
+  //     .then(async (res) => {
+  //       console.info(res);
+  //       this.getDetailSchedule();
+  //       this.getCalendar();
+  //     })
+  //     .catch((e) => {
+  //       console.info(e);
+  //       console.info(e.response);
+  //     });
+  // };
+
+  // @action getCalendar = async () => {
+  //   console.info(this.studentId);
+  //   console.info(this.teacherId);
+  //   const req = {
+  //     params: {
+  //       studentId: this.studentId,
+  //       teacherId: this.teacherId,
+  //     },
+  //     headers: {
+  //       Authorization: Auth.Authorization,
+  //     },
+  //   };
+  //   ClassAPI.getSchedule(req)
+  //     .then((res) => {
+  //       console.info(res);
+  //       this.scheduleAry = res.data.data;
+  //     })
+  //     .catch((e) => {
+  //       console.info(e);
+  //       console.info(e.response);
+  //     });
+  //   console.info(toJS(this.scheduleAry));
+  // };
+
+  // @action getDetailSchedule = async () => {
+  //   console.info(this.studentId);
+  //   console.info(this.teacherId);
+  //   console.info(this.selectedDate);
+
+  //   const req = {
+  //     params: {
+  //       studentId: this.studentId,
+  //       teacherId: this.teacherId,
+  //       date: this.selectedDate,
+  //     },
+  //     headers: {
+  //       Authorization: Auth.Authorization,
+  //     },
+  //   };
+  //   await ClassAPI.getDetailSchedule(req)
+  //     .then((res) => {
+  //       console.info(res);
+  //       this.scheduleDetailAry = res.data.data;
+  //       this.scheduleDetailAry.map((item, idx) => {
+  //         item.modify = false;
+  //       });
+  //     })
+  //     .catch((e) => {
+  //       console.info(e);
+  //       console.info(e.response);
+  //     });
+  //   console.info(toJS(this.scheduleDetailAry));
+  // };
 }
 export default new MyClass();

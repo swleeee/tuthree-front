@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 
-@inject('Common', 'Chatting')
+@inject('Common', 'Chatting', 'MyClass')
 @observer
 class TimePicer extends React.Component {
   constructor(...args) {
@@ -17,21 +17,36 @@ class TimePicer extends React.Component {
   }
 
   onTimeChange(time) {
-    const { type, Chatting } = this.props;
+    const { type, Chatting, MyClass, state } = this.props;
     this.setState({ time });
     // console.info(this.state.time);
     console.info(time);
-    switch (type) {
-      case 'start':
-        console.info(`start_time : ${time}`);
-        Chatting.startTimeValue = time;
-        break;
-      case 'end':
-        console.info(`end_time : ${time}`);
-        Chatting.endTimeValue = time;
-        break;
-      default:
-        break;
+    if (state === 'report') {
+      switch (type) {
+        case 'start':
+          console.info(`start_time : ${time}`);
+          MyClass.reportStartTime = time;
+          break;
+        case 'end':
+          console.info(`end_time : ${time}`);
+          MyClass.reportEndTime = time;
+          break;
+        default:
+          break;
+      }
+    } else {
+      switch (type) {
+        case 'start':
+          console.info(`start_time : ${time}`);
+          Chatting.startTimeValue = time;
+          break;
+        case 'end':
+          console.info(`end_time : ${time}`);
+          Chatting.endTimeValue = time;
+          break;
+        default:
+          break;
+      }
     }
   }
 
