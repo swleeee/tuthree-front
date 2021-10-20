@@ -249,14 +249,17 @@ class Calendar extends React.Component {
                       return (
                         <>
                           {
-                            console.info('1')
-                            //   console.info(schedule)
+                            // console.info('1')
+                            // console.info(schedule)
                           }
                           <SubItem
                             style={scheduleStyle}
                             className={schedule.type}
                             key={schedule.schedule}
-                            //   onClick={MyClass.openModal}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              console.info(toJS(schedule));
+                            }}
                           >
                             {schedule.schedule}
                             <Modal

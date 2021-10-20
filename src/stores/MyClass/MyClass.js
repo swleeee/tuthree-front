@@ -90,6 +90,12 @@ class MyClass {
         // this.scheduleValue = e.target.value;
         console.info(toJS(this.questionAry));
         break;
+
+      case 'modify_schedule':
+        // console.info(e.target.value);
+        this.scheduleValue = e.target.value;
+        console.info(this.scheduleValue);
+        break;
       default:
         break;
     }
@@ -150,6 +156,36 @@ class MyClass {
       });
   };
 
+  @action putSchedule = async (id) => {
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    console.info(id);
+    const req = {
+      // params: {
+      //   studentId: this.studentId,
+      //   teacherId: this.teacherId,
+      // },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+      id: id,
+      data: {
+        dateAt: this.selectedDate,
+        schedule: this.scheduleValue,
+      },
+    };
+    await ClassAPI.putSchedule(req)
+      .then(async (res) => {
+        console.info(res);
+        this.getDetailSchedule();
+        this.getCalendar();
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
   @action getCalendar = async () => {
     console.info(this.studentId);
     console.info(this.teacherId);
@@ -193,6 +229,9 @@ class MyClass {
       .then((res) => {
         console.info(res);
         this.scheduleDetailAry = res.data.data;
+        this.scheduleDetailAry.map((item, idx) => {
+          item.modify = false;
+        });
       })
       .catch((e) => {
         console.info(e);

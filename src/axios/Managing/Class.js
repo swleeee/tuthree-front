@@ -28,7 +28,15 @@ export function setSchedule(req) {
     data: req.data,
   });
 }
-
+export function putSchedule(req) {
+  return axios({
+    method: 'PUT',
+    url: `${ROOT_URL}/room/calendar/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
 export function getSchedule(req) {
   return axios({
     method: 'GET',

@@ -3,6 +3,9 @@ import styled, { keyframes } from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import addImg from '../../../../../static/images/Common/add.png';
 import deleteImg from '../../../../../static/images/Common/delete.png';
+import modifyImg from '../../../../../static/images/Common/modify.png';
+import saveImg from '../../../../../static/images/Common/save.png';
+import { toJS } from 'mobx';
 
 @inject('Common', 'MyClass')
 @observer
@@ -17,6 +20,7 @@ class Schedule extends Component {
             onChange={(e) => MyClass.onChangeHandler(e, 'schedule')}
             onFocus={(e) => (e.target.placeholder = '')}
             onBlur={(e) => (e.target.placeholder = '일정을 입력하세요.')}
+            pd={true}
           />
           <Search
             //   onClick={() => {
@@ -41,9 +45,50 @@ class Schedule extends Component {
             MyClass.scheduleDetailAry.map((item, idx) => {
               return (
                 <ScheduleItem>
-                  <ScheduleName>
-                    <div>{item.schedule}</div>
-                  </ScheduleName>
+                  {!item.modify ? (
+                    <ScheduleName>
+                      <div>{item.schedule}</div>
+                    </ScheduleName>
+                  ) : (
+                    <ScheduleName>
+                      <Input
+                        autoFocus
+                        pd={false}
+                        value={MyClass.scheduleValue}
+                        onChange={(e) =>
+                          MyClass.onChangeHandler(e, 'modify_schedule')
+                        }
+                        height={20}
+                        // onFocus={(e) => (e.target.placeholder = '')}
+                        onBlur={() => {
+                          console.info('blur');
+                        }}
+                      />
+                    </ScheduleName>
+                  )}
+
+                  {!item.modify ? (
+                    <img
+                      src={modifyImg}
+                      onClick={() => {
+                        item.modify = !item.modify;
+                        MyClass.scheduleValue = item.schedule;
+                        console.info(toJS(MyClass.scheduleDetailAry));
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={saveImg}
+                      onClick={() => {
+                        item.modify = !item.modify;
+                        // MyClass.scheduleValue = item.schedule;
+                        console.info(item.id);
+                        console.info(toJS(MyClass.scheduleDetailAry));
+                        MyClass.putSchedule(item.id);
+                      }}
+                    />
+                  )}
+
                   <img src={deleteImg} />
                 </ScheduleItem>
               );
@@ -145,16 +190,27 @@ const ScheduleItem = styled.div`
   > img {
     width: 18px;
     height: 18px;
+    margin: 0 3px;
+    transition: 1s;
   }
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     > div {
       font-size: 11px;
     }
+    > img {
+      width: 14px;
+      height: 14px;
+      min-width: 14px;
+    }
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     > div {
       font-size: 13px;
+    }
+    > img {
+      width: 16px;
+      height: 16px;
     }
   }
 
@@ -178,7 +234,7 @@ const Input = styled.input`
   width: 100%;
   box-sizing: border-box;
   display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
-  padding: 0 10px;
+  padding: ${(props) => (props.pd ? '0 10px' : '')};
 
   ::placeholder {
     font-size: 12px;
@@ -187,29 +243,33 @@ const Input = styled.input`
   :focus {
   }
   @media (min-width: 0px) and (max-width: 767.98px) {
-    // width: ${(props) => (props.domainType === 2 ? '85px' : '200px')};
-    height: 22px;
     font-size: 12px;
-    // margin-bottom: 10px;
+    height: ${(props) => (props.height ? props.height : '20')}px;
+    width: ${(props) => (props.width ? props.width : '100%')};
     padding: 0 8px;
+    margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+    margin-right: ${(props) => (props.mr ? props.mr : '0')}px;
     ::placeholder {
       font-size: 10px;
       text-align: left;
     }
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
-    // width: ${(props) => (props.domainType === 2 ? '150px' : '250px')};
-    height: 25px;
-    margin-left: ${(props) => (props.ml === 2 ? '10px' : '0px')};
+    width: ${(props) => (props.width ? props.width : '100%')};
+    height: ${(props) => (props.height ? props.height : '20')}px;
+    margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+    margin-right: ${(props) => (props.mr ? props.mr : '0')}px;
   }
   @media (min-width: 992px) and (max-width: 1299.98px) {
-    // width: ${(props) => (props.domainType === 2 ? '160px' : '300px')};
-    height: 25px;
-    margin-left: ${(props) => (props.ml === 2 ? '15px' : '0px')};
+    width: ${(props) => (props.width ? props.width : '100%')};
+    height: ${(props) => (props.height ? props.height : '20')}px;
+    margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+    margin-right: ${(props) => (props.mr ? props.mr : '0')}px;
   }
   @media (min-width: 1300px) {
-    // width: ${(props) => (props.domainType === 2 ? '160px' : '440px')};
-    height: 30px;
-    margin-left: ${(props) => (props.ml === 2 ? '15px' : '0px')};
+    width: ${(props) => (props.width ? props.width : '100%')};
+    height: ${(props) => (props.height ? props.height : '20')}px;
+    margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+    margin-right: ${(props) => (props.mr ? props.mr : '0')}px;
   }
 `;

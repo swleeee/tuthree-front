@@ -116,7 +116,7 @@ class Content extends Component {
           </SortingBox>
         </Header>
         <Main>
-          {dummyData.map((item, idx) => {
+          {/* {dummyData.map((item, idx) => {
             return (
               <div onClick={() => (MyClass.state = 2)}>
                 <ClassCard
@@ -130,8 +130,8 @@ class Content extends Component {
                 />
               </div>
             );
-          })}
-          {/* {MyClass.classAry &&
+          })} */}
+          {MyClass.classAry &&
             MyClass.classAry.map((item, idx) => {
               return (
                 <div
@@ -155,7 +155,7 @@ class Content extends Component {
                   />
                 </div>
               );
-            })} */}
+            })}
         </Main>
       </Container>
     );
