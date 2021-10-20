@@ -17,8 +17,9 @@ class TimePicer extends React.Component {
   }
 
   onTimeChange(time) {
-    const { type, Chatting, MyClass, state } = this.props;
+    const { type, Chatting, MyClass, state, Common } = this.props;
     this.setState({ time });
+    // Common.time = time;
     // console.info(this.state.time);
     console.info(time);
     if (state === 'report') {
@@ -49,11 +50,21 @@ class TimePicer extends React.Component {
       }
     }
   }
+  componentDidMount = () => {
+    console.info('adasdas');
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    console.info('componentDidUpdate');
+    console.info(prevProps);
+    console.info(prevState);
+  }
 
   render() {
     const { time } = this.state;
-    const { type } = this.props;
-
+    const { type, state, MyClass, active, Common } = this.props;
+    console.info(MyClass.reportWritingState);
+    console.info(active);
     return (
       <TimeContainer
         value={time}

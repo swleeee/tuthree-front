@@ -77,7 +77,7 @@ export function setReport(req) {
 export function putReport(req) {
   return axios({
     method: 'PUT',
-    url: `${ROOT_URL}/room/calendar/${req.id}`,
+    url: `${ROOT_URL}/room/post/${req.id}`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
     data: req.data,
@@ -87,7 +87,7 @@ export function putReport(req) {
 export function delReport(req) {
   return axios({
     method: 'DELETE',
-    url: `${ROOT_URL}/room/calendar/${req.id}`,
+    url: `${ROOT_URL}/room/post/${req.id}`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });
@@ -105,7 +105,7 @@ export function getReport(req) {
 export function getDetailReport(req) {
   return axios({
     method: 'GET',
-    url: `${ROOT_URL}/room/calendar/date`,
+    url: `${ROOT_URL}/room/post/date`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });

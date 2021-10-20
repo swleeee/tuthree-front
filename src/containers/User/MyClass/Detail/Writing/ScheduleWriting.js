@@ -177,7 +177,9 @@ class ScheduleWriting extends React.Component {
     const { MyClass } = this.props;
     if (MyClass.selectedDate) {
       MyClass.getDetailSchedule();
+      MyClass.getDetailReport();
     }
+    console.info('ccccccccccccc');
   };
   onChange = (date) => {
     const { MyClass } = this.props;
@@ -205,6 +207,13 @@ class ScheduleWriting extends React.Component {
     MyClass.selectedDateMoment = date;
     console.info(MyClass.selectedDateMoment);
     MyClass.getDetailSchedule();
+    MyClass.getDetailReport();
+
+    // if (MyClass.reportDetailAry) {
+    //   console.info('aa');
+    // } else {
+    //   console.info('bb');
+    // }
 
     // to normal Date object
     // console.log(date.toDate());
@@ -285,8 +294,12 @@ class ScheduleWriting extends React.Component {
                     </TabBox>
                   </Header>
                   <Main>
-                    {MyClass.writingTabState === 1 && <ScheduleContainer />}
-                    {MyClass.writingTabState === 2 && <ClassReportContainer />}
+                    {MyClass.writingTabState === 1 && (
+                      <ScheduleContainer date={MyClass.selectedDate} />
+                    )}
+                    {MyClass.writingTabState === 2 && (
+                      <ClassReportContainer date={MyClass.selectedDate} />
+                    )}
 
                     {/* <div>
                       <DateContainer

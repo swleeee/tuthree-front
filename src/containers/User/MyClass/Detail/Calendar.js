@@ -8,29 +8,10 @@ import ScheduleWriting from './Writing/ScheduleWriting';
 import { toJS } from 'mobx';
 import moment from 'moment';
 
-const scheduleStyle = {
-  // height: '20%',
-  // height: '30px',
-  width: '60%',
-  minHeight: '30px',
-  // backgroundColor: '#112667',
-  backgroundColor: 'rgba(11, 125,239,0.3)',
-  overFlow: 'hidden',
-  textOverFlow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  // color: '#fff',
-  padding: '1px',
-  margin: '5px 0 5px 5px',
-  fontSize: '0.5em',
-  cursor: 'pointer',
-  flexGrow: 'initial',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderRadius: '5px',
-  border: 'none',
-  whiteSpace: 'break-spaces',
-};
+// const scheduleStyle = {
+//   // height: '20%',
+//   // height: '30px',
+// };
 
 // console.log("리덕스에서 가져온 스케쥴",schedules)
 //   const schedules = useSelector((state) => state.calendar.schedules);
@@ -253,7 +234,8 @@ class Calendar extends React.Component {
                             // console.info(schedule)
                           }
                           <SubItem
-                            style={scheduleStyle}
+                            // style={scheduleStyle}
+                            active={schedule.type === '일정'}
                             className={schedule.type}
                             key={schedule.schedule}
                             onClick={(e) => {
@@ -526,7 +508,7 @@ const Row = styled.div`
   border-right: 0.5px solid #707070;
   border-bottom: 2px solid #707070;
   box-sizing: border-box;
-  & div {
+  > div {
     width: 13%;
     // height: 100%;
     font-weight: 600;
@@ -605,6 +587,26 @@ const FloatBtn2 = styled.button`
 `;
 const SubItem = styled.div`
   //   border: 2px solid red;
+
+  width: 60%;
+  min-height: 30px;
+
+  background-color: ${(props) =>
+    props.active ? 'rgba(11, 125, 239, 0.3)' : 'rgba(255, 0, 0, 0.3)'};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: break-spaces;
+  // color: '#fff';
+  padding: 1px;
+  margin: 5px 0 5px 5px;
+  font-size: 0.5em;
+  cursor: pointer;
+  flex-grow: initial;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  border: none;
 `;
 
 const Item = styled.div`

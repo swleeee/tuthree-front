@@ -1,76 +1,119 @@
+import TimeField from 'react-simple-timefield';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import { inject, observer } from 'mobx-react';
 
-import { DatePicker } from '@y0c/react-datepicker';
+@inject('Common', 'Chatting', 'MyClass')
+@observer
+class TimePicer extends React.Component {
+  constructor(...args) {
+    super(...args);
 
-// import calendar style
-// You can customize style by copying asset folder.
-// import '@y0c/react-datepicker/assets/styles/calendar.scss';
+    this.state = {
+      time: '--:--',
+    };
 
-// Please include the locale you want to use.
-// and delivery props to calendar component
-// import "dayjs/locale/ko";
-// import "dayjs/locale/en";
-import './styles.css';
-class TimePicker extends React.Component {
-  state = {
-    open: true,
+    this.onTimeChange = this.onTimeChange.bind(this);
+  }
+
+  onTimeChange(time) {
+    const { type, Chatting, MyClass, state, Common } = this.props;
+    // this.setState({ time });
+    // if(state==="start"){
+
+    // }else{
+
+    // }
+    // Common.time = time;
+    // console.info(this.state.time);
+    console.info(time);
+    if (state === 'report') {
+      switch (type) {
+        case 'start':
+          console.info(`start_time : ${time}`);
+          MyClass.reportStartTime = time;
+          break;
+        case 'end':
+          console.info(`end_time : ${time}`);
+          MyClass.reportEndTime = time;
+          break;
+        default:
+          break;
+      }
+    } else {
+      switch (type) {
+        case 'start':
+          console.info(`start_time : ${time}`);
+          Chatting.startTimeValue = time;
+          break;
+        case 'end':
+          console.info(`end_time : ${time}`);
+          Chatting.endTimeValue = time;
+          break;
+        default:
+          break;
+      }
+    }
+  }
+  componentDidMount = () => {
+    console.info('adasdas');
   };
-  handler = (e) => {
-    console.info(e);
-    console.info(e.$H);
-    console.info(e.$m);
-  };
-  onChange =
-    (title) =>
-    (...args) =>
-      console.log(title, args);
+
+  componentDidUpdate(prevProps, prevState) {
+    console.info('componentDidUpdate');
+    console.info(prevProps);
+    console.info(prevState);
+  }
+
   render() {
-    const Panel = ({ header, children }) => (
-      <div style={{ height: '100px' }}>
-        <h1>{header}</h1>
-        <div>{children}</div>
-      </div>
-    );
-
+    const { time } = this.state;
+    const { type, state, MyClass, active, Common } = this.props;
+    console.info(MyClass.reportWritingState);
+    console.info(active);
     return (
-      <Container className="App">
-        <Panel header="">
-          <DatePicker
-            open={this.state.open}
-            showTimeOnly
-            onChange={(e) => this.handler(e)}
-            // onMouseOver={this.setState({ open: true })}
-            // onBlur={this.setState({ open: false })}
+      <>
+        {type === 'start' ? (
+          <TimeContainer
+            value={MyClass.reportStartTime}
+            onChange={this.onTimeChange}
+            style={{
+              width: 52,
+              height: 32,
+              border: '1px solid #ccc',
+              padding: '5px 8px',
+              boxSizing: 'border-box',
+              color: '#333',
+              //   borderRadius: 3,
+            }}
           />
-        </Panel>
-      </Container>
+        ) : (
+          <TimeContainer
+            value={MyClass.reportEndTime}
+            onChange={this.onTimeChange}
+            style={{
+              width: 52,
+              height: 32,
+              border: '1px solid #ccc',
+              padding: '5px 8px',
+              boxSizing: 'border-box',
+              color: '#333',
+              //   borderRadius: 3,
+            }}
+          />
+        )}
+      </>
     );
   }
 }
+export default TimePicer;
 
-export default TimePicker;
-// const rootElement = document.getElementById('root');
-// ReactDOM.render(<App />, rootElement);
-
-const Container = styled.div`
-  .picker__container {
-    cursor: pointer;
-    border: 2px solid black;
-    width: 100px;
-    // margin: 0 10px;
-    // display: ${(props) => (props.open ? 'flex' : 'none')};
-  }
-  .time__container {
-    display: flex;
-  }
+const TimeContainer = styled(TimeField)`
+  margin: 0 10px;
   input {
-    width: 80px;
-    padding-left: 0;
+    width: 100px;
   }
-  button {
-    background-color: #fff;
-    border: 1px solid #707070;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    margin: 0;
   }
 `;

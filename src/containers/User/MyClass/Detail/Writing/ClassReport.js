@@ -2,20 +2,45 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import TextareaContainer from '../../../../../components/TextareaContainer';
-import TimePicker from '../../../../../components/TimePicker';
+import TimePicker from '../../../../../components/TimePicker2';
 import { toJS } from 'mobx';
 
 @inject('Common', 'MyClass')
 @observer
 class ClassReport extends Component {
+  componentDidMount = () => {
+    const { Common, MyClass } = this.props;
+    console.info('didmount');
+
+    // if (MyClass.reportDetailAry) {
+    //   // if (MyClass.reportDetailAry.length !== 0) {
+    //   console.info('aaaaaaaaaaaaaaaaaaaa');
+    //   MyClass.reportWritingState = 2;
+    //   console.info(MyClass.reportDetailAry[0].number);
+    //   console.info(MyClass.reportDetailAry[0].number.substring(0, 1));
+    //   MyClass.reportRound = MyClass.reportDetailAry[0].number.substring(0, 1);
+    //   MyClass.reportStartTime = MyClass.reportDetailAry[0].start;
+    //   MyClass.reportEndTime = MyClass.reportDetailAry[0].end;
+    //   MyClass.reportContent = MyClass.reportDetailAry[0].detail;
+    // } else {
+    //   console.info('bbbbbbbbbbbbbbbbbb');
+    //   MyClass.reportWritingState = 1;
+    //   MyClass.reportRound = '';
+    //   MyClass.reportStartTime = '';
+    //   MyClass.reportEndTime = '';
+    //   MyClass.reportContent = '';
+    // }
+  };
   render() {
     const { Common, MyClass } = this.props;
+    console.info(MyClass.reportWritingState);
     return (
       <Container>
         <Line>
           <Label>강의회차</Label>
           <Content width="80%">
             <Input
+              value={MyClass.reportRound}
               ml={15}
               mr={15}
               bd={true}
@@ -33,8 +58,17 @@ class ClassReport extends Component {
           <Label>수업시간</Label>
           <Content>
             <TimeLabel type="start">시작시간</TimeLabel>
-            <TimePickerContainer type="start" state="report" /> <span> ~ </span>
-            <TimePickerContainer type="end" state="report" />
+            <TimePickerContainer
+              type="start"
+              state="report"
+              active={MyClass.reportWritingState === 2}
+            />{' '}
+            <span> ~ </span>
+            <TimePickerContainer
+              type="end"
+              state="report"
+              active={MyClass.reportWritingState === 2}
+            />
             <TimeLabel type="end">종료시간</TimeLabel>
           </Content>
         </Line>
@@ -45,19 +79,45 @@ class ClassReport extends Component {
               mih={150}
               bd={true}
               type="classReport"
-              //   value={Chatting.detailContent}
+              value={MyClass.reportContent}
               placeholder="오늘은 (...) 부분에 대해서 진행하였습니다."
             />
           </Content>
         </Line>
         <ButtonBox>
-          <Button
-            color="#fff"
-            bcolor="rgb(235, 114, 82)"
-            onClick={() => MyClass.setReport()}
-          >
-            <div>저장</div>
-          </Button>
+          {MyClass.reportWritingState === 1 ? (
+            <Button
+              color="#fff"
+              bcolor="rgb(235, 114, 82)"
+              onClick={() => MyClass.setReport()}
+            >
+              <div>저장</div>
+            </Button>
+          ) : (
+            <>
+              <Button
+                color="#fff"
+                bcolor="rgb(235, 114, 82)"
+                onClick={() => {
+                  MyClass.putReport(MyClass.reportDetailAry[0].id);
+                  // console.info(toJS(MyClass.reportDetailAry[0]));
+                }}
+              >
+                <div>수정</div>
+              </Button>
+
+              <Button
+                color="#fff"
+                bcolor="rgba(255, 0, 0, 0.7)"
+                onClick={() => {
+                  MyClass.delReport(MyClass.reportDetailAry[0].id);
+                  // console.info(toJS(MyClass.reportDetailAry[0]));
+                }}
+              >
+                <div>삭제</div>
+              </Button>
+            </>
+          )}
         </ButtonBox>
       </Container>
     );
