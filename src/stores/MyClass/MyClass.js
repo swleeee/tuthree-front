@@ -39,6 +39,8 @@ class MyClass {
   @observable reportAry = [];
   @observable reportDetailAry = [];
   @observable reportWritingState = 1; // 1 : 작성, 2 : 수정
+  @observable selectedReportDate = '';
+  @observable selectModalActive = false;
 
   @observable totalQuestion = 0;
   @observable questionAry = [];
@@ -408,7 +410,7 @@ class MyClass {
   //   console.info(toJS(this.scheduleAry));
   // };
 
-  @action getDetailReport = async () => {
+  @action getDetailReport = async (date = '') => {
     console.info(this.studentId);
     console.info(this.teacherId);
     console.info(this.selectedDate);
@@ -418,7 +420,7 @@ class MyClass {
       params: {
         studentId: this.studentId,
         teacherId: this.teacherId,
-        date: this.selectedDate,
+        date: date ? date : this.selectedDate,
       },
       headers: {
         Authorization: Auth.Authorization,
@@ -443,12 +445,14 @@ class MyClass {
       this.reportWritingState = 2;
       console.info(this.reportDetailAry[0].number);
       console.info(this.reportDetailAry[0].number.substring(0, 1));
+      this.selectedReportDate = this.reportDetailAry[0].dateAt;
       this.reportRound = this.reportDetailAry[0].number.substring(0, 1);
       this.reportStartTime = this.reportDetailAry[0].start;
       this.reportEndTime = this.reportDetailAry[0].end;
       this.reportContent = this.reportDetailAry[0].detail;
     } else {
       console.info('bbbbbbbbbbbbbbbbbb');
+      this.selectedReportDate = '';
       this.reportWritingState = 1;
       this.reportRound = '';
       this.reportStartTime = '';

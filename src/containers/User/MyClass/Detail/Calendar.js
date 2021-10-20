@@ -5,6 +5,7 @@ import Modal from '../../../../components/Modal';
 import previousImg from '../../../../static/images/Common/previous2.png';
 import nextImg from '../../../../static/images/Common/next2.png';
 import ScheduleWriting from './Writing/ScheduleWriting';
+import SelectReport from './Select/ClassReport';
 import { toJS } from 'mobx';
 import moment from 'moment';
 
@@ -241,6 +242,10 @@ class Calendar extends React.Component {
                             key={schedule.schedule}
                             onClick={(e) => {
                               e.stopPropagation();
+                              if (schedule.type === '보고서') {
+                                MyClass.selectModalActive = true;
+                                MyClass.getDetailReport(schedule.date);
+                              }
                               console.info(toJS(schedule));
                             }}
                           >
@@ -343,6 +348,15 @@ class Calendar extends React.Component {
   //   MyClass.isModalOpen = false;
   // };
 
+  openSelectModal = () => {
+    const { MyClass } = this.props;
+    MyClass.selectModalActive = false;
+  };
+  closeSelectModal = () => {
+    const { MyClass } = this.props;
+    MyClass.selectModalActive = true;
+  };
+
   openModal = () => {
     const { Common } = this.props;
     Common.modalActive = false;
@@ -376,6 +390,17 @@ class Calendar extends React.Component {
             >
               <div>일정생성</div>
             </Button>
+            {MyClass.selectModalActive === true && (
+              <Layer>
+                <div>
+                  <SelectReport
+                    // width={width}
+                    open={this.openSelectModal}
+                    close={this.closeSelectModal}
+                  />
+                </div>
+              </Layer>
+            )}
 
             {Common.modalActive === true && Common.modalState === 1 && (
               <Layer>
