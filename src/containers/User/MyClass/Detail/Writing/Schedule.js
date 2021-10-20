@@ -89,7 +89,12 @@ class Schedule extends Component {
                     />
                   )}
 
-                  <img src={deleteImg} />
+                  <img
+                    src={deleteImg}
+                    onClick={() => {
+                      MyClass.delSchedule(item.id);
+                    }}
+                  />
                 </ScheduleItem>
               );
             })}
@@ -147,6 +152,7 @@ const Search = styled.div`
   > img {
     width: 24px;
     height: 24px;
+    cursor: pointer;
   }
 
   @media (min-width: 0px) and (max-width: 767.98px) {
@@ -191,7 +197,8 @@ const ScheduleItem = styled.div`
     width: 18px;
     height: 18px;
     margin: 0 3px;
-    transition: 1s;
+    // transition: 1s;
+    cursor: pointer;
   }
 
   @media (min-width: 0px) and (max-width: 767.98px) {

@@ -37,6 +37,16 @@ export function putSchedule(req) {
     data: req.data,
   });
 }
+
+export function delSchedule(req) {
+  return axios({
+    method: 'DELETE',
+    url: `${ROOT_URL}/room/calendar/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
 export function getSchedule(req) {
   return axios({
     method: 'GET',

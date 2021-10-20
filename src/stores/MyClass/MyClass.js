@@ -186,6 +186,32 @@ class MyClass {
       });
   };
 
+  @action delSchedule = async (id) => {
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    console.info(id);
+    const req = {
+      // params: {
+      //   studentId: this.studentId,
+      //   teacherId: this.teacherId,
+      // },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+      id: id,
+    };
+    await ClassAPI.delSchedule(req)
+      .then(async (res) => {
+        console.info(res);
+        this.getDetailSchedule();
+        this.getCalendar();
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
   @action getCalendar = async () => {
     console.info(this.studentId);
     console.info(this.teacherId);
