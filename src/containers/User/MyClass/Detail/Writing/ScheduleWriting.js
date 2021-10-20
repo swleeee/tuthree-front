@@ -11,6 +11,7 @@ import TimePicker from '../../../../../components/TimePicker';
 
 import TextAreaContainer from '../../../../../components/TextareaContainer';
 import ScheduleContainer from './Schedule';
+import ClassReportContainer from './ClassReport';
 
 import calendarImg from '../../../../../static/images/Common/calendar.png';
 import { getYear } from 'date-fns';
@@ -285,6 +286,8 @@ class ScheduleWriting extends React.Component {
                   </Header>
                   <Main>
                     {MyClass.writingTabState === 1 && <ScheduleContainer />}
+                    {MyClass.writingTabState === 2 && <ClassReportContainer />}
+
                     {/* <div>
                       <DateContainer
                         selected={MyClass.selectedDateMoment}
@@ -359,6 +362,9 @@ class ScheduleWriting extends React.Component {
                     </TabBox>
                   </Header>
                   <Main>
+                    {MyClass.writingTabState === 1 && <ScheduleContainer />}
+                    {MyClass.writingTabState === 2 && <ClassReportContainer />}
+
                     {/* <div>
                       <DateContainer
                         selected={MyClass.selectedDateMoment}
@@ -374,47 +380,6 @@ class ScheduleWriting extends React.Component {
                         dateFormat="yyyy-MM-dd"
                       />
                     </div> */}
-
-                    <SearchBox>
-                      <Input
-                        placeholder="일정을 입력하세요."
-                        onChange={(e) => MyClass.onChangeHandler(e, 'schedule')}
-                        onFocus={(e) => (e.target.placeholder = '')}
-                        onBlur={(e) =>
-                          (e.target.placeholder = '일정을 입력하세요.')
-                        }
-                      />
-                      <Search
-                        //   onClick={() => {
-                        //     console.info('dsfdsf');
-                        //     AdminCommunity.communityErrorMessage = '';
-                        //     if (AdminCommunity.communitySearchValue === '') {
-                        //       AdminCommunity.communitySearchFinalValue = '';
-                        //       AdminCommunity.getCommunityList(1);
-                        //     } else {
-                        //       AdminCommunity.searchCommunity(1);
-                        //     }
-                        //   }}
-                        onClick={() => {
-                          MyClass.setSchedule();
-                        }}
-                      >
-                        <img src={addImg} />
-                      </Search>
-                    </SearchBox>
-                    <ScheduleArea>
-                      {MyClass.scheduleDetailAry &&
-                        MyClass.scheduleDetailAry.map((item, idx) => {
-                          return (
-                            <ScheduleItem>
-                              <ScheduleName>
-                                <div>{item.schedule}</div>
-                              </ScheduleName>
-                              <img src={deleteImg} />
-                            </ScheduleItem>
-                          );
-                        })}
-                    </ScheduleArea>
                   </Main>
                 </Container>
               </>

@@ -31,6 +31,11 @@ class MyClass {
   @observable selectedDate = '';
   @observable selectedDateMoment = '';
 
+  @observable reportRound = '';
+  @observable reportStartTime = '';
+  @observable reportEndTime = '';
+  @observable reportContent = '';
+
   @action onClickNavHandler = (type) => {
     console.info(type);
     switch (type) {
