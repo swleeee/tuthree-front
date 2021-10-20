@@ -303,6 +303,9 @@ class MyClass {
     await ClassAPI.setReport(req)
       .then(async (res) => {
         console.info(res);
+        alert('수업보고서 작성이 완료되었습니다!');
+        this.writingTabState = 1;
+        Common.modalActive = false;
         this.getDetailReport();
         this.getCalendar();
       })

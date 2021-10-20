@@ -235,6 +235,7 @@ class Calendar extends React.Component {
                           }
                           <SubItem
                             // style={scheduleStyle}
+                            choose={MyClass.chosenDay === day}
                             active={schedule.type === '일정'}
                             className={schedule.type}
                             key={schedule.schedule}
@@ -592,11 +593,17 @@ const SubItem = styled.div`
   min-height: 30px;
 
   background-color: ${(props) =>
-    props.active ? 'rgba(11, 125, 239, 0.3)' : 'rgba(255, 0, 0, 0.3)'};
+    props.active
+      ? props.choose
+        ? 'rgba(11, 125, 239, 0.8)'
+        : 'rgba(11, 125, 239, 0.3)'
+      : props.choose
+      ? 'rgba(255, 0, 0, 0.6)'
+      : 'rgba(255, 0, 0, 0.3)'};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: break-spaces;
-  // color: '#fff';
+  color: ${(props) => (props.choose ? '#fff' : '#000')};
   padding: 1px;
   margin: 5px 0 5px 5px;
   font-size: 0.5em;
@@ -607,6 +614,7 @@ const SubItem = styled.div`
   align-items: center;
   border-radius: 5px;
   border: none;
+  font-weight: 500;
 `;
 
 const Item = styled.div`
