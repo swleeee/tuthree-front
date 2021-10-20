@@ -23,6 +23,10 @@ const dummyData = [
 @inject('MyClass', 'Common')
 @observer
 class Content extends Component {
+  componentDidMount = () => {
+    const { MyClass } = this.props;
+    MyClass.getQuestionList();
+  };
   componentWillUnmount = () => {
     const { MyClass } = this.props;
     console.info('un2');
@@ -87,7 +91,7 @@ class Content extends Component {
                 </Section>
               </Header>
               <Main>
-                {dummyData &&
+                {/* {dummyData &&
                   dummyData.map((item, idx) => {
                     console.info(dummyData.length);
                     console.info(idx);
@@ -145,6 +149,100 @@ class Content extends Component {
                               (dummyData.length + 1) % 2 === 1
                                 ? dummyData.length >= idx + 2
                                 : dummyData.length === idx + 1
+                            }
+                          >
+                            <div>b</div>
+                          </TuteeAnswer>
+                        )} */}
+
+                {MyClass.questionTotalList &&
+                  MyClass.questionTotalList.map((item, idx) => {
+                    console.info(MyClass.questionTotalList.length);
+                    console.info(idx);
+                    if ((MyClass.questionTotalList.length + 1) % 2 === 1) {
+                      console.info(MyClass.questionTotalList.length >= idx + 2);
+                    } else {
+                      console.info(
+                        MyClass.questionTotalList.length === idx + 1
+                      );
+                    }
+
+                    return (
+                      // <SubMain>
+
+                      <Section type="main">
+                        <Question
+                          type="header"
+                          active={
+                            (MyClass.questionTotalList.length + 1) % 2 === 1
+                              ? MyClass.questionTotalList.length >= idx + 2
+                              : MyClass.questionTotalList.length === idx + 1
+                          }
+                        >
+                          <div
+                            onClick={() => {
+                              console.info(item.file);
+                              // var byteArray = new Uint8Array(item.file);
+                              // var byteArray = item.file.arrayBuffer();
+                              // console.info(byteArray);
+
+                              const blob = new Blob([item.file], {
+                                type: 'application/json',
+                              });
+                              let file = new File([blob], item.title);
+                              console.info(blob);
+                              console.info(file);
+                              const url = window.URL.createObjectURL(blob);
+                              console.info(url);
+                              const a = document.createElement('a');
+                              a.href = url;
+                              a.setAttribute('download', `${item.title}`);
+
+                              // window.open(url);
+                              // // a.href = `${url}`;
+                              // // a.download = `${url}`;
+                              a.click();
+                              a.remove();
+                              window.URL.revokeObjectURL(url);
+                            }}
+                          >
+                            {item.title}
+                          </div>
+                        </Question>
+                        <Answer
+                          type="main"
+                          active={
+                            (MyClass.questionTotalList.length + 1) % 2 === 1
+                              ? MyClass.questionTotalList.length >= idx + 2
+                              : MyClass.questionTotalList.length === idx + 1
+                          }
+                        >
+                          <div
+                            onClick={() => {
+                              Common.modalActive = true;
+                            }}
+                          >
+                            <div>제출</div>
+                          </div>
+                        </Answer>
+                        {(idx + 1) % 2 === 1 ? (
+                          <TuteeAnswer
+                            type="headerBold"
+                            active={
+                              (MyClass.questionTotalList.length + 1) % 2 === 1
+                                ? MyClass.questionTotalList.length >= idx + 2
+                                : MyClass.questionTotalList.length === idx + 1
+                            }
+                          >
+                            <div>b</div>
+                          </TuteeAnswer>
+                        ) : (
+                          <TuteeAnswer
+                            type="main"
+                            active={
+                              (MyClass.questionTotalList.length + 1) % 2 === 1
+                                ? MyClass.questionTotalList.length >= idx + 2
+                                : MyClass.questionTotalList.length === idx + 1
                             }
                           >
                             <div>b</div>

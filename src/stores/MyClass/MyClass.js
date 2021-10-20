@@ -2,6 +2,7 @@ import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 import Auth from '../Account/Auth';
 import Common from '../Common/Common';
 import * as ClassAPI from '../../axios/Managing/Class';
+import * as GradingAPI from '../../axios/Managing/Grading';
 
 class MyClass {
   constructor() {
@@ -43,6 +44,7 @@ class MyClass {
   @observable selectModalActive = false;
 
   @observable totalQuestion = 0;
+  @observable questionTotalList = [];
   @observable questionAry = [];
   @observable choiceState = false;
 
@@ -386,30 +388,6 @@ class MyClass {
       });
   };
 
-  // @action getCalendar = async () => {
-  //   console.info(this.studentId);
-  //   console.info(this.teacherId);
-  //   const req = {
-  //     params: {
-  //       studentId: this.studentId,
-  //       teacherId: this.teacherId,
-  //     },
-  //     headers: {
-  //       Authorization: Auth.Authorization,
-  //     },
-  //   };
-  //   ClassAPI.getSchedule(req)
-  //     .then((res) => {
-  //       console.info(res);
-  //       this.scheduleAry = res.data.data;
-  //     })
-  //     .catch((e) => {
-  //       console.info(e);
-  //       console.info(e.response);
-  //     });
-  //   console.info(toJS(this.scheduleAry));
-  // };
-
   @action getDetailReport = async (date = '') => {
     console.info(this.studentId);
     console.info(this.teacherId);
@@ -460,6 +438,30 @@ class MyClass {
       this.reportContent = '';
     }
     console.info(this.reportWritingState);
+  };
+  @action getQuestionList = async () => {
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    const req = {
+      params: {
+        studentId: this.studentId,
+        teacherId: this.teacherId,
+      },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+    };
+    GradingAPI.getQuestionList(req)
+      .then((res) => {
+        console.info(res);
+        this.questionTotalList = res.data.data;
+        // this.scheduleAry = res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.questionTotalList));
   };
 }
 export default new MyClass();
