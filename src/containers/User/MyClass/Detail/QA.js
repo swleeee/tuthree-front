@@ -23,6 +23,10 @@ const dummyData = [
 @inject('MyClass', 'Common')
 @observer
 class Content extends Component {
+  constructor(props) {
+    super(props);
+    this.file = React.createRef();
+  }
   componentDidMount = () => {
     const { MyClass } = this.props;
     MyClass.getQuestionList();
@@ -41,6 +45,22 @@ class Content extends Component {
     Common.modalActive = true;
   };
 
+  handleFileChange = (event) => {
+    console.info(event.target.files[0]);
+  };
+
+  // formData라는 instance에 담아 보냄
+  handleFileUpload = () => {
+    // const formData = new FormData();
+    // formData.append("userfile", selectedFile, selectedFile.name);
+    // axios.post("api/uploadfile", formData)
+    //   .then(res => {
+    //     console.log(res);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+  };
   render() {
     const { MyClass, Common } = this.props;
     return (
@@ -60,8 +80,27 @@ class Content extends Component {
             )}
 
             <ButtonBox>
-              <Button width={160}>
-                <div>문제지/답안지 등록</div>
+              <input
+                type="file"
+                // multiple={'multiple'}
+                fileName={'fileName[]'}
+                style={{ display: 'none' }}
+                onChange={(e) => MyClass.onChangeHandler(e, 'set_question')}
+                id="inputFile"
+                ref={this.file}
+                value=""
+                // placeholder={'파일을 선택해 주세요.'}
+              />
+
+              <Button
+                width={160}
+                onClick={() => {
+                  // console.info('click');
+                  // this.handleFileUpload();
+                  this.file.current.click();
+                }}
+              >
+                <div>문제지 업로드</div>
               </Button>
             </ButtonBox>
             <Table>

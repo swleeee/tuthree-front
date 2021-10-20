@@ -20,15 +20,16 @@ export function getQuestionList(req) {
 //   });
 // }
 
-// export function setSchedule(req) {
-//   return axios({
-//     method: 'POST',
-//     url: `${ROOT_URL}/room/calendar`,
-//     params: req.params ? req.params : null,
-//     headers: req.headers ? req.headers : null,
-//     data: req.data,
-//   });
-// }
+export function setQuestion(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/room/exam`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
 // export function putSchedule(req) {
 //   return axios({
 //     method: 'PUT',

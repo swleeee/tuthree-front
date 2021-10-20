@@ -110,6 +110,13 @@ class MyClass {
         this.reportRound = e.target.value;
         console.info(this.reportRound);
         break;
+      case 'set_question':
+        // console.info(e.target.value);
+        // this.reportRound = e.target.value;
+        // console.info(this.reportRound);
+        console.info(e.currentTarget.files[0]);
+        this.setQuestion(e.currentTarget.files[0]);
+        break;
       default:
         break;
     }
@@ -439,6 +446,7 @@ class MyClass {
     }
     console.info(this.reportWritingState);
   };
+
   @action getQuestionList = async () => {
     console.info(this.studentId);
     console.info(this.teacherId);
@@ -462,6 +470,35 @@ class MyClass {
         console.info(e.response);
       });
     console.info(toJS(this.questionTotalList));
+  };
+  @action setQuestion = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const req = {
+      params: {
+        studentId: this.studentId,
+        teacherId: this.teacherId,
+      },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+      data: formData,
+    };
+    await GradingAPI.setQuestion(req)
+      .then(async (res) => {
+        console.info(res);
+        alert('문제지를 업로드하였습니다!');
+        // this.writingTabState = 1;
+        // Common.modalActive = false;
+        // this.getDetailReport();
+        // this.getCalendar();
+        this.getQuestionList();
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
   };
 }
 export default new MyClass();
