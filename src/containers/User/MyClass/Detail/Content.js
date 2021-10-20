@@ -75,6 +75,16 @@ const NavBox = styled.div`
   margin: 50px 0;
   justify-content: space-between;
   align-items: center;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    // padding-bottom: 5px;
+    margin-bottom: 30px;
+  }
 `;
 const Nav = styled.div`
   cursor: pointer;
@@ -94,11 +104,42 @@ const Nav = styled.div`
     font-weight: bold;
     font-size: 16px;
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 85px;
+    > div {
+      font-size: 12px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 100px;
+    > div {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 120px;
+    > div {
+      font-size: 15px;
+    }
+  }
 `;
 
 const NavItem = styled.div`
   display: flex;
   height: 50px;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    height: 30px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    height: 35px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    height: 40px;
+  }
 `;
 const UserInfo = styled.div`
   > div {

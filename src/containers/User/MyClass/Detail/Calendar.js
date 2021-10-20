@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import Modal from '../../../../components/Modal';
 import previousImg from '../../../../static/images/Common/previous2.png';
 import nextImg from '../../../../static/images/Common/next2.png';
-import ScheduleWriting from './ScheduleWriting';
+import ScheduleWriting from './Writing/ScheduleWriting';
 import { toJS } from 'mobx';
 import moment from 'moment';
 
@@ -374,9 +374,9 @@ class Calendar extends React.Component {
         <Header>
           <DateItem>
             <img onClick={this.prevMonth} src={previousImg} />
-            <span>
+            <div>
               {monList[MyClass.month]} {MyClass.year}
-            </span>
+            </div>
             <img onClick={this.nextMonth} src={nextImg} />
           </DateItem>
           <ButtonBox>
@@ -458,7 +458,7 @@ const Header = styled.div`
   font-weight: 600;
   width: 100%;
   height: 14%;
-  font-size: 1em;
+
   //   border: 2px solid #000;
 
   //   & button {
@@ -610,6 +610,7 @@ const Item = styled.div`
 `;
 const DateItem = styled.div`
   display: flex;
+  align-items: center;
 
   > img {
     width: 32px;
@@ -617,8 +618,41 @@ const DateItem = styled.div`
     // margin-top: 5px;
     cursor: pointer;
   }
-  > span {
+  > div {
     margin: 0 15px;
+    margin-bottom: 5px;
+    font-size: 24px;
+    // font-size: 1em;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      font-size: 15px;
+      margin: 0 7px;
+      margin-bottom: 3px;
+    }
+    > img {
+      width: 18px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: 18px;
+      margin: 0 10px;
+      margin-bottom: 3px;
+    }
+    > img {
+      width: 22px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      font-size: 21px;
+    }
+    > img {
+      width: 28px;
+    }
   }
 `;
 const ButtonBox = styled.div`
@@ -637,6 +671,29 @@ const Button = styled.button`
   > div {
     font-size: 15px;
     font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: ${(props) => (props.width ? props.width - 40 : '120')}px;
+    height: 24px;
+    > div {
+      font-size: 11px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: ${(props) => (props.width ? props.width - 28 : '120')}px;
+    height: 28px;
+    > div {
+      font-size: 13px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: ${(props) => (props.width ? props.width - 15 : '120')}px;
+    height: 32px;
+    > div {
+      font-size: 14px;
+    }
   }
 `;
 const Layer = styled.div`

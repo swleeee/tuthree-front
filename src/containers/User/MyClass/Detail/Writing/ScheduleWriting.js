@@ -1,16 +1,18 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { inject, observer } from 'mobx-react';
-import SelectComponent from '../../../../components/Select';
+import SelectComponent from '../../../../../components/Select';
 // import { DatePicker } from '@y0c/react-datepicker';
 import DatePicker, { registerLocale } from 'react-datepicker';
+import addImg from '../../../../../static/images/Common/add.png';
+import deleteImg from '../../../../../static/images/Common/delete.png';
 
-import TimePicker from '../../../../components/TimePicker';
+import TimePicker from '../../../../../components/TimePicker';
 
-import TextAreaContainer from '../../../../components/TextareaContainer';
-import addImg from '../../../../static/images/Common/add.png';
-import deleteImg from '../../../../static/images/Common/delete.png';
-import calendarImg from '../../../../static/images/Common/calendar.png';
+import TextAreaContainer from '../../../../../components/TextareaContainer';
+import ScheduleContainer from './Schedule';
+
+import calendarImg from '../../../../../static/images/Common/calendar.png';
 import { getYear } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import format from 'date-fns/format';
@@ -247,9 +249,43 @@ class ScheduleWriting extends React.Component {
                   &times;{' '}
                 </button>
                 <Container>
-                  <Header>일정 등록하기</Header>
+                  <Header>
+                    <TabBox>
+                      <div>
+                        <DateContainer
+                          selected={MyClass.selectedDateMoment}
+                          // onChange={(value) =>
+                          //   this.onChange(
+                          //     format(value, 'yyyy-MM-dd', {
+                          //       awareOfUnicodeTokens: true,
+                          //     })
+                          //   )
+                          // }
+                          onChange={(date) => this.onChange(date)}
+                          locale="ko"
+                          dateFormat="yyyy-MM-dd"
+                        />
+                      </div>
+                      <div>
+                        <Item
+                          onClick={() => (MyClass.writingTabState = 1)}
+                          active={MyClass.writingTabState === 1}
+                        >
+                          <div>일정</div>
+                        </Item>
+
+                        <Item
+                          onClick={() => (MyClass.writingTabState = 2)}
+                          active={MyClass.writingTabState === 2}
+                        >
+                          <div>수업보고서</div>
+                        </Item>
+                      </div>
+                    </TabBox>
+                  </Header>
                   <Main>
-                    <div>
+                    {MyClass.writingTabState === 1 && <ScheduleContainer />}
+                    {/* <div>
                       <DateContainer
                         selected={MyClass.selectedDateMoment}
                         // onChange={(value) =>
@@ -263,7 +299,81 @@ class ScheduleWriting extends React.Component {
                         locale="ko"
                         dateFormat="yyyy-MM-dd"
                       />
-                    </div>
+                    </div> */}
+                  </Main>
+                </Container>
+              </>
+            ) : null}
+          </ModalBox>
+        ) : (
+          <ModalBox
+            modal={open ? 'openModal modal' : 'modal'}
+            style={{ display: open ? 'block' : 'none' }}
+          >
+            {open ? (
+              <>
+                <button
+                  className="close"
+                  onClick={(e) => {
+                    console.info('close');
+                    e.stopPropagation();
+                    Common.modalActive = false;
+                  }}
+                >
+                  {' '}
+                  &times;{' '}
+                </button>
+                <Container>
+                  <Header>
+                    <TabBox>
+                      <div>
+                        <DateContainer
+                          selected={MyClass.selectedDateMoment}
+                          // onChange={(value) =>
+                          //   this.onChange(
+                          //     format(value, 'yyyy-MM-dd', {
+                          //       awareOfUnicodeTokens: true,
+                          //     })
+                          //   )
+                          // }
+                          onChange={(date) => this.onChange(date)}
+                          locale="ko"
+                          dateFormat="yyyy-MM-dd"
+                        />
+                      </div>
+                      <div>
+                        <Item
+                          onClick={() => (MyClass.writingTabState = 1)}
+                          active={MyClass.writingTabState === 1}
+                        >
+                          <div>일정</div>
+                        </Item>
+
+                        <Item
+                          onClick={() => (MyClass.writingTabState = 2)}
+                          active={MyClass.writingTabState === 2}
+                        >
+                          <div>수업보고서</div>
+                        </Item>
+                      </div>
+                    </TabBox>
+                  </Header>
+                  <Main>
+                    {/* <div>
+                      <DateContainer
+                        selected={MyClass.selectedDateMoment}
+                        // onChange={(value) =>
+                        //   this.onChange(
+                        //     format(value, 'yyyy-MM-dd', {
+                        //       awareOfUnicodeTokens: true,
+                        //     })
+                        //   )
+                        // }
+                        onChange={(date) => this.onChange(date)}
+                        locale="ko"
+                        dateFormat="yyyy-MM-dd"
+                      />
+                    </div> */}
 
                     <SearchBox>
                       <Input
@@ -304,84 +414,6 @@ class ScheduleWriting extends React.Component {
                             </ScheduleItem>
                           );
                         })}
-                    </ScheduleArea>
-                  </Main>
-                </Container>
-              </>
-            ) : null}
-          </ModalBox>
-        ) : (
-          <ModalBox
-            modal={open ? 'openModal modal' : 'modal'}
-            style={{ display: open ? 'block' : 'none' }}
-          >
-            {open ? (
-              <>
-                <button
-                  className="close"
-                  onClick={(e) => {
-                    console.info('close');
-                    e.stopPropagation();
-                    Common.modalActive = false;
-                  }}
-                >
-                  {' '}
-                  &times;{' '}
-                </button>
-                <Container>
-                  <Header>일정 등록하기</Header>
-                  <Main>
-                    <div>
-                      <DateContainer
-                        selected={MyClass.selectedDateMoment}
-                        // onChange={(value) =>
-                        //   this.onChange(
-                        //     format(value, 'yyyy-MM-dd', {
-                        //       awareOfUnicodeTokens: true,
-                        //     })
-                        //   )
-                        // }
-                        onChange={(date) => this.onChange(date)}
-                        locale="ko"
-                        dateFormat="yyyy-MM-dd"
-                      />
-                    </div>
-
-                    <SearchBox>
-                      <Input
-                        placeholder="일정을 입력하세요."
-                        onChange={(e) => MyClass.onChangeHandler(e, 'schedule')}
-                        onFocus={(e) => (e.target.placeholder = '')}
-                        onBlur={(e) =>
-                          (e.target.placeholder = '일정을 입력하세요.')
-                        }
-                      />
-                      <Search
-                      //   onClick={() => {
-                      //     console.info('dsfdsf');
-                      //     AdminCommunity.communityErrorMessage = '';
-                      //     if (AdminCommunity.communitySearchValue === '') {
-                      //       AdminCommunity.communitySearchFinalValue = '';
-                      //       AdminCommunity.getCommunityList(1);
-                      //     } else {
-                      //       AdminCommunity.searchCommunity(1);
-                      //     }
-                      //   }}
-                      >
-                        <img src={addImg} />
-                      </Search>
-                    </SearchBox>
-                    <ScheduleArea>
-                      {schedules.map((item, idx) => {
-                        return (
-                          <ScheduleItem>
-                            <ScheduleName>
-                              <div>{item.desc}</div>
-                            </ScheduleName>
-                            <img src={deleteImg} />
-                          </ScheduleItem>
-                        );
-                      })}
                     </ScheduleArea>
                   </Main>
                 </Container>
@@ -439,10 +471,10 @@ const ModalBox = styled.div`
     // height: 150px;
     // width: 90%;
 
-    // > button {
-    //   font-size: 14px;
-    //   margin: 10px 10px 0 0;
-    // }
+    > button {
+      // font-size: 14px;
+      margin: 5px 5px 0 0;
+    }
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
   }
@@ -457,6 +489,7 @@ const Container = styled.div`
   width: 90%;
   //   height: 90%;
   //   height: 500px;
+  min-height: 400px;
 
   margin: 0 auto;
   border-radius: 0.3rem;
@@ -484,6 +517,7 @@ const Header = styled.div`
     padding: 8px;
     font-weight: 700;
     font-size: 22px;
+    margin-top: 30px;
   }
 `;
 const Main = styled.div`
@@ -501,22 +535,6 @@ const Main = styled.div`
   width: 100%;
   //   font-size: 20px;
   //   font-weight: 600;
-
-  .react-datepicker__input-container::after {
-    // content: 'url: ${calendarImg}';
-
-    content: url(${calendarImg});
-    display: inline-block;
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    top: 28%;
-    // transform: translateY(-50%);
-    left: 10px;
-    font-size: 1rem;
-    color: #333;
-    transform: scale(0.8);
-  }
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     height: 100%;
@@ -672,10 +690,10 @@ const Input = styled.input`
   }
   @media (min-width: 0px) and (max-width: 767.98px) {
     // width: ${(props) => (props.domainType === 2 ? '85px' : '200px')};
-    height: 30px;
+    height: 22px;
     font-size: 12px;
-    margin-bottom: 10px;
-    padding: 0 5px;
+    // margin-bottom: 10px;
+    padding: 0 8px;
     ::placeholder {
       font-size: 10px;
       text-align: left;
@@ -683,12 +701,12 @@ const Input = styled.input`
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     // width: ${(props) => (props.domainType === 2 ? '150px' : '250px')};
-    height: 30px;
+    height: 25px;
     margin-left: ${(props) => (props.ml === 2 ? '10px' : '0px')};
   }
   @media (min-width: 992px) and (max-width: 1299.98px) {
     // width: ${(props) => (props.domainType === 2 ? '160px' : '300px')};
-    height: 30px;
+    height: 25px;
     margin-left: ${(props) => (props.ml === 2 ? '15px' : '0px')};
   }
   @media (min-width: 1300px) {
@@ -724,6 +742,141 @@ const Description = styled.div`
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
+  }
+`;
+
+const DateContainer = styled(DatePicker)`
+  margin-top: 10px;
+  border: 1px solid #333;
+  border-radius: 3px;
+  width: 100%;
+  padding: 5px 0;
+  box-sizing: border-box;
+  font-size: 24px;
+  font-weight: bold;
+  //   display: flex;
+  text-align: center;
+  //   border: none;
+  position: relative;
+  cursor: pointer;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    text-align: right;
+    padding-right: 5px;
+    font-size: 12px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 18px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 21px;
+  }
+`;
+
+const TabBox = styled.div`
+  .react-datepicker__input-container::after {
+    // content: 'url: ${calendarImg}';
+
+    content: url(${calendarImg});
+    display: inline-block;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 28%;
+    // transform: translateY(-50%);
+    left: 10px;
+    font-size: 1rem;
+    color: #333;
+    transform: scale(0.8);
+  }
+
+  width: 100%;
+  // border: 2px solid blue;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  //   padding: 30px 15px;
+  box-sizing: border-box;
+  //   border-top: 1px solid #888;
+
+  > div:nth-of-type(1) {
+    width: 40%;
+  }
+
+  > div:nth-of-type(2) {
+    // width: 100%;
+    display: flex;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-direction: row;
+
+    border-top: none;
+    flex-wrap: wrap;
+    .react-datepicker__input-container::after {
+      left: 3px;
+      transform: scale(0.5);
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    .react-datepicker__input-container::after {
+      transform: scale(0.6);
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div:nth-of-type(1) {
+      //   width: 35%;
+    }
+    .react-datepicker__input-container::after {
+      transform: scale(0.7);
+    }
+  }
+`;
+
+const Item = styled.div`
+  box-sizing: border-box;
+  cursor: pointer;
+  //   width: 50%;
+  width: 140px;
+  height: 50px;
+  border: ${(props) => (props.active ? 'none' : '1px solid #707070')};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // border-collapse: collapse;
+  margin-top: -1px;
+  background-color: ${(props) =>
+    props.active ? 'rgba(235,114,82,1)' : '#fff'};
+  > div {
+    color: ${(props) => (props.active ? '#fff' : '#000')};
+    font-size: 20px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 70px;
+    height: 28px;
+    margin-right: -1px;
+    > div {
+      font-size: 11px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 100px;
+    height: 32px;
+    > div {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 120px;
+    height: 36px;
+    > div {
+      font-size: 15px;
+    }
   }
 `;
 
@@ -830,20 +983,4 @@ const ScheduleItem = styled.div`
 
 const ScheduleName = styled.div`
   display: flex;
-`;
-
-const DateContainer = styled(DatePicker)`
-  margin-top: 10px;
-  border: 1px solid #333;
-  border-radius: 3px;
-  width: 100%;
-  padding: 5px 0;
-  box-sizing: border-box;
-  font-size: 24px;
-  font-weight: bold;
-  //   display: flex;
-  text-align: center;
-  //   border: none;
-  position: relative;
-  cursor: pointer;
 `;

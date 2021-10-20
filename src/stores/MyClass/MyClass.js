@@ -17,6 +17,7 @@ class MyClass {
   @observable year = 0;
   @observable isModalOpen = false;
   @observable chosenDay = 0;
+  @observable writingTabState = 1;
 
   @observable classAry = [];
   @observable teacherName = '';
