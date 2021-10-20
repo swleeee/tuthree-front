@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import AnswerWriting from './Writing/AnswerWriting';
+import deleteImg from '../../../../static/images/Signup/delete.png';
 
 const dummyData = [
   { id: 1, title: '2021-2학기 모의고사 문제지', file: 'werrfewfefewf' },
@@ -64,60 +65,58 @@ class Content extends Component {
   render() {
     const { MyClass, Common } = this.props;
     return (
-      <>
-        {Common.width > 767.98 ? (
-          <Container>
-            {Common.modalActive === true && Common.modalState === 1 && (
-              <Layer>
-                <div>
-                  <AnswerWriting
-                    // width={width}
-                    open={this.openModal}
-                    close={this.closeModal}
-                  />
-                </div>
-              </Layer>
-            )}
-
-            <ButtonBox>
-              <input
-                type="file"
-                // multiple={'multiple'}
-                fileName={'fileName[]'}
-                style={{ display: 'none' }}
-                onChange={(e) => MyClass.onChangeHandler(e, 'set_question')}
-                id="inputFile"
-                ref={this.file}
-                value=""
-                // placeholder={'파일을 선택해 주세요.'}
+      <Container>
+        {Common.modalActive === true && Common.modalState === 1 && (
+          <Layer>
+            <div>
+              <AnswerWriting
+                // width={width}
+                open={this.openModal}
+                close={this.closeModal}
               />
+            </div>
+          </Layer>
+        )}
 
-              <Button
-                width={160}
-                onClick={() => {
-                  // console.info('click');
-                  // this.handleFileUpload();
-                  this.file.current.click();
-                }}
-              >
-                <div>문제지 업로드</div>
-              </Button>
-            </ButtonBox>
-            <Table>
-              <Header>
-                <Section>
-                  <Question type="header">
-                    <div>문제지</div>
-                  </Question>
-                  <Answer type="header">
-                    <div>답안지</div>
-                  </Answer>
-                  <TuteeAnswer type="headerBold">
-                    <div>학생 답안</div>
-                  </TuteeAnswer>
-                </Section>
+        <ButtonBox>
+          <input
+            type="file"
+            // multiple={'multiple'}
+            fileName={'fileName[]'}
+            style={{ display: 'none' }}
+            onChange={(e) => MyClass.onChangeHandler(e, 'set_question')}
+            id="inputFile"
+            ref={this.file}
+            value=""
+            // placeholder={'파일을 선택해 주세요.'}
+          />
 
-                <Section>
+          <Button
+            width={160}
+            onClick={() => {
+              // console.info('click');
+              // this.handleFileUpload();
+              this.file.current.click();
+            }}
+          >
+            <div>문제지 업로드</div>
+          </Button>
+        </ButtonBox>
+        <Table>
+          <Header>
+            <Section>
+              <Question type="header">
+                <div>문제지</div>
+              </Question>
+              <Answer type="header">
+                <div>답안지</div>
+              </Answer>
+              <TuteeAnswer type="headerBold">
+                <div>학생 답안</div>
+              </TuteeAnswer>
+            </Section>
+
+            {/* <Section>
                   <Question type="header">
                     <div>문제지</div>
                   </Question>
@@ -127,10 +126,10 @@ class Content extends Component {
                   <TuteeAnswer>
                     <div>학생 답안</div>
                   </TuteeAnswer>
-                </Section>
-              </Header>
-              <Main>
-                {/* {dummyData &&
+                </Section> */}
+          </Header>
+          <Main>
+            {/* {dummyData &&
                   dummyData.map((item, idx) => {
                     console.info(dummyData.length);
                     console.info(idx);
@@ -194,191 +193,110 @@ class Content extends Component {
                           </TuteeAnswer>
                         )} */}
 
-                {MyClass.questionTotalList &&
-                  MyClass.questionTotalList.map((item, idx) => {
-                    console.info(MyClass.questionTotalList.length);
-                    console.info(idx);
-                    if ((MyClass.questionTotalList.length + 1) % 2 === 1) {
-                      console.info(MyClass.questionTotalList.length >= idx + 2);
-                    } else {
-                      console.info(
-                        MyClass.questionTotalList.length === idx + 1
-                      );
-                    }
+            {MyClass.questionTotalList &&
+              MyClass.questionTotalList.map((item, idx) => {
+                console.info(MyClass.questionTotalList.length);
+                console.info(idx);
+                if ((MyClass.questionTotalList.length + 1) % 2 === 1) {
+                  console.info(MyClass.questionTotalList.length >= idx + 2);
+                } else {
+                  console.info(MyClass.questionTotalList.length === idx + 1);
+                }
 
-                    return (
-                      // <SubMain>
+                return (
+                  // <SubMain>
 
-                      <Section type="main">
-                        <Question
-                          type="header"
-                          active={
-                            (MyClass.questionTotalList.length + 1) % 2 === 1
-                              ? MyClass.questionTotalList.length >= idx + 2
-                              : MyClass.questionTotalList.length === idx + 1
-                          }
-                        >
-                          <div
-                            onClick={() => {
-                              console.info(item.file);
-                              // var byteArray = new Uint8Array(item.file);
-                              // var byteArray = item.file.arrayBuffer();
-                              // console.info(byteArray);
+                  <Section type="main">
+                    <Question
+                      type="header"
+                      active={
+                        (MyClass.questionTotalList.length + 1) % 2 === 1
+                          ? MyClass.questionTotalList.length >= idx + 2
+                          : MyClass.questionTotalList.length === idx + 1
+                      }
+                    >
+                      <div
+                        onClick={() => {
+                          console.info(item.file);
+                          // var byteArray = new Uint8Array(item.file);
+                          // var byteArray = item.file.arrayBuffer();
+                          // console.info(byteArray);
 
-                              const blob = new Blob([item.file], {
-                                type: 'application/json',
-                              });
-                              let file = new File([blob], item.title);
-                              console.info(blob);
-                              console.info(file);
-                              const url = window.URL.createObjectURL(blob);
-                              console.info(url);
-                              const a = document.createElement('a');
-                              a.href = url;
-                              a.setAttribute('download', `${item.title}`);
+                          const blob = new Blob([item.file], {
+                            type: 'application/json',
+                          });
+                          let file = new File([blob], item.title);
+                          console.info(blob);
+                          console.info(file);
+                          const url = window.URL.createObjectURL(blob);
+                          console.info(url);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.setAttribute('download', `${item.title}`);
 
-                              // window.open(url);
-                              // // a.href = `${url}`;
-                              // // a.download = `${url}`;
-                              a.click();
-                              a.remove();
-                              window.URL.revokeObjectURL(url);
-                            }}
-                          >
-                            {item.title}
-                          </div>
-                        </Question>
-                        <Answer
-                          type="main"
-                          active={
-                            (MyClass.questionTotalList.length + 1) % 2 === 1
-                              ? MyClass.questionTotalList.length >= idx + 2
-                              : MyClass.questionTotalList.length === idx + 1
-                          }
-                        >
-                          <div
-                            onClick={() => {
-                              Common.modalActive = true;
-                            }}
-                          >
-                            <div>제출</div>
-                          </div>
-                        </Answer>
-                        {(idx + 1) % 2 === 1 ? (
-                          <TuteeAnswer
-                            type="headerBold"
-                            active={
-                              (MyClass.questionTotalList.length + 1) % 2 === 1
-                                ? MyClass.questionTotalList.length >= idx + 2
-                                : MyClass.questionTotalList.length === idx + 1
-                            }
-                          >
-                            <div>b</div>
-                          </TuteeAnswer>
-                        ) : (
-                          <TuteeAnswer
-                            type="main"
-                            active={
-                              (MyClass.questionTotalList.length + 1) % 2 === 1
-                                ? MyClass.questionTotalList.length >= idx + 2
-                                : MyClass.questionTotalList.length === idx + 1
-                            }
-                          >
-                            <div>b</div>
-                          </TuteeAnswer>
-                        )}
-                      </Section>
-                      // </SubMain>
-                    );
-                  })}
-              </Main>
-            </Table>
-          </Container>
-        ) : (
-          <Container>
-            {Common.modalActive === true && Common.modalState === 1 && (
-              <Layer>
-                <div>
-                  <AnswerWriting
-                    // width={width}
-                    open={this.openModal}
-                    close={this.closeModal}
-                  />
-                </div>
-              </Layer>
-            )}
-            <ButtonBox>
-              <Button width={160}>
-                <div>문제지/답안지 등록</div>
-              </Button>
-            </ButtonBox>
-            <Table>
-              <Header>
-                <Section>
-                  <Question type="header">
-                    <div>문제지</div>
-                  </Question>
-                  <Answer type="header">
-                    <div>답안지</div>
-                  </Answer>
-                  <TuteeAnswer>
-                    <div>학생 답안</div>
-                  </TuteeAnswer>
-                </Section>
-              </Header>
-              <Main>
-                {dummyData &&
-                  dummyData.map((item, idx) => {
-                    return (
-                      // <SubMain>
+                          // window.open(url);
+                          // // a.href = `${url}`;
+                          // // a.download = `${url}`;
+                          a.click();
+                          a.remove();
+                          window.URL.revokeObjectURL(url);
+                        }}
+                      >
+                        {item.title}
+                      </div>
+                      <img
+                        src={deleteImg}
+                        onClick={() => {
+                          console.info(item.id);
+                          MyClass.delQuestion(item.id);
+                        }}
+                      />
+                    </Question>
+                    <Answer
+                      type="main"
+                      active={
+                        (MyClass.questionTotalList.length + 1) % 2 === 1
+                          ? MyClass.questionTotalList.length >= idx + 2
+                          : MyClass.questionTotalList.length === idx + 1
+                      }
+                    >
+                      <div
+                        onClick={() => {
+                          Common.modalActive = true;
+                        }}
+                      >
+                        <div>제출</div>
+                      </div>
+                    </Answer>
 
-                      <Section type="main">
-                        <Question
-                          type="header"
-                          active={
-                            (dummyData.length + 1) % 2 === 1
-                              ? dummyData.length >= idx + 2
-                              : dummyData.length === idx + 1
-                          }
-                        >
-                          <div>{item.title}</div>
-                        </Question>
-                        <Answer
-                          type="main"
-                          active={
-                            (dummyData.length + 1) % 2 === 1
-                              ? dummyData.length >= idx + 2
-                              : dummyData.length === idx + 1
-                          }
-                        >
-                          <div
-                            onClick={() => {
-                              Common.modalActive = true;
-                            }}
-                          >
-                            <div>제출</div>
-                          </div>
-                        </Answer>
+                    <TuteeAnswer
+                      type="headerBold"
+                      active={
+                        (MyClass.questionTotalList.length + 1) % 2 === 1
+                          ? MyClass.questionTotalList.length >= idx + 2
+                          : MyClass.questionTotalList.length === idx + 1
+                      }
+                    >
+                      <div>b</div>
+                    </TuteeAnswer>
 
-                        <TuteeAnswer
-                          type="main"
-                          active={
-                            (dummyData.length + 1) % 2 === 1
-                              ? dummyData.length >= idx + 2
-                              : dummyData.length === idx + 1
-                          }
-                        >
-                          <div>b</div>
-                        </TuteeAnswer>
-                      </Section>
-                      // </SubMain>
-                    );
-                  })}
-              </Main>
-            </Table>
-          </Container>
-        )}
-      </>
+                    {/* <TuteeAnswer
+                        type="main"
+                        active={
+                          (MyClass.questionTotalList.length + 1) % 2 === 1
+                            ? MyClass.questionTotalList.length >= idx + 2
+                            : MyClass.questionTotalList.length === idx + 1
+                        }
+                      >
+                        <div>b</div>
+                      </TuteeAnswer> */}
+                  </Section>
+                  // </SubMain>
+                );
+              })}
+          </Main>
+        </Table>
+      </Container>
     );
   }
 }
@@ -450,9 +368,10 @@ const Header = styled.div`
 `;
 const Section = styled.div`
   display: flex;
-  width: ${(props) => (props.type === 'header' ? '100%' : '50%')};
+  width: ${(props) => (props.type === 'header' ? '100%' : '100%')};
   //   border: 2px solid black;
-
+  border-bottom: ${(props) =>
+    props.type === 'main' ? '1px solid #707070' : 'none'};
   box-sizing: border-box;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
@@ -464,26 +383,62 @@ const Question = styled.div`
   //   width: ${(props) => (props.type === 'header' ? '60%' : '55%')};
   width: 60%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
   //   border: 2px solid green;
   border-right: ${(props) =>
     props.type === 'header' ? '1px solid #000' : 'none'};
   border-bottom: ${(props) => (props.active ? 'none' : '1px solid #707070')};
 
+  > img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  > div {
+    font-size: 16px;
+  }
+
   @media (min-width: 0px) and (max-width: 767.98px) {
     width: 50%;
+    > img {
+      width: 15px;
+      height: 15px;
+    }
+    > div {
+      font-size: 12px;
+    }
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     width: 54%;
+    > img {
+      width: 17px;
+      height: 17px;
+    }
+    > div {
+      font-size: 14px;
+    }
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
+    > img {
+      width: 18px;
+      height: 18px;
+    }
+    > div {
+      font-size: 15px;
+    }
   }
 `;
 const Answer = styled.div`
   padding: 3px 8px;
   //   width: ${(props) => (props.type === 'header' ? '20%' : '18%')};
   width: 20%;
+  display: flex;
+  align-items: center;
+  // justify-content: ${(props) =>
+    props.type === 'main' ? 'center' : 'flex-start'};
 
   border-right: 1px solid #000;
   border-bottom: ${(props) => (props.active ? 'none' : '1px solid #707070')};

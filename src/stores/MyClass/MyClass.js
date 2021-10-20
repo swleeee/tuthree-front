@@ -500,5 +500,33 @@ class MyClass {
         console.info(e.response);
       });
   };
+
+  @action delQuestion = async (id) => {
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    console.info(id);
+    const req = {
+      // params: {
+      //   studentId: this.studentId,
+      //   teacherId: this.teacherId,
+      // },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+      id: id,
+    };
+    await GradingAPI.delQuestion(req)
+      .then(async (res) => {
+        console.info(res);
+
+        alert('문제지 삭제가 완료되었습니다!');
+
+        this.getQuestionList();
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
 }
 export default new MyClass();

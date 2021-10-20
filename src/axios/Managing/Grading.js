@@ -40,11 +40,11 @@ export function setQuestion(req) {
 //   });
 // }
 
-// export function delSchedule(req) {
-//   return axios({
-//     method: 'DELETE',
-//     url: `${ROOT_URL}/room/calendar/${req.id}`,
-//     params: req.params ? req.params : null,
-//     headers: req.headers ? req.headers : null,
-//   });
-// }
+export function delQuestion(req) {
+  return axios({
+    method: 'DELETE',
+    url: `${ROOT_URL}/room/exam/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
