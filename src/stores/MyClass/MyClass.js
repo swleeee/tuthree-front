@@ -49,6 +49,16 @@ class MyClass {
   @observable questionAry = [];
   @observable questionPostId = '';
   @observable choiceState = false;
+  @observable isExistAnswer = false;
+  @observable tuteeTotalQuestion = 0;
+  @observable answerAry = [];
+  @observable tuteeAnswerModalActive = false;
+  @observable markingTotalQuestion = 0;
+  @observable markingResultAry = [];
+  @observable markingStateAry = [];
+  @observable markingStateObj = {};
+  @observable markingCorrect = 0;
+  @observable getTuteeAnswerState = false; // 학생 사용자가 답을 잘 가져왔는지...
 
   @observable ratingPoint = 5; // 평점
   @observable reviewContent = ''; // 리뷰 내용
@@ -154,6 +164,15 @@ class MyClass {
         console.info(e.currentTarget.files[0]);
         this.setQuestion(e.currentTarget.files[0]);
         break;
+
+      // case 'set_answer':
+      //   // console.info(e.target.value);
+      //   // this.reportRound = e.target.value;
+      //   // console.info(this.reportRound);
+      //   // this.questionconsole.info(e.currentTarget.files[0]);
+      //   this.answerAry[idx].ans = e.target.value;
+      //   // this.setQuestion(e.currentTarget.files[0]);
+      //   break;
       default:
         break;
     }
@@ -487,6 +506,9 @@ class MyClass {
   @action getQuestionList = async () => {
     console.info(this.studentId);
     console.info(this.teacherId);
+    this.markingStateAry = [];
+    this.markingStateObj = {};
+    this.getTuteeAnswerState = false;
     const req = {
       params: {
         studentId: this.studentId,
@@ -496,10 +518,22 @@ class MyClass {
         Authorization: Auth.Authorization,
       },
     };
-    GradingAPI.getQuestionList(req)
-      .then((res) => {
+    await GradingAPI.getQuestionList(req)
+      .then(async (res) => {
         console.info(res);
         this.questionTotalList = res.data.data;
+        await Promise.all(
+          this.questionTotalList.map(async (item, idx) => {
+            // item.checked = await this.getAnswer(item.id);
+            await this.getAnswer(item.id);
+            console.info(this.isExistAnswer);
+            item.checked = this.isExistAnswer;
+
+            console.info(item.checked);
+            await this.markingAnswer(item.id, idx);
+          })
+        );
+        console.info(toJS(this.questionTotalList));
         // this.scheduleAry = res.data.data;
       })
       .catch((e) => {
@@ -598,6 +632,83 @@ class MyClass {
     await GradingAPI.setAnswer(req)
       .then(async (res) => {
         console.info(res);
+        alert('답안지 작성이 완료되었습니다!');
+        // this.writingTabState = 1;
+        Common.modalActive = false;
+        this.getQuestionList();
+        // this.getDetailReport();
+        // this.getCalendar();
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action getAnswer = async (id) => {
+    console.info(id);
+    this.tuteeTotalQuestion = 0;
+    this.answerAry = [];
+    let isExist = false;
+
+    const req = {
+      id: id,
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+    };
+    console.info(req);
+    await GradingAPI.getAnswer(req)
+      .then(async (res) => {
+        console.info(res);
+        isExist = true;
+        if (res.data.success) {
+          this.tuteeTotalQuestion = res.data.data.prob;
+          this.answerAry = await res.data.data.problem;
+          this.answerAry.map((item, idx) => {
+            item.ans = '';
+          });
+          this.isExistAnswer = true;
+        } else {
+          this.isExistAnswer = false;
+        }
+
+        console.info(this.isExistAnswer);
+        // return 1;
+        // this.questionTotalList = res.data.data;
+        // this.scheduleAry = res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        isExist = false;
+        this.isExistAnswer = false;
+        // return 0;
+      });
+    console.info(toJS(this.answerAry));
+  };
+
+  @action setTuteeAnswer = async () => {
+    const req = {
+      id: this.questionPostId,
+      params: {
+        grade: 'student',
+      },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+      data: {
+        prob: parseInt(this.tuteeTotalQuestion),
+        problem: this.answerAry,
+      },
+    };
+    console.info(toJS(req.data));
+    console.info(toJS(req.data.problem));
+    await GradingAPI.setAnswer(req)
+      .then(async (res) => {
+        console.info(res);
+        this.tuteeAnswerModalActive = false;
+        this.getQuestionList();
         // alert('수업보고서 작성이 완료되었습니다!');
         // this.writingTabState = 1;
         // Common.modalActive = false;
@@ -608,6 +719,66 @@ class MyClass {
         console.info(e);
         console.info(e.response);
       });
+  };
+  @action gradingAnswer = () => {
+    this.markingResultAry &&
+      this.markingResultAry.map((item, idx) => {
+        if (item.score === 'right') {
+          this.markingCorrect += 1;
+        }
+      });
+  };
+  @action markingAnswer = async (id, idx = '') => {
+    console.info(id);
+
+    const req = {
+      id: id,
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+    };
+    console.info(req);
+    await GradingAPI.markingAnswer(req)
+      .then(async (res) => {
+        console.info(res);
+
+        if (res.data.success) {
+          // this.markingTotalQuestion = res.data.data.prob;
+          this.markingResultAry = await res.data.data.answer;
+          if (idx !== '') {
+            // await this.markingStateAry.push({ [idx]: true });
+            await this.markingStateAry.push(true);
+            this.markingStateObj[idx] = true;
+            console.info(toJS(this.markingStateAry));
+          }
+
+          // this.isExistAnswer = true;
+        } else {
+          // this.isExistAnswer = false;
+          if (idx !== '') {
+            // await this.markingStateAry.push({ [idx]: false });
+            await this.markingStateAry.push(false);
+            this.markingStateObj[idx] = false;
+            console.info(toJS(this.markingStateAry));
+          }
+        }
+
+        // return 1;
+        // this.questionTotalList = res.data.data;
+        // this.scheduleAry = res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+
+        // this.isExistAnswer = false;
+        // return 0;
+      });
+    this.getTuteeAnswerState = true;
+    console.info(toJS(this.answerAry));
+    console.info(idx);
+    console.info(toJS(this.markingStateAry));
+    console.info(toJS(this.markingStateObj));
   };
 }
 export default new MyClass();

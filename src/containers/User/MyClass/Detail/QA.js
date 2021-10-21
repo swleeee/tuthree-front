@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import AnswerWriting from './Writing/AnswerWriting';
+import TuteeAnswerWriting from './Writing/TuteeAnswerWriting';
 import deleteImg from '../../../../static/images/Signup/delete.png';
 import { ROOT_URL } from '../../../../axios/index';
+import { toJS } from 'mobx';
 
 const dummyData = [
   { id: 1, title: '2021-2학기 모의고사 문제지', file: 'werrfewfefewf' },
@@ -22,16 +24,18 @@ const dummyData = [
   //   { id: 10, title: '2021-2학기 모의고사 문제지', file: 'werrfewfefewf' },
 ];
 
-@inject('MyClass', 'Common')
+@inject('MyClass', 'Common', 'Auth')
 @observer
 class Content extends Component {
   constructor(props) {
     super(props);
     this.file = React.createRef();
   }
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const { MyClass } = this.props;
-    MyClass.getQuestionList();
+    await MyClass.getQuestionList();
+    console.info('sdfsdfsdf');
+    this.setState({ g: 3 });
   };
   componentWillUnmount = () => {
     const { MyClass } = this.props;
@@ -47,24 +51,21 @@ class Content extends Component {
     Common.modalActive = true;
   };
 
+  openTuteeAnswerModal = () => {
+    const { MyClass } = this.props;
+    MyClass.tuteeAnswerModalActive = false;
+  };
+  closeTuteeAnswerModal = () => {
+    const { MyClass } = this.props;
+    MyClass.tuteeAnswerModalActive = false;
+  };
+
   handleFileChange = (event) => {
     console.info(event.target.files[0]);
   };
 
-  // formData라는 instance에 담아 보냄
-  handleFileUpload = () => {
-    // const formData = new FormData();
-    // formData.append("userfile", selectedFile, selectedFile.name);
-    // axios.post("api/uploadfile", formData)
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-  };
   render() {
-    const { MyClass, Common } = this.props;
+    const { MyClass, Common, Auth } = this.props;
     return (
       <Container>
         {Common.modalActive === true && Common.modalState === 1 && (
@@ -79,39 +80,61 @@ class Content extends Component {
           </Layer>
         )}
 
-        <ButtonBox>
-          <input
-            type="file"
-            // multiple={'multiple'}
-            fileName={'fileName[]'}
-            style={{ display: 'none' }}
-            onChange={(e) => MyClass.onChangeHandler(e, 'set_question')}
-            id="inputFile"
-            ref={this.file}
-            value=""
-            // placeholder={'파일을 선택해 주세요.'}
-          />
+        {MyClass.tuteeAnswerModalActive === true && (
+          <Layer>
+            <div>
+              <TuteeAnswerWriting
+                // width={width}
+                open={this.openTuteeAnswerModal}
+                close={this.closeTuteeAnswerModal}
+              />
+            </div>
+          </Layer>
+        )}
 
-          <Button
-            width={160}
-            onClick={() => {
-              // console.info('click');
-              // this.handleFileUpload();
-              this.file.current.click();
-            }}
-          >
-            <div>문제지 업로드</div>
-          </Button>
-        </ButtonBox>
+        {Auth.loggedUserType === 'teacher' && (
+          <ButtonBox>
+            <input
+              type="file"
+              // multiple={'multiple'}
+              fileName={'fileName[]'}
+              style={{ display: 'none' }}
+              onChange={(e) => MyClass.onChangeHandler(e, 'set_question')}
+              id="inputFile"
+              ref={this.file}
+              value=""
+              // placeholder={'파일을 선택해 주세요.'}
+            />
+
+            <Button
+              width={160}
+              onClick={() => {
+                // console.info('click');
+                // this.handleFileUpload();
+                this.file.current.click();
+              }}
+            >
+              <div>문제지 업로드</div>
+            </Button>
+          </ButtonBox>
+        )}
+
         <Table>
           <Header>
             <Section>
               <Question type="header">
                 <div>문제지</div>
               </Question>
-              <Answer type="header">
-                <div>답안지</div>
-              </Answer>
+              {Auth.loggedUserType === 'teacher' ? (
+                <Answer type="header">
+                  <div>답안지</div>
+                </Answer>
+              ) : (
+                <Answer type="header">
+                  <div>답안 작성</div>
+                </Answer>
+              )}
+
               <TuteeAnswer type="headerBold">
                 <div>학생 답안</div>
               </TuteeAnswer>
@@ -197,15 +220,20 @@ class Content extends Component {
                 );
               })} */}
 
-            {MyClass.questionTotalList &&
+            {MyClass.markingStateObj &&
+              MyClass.getTuteeAnswerState &&
+              MyClass.questionTotalList &&
               MyClass.questionTotalList.map((item, idx) => {
-                console.info(MyClass.questionTotalList.length);
+                // console.info(MyClass.questionTotalList.length);
                 console.info(idx);
-                if ((MyClass.questionTotalList.length + 1) % 2 === 1) {
-                  console.info(MyClass.questionTotalList.length >= idx + 2);
-                } else {
-                  console.info(MyClass.questionTotalList.length === idx + 1);
-                }
+                // if ((MyClass.questionTotalList.length + 1) % 2 === 1) {
+                //   console.info(MyClass.questionTotalList.length >= idx + 2);
+                // } else {
+                //   console.info(MyClass.questionTotalList.length === idx + 1);
+                // }
+
+                // console.info(toJS(MyClass.markingStateAry));
+                // console.info(`${item.checked} + ${idx}`);
 
                 return (
                   <Section type="main">
@@ -220,31 +248,90 @@ class Content extends Component {
                       <a href={`${ROOT_URL}/community/download/${item.id}`}>
                         {item.title}
                       </a>
-                      <img
-                        src={deleteImg}
-                        onClick={() => {
-                          console.info(item.id);
-                          MyClass.delQuestion(item.id);
-                        }}
-                      />
+                      {Auth.loggedUserType === 'teacher' && (
+                        <img
+                          src={deleteImg}
+                          onClick={() => {
+                            console.info(item.id);
+                            MyClass.delQuestion(item.id);
+                          }}
+                        />
+                      )}
                     </Question>
-                    <Answer
-                      type="main"
-                      active={
-                        (MyClass.questionTotalList.length + 1) % 2 === 1
-                          ? MyClass.questionTotalList.length >= idx + 2
-                          : MyClass.questionTotalList.length === idx + 1
-                      }
-                    >
-                      <div
-                        onClick={() => {
-                          Common.modalActive = true;
-                          MyClass.questionPostId = item.id;
-                        }}
+                    {Auth.loggedUserType === 'teacher' ? (
+                      <Answer
+                        type="main"
+                        state={item.checked}
+                        user={Auth.loggedUserType}
+                        active={
+                          (MyClass.questionTotalList.length + 1) % 2 === 1
+                            ? MyClass.questionTotalList.length >= idx + 2
+                            : MyClass.questionTotalList.length === idx + 1
+                        }
                       >
-                        <div>제출</div>
-                      </div>
-                    </Answer>
+                        {item.checked ? (
+                          <div>
+                            <div>입력완료</div>
+                          </div>
+                        ) : (
+                          <div
+                            onClick={() => {
+                              Common.modalActive = true;
+                              MyClass.questionPostId = item.id;
+                            }}
+                          >
+                            <div>답지입력</div>
+                          </div>
+                        )}
+                      </Answer>
+                    ) : (
+                      <Answer
+                        type="main"
+                        state={item.checked}
+                        user={Auth.loggedUserType}
+                        active={
+                          (MyClass.questionTotalList.length + 1) % 2 === 1
+                            ? MyClass.questionTotalList.length >= idx + 2
+                            : MyClass.questionTotalList.length === idx + 1
+                        }
+                      >
+                        {console.info(
+                          '=========================================='
+                        )}
+                        {console.info(toJS(MyClass.markingStateAry[idx]))}
+                        {MyClass.markingStateObj[idx] ? (
+                          <div
+                            style={{
+                              backgroundColor: 'rgba(255,0,0,0.6)',
+                              color: '#fff',
+                            }}
+                          >
+                            {' '}
+                            <div>제출완료</div>
+                          </div>
+                        ) : item.checked ? (
+                          <div
+                            onClick={async () => {
+                              // Common.modalActive = true;
+                              MyClass.questionPostId = item.id;
+                              console.info(toJS(item));
+                              await MyClass.getAnswer(item.id);
+                              MyClass.tuteeAnswerModalActive = true;
+                            }}
+                            style={{
+                              backgroundColor: 'rgba(0,85,255,0.6)',
+                              color: '#000',
+                            }}
+                          >
+                            <div>답안제출</div>
+                          </div>
+                        ) : (
+                          <div>
+                            <div>미입력</div>
+                          </div>
+                        )}
+                      </Answer>
+                    )}
 
                     <TuteeAnswer
                       type="headerBold"
@@ -274,6 +361,7 @@ const Container = styled.div`
   flex-direction: column;
   //   margin: 100px 0;
   width: 100%;
+  height: 1000px;
   //   border: 2px solid black;
   //   border-bottom:  1px solid black;
 `;
@@ -411,12 +499,23 @@ const Answer = styled.div`
   > div {
     // border: 1px solid #707070;
     // height: 100%;
-    width: ${(props) => (props.type === 'main' ? '50px' : '')};
+    width: ${(props) => (props.type === 'main' ? '80px' : '')};
     height: ${(props) => (props.type === 'main' ? '20px' : '')};
     border-radius: ${(props) => (props.type === 'main' ? '15px' : '')};
     background-color: ${(props) =>
-      props.type === 'main' ? 'rgba(0, 85, 255, 0.6)' : ''};
-    color: ${(props) => (props.type === 'main' ? '#000' : '#fff')};
+      props.type === 'main'
+        ? props.user === 'teacher'
+          ? props.state
+            ? 'rgba(255,0,0,0.6)'
+            : 'rgba(0, 85, 255, 0.6)'
+          : props.user === 'student'
+          ? props.state
+            ? 'rgba(255,0,0,0.6)'
+            : '#ccc'
+          : ''
+        : ''};
+    color: ${(props) =>
+      props.type === 'main' ? (props.state ? '#fff' : '#000') : '#fff'};
     display: ${(props) => (props.type === 'main' ? 'flex' : 'block')};
     justify-content: center;
     align-items: center;
@@ -424,12 +523,14 @@ const Answer = styled.div`
     box-sizing: border-box;
     font-size: ${(props) => (props.type === 'main' ? '14px' : '16px')};
     cursor: ${(props) => (props.type === 'main' ? 'pointer' : 'initial')};
+    text-decoration: ${(props) =>
+      props.user === 'student' ? (props.state ? '' : 'line-through') : ''};
   }
   @media (min-width: 0px) and (max-width: 767.98px) {
     width: 25%;
 
     > div {
-      width: ${(props) => (props.type === 'main' ? '42px' : '')};
+      width: ${(props) => (props.type === 'main' ? '60px' : '')};
       height: ${(props) => (props.type === 'main' ? '16px' : '')};
       font-size: ${(props) => (props.type === 'main' ? '10px' : '12px')};
     }
@@ -437,7 +538,7 @@ const Answer = styled.div`
   @media (min-width: 768px) and (max-width: 991.98px) {
     width: 23%;
     > div {
-      width: ${(props) => (props.type === 'main' ? '45px' : '')};
+      width: ${(props) => (props.type === 'main' ? '65px' : '')};
       height: ${(props) => (props.type === 'main' ? '18px' : '')};
       font-size: ${(props) => (props.type === 'main' ? '12px' : '14px')};
     }
@@ -445,7 +546,7 @@ const Answer = styled.div`
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
     > div {
-      width: ${(props) => (props.type === 'main' ? '48px' : '')};
+      width: ${(props) => (props.type === 'main' ? '78px' : '')};
       height: ${(props) => (props.type === 'main' ? '20px' : '')};
       font-size: ${(props) => (props.type === 'main' ? '13px' : '15px')};
     }

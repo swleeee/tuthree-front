@@ -20,7 +20,7 @@ class TextareaContainer extends Component {
     row: 1,
   };
   requestHandler = (event) => {
-    const { type, mxh, Chatting, MyClass } = this.props;
+    const { type, mxh, Chatting, MyClass, idx } = this.props;
     console.info(mxh);
     const textareaLineHeight = 17;
     const { minRows, maxRows } = this.state;
@@ -75,6 +75,11 @@ class TextareaContainer extends Component {
       case 'reviewWriting':
         MyClass.reviewContent = event.target.value;
         console.info(MyClass.reviewContent);
+        break;
+
+      case 'setAnswer':
+        MyClass.answerAry[idx].ans = event.target.value;
+        console.info(MyClass.answerAry[idx].ans);
         break;
 
       default:
@@ -140,8 +145,9 @@ const Textarea = styled.textarea`
   min-height: ${(props) => (props.mih ? props.mih : '300')}px;
   font-family: inherit;
   outline: none;
-  // max-height: ${(props) => (props.mxh ? props.mxh : '')}px
-  max-height: 100px;
+  // max-height: 100px;
+  max-height: ${(props) => (props.mxh ? props.mxh : '100')}px
+  
   :focus {
     outline: none;
   }

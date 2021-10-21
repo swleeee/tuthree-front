@@ -40,6 +40,26 @@ export function setAnswer(req) {
   });
 }
 
+export function getAnswer(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/exam/answer/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    // responseType: 'arraybuffer',
+  });
+}
+
+export function markingAnswer(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/exam/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    // responseType: 'arraybuffer',
+  });
+}
+
 // export function putSchedule(req) {
 //   return axios({
 //     method: 'PUT',
