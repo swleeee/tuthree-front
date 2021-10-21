@@ -19,7 +19,7 @@ class Card extends Component {
       budget,
       registration,
     } = this.props;
-
+    console.info(toJS(subject));
     return (
       <Container>
         <Img>
@@ -49,22 +49,49 @@ class Card extends Component {
             {subject &&
               subject.map((item, idx) => {
                 return (
-                  <MutlipleBox type="subject">
-                    <div>{item}</div>
-                  </MutlipleBox>
+                  idx < 2 && (
+                    <MutlipleBox type="subject">
+                      <div>{item}</div>
+                    </MutlipleBox>
+                  )
                 );
               })}
+            {subject && subject.length > 2 && (
+              <Skip type="subject">
+                <div>
+                  <div>+{subject.length - 2}</div>
+                </div>
+              </Skip>
+            )}
           </Label>
 
           <Label value="multiple">
             {location &&
               location.map((item, idx) => {
                 return (
-                  <MutlipleBox type="region">
-                    <div>{item}</div>
-                  </MutlipleBox>
+                  <>
+                    {idx < 2 && (
+                      <MutlipleBox type="region">
+                        <div>{item}</div>
+                      </MutlipleBox>
+                    )}
+                    {location.length > 2 && idx === location.length - 1 && (
+                      <Skip type="location">
+                        <div>
+                          <div>+{idx - 1}</div>
+                        </div>
+                      </Skip>
+                    )}
+                  </>
                 );
               })}
+            {/* {location && location.length > 2 && (
+              <Skip type="location">
+                <div>
+                  <div>+{location.length - 2}</div>
+                </div>
+              </Skip>
+            )} */}
           </Label>
 
           <Box>
@@ -92,7 +119,8 @@ const Container = styled.div`
   cursor: pointer;
   width: 250px;
   height: auto;
-  min-height: 350px;
+  // min-height: 350px;
+  height: 500px;
   border: 2px solid #707070;
   border-radius: 3px;
   display: flex;
@@ -126,12 +154,17 @@ const Img = styled.div`
 const Content = styled.div`
   padding: 15px 15px 0 15px;
   box-sizing: border-box;
+  height: 350px;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: space-between;
 `;
 const Box = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 const Label = styled.div`
+  position: relative;
   margin-bottom: 15px;
   font-weight: ${(props) => (props.fw ? props.fw : 'normal')};
   > img {
@@ -172,5 +205,32 @@ const MutlipleBox = styled.div`
     font-size: 12px;
     margin-right: 5px;
     color: #000;
+  }
+`;
+
+const Skip = styled.div`
+  // position: absolute;
+  margin: 3px 0;
+  width: 100%;
+  > div {
+    width: 24px;
+    height: 24px;
+    // background-color: rgba(235, 114, 82, 0.7);
+    border: ${(props) =>
+      props.type === 'subject' ? '2px groove #7eb1a8' : '2px groove #a596c4'};
+    background-color: ${(props) =>
+      props.type === 'subject'
+        ? 'rgba(126, 177, 168, 0.4)'
+        : 'rgba(165, 150, 196, 0.4)'};
+    // background-color: #ccc;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // color: #fff;
+    > div {
+      font-size: 12px;
+      font-weight: 600;
+    }
   }
 `;
