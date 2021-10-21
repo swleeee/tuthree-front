@@ -54,11 +54,14 @@ class MyClass {
   @observable answerAry = [];
   @observable tuteeAnswerModalActive = false;
   @observable markingTotalQuestion = 0;
+  @observable markingResultTotalObj = {};
   @observable markingResultAry = [];
   @observable markingStateAry = [];
   @observable markingStateObj = {};
+  @observable markingTotalScoreObj = {};
   @observable markingCorrect = 0;
   @observable getTuteeAnswerState = false; // 학생 사용자가 답을 잘 가져왔는지...
+  @observable resultModalActive = false;
 
   @observable ratingPoint = 5; // 평점
   @observable reviewContent = ''; // 리뷰 내용
@@ -720,13 +723,19 @@ class MyClass {
         console.info(e.response);
       });
   };
-  @action gradingAnswer = () => {
+  @action gradingAnswer = async (idx = '') => {
+    console.info('gradingAnswer');
+    this.markingCorrect = 0;
     this.markingResultAry &&
-      this.markingResultAry.map((item, idx) => {
-        if (item.score === 'right') {
+      (await this.markingResultAry.map(async (item, idx) => {
+        if (item.score === 'RIGHT') {
           this.markingCorrect += 1;
         }
-      });
+      }));
+    // this.markingResultAry.grade = this.markingCorrect;
+    if (idx !== '') {
+      this.markingTotalScoreObj[idx] = this.markingCorrect;
+    }
   };
   @action markingAnswer = async (id, idx = '') => {
     console.info(id);
@@ -745,10 +754,14 @@ class MyClass {
         if (res.data.success) {
           // this.markingTotalQuestion = res.data.data.prob;
           this.markingResultAry = await res.data.data.answer;
+
+          // console.info(this.markingCorrect);
           if (idx !== '') {
             // await this.markingStateAry.push({ [idx]: true });
+            await this.gradingAnswer(idx);
             await this.markingStateAry.push(true);
             this.markingStateObj[idx] = true;
+            this.markingResultTotalObj[idx] = this.markingResultAry;
             console.info(toJS(this.markingStateAry));
           }
 
@@ -759,6 +772,7 @@ class MyClass {
             // await this.markingStateAry.push({ [idx]: false });
             await this.markingStateAry.push(false);
             this.markingStateObj[idx] = false;
+            this.markingResultTotalObj[idx] = null;
             console.info(toJS(this.markingStateAry));
           }
         }
@@ -775,6 +789,9 @@ class MyClass {
         // return 0;
       });
     this.getTuteeAnswerState = true;
+    console.info(toJS(this.markingTotalScoreObj));
+    console.info(toJS(this.markingResultTotalObj));
+    console.info(toJS(this.markingResultAry));
     console.info(toJS(this.answerAry));
     console.info(idx);
     console.info(toJS(this.markingStateAry));

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import AnswerWriting from './Writing/AnswerWriting';
 import TuteeAnswerWriting from './Writing/TuteeAnswerWriting';
+import QuestionResult from './Select/QuestionResult';
 import deleteImg from '../../../../static/images/Signup/delete.png';
 import { ROOT_URL } from '../../../../axios/index';
 import { toJS } from 'mobx';
@@ -51,6 +52,15 @@ class Content extends Component {
     Common.modalActive = true;
   };
 
+  openResultModal = () => {
+    const { MyClass } = this.props;
+    MyClass.resultModalActive = false;
+  };
+  closeResultModal = () => {
+    const { MyClass } = this.props;
+    MyClass.resultModalActive = true;
+  };
+
   openTuteeAnswerModal = () => {
     const { MyClass } = this.props;
     MyClass.tuteeAnswerModalActive = false;
@@ -84,6 +94,18 @@ class Content extends Component {
           <Layer>
             <div>
               <TuteeAnswerWriting
+                // width={width}
+                open={this.openTuteeAnswerModal}
+                close={this.closeTuteeAnswerModal}
+              />
+            </div>
+          </Layer>
+        )}
+
+        {MyClass.resultModalActive === true && (
+          <Layer>
+            <div>
+              <QuestionResult
                 // width={width}
                 open={this.openTuteeAnswerModal}
                 close={this.closeTuteeAnswerModal}
@@ -136,7 +158,7 @@ class Content extends Component {
               )}
 
               <TuteeAnswer type="headerBold">
-                <div>학생 답안</div>
+                <div>채점 결과</div>
               </TuteeAnswer>
             </Section>
 
@@ -341,7 +363,24 @@ class Content extends Component {
                           : MyClass.questionTotalList.length === idx + 1
                       }
                     >
-                      <div>b</div>
+                      {MyClass.markingStateObj[idx] ? (
+                        <ResultBox>
+                          <ResultScore>
+                            {MyClass.markingTotalScoreObj[idx]} /{' '}
+                            {MyClass.markingResultTotalObj[idx] &&
+                              MyClass.markingResultTotalObj[idx].length}
+                          </ResultScore>
+                          <ResultBtn
+                            onClick={() => {
+                              MyClass.resultModalActive = true;
+                            }}
+                          >
+                            <div>결과보기</div>
+                          </ResultBtn>
+                        </ResultBox>
+                      ) : (
+                        <div></div>
+                      )}
                     </TuteeAnswer>
                   </Section>
                 );
@@ -492,7 +531,7 @@ const Answer = styled.div`
   align-items: center;
   // justify-content: ${(props) =>
     props.type === 'main' ? 'center' : 'flex-start'};
-
+  height: 40px;
   border-right: 1px solid #000;
   border-bottom: ${(props) => (props.active ? 'none' : '1px solid #707070')};
 
@@ -500,7 +539,7 @@ const Answer = styled.div`
     // border: 1px solid #707070;
     // height: 100%;
     width: ${(props) => (props.type === 'main' ? '80px' : '')};
-    height: ${(props) => (props.type === 'main' ? '20px' : '')};
+    height: ${(props) => (props.type === 'main' ? '30px' : '')};
     border-radius: ${(props) => (props.type === 'main' ? '15px' : '')};
     background-color: ${(props) =>
       props.type === 'main'
@@ -531,7 +570,7 @@ const Answer = styled.div`
 
     > div {
       width: ${(props) => (props.type === 'main' ? '60px' : '')};
-      height: ${(props) => (props.type === 'main' ? '16px' : '')};
+      height: ${(props) => (props.type === 'main' ? '26px' : '')};
       font-size: ${(props) => (props.type === 'main' ? '10px' : '12px')};
     }
   }
@@ -539,7 +578,7 @@ const Answer = styled.div`
     width: 23%;
     > div {
       width: ${(props) => (props.type === 'main' ? '65px' : '')};
-      height: ${(props) => (props.type === 'main' ? '18px' : '')};
+      height: ${(props) => (props.type === 'main' ? '28px' : '')};
       font-size: ${(props) => (props.type === 'main' ? '12px' : '14px')};
     }
   }
@@ -547,7 +586,7 @@ const Answer = styled.div`
   @media (min-width: 992px) and (max-width: 1299.98px) {
     > div {
       width: ${(props) => (props.type === 'main' ? '78px' : '')};
-      height: ${(props) => (props.type === 'main' ? '20px' : '')};
+      height: ${(props) => (props.type === 'main' ? '30px' : '')};
       font-size: ${(props) => (props.type === 'main' ? '13px' : '15px')};
     }
   }
@@ -564,6 +603,8 @@ const TuteeAnswer = styled.div`
       : 'none'};
   border-bottom: ${(props) => (props.active ? 'none' : '1px solid #707070')};
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
   @media (min-width: 0px) and (max-width: 767.98px) {
     width: 25%;
   }
@@ -644,5 +685,23 @@ const Layer = styled.div`
     height: 90%;
     overflow-y: scroll !important;
     margin-top: 30px;
+  }
+`;
+const ResultBox = styled.div`
+  display: flex;
+`;
+const ResultScore = styled.div`
+  margin-right: 5px;
+`;
+const ResultBtn = styled.div`
+  background-color: rgba(235, 114, 82, 0.7);
+  border-radius: 5px;
+  padding: 3px 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  > div {
+    // color: #fff;
+    font-size: 14px;
   }
 `;
