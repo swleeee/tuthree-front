@@ -98,7 +98,7 @@ const monList = [
 let calendarDays = [];
 let new_month = [];
 
-@inject('MyClass', 'Common')
+@inject('MyClass', 'Common', 'Auth')
 @observer
 class Calendar extends React.Component {
   makeCalendar = (year, month) => {
@@ -367,7 +367,7 @@ class Calendar extends React.Component {
   };
 
   render() {
-    const { today, history, MyClass, Common } = this.props;
+    const { today, history, MyClass, Common, Auth } = this.props;
 
     return (
       <Container>
@@ -383,6 +383,7 @@ class Calendar extends React.Component {
             <Button width={100}>
               <div>화상강의</div>
             </Button>
+
             <Button
               width={100}
               last={true}

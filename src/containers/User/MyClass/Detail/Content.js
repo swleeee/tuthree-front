@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import Calendar from './Calendar';
 import QAContainer from './QA';
 
-@inject('MyClass')
+@inject('MyClass', 'Auth', 'Common')
 @observer
 class Content extends Component {
   constructor(props) {
@@ -13,7 +13,9 @@ class Content extends Component {
   }
 
   componentDidMount = () => {
+    const { MyClass, Common } = this.props;
     console.info('un0');
+    Common.modalActive = false;
   };
   componentWillUnmount = () => {
     const { MyClass } = this.props;
@@ -21,7 +23,7 @@ class Content extends Component {
     console.info('un1');
   };
   render() {
-    const { MyClass } = this.props;
+    const { MyClass, Auth } = this.props;
     return (
       <Container>
         <NavBox>
@@ -40,7 +42,11 @@ class Content extends Component {
             </Nav>
           </NavItem>
           <UserInfo>
-            <div>{MyClass.studentName} Class</div>
+            {Auth.loggedUserType === 'teacher' ? (
+              <div>{`[ ${MyClass.studentName} 학생 ]`}</div>
+            ) : (
+              <div>{`[ ${MyClass.teacherName} 선생님 ]`}</div>
+            )}
           </UserInfo>
         </NavBox>
 

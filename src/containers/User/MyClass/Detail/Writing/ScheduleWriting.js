@@ -20,6 +20,7 @@ import format from 'date-fns/format';
 
 import moment from 'moment';
 import ko from 'date-fns/locale/ko';
+import Auth from '../../../../../stores/Account/Auth';
 registerLocale('ko', ko);
 const _ = require('lodash');
 
@@ -170,7 +171,7 @@ const schedules = [
   },
 ];
 
-@inject('Common', 'MyClass')
+@inject('Common', 'MyClass', 'Auth')
 @observer
 class ScheduleWriting extends React.Component {
   componentDidMount = () => {
@@ -283,13 +284,14 @@ class ScheduleWriting extends React.Component {
                         >
                           <div>일정</div>
                         </Item>
-
-                        <Item
-                          onClick={() => (MyClass.writingTabState = 2)}
-                          active={MyClass.writingTabState === 2}
-                        >
-                          <div>수업보고서</div>
-                        </Item>
+                        {Auth.loggedUserType === 'teacher' && (
+                          <Item
+                            onClick={() => (MyClass.writingTabState = 2)}
+                            active={MyClass.writingTabState === 2}
+                          >
+                            <div>수업보고서</div>
+                          </Item>
+                        )}
                       </div>
                     </TabBox>
                   </Header>
