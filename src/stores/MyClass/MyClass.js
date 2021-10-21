@@ -47,6 +47,7 @@ class MyClass {
   @observable totalQuestion = 0;
   @observable questionTotalList = [];
   @observable questionAry = [];
+  @observable questionPostId = '';
   @observable choiceState = false;
 
   @observable ratingPoint = 5; // 평점
@@ -115,10 +116,10 @@ class MyClass {
         this.questionAry = [];
         for (let i = 0; i < this.totalQuestion; i++) {
           this.questionAry.push({
-            number: i + 1,
+            question: i + 1,
             type: false,
             auto: true,
-            answer: '',
+            ans: '',
           });
           //   questionAry[i].question = i + 1;
           //   questionAry[i].type = 'num';
@@ -131,7 +132,7 @@ class MyClass {
       case 'make_question_answer':
         // console.info(e.target.value);
         console.info(idx);
-        this.questionAry[idx].answer = e.target.value;
+        this.questionAry[idx].ans = e.target.value;
         // this.scheduleValue = e.target.value;
         console.info(toJS(this.questionAry));
         break;
@@ -558,6 +559,50 @@ class MyClass {
         alert('문제지 삭제가 완료되었습니다!');
 
         this.getQuestionList();
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action setTutorAnswer = async () => {
+    console.info(this.totalQuestion);
+    console.info(toJS(this.questionAry));
+    console.info(this.questionPostId);
+    let answerAry = [];
+    this.questionAry &&
+      this.questionAry.map((item, idx) => {
+        answerAry.push(item);
+        console.info(toJS(item));
+      });
+
+    console.info(toJS(answerAry));
+    console.info(this.questionAry.values);
+
+    const req = {
+      id: this.questionPostId,
+      params: {
+        grade: 'teacher',
+      },
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+      data: {
+        prob: parseInt(this.totalQuestion),
+        problem: this.questionAry,
+      },
+    };
+    console.info(toJS(req.data));
+    console.info(toJS(req.data.problem));
+    await GradingAPI.setAnswer(req)
+      .then(async (res) => {
+        console.info(res);
+        // alert('수업보고서 작성이 완료되었습니다!');
+        // this.writingTabState = 1;
+        // Common.modalActive = false;
+        // this.getDetailReport();
+        // this.getCalendar();
       })
       .catch((e) => {
         console.info(e);

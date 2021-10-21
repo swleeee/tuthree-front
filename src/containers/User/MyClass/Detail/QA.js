@@ -131,68 +131,71 @@ class Content extends Component {
           </Header>
           <Main>
             {/* {dummyData &&
-                  dummyData.map((item, idx) => {
-                    console.info(dummyData.length);
-                    console.info(idx);
-                    if ((dummyData.length + 1) % 2 === 1) {
-                      console.info(dummyData.length >= idx + 2);
-                    } else {
-                      console.info(dummyData.length === idx + 1);
-                    }
+              dummyData.map((item, idx) => {
+                console.info(dummyData.length);
+                console.info(idx);
+                if ((dummyData.length + 1) % 2 === 1) {
+                  console.info(dummyData.length >= idx + 2);
+                } else {
+                  console.info(dummyData.length === idx + 1);
+                }
 
-                    return (
-                      // <SubMain>
+                return (
+                  // <SubMain>
 
-                      <Section type="main">
-                        <Question
-                          type="header"
-                          active={
-                            (dummyData.length + 1) % 2 === 1
-                              ? dummyData.length >= idx + 2
-                              : dummyData.length === idx + 1
-                          }
-                        >
-                          <div>{item.title}</div>
-                        </Question>
-                        <Answer
-                          type="main"
-                          active={
-                            (dummyData.length + 1) % 2 === 1
-                              ? dummyData.length >= idx + 2
-                              : dummyData.length === idx + 1
-                          }
-                        >
-                          <div
-                            onClick={() => {
-                              Common.modalActive = true;
-                            }}
-                          >
-                            <div>제출</div>
-                          </div>
-                        </Answer>
-                        {(idx + 1) % 2 === 1 ? (
-                          <TuteeAnswer
-                            type="headerBold"
-                            active={
-                              (dummyData.length + 1) % 2 === 1
-                                ? dummyData.length >= idx + 2
-                                : dummyData.length === idx + 1
-                            }
-                          >
-                            <div>b</div>
-                          </TuteeAnswer>
-                        ) : (
-                          <TuteeAnswer
-                            type="main"
-                            active={
-                              (dummyData.length + 1) % 2 === 1
-                                ? dummyData.length >= idx + 2
-                                : dummyData.length === idx + 1
-                            }
-                          >
-                            <div>b</div>
-                          </TuteeAnswer>
-                        )} */}
+                  <Section type="main">
+                    <Question
+                      type="header"
+                      active={
+                        (dummyData.length + 1) % 2 === 1
+                          ? dummyData.length >= idx + 2
+                          : dummyData.length === idx + 1
+                      }
+                    >
+                      <div>{item.title}</div>
+                    </Question>
+                    <Answer
+                      type="main"
+                      active={
+                        (dummyData.length + 1) % 2 === 1
+                          ? dummyData.length >= idx + 2
+                          : dummyData.length === idx + 1
+                      }
+                    >
+                      <div
+                        onClick={() => {
+                          Common.modalActive = true;
+                        }}
+                      >
+                        <div>제출</div>
+                      </div>
+                    </Answer>
+                    {(idx + 1) % 2 === 1 ? (
+                      <TuteeAnswer
+                        type="headerBold"
+                        active={
+                          (dummyData.length + 1) % 2 === 1
+                            ? dummyData.length >= idx + 2
+                            : dummyData.length === idx + 1
+                        }
+                      >
+                        <div>b</div>
+                      </TuteeAnswer>
+                    ) : (
+                      <TuteeAnswer
+                        type="main"
+                        active={
+                          (dummyData.length + 1) % 2 === 1
+                            ? dummyData.length >= idx + 2
+                            : dummyData.length === idx + 1
+                        }
+                      >
+                        <div>b</div>
+                      </TuteeAnswer>
+                    )}
+                  </Section>
+                );
+              })} */}
 
             {MyClass.questionTotalList &&
               MyClass.questionTotalList.map((item, idx) => {
@@ -205,8 +208,6 @@ class Content extends Component {
                 }
 
                 return (
-                  // <SubMain>
-
                   <Section type="main">
                     <Question
                       type="header"
@@ -238,6 +239,7 @@ class Content extends Component {
                       <div
                         onClick={() => {
                           Common.modalActive = true;
+                          MyClass.questionPostId = item.id;
                         }}
                       >
                         <div>제출</div>
@@ -254,19 +256,7 @@ class Content extends Component {
                     >
                       <div>b</div>
                     </TuteeAnswer>
-
-                    {/* <TuteeAnswer
-                        type="main"
-                        active={
-                          (MyClass.questionTotalList.length + 1) % 2 === 1
-                            ? MyClass.questionTotalList.length >= idx + 2
-                            : MyClass.questionTotalList.length === idx + 1
-                        }
-                      >
-                        <div>b</div>
-                      </TuteeAnswer> */}
                   </Section>
-                  // </SubMain>
                 );
               })}
           </Main>
@@ -548,9 +538,10 @@ const Layer = styled.div`
   > div {
     display: flex;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
     // height: 100vh;
-    height: 100%;
+    height: 90%;
     overflow-y: scroll !important;
+    margin-top: 30px;
   }
 `;

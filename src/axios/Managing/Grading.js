@@ -30,6 +30,16 @@ export function setQuestion(req) {
   });
 }
 
+export function setAnswer(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/room/exam/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
 // export function putSchedule(req) {
 //   return axios({
 //     method: 'PUT',

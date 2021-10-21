@@ -73,7 +73,7 @@ class AnswerWriting extends Component {
                                   //     : MyClass.questionAry.length === idx + 1
                                   // }
                                 >
-                                  <div>{item.number}</div>
+                                  <div>{item.question}</div>
                                 </Number>
 
                                 <Choice
@@ -172,6 +172,15 @@ class AnswerWriting extends Component {
                       </Content>
                     </Answer>
                   </Main>
+                  <ButtonBox>
+                    <Button
+                      color="#fff"
+                      bcolor="rgb(235, 114, 82)"
+                      onClick={() => MyClass.setTutorAnswer()}
+                    >
+                      <div>저장</div>
+                    </Button>
+                  </ButtonBox>
                 </Container>
               </>
             ) : null}
@@ -233,7 +242,7 @@ class AnswerWriting extends Component {
                                   //     : MyClass.questionAry.length === idx + 1
                                   // }
                                 >
-                                  <div>{item.number}</div>
+                                  <div>{item.question}</div>
                                 </Number>
 
                                 <Choice
@@ -332,6 +341,11 @@ class AnswerWriting extends Component {
                       </Content>
                     </Answer>
                   </Main>
+                  <ButtonBox>
+                    <Button color="#fff" bcolor="rgb(235, 114, 82)">
+                      <div>저장</div>
+                    </Button>
+                  </ButtonBox>
                 </Container>
               </>
             ) : null}
@@ -658,5 +672,51 @@ const AnswerInput = styled.div`
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
     width: 35%;
+  }
+`;
+
+const ButtonBox = styled.div`
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+`;
+
+const Button = styled.button`
+  //   width: 180px;
+  height: 50px;
+  color: ${(props) => (props.color ? props.color : '')};
+  background-color: ${(props) => (props.bcolor ? props.bcolor : '')};
+  border: ${(props) => (props.border ? props.border : 'none')};
+  margin: 0 50px;
+  //   margin-bottom: 200px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 70%;
+  > div {
+    font-size: 18px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    min-width: 120px;
+    height: 32px;
+    margin: 0 30px;
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    // width: 180px;
+    height: 36px;
+    > div {
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    // width: 180px;
+    height: 40px;
+    > div {
+      font-size: 17px;
+    }
   }
 `;
