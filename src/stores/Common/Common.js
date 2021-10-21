@@ -5,6 +5,7 @@ class Common {
   constructor() {
     makeObservable(this);
   }
+  @observable time = '--:--';
   @observable width = null;
   @observable temp = null;
   @observable budgetAry = [

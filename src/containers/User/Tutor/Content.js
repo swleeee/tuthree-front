@@ -5,6 +5,8 @@ import Card from '../../../components/Card';
 import { inject, observer, Provider } from 'mobx-react';
 import Tutor from '../../../stores/Matching/Tutor';
 import Pagination from '../../../components/Pagination';
+import { toJS } from 'mobx';
+import downArrowImg from '../../../static/images/Common/down-arrow.png';
 
 const dummyData = [
   {
@@ -144,18 +146,67 @@ const dummyData = [
 @inject('Tutor')
 @observer
 class Content extends Component {
+  state = {
+    is_open: false,
+  };
   componentDidMount = () => {
     Tutor.getTutorList(Tutor.tutorCurrentPage);
+    console.info(toJS(Tutor.sortAry[Tutor.sortIdx]));
   };
   render() {
+    console.info('tutorlendering');
     return (
       <Container>
         <Name>과외 선생님 찾기</Name>
         <Filter type="tutor" />
         <MainBox>
           <Header>
-            <span>{Tutor.tutorTotalCount}명</span>의 선생님이 있습니다.
+            <Count>
+              <span>{Tutor.tutorTotalCount}명</span>의 선생님이 있습니다.
+            </Count>
+            <SortingBox>
+              <SortLabel
+                active={this.state.is_open}
+                onClick={() => {
+                  this.setState({ is_open: !this.state.is_open });
+                }}
+              >
+                <span>{Tutor.sortAry[Tutor.sortIdx].label}</span>
+                <img src={downArrowImg} />
+              </SortLabel>
+
+              {/* <img src={downArrowImg} style={{ transform: 'rotate(180deg)' }} /> */}
+              {/* <img src={upArrowImg} /> */}
+
+              {/* <span>최신순</span>
+              <span>오래된순</span>
+              <span>급여높은순</span>
+              <span>급여낮은순</span>
+              <span>별점높은순</span>
+              <span>별점낮은순</span> */}
+
+              <DropDownBox active={this.state.is_open}>
+                {this.state.is_open &&
+                  Tutor.sortAry &&
+                  Tutor.sortAry.map((item, idx) => {
+                    return (
+                      <DropDownItem
+                        onClick={() => {
+                          console.info(idx);
+                          Tutor.sortIdx = idx;
+                          this.setState({ is_open: false });
+                          Tutor.getTutorList();
+                        }}
+                        active={idx === Tutor.sortAry.length - 1}
+                      >
+                        {item.label}
+                      </DropDownItem>
+                    );
+                  })}
+              </DropDownBox>
+            </SortingBox>
           </Header>
+
           <CardContainer>
             {/* {dummyData.map((item, idx) => {
               return (
@@ -251,9 +302,9 @@ const Header = styled.div`
   padding-bottom: 10px;
   margin-bottom: 27px;
   font-size: 20px;
-  > span {
-    font-weight: bold;
-  }
+  display: flex;
+  justify-content: space-between;
+
   @media (min-width: 0px) and (max-width: 767.98px) {
     font-size: 16px;
   }
@@ -269,9 +320,131 @@ const Header = styled.div`
 const CardContainer = styled.div`
   display: inline-flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  // justify-content: space-between;
+  width: 100%;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     justify-content: center;
   }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    justify-content: space-between;
+  }
+`;
+
+const SortingBox = styled.div`
+  position: relative;
+
+  // > span:not(:last-child) {
+  //     border-right: 1px solid #888;
+  // }
+`;
+
+const Count = styled.div`
+  > span {
+    font-weight: bold;
+  }
+`;
+
+const DropDownBox = styled.div`
+  position: absolute;
+  // top: 0;
+  display: flex;
+  flex-direction: column;
+  width: 130px;
+  // width: 100%;
+  // height: 100%;
+  // border: ${(props) => (props.active ? '1px solid #707070' : 'none')};
+  border-radius: 5px;
+  // padding: 3px 5px;
+  box-shadow: ${(props) =>
+    props.active ? '0 1px 11px 1px rgba(0, 0, 0, 0.3)' : ''};
+  // right: -60%;
+  top: 35px;
+  background-color: ${(props) => (props.active ? '#fff' : 'transparent')};
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 100px;
+    right: 3%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 112px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 120px;
+  }
+`;
+
+const DropDownItem = styled.div`
+  cursor: pointer;
+  // border: 1px solid #000;
+  font-size: 16px;
+  // height: 15px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  border-bottom: ${(props) => (props.active ? 'none' : '1px solid #707070')};
+  &:hover {
+    background-color: rgba(235, 114, 82, 0.7);
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 14px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 15px;
+  }
+`;
+
+const SortLabel = styled.div`
+  display: flex;
+  align-items: center;
+  // position: relative;
+  cursor: pointer;
+  > img {
+    width: 24px;
+    transition: 0.3s;
+    transform: ${(props) =>
+      props.active ? 'rotate(180deg)' : 'rotate(360deg)'};
+      
+  }
+
+  > span {    
+    padding 0 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: blue;
+    font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    >img{
+      width: 18px;
+    }
+    > span {
+      font-size: 12px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    >img{
+      width: 22px;
+    }
+    > span {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    >img{
+      width: 23px;
+    }
+    > span {
+      font-size: 15px;
+    }
+  }
+
 `;

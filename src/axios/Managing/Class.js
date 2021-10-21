@@ -18,3 +18,95 @@ export function getDetailClass(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function setSchedule(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/room/calendar`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+export function putSchedule(req) {
+  return axios({
+    method: 'PUT',
+    url: `${ROOT_URL}/room/calendar/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
+export function delSchedule(req) {
+  return axios({
+    method: 'DELETE',
+    url: `${ROOT_URL}/room/calendar/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function getSchedule(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/calendar`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function getDetailSchedule(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/calendar/date`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function setReport(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/room/post`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+export function putReport(req) {
+  return axios({
+    method: 'PUT',
+    url: `${ROOT_URL}/room/post/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
+export function delReport(req) {
+  return axios({
+    method: 'DELETE',
+    url: `${ROOT_URL}/room/post/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function getReport(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/calendar`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function getDetailReport(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/post/date`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}

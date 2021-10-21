@@ -109,9 +109,14 @@ class Nav extends Component {
                     </div>
 
                     <div>
-                      <Button>
-                        <div>마이페이지</div>
-                      </Button>
+                      <Link
+                        to="/mypage"
+                        // style={{ width: '30%', marginLeft: '0px' }}
+                      >
+                        <Button>
+                          <div>마이페이지</div>
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </ProfileMenu>

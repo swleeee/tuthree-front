@@ -227,20 +227,6 @@ class InfoWriting extends React.Component {
                     <BudgetBox>
                       <Label>급여</Label>
                       <Content>
-                        <Input
-                          //  width="80"
-                          value={Chatting.budget ? Chatting.budget : ''}
-                          domainType={2}
-                          placeholder="급여(ex: 350000)"
-                          onChange={(e) =>
-                            Chatting.handleChange(e.target, 'budget')
-                          }
-                          onFocus={(e) => (e.target.placeholder = '')}
-                          onBlur={(e) =>
-                            (e.target.placeholder = '급여(ex: 350000)')
-                          }
-                        />
-                        <span>원</span>
                         <Select
                           width={140}
                           //  id={this.props.id}
@@ -261,9 +247,24 @@ class InfoWriting extends React.Component {
                           options={Chatting.budgetTypeAry}
                           //  isSearchable={false}
                           placeholder="선택하세요."
-                          ml="25"
+                          mr="25"
                           domainType={Chatting.domainType}
                         />
+
+                        <Input
+                          //  width="80"
+                          value={Chatting.budget ? Chatting.budget : ''}
+                          domainType={2}
+                          placeholder="급여(ex: 350000)"
+                          onChange={(e) =>
+                            Chatting.handleChange(e.target, 'budget')
+                          }
+                          onFocus={(e) => (e.target.placeholder = '')}
+                          onBlur={(e) =>
+                            (e.target.placeholder = '급여(ex: 350000)')
+                          }
+                        />
+                        <span>원</span>
                       </Content>
                     </BudgetBox>
                     <SubjectBox>

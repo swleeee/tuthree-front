@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 
-@inject('Common', 'Chatting')
+@inject('Common', 'Chatting', 'MyClass')
 @observer
 class TimePicer extends React.Component {
   constructor(...args) {
@@ -17,28 +17,54 @@ class TimePicer extends React.Component {
   }
 
   onTimeChange(time) {
-    const { type, Chatting } = this.props;
+    const { type, Chatting, MyClass, state, Common } = this.props;
     this.setState({ time });
+    // Common.time = time;
     // console.info(this.state.time);
     console.info(time);
-    switch (type) {
-      case 'start':
-        console.info(`start_time : ${time}`);
-        Chatting.startTimeValue = time;
-        break;
-      case 'end':
-        console.info(`end_time : ${time}`);
-        Chatting.endTimeValue = time;
-        break;
-      default:
-        break;
+    if (state === 'report') {
+      switch (type) {
+        case 'start':
+          console.info(`start_time : ${time}`);
+          MyClass.reportStartTime = time;
+          break;
+        case 'end':
+          console.info(`end_time : ${time}`);
+          MyClass.reportEndTime = time;
+          break;
+        default:
+          break;
+      }
+    } else {
+      switch (type) {
+        case 'start':
+          console.info(`start_time : ${time}`);
+          Chatting.startTimeValue = time;
+          break;
+        case 'end':
+          console.info(`end_time : ${time}`);
+          Chatting.endTimeValue = time;
+          break;
+        default:
+          break;
+      }
     }
+  }
+  componentDidMount = () => {
+    console.info('adasdas');
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    console.info('componentDidUpdate');
+    console.info(prevProps);
+    console.info(prevState);
   }
 
   render() {
     const { time } = this.state;
-    const { type } = this.props;
-
+    const { type, state, MyClass, active, Common } = this.props;
+    console.info(MyClass.reportWritingState);
+    console.info(active);
     return (
       <TimeContainer
         value={time}

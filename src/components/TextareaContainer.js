@@ -10,7 +10,7 @@ const placeholderText = `예) 수/금 16시, 주말 시간 가능(협의 가능)
                             개념 설명부터 실전 문제 풀이까지 꼼꼼하게 해드립니다.
                             `;
 
-@inject('AdminCommunity', 'Community', 'Chatting')
+@inject('AdminCommunity', 'Community', 'Chatting', 'MyClass')
 @observer
 class TextareaContainer extends Component {
   state = {
@@ -20,7 +20,7 @@ class TextareaContainer extends Component {
     row: 1,
   };
   requestHandler = (event) => {
-    const { type, mxh, Chatting } = this.props;
+    const { type, mxh, Chatting, MyClass, idx } = this.props;
     console.info(mxh);
     const textareaLineHeight = 17;
     const { minRows, maxRows } = this.state;
@@ -68,6 +68,19 @@ class TextareaContainer extends Component {
         Chatting.detailContent = event.target.value;
         console.info(Chatting.detailContent);
         break;
+      case 'classReport':
+        MyClass.reportContent = event.target.value;
+        console.info(MyClass.reportContent);
+        break;
+      case 'reviewWriting':
+        MyClass.reviewContent = event.target.value;
+        console.info(MyClass.reviewContent);
+        break;
+
+      case 'setAnswer':
+        MyClass.answerAry[idx].ans = event.target.value;
+        console.info(MyClass.answerAry[idx].ans);
+        break;
 
       default:
         break;
@@ -114,7 +127,8 @@ const Textarea = styled.textarea`
   border: ${(props) =>
     props.type === 'teacherSignup' ||
     props.type === 'studentSignup' ||
-    props.type === 'tutoring'
+    props.type === 'tutoring' ||
+    props.bd
       ? '1px solid #c7c7c7'
       : 'none'};
   width: 100%;
@@ -131,8 +145,9 @@ const Textarea = styled.textarea`
   min-height: ${(props) => (props.mih ? props.mih : '300')}px;
   font-family: inherit;
   outline: none;
-  // max-height: ${(props) => (props.mxh ? props.mxh : '')}px
-  max-height: 100px;
+  // max-height: 100px;
+  max-height: ${(props) => (props.mxh ? props.mxh : '100')}px
+  
   :focus {
     outline: none;
   }
@@ -149,6 +164,9 @@ const Textarea = styled.textarea`
         ? '630px'
         : 'nopne'};
     font-size: 11px;
+    ::placeholder {
+      font-size: 11px;
+    }
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     max-width: ${(props) =>

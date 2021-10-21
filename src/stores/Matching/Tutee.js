@@ -31,8 +31,29 @@ class Tutee {
 
   @observable tuteeDetailAry = [];
 
-  @observable budgetType = '';
+  @observable sortIdx = 0;
+  @observable sortAry = [
+    {
+      label: '최신순',
+      value: 'latest',
+    },
+    {
+      label: '오래된순',
+      value: 'old',
+    },
+    {
+      label: '급여 높은 순',
+      value: 'hprice',
+    },
+    {
+      label: '급여 낮은 순',
+      value: 'lprice',
+    },
+  ];
 
+  @observable budgetType = '';
+  @observable lowerBudget = '';
+  @observable upperBudget = '';
   @observable budgetTypeAry = [
     {
       label: '시급',
@@ -181,7 +202,15 @@ class Tutee {
         console.info(e.label);
 
         break;
-      case 'budget':
+      case 'lowerBudget':
+        this.lowerBudget = e.value;
+        break;
+
+      case 'upperBudget':
+        this.upperBudget = e.value;
+        break;
+
+      case 'budgetType':
         this.budgetType = e.value;
         break;
       case 'schoolState':
@@ -204,10 +233,35 @@ class Tutee {
     console.info('init');
     const req = {
       id: id ? id : 1,
+      params: {
+        start: this.budgetType + ' ' + this.lowerBudget,
+        end: this.budgetType + ' ' + this.upperBudget,
+        region: this.selectedLocation.join(', '),
+        subject: this.selectedSubject.join(', '),
+        sort: this.sortAry[this.sortIdx].value,
+      },
       headers: {
         Authorization: this.Authorization,
       },
     };
+
+    if (this.selectedSubject.length === 0) {
+      delete req.params.subject;
+    }
+
+    if (this.selectedLocation.length === 0) {
+      delete req.params.region;
+    }
+
+    if (!this.lowerBudget) {
+      delete req.params.start;
+    }
+
+    if (!this.upperBudget) {
+      delete req.params.end;
+    }
+
+    console.info(req);
 
     TuteeAPI.getTuteeList(req)
       .then(async (res) => {
