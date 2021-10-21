@@ -45,13 +45,13 @@ class ClassCard extends Component {
                   <div>채팅하기</div>
                 </Button>
               </div>
-              <div>
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    MyClass.reviewModalActive = true;
-                  }}
-                >
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  MyClass.reviewModalActive = true;
+                }}
+              >
+                <Button>
                   <div>리뷰작성</div>
                 </Button>
               </div>
@@ -115,7 +115,7 @@ const Container = styled.div`
   //   margin: 10px auto;
   position: relative;
   > img {
-    cursor: pointer;
+    // cursor: pointer;
     // width: 32px;
     position: absolute;
     top: 5%;
