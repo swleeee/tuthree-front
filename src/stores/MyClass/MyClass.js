@@ -13,6 +13,7 @@ class MyClass {
   @observable detailState = 1;
 
   @observable status = 'OPEN'; // OPEN : 현재 수강, CLOSE : 과거 수강
+  @observable reviewModalActive = false; // 리뷰 작성 모달
 
   @observable currentDay = 0;
   @observable month = 0;
@@ -47,6 +48,41 @@ class MyClass {
   @observable questionTotalList = [];
   @observable questionAry = [];
   @observable choiceState = false;
+
+  @observable ratingPoint = 5; // 평점
+  @observable reviewContent = ''; // 리뷰 내용
+  @observable starAry = [
+    {
+      id: 1,
+      checked: true,
+      content: '매우 나빠요',
+      content2: '만족도 1점을 주셨네요, 어떤점이 안 좋았나요?',
+    },
+    {
+      id: 2,
+      checked: true,
+      content: '나빠요',
+      content2: '만족도 2점을 주셨네요, 어떤점이 안 좋았나요?',
+    },
+    {
+      id: 3,
+      checked: true,
+      content: '보통이에요',
+      content2: '만족도 3점을 주셨네요, 어떤점이 좋았나요?',
+    },
+    {
+      id: 4,
+      checked: true,
+      content: '좋아요',
+      content2: '만족도 4점을 주셨네요, 어떤점이 좋았나요?',
+    },
+    {
+      id: 5,
+      checked: true,
+      content: '매우 좋아요',
+      content2: '만족도 5점을 주셨네요, 어떤점이 좋았나요?',
+    },
+  ];
 
   @action onClickNavHandler = (type) => {
     console.info(type);

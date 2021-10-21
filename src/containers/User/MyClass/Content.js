@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import ClassCard from '../../../components/ClassCard';
+import ReviewContainer from '../../../components/Review';
 
 const dummyData = [
   {
@@ -90,8 +91,18 @@ class Content extends Component {
     const { MyClass, Auth } = this.props;
     await MyClass.getClass(Auth.loggedUserId);
   };
+  reviewOpenModal = () => {
+    const { MyClass } = this.props;
+    MyClass.reviewModalActive = false;
+  };
+  reviewCloseModal = () => {
+    const { MyClass } = this.props;
+    MyClass.reviewModalActive = true;
+  };
+
   render() {
     const { MyClass, Auth } = this.props;
+    console.info(MyClass.reviewModalActive);
     return (
       <Container>
         <Header>
@@ -116,7 +127,7 @@ class Content extends Component {
           </SortingBox>
         </Header>
         <Main>
-          {/* {dummyData.map((item, idx) => {
+          {dummyData.map((item, idx) => {
             return (
               <div onClick={() => (MyClass.state = 2)}>
                 <ClassCard
@@ -130,8 +141,8 @@ class Content extends Component {
                 />
               </div>
             );
-          })} */}
-          {MyClass.classAry &&
+          })}
+          {/* {MyClass.classAry &&
             MyClass.classAry.map((item, idx) => {
               return (
                 <div
@@ -155,8 +166,19 @@ class Content extends Component {
                   />
                 </div>
               );
-            })}
+            })} */}
         </Main>
+        {MyClass.reviewModalActive === true && (
+          <Layer>
+            <div>
+              <ReviewContainer
+                // width={width}
+                open={this.reviewOpenModal}
+                close={this.reviewCloseModal}
+              />
+            </div>
+          </Layer>
+        )}
       </Container>
     );
   }
@@ -277,5 +299,27 @@ const SortingBox = styled.div`
     > span {
       font-size: 14px;
     }
+  }
+`;
+
+const Layer = styled.div`
+  // position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 399;
+  // opacity: 0.1;
+  background-color: rgba(0, 0, 0, 0.5);
+  // overflow-y: scroll !important;
+  // height: auto;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 100vh;
+    height: 100%;
+    overflow-y: scroll !important;
   }
 `;

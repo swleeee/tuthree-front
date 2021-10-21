@@ -4,6 +4,7 @@ import moreImg from '../static/images/Common/list.png';
 import defaultImg from '../static/images/Common/defaultUser.png';
 import { toJS } from 'mobx';
 import { inject, observer, Provider } from 'mobx-react';
+import ReviewContainer from './Review';
 
 @inject('MyClass')
 @observer
@@ -11,6 +12,7 @@ class ClassCard extends Component {
   state = {
     moreState: -1,
   };
+
   render() {
     const { name, date, subject, id, active, MyClass, number } = this.props;
 
@@ -43,7 +45,16 @@ class ClassCard extends Component {
                   <div>채팅하기</div>
                 </Button>
               </div>
-
+              <div>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    MyClass.reviewModalActive = true;
+                  }}
+                >
+                  <div>리뷰작성</div>
+                </Button>
+              </div>
               <div>
                 <Button>
                   <div>수업종료</div>
@@ -255,30 +266,31 @@ const Menu = styled.div`
   overflow: hidden;
   //   margin-top: 40px;
   top: 40px;
-  right: 0;
+  right: 25px;
   // width: 14em;
-  width: 7em;
+  // width: 7em;
   transform: translateX(40px);
   // border: 2px solid #000;
   box-shadow: 0 3px 10px 2px rgba(0, 0, 0, 0.45);
   z-index: 2;
   > div {
     > div {
-      with: 100%;
+      width: 100px;
       cursor: pointer;
       height: 50px;
       text-align: center;
       display: flex;
       flex-direction: column;
       justify-content: center;
-    }
-    > div:nth-of-type(1) {
       border-bottom: 1px solid #707070;
+    }
+    > div:last-child {
+      border: none;
     }
   }
 
   @media (min-width: 0px) and (max-width: 767.98px) {
-    width: 4.5em;
+    // width: 4.5em;
     right: 30px;
     > div {
       > div {
@@ -287,7 +299,7 @@ const Menu = styled.div`
     }
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
-    width: 5em;
+    // width: 5em;
     right: 23px;
     > div {
       > div {
@@ -297,8 +309,8 @@ const Menu = styled.div`
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
-    width: 6em;
-    right: 15px;
+    // width: 6em;
+    right: 25px;
     > div {
       > div {
         height: 36px;
@@ -342,5 +354,27 @@ const Button = styled.button`
     > div {
       font-size: 15px;
     }
+  }
+`;
+
+const Layer = styled.div`
+  // position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 399;
+  // opacity: 0.1;
+  background-color: rgba(0, 0, 0, 0.1);
+  // overflow-y: scroll !important;
+  // height: auto;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 100vh;
+    height: 100%;
+    overflow-y: scroll !important;
   }
 `;

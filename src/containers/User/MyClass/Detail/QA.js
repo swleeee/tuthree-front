@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import AnswerWriting from './Writing/AnswerWriting';
 import deleteImg from '../../../../static/images/Signup/delete.png';
+import { ROOT_URL } from '../../../../axios/index';
 
 const dummyData = [
   { id: 1, title: '2021-2학기 모의고사 문제지', file: 'werrfewfefewf' },
@@ -215,35 +216,9 @@ class Content extends Component {
                           : MyClass.questionTotalList.length === idx + 1
                       }
                     >
-                      <div
-                        onClick={() => {
-                          console.info(item.file);
-                          // var byteArray = new Uint8Array(item.file);
-                          // var byteArray = item.file.arrayBuffer();
-                          // console.info(byteArray);
-
-                          const blob = new Blob([item.file], {
-                            type: 'application/json',
-                          });
-                          let file = new File([blob], item.title);
-                          console.info(blob);
-                          console.info(file);
-                          const url = window.URL.createObjectURL(blob);
-                          console.info(url);
-                          const a = document.createElement('a');
-                          a.href = url;
-                          a.setAttribute('download', `${item.title}`);
-
-                          // window.open(url);
-                          // // a.href = `${url}`;
-                          // // a.download = `${url}`;
-                          a.click();
-                          a.remove();
-                          window.URL.revokeObjectURL(url);
-                        }}
-                      >
+                      <a href={`${ROOT_URL}/community/download/${item.id}`}>
                         {item.title}
-                      </div>
+                      </a>
                       <img
                         src={deleteImg}
                         onClick={() => {

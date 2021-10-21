@@ -72,6 +72,11 @@ class TextareaContainer extends Component {
         MyClass.reportContent = event.target.value;
         console.info(MyClass.reportContent);
         break;
+      case 'reviewWriting':
+        MyClass.reviewContent = event.target.value;
+        console.info(MyClass.reviewContent);
+        break;
+
       default:
         break;
     }
