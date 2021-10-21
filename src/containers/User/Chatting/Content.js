@@ -298,7 +298,7 @@ class Content extends Component {
                   }
                 }}
               >
-                <div>수락하기</div>
+                <div>과외 정보 조회하기</div>
               </CtlBtn>
             )}
           </ButtonBox>
