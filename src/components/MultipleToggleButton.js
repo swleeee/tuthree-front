@@ -14,8 +14,12 @@ class MultipleToggleButton extends React.Component {
       case 'type':
         console.info('type');
         console.info(toJS(MyClass.questionAry[number][`${state}`]));
-        MyClass.questionAry[number][`${state}`] =
-          !MyClass.questionAry[number][`${state}`];
+        if (MyClass.questionAry[number][`${state}`] === 'num') {
+          MyClass.questionAry[number][`${state}`] = 'str';
+        } else {
+          MyClass.questionAry[number][`${state}`] = 'num';
+        }
+
         console.info(toJS(MyClass.questionAry[number][`${state}`]));
         break;
       case 'auto':
@@ -38,10 +42,13 @@ class MultipleToggleButton extends React.Component {
     return (
       <>
         {state === 'type' ? (
-          <CheckBoxWrapper active={MyClass.questionAry[number].type}>
-            <CheckBox active={MyClass.questionAry[number].type} readOnly />
+          <CheckBoxWrapper active={MyClass.questionAry[number].type === 'num'}>
+            <CheckBox
+              active={MyClass.questionAry[number].type === 'num'}
+              readOnly
+            />
             <CheckBoxLabel
-              active={MyClass.questionAry[number].type}
+              active={MyClass.questionAry[number].type === 'num'}
               onClick={() => {
                 this.changeHandler();
               }}

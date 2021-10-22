@@ -130,7 +130,7 @@ class MyClass {
         for (let i = 0; i < this.totalQuestion; i++) {
           this.questionAry.push({
             question: i + 1,
-            type: false,
+            type: 'num',
             auto: true,
             ans: '',
           });
@@ -614,7 +614,7 @@ class MyClass {
         console.info(toJS(item));
       });
 
-    console.info(toJS(answerAry));
+    console.info(toJS(this.questionAry));
     console.info(this.questionAry.values);
 
     const req = {
@@ -710,6 +710,7 @@ class MyClass {
     await GradingAPI.setAnswer(req)
       .then(async (res) => {
         console.info(res);
+        alert('답안 작성이 완료되었습니다!');
         this.tuteeAnswerModalActive = false;
         this.getQuestionList();
         // alert('수업보고서 작성이 완료되었습니다!');

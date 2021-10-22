@@ -234,6 +234,7 @@ class Calendar extends React.Component {
                             // console.info('1')
                             // console.info(schedule)
                           }
+
                           <SubItem
                             // style={scheduleStyle}
                             choose={MyClass.chosenDay === day}
@@ -249,7 +250,9 @@ class Calendar extends React.Component {
                               console.info(toJS(schedule));
                             }}
                           >
-                            {schedule.schedule}
+                            {schedule.type === '보고서'
+                              ? '수업보고서'
+                              : schedule.schedule}
                             <Modal
                               isOpen={MyClass.isModalOpen}
                               close={MyClass.closeModal}

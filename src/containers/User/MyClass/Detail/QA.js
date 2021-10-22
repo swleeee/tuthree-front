@@ -562,8 +562,6 @@ const Answer = styled.div`
     box-sizing: border-box;
     font-size: ${(props) => (props.type === 'main' ? '14px' : '16px')};
     cursor: ${(props) => (props.type === 'main' ? 'pointer' : 'initial')};
-    text-decoration: ${(props) =>
-      props.user === 'student' ? (props.state ? '' : 'line-through') : ''};
   }
   @media (min-width: 0px) and (max-width: 767.98px) {
     width: 25%;
