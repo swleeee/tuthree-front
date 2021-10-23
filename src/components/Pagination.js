@@ -7,7 +7,6 @@ import nextImg from '../static/images/Common/next.png';
 
 import AdminCommunity from '../stores/Admin/Community';
 import Community from '../stores/Community/Community';
-import Tutor from '../stores/Matching/Tutor';
 
 @inject('AdminCommunity', 'Community', 'Tutor', 'Tutee')
 @observer

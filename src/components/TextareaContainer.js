@@ -5,11 +5,6 @@ import authStore from '../stores/Account/Auth';
 import AdminCommunity from '../stores/Admin/Community';
 import Community from '../stores/Community/Community';
 
-const placeholderText = `예) 수/금 16시, 주말 시간 가능(협의 가능)
-                            시급 2만원
-                            개념 설명부터 실전 문제 풀이까지 꼼꼼하게 해드립니다.
-                            `;
-
 @inject('AdminCommunity', 'Community', 'Chatting', 'MyClass')
 @observer
 class TextareaContainer extends Component {

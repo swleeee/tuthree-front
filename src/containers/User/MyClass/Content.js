@@ -159,7 +159,8 @@ class Content extends Component {
                     number={item.id}
                     id={idx}
                     type="teacher"
-                    name={item.studentName}
+                    studentName={item.studentName}
+                    teacherName={item.teacherName}
                     date={item.date}
                     subject={item.subject}
                     active={item.acitve}
@@ -192,6 +193,7 @@ const Container = styled.div`
   //   height: 1000px;
   display: flex;
   flex-direction: column;
+  min-height: 800px;
 `;
 const Header = styled.div`
   display: flex;

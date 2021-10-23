@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import moreImg from '../static/images/Common/list.png';
 import defaultImg from '../static/images/Common/defaultUser.png';
-import { toJS } from 'mobx';
-import { inject, observer, Provider } from 'mobx-react';
-import ReviewContainer from './Review';
+import { inject, observer } from 'mobx-react';
 
-@inject('MyClass')
+@inject('MyClass', 'Auth')
 @observer
 class ClassCard extends Component {
   state = {
@@ -14,7 +12,17 @@ class ClassCard extends Component {
   };
 
   render() {
-    const { name, date, subject, id, active, MyClass, number } = this.props;
+    const {
+      date,
+      subject,
+      id,
+
+      MyClass,
+
+      Auth,
+      studentName,
+      teacherName,
+    } = this.props;
 
     return (
       <Container>
@@ -45,16 +53,19 @@ class ClassCard extends Component {
                   <div>채팅하기</div>
                 </Button>
               </div>
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  MyClass.reviewModalActive = true;
-                }}
-              >
-                <Button>
-                  <div>리뷰작성</div>
-                </Button>
-              </div>
+              {Auth.loggedUserType === 'student' && (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    MyClass.reviewModalActive = true;
+                  }}
+                >
+                  <Button>
+                    <div>리뷰작성</div>
+                  </Button>
+                </div>
+              )}
+
               <div>
                 <Button>
                   <div>수업종료</div>
@@ -70,9 +81,15 @@ class ClassCard extends Component {
         <Content>
           <Box>
             {' '}
-            <Label ml={5} fw="bold" fs={18}>
-              {name}
-            </Label>
+            {Auth.loggedUserType === 'teacher' ? (
+              <Label ml={5} fw="bold" fs={18}>
+                {studentName}
+              </Label>
+            ) : (
+              <Label ml={5} fw="bold" fs={18}>
+                {teacherName}
+              </Label>
+            )}
           </Box>
 
           <Box>

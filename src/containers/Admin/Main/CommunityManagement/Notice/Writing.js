@@ -95,7 +95,6 @@ const noticeStateAry = [
 @observer
 class Writing extends Component {
   componentDidMount = () => {
-    console.info('didmount');
     if (AdminCommunity.noticeWritingState === 1) {
       console.info(toJS(AdminCommunity.noticeDetailList));
       AdminCommunity.noticeTitle =

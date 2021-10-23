@@ -1,20 +1,13 @@
-import React, { Fragment } from 'react';
-import styled, { css } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
-import route from 'react-router-dom';
 
 import close_ic from '../static/images/Home/close-button.png';
 import hamburger_ic from '../static/images/Admin/Main/menu-white.png';
-import logo_ic from '../static/images/Home/video-conference.png';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link as Connection,
-} from 'react-router-dom';
+import { Link as Connection } from 'react-router-dom';
 
-// @inject("Auth", "Partner", "Home", "Common")
+@inject('Auth', 'Partner', 'Home', 'Common')
 @observer
 class MobileNav extends React.Component {
   state = {
@@ -34,8 +27,7 @@ class MobileNav extends React.Component {
   };
 
   render() {
-    const { Auth, Partner, width, Hom, Common } = this.props;
-    const { url, is_open, is_profile, token } = this.state;
+    const { is_open } = this.state;
     console.log(this.props);
     return (
       <NavBox>

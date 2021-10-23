@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
@@ -8,14 +7,18 @@ import { toJS } from 'mobx';
 @observer
 class MultipleToggleButton extends React.Component {
   changeHandler = () => {
-    const { Auth, MyPage, MyClass, number, state } = this.props;
+    const { MyClass, number, state } = this.props;
     console.info('dd');
     switch (state) {
       case 'type':
         console.info('type');
         console.info(toJS(MyClass.questionAry[number][`${state}`]));
-        MyClass.questionAry[number][`${state}`] =
-          !MyClass.questionAry[number][`${state}`];
+        if (MyClass.questionAry[number][`${state}`] === 'num') {
+          MyClass.questionAry[number][`${state}`] = 'str';
+        } else {
+          MyClass.questionAry[number][`${state}`] = 'num';
+        }
+
         console.info(toJS(MyClass.questionAry[number][`${state}`]));
         break;
       case 'auto':
@@ -31,17 +34,20 @@ class MultipleToggleButton extends React.Component {
   };
 
   render() {
-    const { Auth, MyPage, MyClass, number, state } = this.props;
+    const { MyClass, number, state } = this.props;
     // console.info(state);
     // console.info(toJS(MyClass.questionAry));
     console.info(toJS(MyClass.questionAry[number][`${state}`]));
     return (
       <>
         {state === 'type' ? (
-          <CheckBoxWrapper active={MyClass.questionAry[number].type}>
-            <CheckBox active={MyClass.questionAry[number].type} readOnly />
+          <CheckBoxWrapper active={MyClass.questionAry[number].type === 'num'}>
+            <CheckBox
+              active={MyClass.questionAry[number].type === 'num'}
+              readOnly
+            />
             <CheckBoxLabel
-              active={MyClass.questionAry[number].type}
+              active={MyClass.questionAry[number].type === 'num'}
               onClick={() => {
                 this.changeHandler();
               }}

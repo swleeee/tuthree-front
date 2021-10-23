@@ -1,65 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link as Connection,
-} from 'react-router-dom';
 
 import AdminCommunity from '../../../../../stores/Admin/Community';
-import searchImg from '../../../../../static/images/Admin/Main/search.png';
 import checkImg from '../../../../../static/images/Common/check.png';
 import Pagination from '../../../../../components/Pagination';
-
-const dummydata = [
-  {
-    id: '293',
-    title: 'title1',
-    type: {
-      korType: '사용자 인증',
-    },
-    writeAt: '2021-09-27',
-    content: 'content1',
-  },
-  {
-    id: '291',
-    title: 'title2',
-    type: {
-      korType: '수업매칭서비스',
-    },
-    writeAt: '2021-09-27',
-    content: 'content1',
-  },
-  {
-    id: '288',
-    title: 'title3',
-    type: {
-      korType: '수업관리서비스',
-    },
-    writeAt: '2021-09-27',
-    content: 'content1',
-  },
-  {
-    id: '281',
-    title: 'title4',
-    type: {
-      korType: '기타',
-    },
-    writeAt: '2021-09-27',
-    content: 'content1',
-  },
-  {
-    id: '271',
-    title: 'title5',
-    type: {
-      korType: '기타',
-    },
-    writeAt: '2021-09-27',
-    content: 'content1',
-  },
-];
 
 @inject('AdminCommunity')
 @observer

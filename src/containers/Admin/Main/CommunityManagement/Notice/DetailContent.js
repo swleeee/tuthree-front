@@ -11,7 +11,6 @@ import { toJS } from 'mobx';
 @observer
 class DetailContent extends Component {
   componentWillUnmount = () => {
-    console.info('un');
     if (AdminCommunity.noticeWritingState !== 1) {
       AdminCommunity.noticeDetailList = [];
     }

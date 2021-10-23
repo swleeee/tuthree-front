@@ -44,7 +44,13 @@ class DetailContent extends Component {
           <ImgBox width={300} height={300} mb={60}>
             <div>
               {/* <div>Img</div> */}
-              <img src={defaultImg} />
+              {Tutee.tuteeDetailAry.post ? (
+                <img
+                  src={`data:image/png;base64,${Tutee.tuteeDetailAry.post}`}
+                />
+              ) : (
+                <img src={defaultImg} />
+              )}
             </div>
           </ImgBox>
           <Introduction>

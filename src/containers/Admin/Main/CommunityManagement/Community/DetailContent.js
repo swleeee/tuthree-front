@@ -13,8 +13,6 @@ import fileImg from '../../../../../static/images/Common/files.png';
 @observer
 class DetailContent extends Component {
   componentWillUnmount = () => {
-    console.info('un');
-
     AdminCommunity.communityDetailList = [];
     AdminCommunity.state = 1;
   };

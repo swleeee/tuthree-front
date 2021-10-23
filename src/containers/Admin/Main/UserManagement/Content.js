@@ -3,64 +3,13 @@ import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 
 import AdminUser from '../../../../stores/Admin/User';
-import searchImg from '../../../../static/images/Admin/Main/search.png';
 import checkImg from '../../../../static/images/Common/check.png';
-import Pagination from '../../../../components/Pagination';
 import { toJS } from 'mobx';
-
-const dummydata = [
-  {
-    id: '293',
-    title: 'title1',
-    type: {
-      korType: '일반',
-    },
-    writeAt: '2021-09-27',
-    content: 'content1',
-  },
-  {
-    id: '291',
-    title: 'title2',
-    type: {
-      korType: '일반',
-    },
-    writeAt: '2021-09-27',
-    content: 'content1',
-  },
-  {
-    id: '288',
-    title: 'title3',
-    type: {
-      korType: '일반',
-    },
-    writeAt: '2021-09-27',
-    content: 'content1',
-  },
-  {
-    id: '281',
-    title: 'title4',
-    type: {
-      korType: '일반',
-    },
-    writeAt: '2021-09-27',
-    content: 'content1',
-  },
-  {
-    id: '271',
-    title: 'title5',
-    type: {
-      korType: '일반',
-    },
-    writeAt: '2021-09-27',
-    content: 'content1',
-  },
-];
 
 @inject('AdminUser')
 @observer
 class Content extends Component {
   render() {
-    console.info('rrr');
     return (
       <Container>
         <Item>

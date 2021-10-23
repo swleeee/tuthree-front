@@ -6,9 +6,9 @@ import * as MatchingAPI from '../axios/Matching/Matching';
 import * as ClassAPI from '../axios/Managing/Class';
 
 class Chatting {
-  constructor() {
-    makeObservable(this);
-  }
+  // constructor() {
+  //   makeObservable(this);
+  // }
   @observable domainType = 1;
 
   @observable writingState = 1; // 1. 글 작성, 2 : 글 수정

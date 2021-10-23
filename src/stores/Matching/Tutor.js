@@ -10,9 +10,9 @@ import * as TutorAPI from '../../axios/Matching/Tutor';
 import * as ReviewAPI from '../../axios/Matching/Review';
 
 class Tutor {
-  constructor() {
-    makeObservable(this);
-  }
+  // constructor() {
+  //   makeObservable(this);
+  // }
   @observable state = 0;
   @observable domainType = 1;
 

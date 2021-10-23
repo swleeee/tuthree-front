@@ -4,9 +4,11 @@ import starImg from '../static/images/Common/star.png';
 import maleImg from '../static/images/Common/male.png';
 import femaleImg from '../static/images/Common/female.png';
 import defaultImg from '../static/images/Common/defaultUser.png';
-import { toJS } from 'mobx';
 
 class Card extends Component {
+  componentDidMount = () => {
+    console.info('ssd');
+  };
   render() {
     const {
       type,
@@ -18,12 +20,19 @@ class Card extends Component {
       location,
       budget,
       registration,
+      post,
     } = this.props;
-    console.info(toJS(subject));
+    // console.info(toJS(subject));
+    console.info(post);
     return (
       <Container>
-        <Img>
-          <img src={defaultImg} />
+        <Img post={post}>
+          {post ? (
+            <img src={`data:image/png;base64,${post}`} />
+          ) : (
+            <img src={defaultImg} />
+          )}
+
           {/* <div>Img</div> */}
         </Img>
         <Content>
@@ -149,6 +158,9 @@ const Img = styled.div`
   > div {
     font-size: 20px;
     font-weight: bold;
+  }
+  > img {
+    width: ${(props) => (props.post ? '100%' : '')};
   }
 `;
 const Content = styled.div`

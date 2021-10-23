@@ -58,7 +58,6 @@ class SelectComp extends React.Component {
       getOptionLabel,
       defaultValue,
       value,
-      isMulti,
     } = this.props;
 
     return (

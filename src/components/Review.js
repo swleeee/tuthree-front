@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import fullStarImg from '../static/images/Common/full_star.png';
-import emptyStarImg from '../static/images/Common/empty_star.png';
 import TextAreaContainer from '../components/TextareaContainer';
 
 @inject('Common', 'MyClass')
@@ -47,8 +46,7 @@ class Review extends Component {
   };
 
   render() {
-    const { open, close, header, children, width, Common, MyClass } =
-      this.props;
+    const { open, MyClass } = this.props;
     console.info(MyClass.ratingPoint);
     return (
       <ModalBox

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 
@@ -7,12 +6,12 @@ import { inject, observer } from 'mobx-react';
 @observer
 class ToggleButton extends React.Component {
   changeHandler = () => {
-    const { Auth, MyPage } = this.props;
+    const { Auth } = this.props;
     Auth.registrationState = !Auth.registrationState;
   };
 
   render() {
-    const { Auth, MyPage } = this.props;
+    const { Auth } = this.props;
     return (
       <CheckBoxWrapper active={Auth.registrationState}>
         <CheckBox active={Auth.registrationState} />

@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link as Connection,
-} from 'react-router-dom';
 
 import AdminCommunity from '../../../../../stores/Admin/Community';
-import Community from '../../../../../stores/Community/Community';
 import searchImg from '../../../../../static/images/Admin/Main/search.png';
 import checkImg from '../../../../../static/images/Common/check.png';
 import Pagination from '../../../../../components/Pagination';
@@ -26,7 +19,6 @@ class Content extends Component {
     AdminCommunity.communitySearchFinalValue = '';
   };
   render() {
-    console.info('rrrrr');
     return (
       <Container>
         <Item>

@@ -7,6 +7,14 @@ import { toJS } from 'mobx';
 @inject('Common', 'MyClass')
 @observer
 class AnswerWriting extends Component {
+  componentDidMount = () => {
+    console.info('did');
+  };
+  componentWillUnmount = () => {
+    const { MyClass } = this.props;
+    // console.info()
+    MyClass.questionAry = [];
+  };
   render() {
     const { open, close, header, children, width, Common, MyClass } =
       this.props;
@@ -85,7 +93,11 @@ class AnswerWriting extends Component {
                                   // }
                                 >
                                   {' '}
-                                  <div>객관식</div>
+                                  {item.type === 'num' ? (
+                                    <div>객관식</div>
+                                  ) : (
+                                    <div>주관식</div>
+                                  )}
                                   <MultipleToggleButton
                                     number={idx}
                                     state="type"
@@ -254,7 +266,11 @@ class AnswerWriting extends Component {
                                   // }
                                 >
                                   {' '}
-                                  <div>객관식</div>
+                                  {item.type === 'num' ? (
+                                    <div>객관식</div>
+                                  ) : (
+                                    <div>주관식</div>
+                                  )}
                                   <MultipleToggleButton
                                     number={idx}
                                     state="type"
@@ -527,6 +543,7 @@ const Content = styled.div`
 
 const Answer = styled.div`
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
 `;
 const Input = styled.input`

@@ -4,12 +4,7 @@ import InnerContainer from './InnerContainer';
 import OuterContainer from './OuterContainer';
 import { inject, observer } from 'mobx-react';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link as Connection,
-} from 'react-router-dom';
+import { Link as Connection } from 'react-router-dom';
 
 import personImg from '../static/images/person.png';
 import Community from '../stores/Community/Community';

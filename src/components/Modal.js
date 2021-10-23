@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import Common from '../stores/Common/Common';
 
@@ -8,7 +8,7 @@ import Common from '../stores/Common/Common';
 class Modal extends React.Component {
   render() {
     // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
-    const { open, close, header, children, width } = this.props;
+    const { open } = this.props;
     return (
       <ModalBox
         modal={open ? 'openModal modal' : 'modal'}
