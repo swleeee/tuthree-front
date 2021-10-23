@@ -2,9 +2,9 @@ import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 import LocationList from '../../sigungu.json';
 
 class Common {
-  constructor() {
-    makeObservable(this);
-  }
+  // constructor() {
+  //   makeObservable(this);
+  // }
   @observable time = '--:--';
   @observable width = null;
   @observable temp = null;

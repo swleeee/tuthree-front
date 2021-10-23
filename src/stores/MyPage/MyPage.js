@@ -1,9 +1,9 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 
 class MyPage {
-  constructor() {
-    makeObservable(this);
-  }
+  // constructor() {
+  //   makeObservable(this);
+  // }
 
   @observable state = 1;
   @observable profileImgAry = [];

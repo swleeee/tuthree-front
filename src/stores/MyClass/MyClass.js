@@ -5,9 +5,9 @@ import * as ClassAPI from '../../axios/Managing/Class';
 import * as GradingAPI from '../../axios/Managing/Grading';
 
 class MyClass {
-  constructor() {
-    makeObservable(this);
-  }
+  // constructor() {
+  //   makeObservable(this);
+  // }
   @observable moreState = 1;
   @observable state = 1;
   @observable detailState = 1;

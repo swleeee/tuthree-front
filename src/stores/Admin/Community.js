@@ -4,9 +4,9 @@ import * as FaqAPI from '../../axios/Comuunity/Faq';
 import * as CommunityAPI from '../../axios/Comuunity/Community';
 
 class Community {
-  constructor() {
-    makeObservable(this);
-  }
+  // constructor() {
+  //   makeObservable(this);
+  // }
   @observable Authorization =
     'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzNDA1MjQ2OSwiZXhwIjoxNjM0MDU2MDY5LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.rtlc16mICxV0vX8rpneEIzYM-jd4ErIcEZOM07dTSb4';
   @observable type = 1; // FAQ : 1, 공지사항 : 2, 커뮤니티 : 3

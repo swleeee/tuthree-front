@@ -3,9 +3,9 @@ import * as TuteeAPI from '../../axios/Matching/Tutee';
 import Chatting from '../Chatting';
 
 class Tutee {
-  constructor() {
-    makeObservable(this);
-  }
+  // constructor() {
+  //   makeObservable(this);
+  // }
   @observable state = 0;
   @observable domainType = 1;
 

@@ -5,9 +5,9 @@ import * as CommunityAPI from '../../axios/Comuunity/Community';
 import Auth from '../Account/Auth';
 
 class Community {
-  constructor() {
-    makeObservable(this);
-  }
+  // constructor() {
+  //   makeObservable(this);
+  // }
   @observable type = 1;
   @observable state = 1;
   @observable Authorization =

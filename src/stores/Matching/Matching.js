@@ -5,9 +5,9 @@ import Tutee from './Tutee';
 import Tutor from './Tutor';
 
 class Matching {
-  constructor() {
-    makeObservable(this);
-  }
+  // constructor() {
+  //   makeObservable(this);
+  // }
   @observable bookmarkAry = [];
   @observable bookmarkId = '';
   @observable isCheckBookmark = false;

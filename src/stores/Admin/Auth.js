@@ -1,9 +1,9 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
 
 class Auth {
-  constructor() {
-    makeObservable(this);
-  }
+  // constructor() {
+  //   makeObservable(this);
+  // }
   @observable adminId = '';
   @observable adminPassword = '';
 
