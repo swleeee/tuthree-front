@@ -107,7 +107,13 @@ class MobileContent extends Component {
             <ImgBox width={130} height={130} mb={40}>
               <div>
                 {/* <div>Img</div> */}
-                <img src={defaultImg} />
+                {Tutee.tuteeDetailAry.post ? (
+                  <img
+                    src={`data:image/png;base64,${Tutee.tuteeDetailAry.post}`}
+                  />
+                ) : (
+                  <img src={defaultImg} />
+                )}
               </div>
             </ImgBox>
             <ItemBox>
@@ -218,13 +224,17 @@ const ImgBox = styled.div`
       font-size: 20px;
       font-weight: bold;
     }
+    > img {
+      width: ${(props) => (props.width ? props.width : '128')}px;
+      height: ${(props) => (props.height ? props.height : '128')}px;
+    }
   }
   @media (min-width: 0px) and (max-width: 392px) {
     > div {
       width: 100%;
       > img {
-        width: 92px;
-        height: 92px;
+        width: ${(props) => (props.width ? props.width - 20 : '92')}px;
+        height: ${(props) => (props.height ? props.height - 20 : '92')}px;
       }
     }
   }

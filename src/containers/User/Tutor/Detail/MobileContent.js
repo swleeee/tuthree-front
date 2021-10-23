@@ -109,7 +109,13 @@ class MobileContent extends Component {
             <ImgBox width={130} height={130} mb={40}>
               <div>
                 {/* <div>Img</div> */}
-                <img src={defaultImg} />
+                {Tutor.tutorDetailAry.post ? (
+                  <img
+                    src={`data:image/png;base64,${Tutor.tutorDetailAry.post}`}
+                  />
+                ) : (
+                  <img src={defaultImg} />
+                )}
               </div>
             </ImgBox>
             <ItemBox>

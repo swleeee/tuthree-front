@@ -239,6 +239,7 @@ class Content extends Component {
                       location={item.region}
                       budget={item.cost}
                       registration={item.registration}
+                      post={item.post}
                     />
                   </div>
                 );

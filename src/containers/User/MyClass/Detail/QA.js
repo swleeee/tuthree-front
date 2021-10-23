@@ -492,6 +492,10 @@ const Question = styled.div`
     font-size: 16px;
   }
 
+  > a {
+    text-decoration: none;
+  }
+
   @media (min-width: 0px) and (max-width: 767.98px) {
     width: 50%;
     > img {

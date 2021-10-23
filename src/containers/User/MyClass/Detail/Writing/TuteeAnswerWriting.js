@@ -110,145 +110,50 @@ class TuteeAnswerWriting extends Component {
                   &times;{' '}
                 </button>
                 <Container>
-                  <Header>답안지 입력</Header>
+                  <Header>답안 작성</Header>
                   <Main>
-                    <TotalCount>
-                      <Label type="header">1. 총 문제수를 입력해주세요.</Label>
-                      <Content type="header">
-                        <Input
-                          ml={15}
-                          mr={15}
-                          bd={true}
-                          width={120}
-                          placeholder="ex) 10"
-                          onChange={(e) =>
-                            MyClass.onChangeHandler(e, 'make_question')
-                          }
-                          onFocus={(e) => (e.target.placeholder = '')}
-                          onBlur={(e) => (e.target.placeholder = 'ex) 10')}
-                        />
-                        <span>문제</span>
-                      </Content>
-                    </TotalCount>
+                    {MyClass.answerAry &&
+                      MyClass.answerAry.map((item, idx) => {
+                        return (
+                          <Item>
+                            <Label>
+                              <div>{item.question}번</div>
+                            </Label>
+                            <Content>
+                              {/* <Input
+                                //   ml={15}
+                                //   mr={15}
+                                //   bd={true}
+                                width={100}
+                                onChange={(e) =>
+                                  MyClass.onChangeHandler(e, 'set_answer', idx)
+                                }
+                                onFocus={(e) => (e.target.placeholder = '')}
+                                onBlur={(e) =>
+                                  (e.target.placeholder = 'ex) 10')
+                                }
+                              /> */}
 
-                    <Answer>
-                      <Label>2. 문제에 대한 답을 입력해주세요.</Label>
-                      <Content count={MyClass.totalQuestion}>
-                        {MyClass.questionAry &&
-                          MyClass.questionAry.map((item, idx) => {
-                            return (
-                              // <SubMain>
-
-                              <Section type="main">
-                                <Number
-                                  type="header"
-                                  // active={
-                                  //   (MyClass.questionAry.length + 1) % 2 === 1
-                                  //     ? MyClass.questionAry.length >= idx + 2
-                                  //     : MyClass.questionAry.length === idx + 1
-                                  // }
-                                >
-                                  <div>{item.question}</div>
-                                </Number>
-
-                                <Choice
-                                  type="main"
-                                  // active={
-                                  //   (MyClass.questionAry.length + 1) % 2 === 1
-                                  //     ? MyClass.questionAry.length >= idx + 2
-                                  //     : MyClass.questionAry.length === idx + 1
-                                  // }
-                                >
-                                  {' '}
-                                  <div>객관식</div>
-                                  <MultipleToggleButton
-                                    number={idx}
-                                    state="type"
-                                  />
-                                </Choice>
-
-                                <Choice
-                                  type="main"
-                                  // active={
-                                  //   (MyClass.questionAry.length + 1) % 2 === 1
-                                  //     ? MyClass.questionAry.length >= idx + 2
-                                  //     : MyClass.questionAry.length === idx + 1
-                                  // }
-                                >
-                                  <div>자동채점</div>
-                                  <MultipleToggleButton
-                                    number={idx}
-                                    state="auto"
-                                  />
-                                </Choice>
-
-                                {(idx + 1) % 2 === 1 ? (
-                                  <AnswerInput
-                                    type="headerBold"
-                                    //   active={
-                                    //     (MyClass.questionAry.length + 1) % 2 === 1
-                                    //       ? MyClass.questionAry.length >= idx + 2
-                                    //       : MyClass.questionAry.length === idx + 1
-                                    //   }
-                                  >
-                                    <Input
-                                      bd={false}
-                                      width={120}
-                                      height={20}
-                                      placeholder="답"
-                                      onChange={(e) =>
-                                        MyClass.onChangeHandler(
-                                          e,
-                                          'make_question_answer',
-                                          idx
-                                        )
-                                      }
-                                      onFocus={(e) =>
-                                        (e.target.placeholder = '')
-                                      }
-                                      onBlur={(e) =>
-                                        (e.target.placeholder = '답')
-                                      }
-                                    />
-                                  </AnswerInput>
-                                ) : (
-                                  <AnswerInput
-                                    type="main"
-                                    //   active={
-                                    //     (MyClass.questionAry.length + 1) % 2 === 1
-                                    //       ? MyClass.questionAry.length >= idx + 2
-                                    //       : MyClass.questionAry.length === idx + 1
-                                    //   }
-                                  >
-                                    <Input
-                                      width={120}
-                                      height={20}
-                                      placeholder="답"
-                                      onChange={(e) =>
-                                        MyClass.onChangeHandler(
-                                          e,
-                                          'make_question_answer',
-                                          idx
-                                        )
-                                      }
-                                      onFocus={(e) =>
-                                        (e.target.placeholder = '')
-                                      }
-                                      onBlur={(e) =>
-                                        (e.target.placeholder = '답')
-                                      }
-                                    />
-                                  </AnswerInput>
-                                )}
-                              </Section>
-                              // </SubMain>
-                            );
-                          })}
-                      </Content>
-                    </Answer>
+                              <TextArea
+                                mih={80}
+                                mxh={81}
+                                // bd={true}
+                                idx={idx}
+                                type="setAnswer"
+                                value={item.ans}
+                                placeholder="답 입력"
+                              />
+                            </Content>
+                          </Item>
+                        );
+                      })}
                   </Main>
                   <ButtonBox>
-                    <Button color="#fff" bcolor="rgb(235, 114, 82)">
+                    <Button
+                      color="#fff"
+                      bcolor="rgb(235, 114, 82)"
+                      onClick={() => MyClass.setTuteeAnswer()}
+                    >
                       <div>저장</div>
                     </Button>
                   </ButtonBox>

@@ -250,6 +250,7 @@ class Content extends Component {
                       location={item.region}
                       budget={item.cost}
                       registration={item.registration}
+                      post={item.post}
                     />
                   </div>
                 );
@@ -346,6 +347,7 @@ const Count = styled.div`
 `;
 
 const DropDownBox = styled.div`
+  z-index: 2;
   position: absolute;
   // top: 0;
   display: flex;
