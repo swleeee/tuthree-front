@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link as Connection,
-} from 'react-router-dom';
+import { Link as Connection } from 'react-router-dom';
 
 class AdminNav extends Component {
   render() {

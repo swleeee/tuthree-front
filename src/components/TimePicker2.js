@@ -17,7 +17,7 @@ class TimePicer extends React.Component {
   }
 
   onTimeChange(time) {
-    const { type, Chatting, MyClass, state, Common } = this.props;
+    const { type, Chatting, MyClass, state } = this.props;
     // this.setState({ time });
     // if(state==="start"){
 

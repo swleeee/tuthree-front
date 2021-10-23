@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import moreImg from '../static/images/Common/list.png';
 import defaultImg from '../static/images/Common/defaultUser.png';
-import { toJS } from 'mobx';
-import { inject, observer, Provider } from 'mobx-react';
-import ReviewContainer from './Review';
+import { inject, observer } from 'mobx-react';
 
 @inject('MyClass', 'Auth')
 @observer
@@ -15,13 +13,12 @@ class ClassCard extends Component {
 
   render() {
     const {
-      name,
       date,
       subject,
       id,
-      active,
+
       MyClass,
-      number,
+
       Auth,
       studentName,
       teacherName,

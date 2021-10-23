@@ -6,7 +6,6 @@ import Tutor from '../stores/Matching/Tutor';
 import SelectComponent from '../components/Select';
 import deleteImg from '../static/images/Signup/delete.png';
 import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
 import LocationList from '../sigungu.json';
 import SubjectList from '../subject.json';
 import { toJS } from 'mobx';

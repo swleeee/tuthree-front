@@ -4,7 +4,6 @@ import starImg from '../static/images/Common/star.png';
 import maleImg from '../static/images/Common/male.png';
 import femaleImg from '../static/images/Common/female.png';
 import defaultImg from '../static/images/Common/defaultUser.png';
-import { toJS } from 'mobx';
 
 class Card extends Component {
   componentDidMount = () => {

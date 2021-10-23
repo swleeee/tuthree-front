@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link as Connection,
-} from 'react-router-dom';
+import { Link as Connection } from 'react-router-dom';
 
 import userImg from '../../../static/images/Admin/Login/admin-user.png';
 import passwordImg from '../../../static/images/Admin/Login/admin-password.png';

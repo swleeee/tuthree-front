@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { inject, observer, Provider } from 'mobx-react';
-import styled from 'styled-components';
 import Content from './Content';
 import MobileContent from './MobileContent';
 import Common from '../../../stores/Common/Common';
@@ -25,15 +24,3 @@ class index extends Component {
 }
 
 export default index;
-
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  margin: 100px 0;
-
-  position: relative;
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    align-items: center;
-    justify-content: center;
-  }
-`;

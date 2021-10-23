@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import SelectComponent from '../../../components/Select';
 import SubjectList from '../../../subject.json';
@@ -103,8 +103,7 @@ class InfoWriting extends React.Component {
   //   };
   render() {
     // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
-    const { open, close, header, children, width, Common, Chatting } =
-      this.props;
+    const { open, Common, Chatting } = this.props;
     return (
       <>
         {Common.width > 767.87 ? (
@@ -765,31 +764,6 @@ const Main = styled.div`
     height: 100%;
     font-size: 16px;
     font-weight: 600;
-  }
-`;
-const Footer = styled.div`
-  text-align: center;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  > div {
-    border-radius: 4px;
-    background-color: rgba(235, 114, 82, 0.7);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-  }
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    height: 22px;
-    // margin-top: 20px;
-    > div {
-      height: 22px;
-      font-size: 14px;
-    }
   }
 `;
 

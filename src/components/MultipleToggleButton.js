@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
@@ -8,7 +7,7 @@ import { toJS } from 'mobx';
 @observer
 class MultipleToggleButton extends React.Component {
   changeHandler = () => {
-    const { Auth, MyPage, MyClass, number, state } = this.props;
+    const { MyClass, number, state } = this.props;
     console.info('dd');
     switch (state) {
       case 'type':
@@ -35,7 +34,7 @@ class MultipleToggleButton extends React.Component {
   };
 
   render() {
-    const { Auth, MyPage, MyClass, number, state } = this.props;
+    const { MyClass, number, state } = this.props;
     // console.info(state);
     // console.info(toJS(MyClass.questionAry));
     console.info(toJS(MyClass.questionAry[number][`${state}`]));

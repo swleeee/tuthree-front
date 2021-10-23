@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { inject, observer, Provider } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 import defaultImg from '../../../static/images/Common/defaultUser.png';
 import Textarea from '../../../components/TextareaContainer';
@@ -200,7 +200,7 @@ class Content extends Component {
   };
 
   componentDidMount = async () => {
-    const { Common, Auth, Chatting } = this.props;
+    const { Chatting } = this.props;
     console.info(Chatting.studentId);
     await Chatting.getDetailClass();
   };
@@ -420,18 +420,6 @@ const ChatList = styled.div`
   }
 `;
 
-const Label = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  > div {
-    font-size: 22px;
-    font-weight: bold;
-  }
-  padding: 10px 12px;
-  box-sizing: border-box;
-  border-bottom: 1px solid #e1e2e4;
-`;
 const UserList = styled.div`
   // height: auto;
   overflow: auto;
@@ -810,30 +798,6 @@ const ModalHeader = styled.div`
     width: 18px;
     height: 18px;
   }
-`;
-const ModalContent = styled.button`
-  border: none;
-  background: none;
-  width: 100%;
-  //   padding-top: 20px;
-  //   height: 158px;
-  // height: 110px;
-  display: flex;
-  border-bottom: solid 1px #e1e2e4;
-  flex-direction: column;
-  justify-content: space-evenly;
-  //   > a {
-  //     font-family: NotoSansCJKkr;
-  //     font-size: 15px;
-  //     font-weight: bold;
-  //     font-stretch: normal;
-  //     font-style: normal;
-  //     line-height: 1.27;
-  //     letter-spacing: -0.38px;
-  //     text-align: left;
-  //     color: #111111;
-  //     cursor: pointer;
-  //   }
 `;
 
 const Layer = styled.div`

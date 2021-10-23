@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { inject, observer, Provider } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 import { toJS } from 'mobx';
 
@@ -140,7 +140,7 @@ class InputComponent extends React.Component {
       state,
       ...props
     } = this.props;
-    const { fileName, checkFileUpload } = this.state;
+
     console.info(state);
 
     if (!file) {

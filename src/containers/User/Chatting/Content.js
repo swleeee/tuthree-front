@@ -184,16 +184,14 @@ class Content extends Component {
     Common.modalActive = true;
   };
   componentDidMount = async () => {
-    const { Common, Auth, Chatting } = this.props;
+    const { Auth, Chatting } = this.props;
     console.info(Chatting.studentId);
     await Chatting.getDetailClass();
     if (Auth.loggedUserType === 'teacher') {
       await Chatting.checkInfoWriting();
     }
   };
-  componentWillUnmount = () => {
-    const { Common, Auth, Chatting } = this.props;
-  };
+
   render() {
     const { Common, Auth, Chatting } = this.props;
     console.info(Common.modalActive);
@@ -674,15 +672,6 @@ const Button = styled.button`
   border-radius: 3px;
   width: 70px;
   height: 40px;
-`;
-
-const Input = styled.input`
-  border: 1px solid #707070;
-  width: 80%;
-  height: 40px;
-  outline: none;
-  padding: 5px 8px;
-  box-sizing: border-box;
 `;
 
 const ButtonBox = styled.div`

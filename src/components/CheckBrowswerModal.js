@@ -5,7 +5,6 @@ import styled from 'styled-components';
 // import DialogContent from '@material-ui/core/DialogContent';
 
 import CloseModalButton from './CloseModalButton';
-import { inject, observer } from 'mobx-react';
 
 class CheckBrowserModal extends Component {
   render() {

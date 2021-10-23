@@ -1,7 +1,5 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
-import { inject, observer } from "mobx-react";
-import { toJS } from "mobx";
+
 
 const stars = [1, 2, 3, 4, 5];
 const star = "/tuthree-front/src/static/images/Common/full_star.png";

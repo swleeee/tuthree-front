@@ -1,95 +1,9 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import SelectComponent from '../../../components/Select';
-import SubjectList from '../../../subject.json';
-import deleteImg from '../../../static/images/Signup/delete.png';
 import TimePicker from '../../../components/TimePicker';
-import addImg from '../../../static/images/Common/add.png';
 import TextAreaContainer from '../../../components/TextareaContainer';
-
-const mobileCustomStyles = {
-  placeholder: (defaultStyles) => {
-    return {
-      ...defaultStyles,
-      color: '#000',
-      fontSize: 12,
-      //   fontWeight: 'normal',
-    };
-  },
-  dropdownIndicator: () => ({
-    backgroundColor: '#fff',
-    color: '#000',
-    width: 16,
-    height: 16,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }),
-  indicatorSeparator: () => ({
-    display: 'none',
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    color: state.isSelected ? '#000000' : '#999999',
-    backgroundColor: '#fff',
-    borderRadius: 0,
-    padding: 12,
-    fontSize: 12,
-  }),
-  control: () => ({
-    fontSize: 12,
-    lineHeight: 1.2,
-    border: '1px solid #c7c7c7',
-    display: 'flex',
-    height: '100%',
-  }),
-  singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
-
-    const transition = 'opacity 300ms';
-
-    return { ...provided, opacity, transition };
-  },
-};
-
-const customStyles = {
-  dropdownIndicator: () => ({
-    backgroundColor: '#fff',
-    color: '#000',
-    width: 30,
-    height: 30,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }),
-  indicatorSeparator: () => ({
-    display: 'none',
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    color: state.isSelected ? '#000000' : '#999999',
-    backgroundColor: '#fff',
-    borderRadius: 0,
-    padding: 14,
-    fontSize: 14,
-    cursor: 'pointer',
-  }),
-  control: () => ({
-    fontSize: 14,
-    lineHeight: 1.2,
-    border: '1px solid #c7c7c7',
-    display: 'flex',
-    height: '100%',
-    cursor: 'pointer',
-  }),
-  singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
-    const transition = 'opacity 300ms';
-
-    return { ...provided, opacity, transition };
-  },
-};
 
 @inject('Common', 'Chatting')
 @observer
@@ -103,8 +17,7 @@ class Info extends React.Component {
   //   };
   render() {
     // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
-    const { open, close, header, children, width, Common, Chatting } =
-      this.props;
+    const { open, Common, Chatting } = this.props;
     return (
       <>
         {Common.width > 767.87 ? (
@@ -487,30 +400,6 @@ const Content = styled.div`
     }
   }
 `;
-const Weekend = styled.div``;
-const Time = styled.div`
-  position: relative;
-  //   > div {
-  //     position: absolute;
-  //     font-size: 10px;
-  //     // left: 15px;
-  //     right: 15px;
-  //     top: -15px;
-  //   }
-`;
-const TimeLabel = styled.div`
-  position: absolute;
-  font-size: 10px;
-  left: ${(props) => (props.type === 'start' ? '15px' : 'inherit')};
-  right: ${(props) => (props.type === 'end' ? '15px' : 'inherit')};
-  top: -15px;
-  color: blue;
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    left: ${(props) => (props.type === 'start' ? '5px' : 'inherit')};
-    right: ${(props) => (props.type === 'end' ? '5px' : 'inherit')};
-  }
-}
-`;
 
 const Button = styled.button`
   cursor: pointer;
@@ -539,41 +428,7 @@ const Button = styled.button`
     }
   }
 `;
-const SelectedArea = styled.div`
-  width: 600px;
-  //   height: 60px;
-  height: auto;
-  //   border: 1px solid #c7c7c7;
-  padding: 5px 8px;
-  box-sizing: border-box;
 
-  > div {
-    display: inline-flex;
-    align-items: center;
-    background-color: #aaaaaa;
-    border-radius: 30px;
-    padding: 3px 10px;
-    box-sizing: border-box;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    > div {
-      font-size: 12px;
-      margin-right: 10px;
-    }
-    > img {
-      width: 12px;
-      height: 12px;
-    }
-  }
-
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    width: 90%;
-  }
-  @media (min-width: 768px) and (max-width: 991.98px) {
-    width: 500px;
-  }
-`;
 const BudgetBox = styled.div`
   display: flex;
   justify-content: space-between;
@@ -604,111 +459,6 @@ const DetailBox = styled.div`
   //   border: 2px solid blue;
   margin: 20px 0;
   width: 100%;
-`;
-
-const Select = styled(SelectComponent)`
-  width: ${(props) => (props.width ? props.width : '170')}px;
-  height: 30px;
-  margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
-  margin-right: ${(props) => (props.mr ? props.mr : '0')}px;
-  display: ${(props) => (props.domainType === 1 ? 'block' : 'none')};
-
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    width: ${(props) => (props.width ? props.width : '170')}px;
-    height: 30px;
-    margin-left: 0px;
-    margin-bottom: 10px;
-  }
-  @media (min-width: 768px) and (max-width: 991.98px) {
-  }
-`;
-
-const TimePickerContainer = styled(TimePicker)`
-  overflow: hidden;
-`;
-
-const ImgBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-  > img {
-    width: 24px;
-    height: 24px;
-  }
-`;
-
-const Input = styled.input`
-  border: none;
-  border: 1px solid #c7c7c7;
-  // padding-bottom: 18px;
-  outline: none;
-  font-size: 15px;
-  width: 100%;
-  box-sizing: border-box;
-  display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
-  padding: 0 10px;
-  text-align: right;
-  ::placeholder {
-    font-size: 12px;
-    text-align: left;
-  }
-  :focus {
-  }
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    width: ${(props) => (props.domainType === 2 ? '85px' : '200px')};
-    height: 30px;
-    font-size: 12px;
-    margin-bottom: 10px;
-    padding: 0 5px;
-    ::placeholder {
-      font-size: 10px;
-      text-align: left;
-    }
-  }
-  @media (min-width: 768px) and (max-width: 991.98px) {
-    width: ${(props) => (props.domainType === 2 ? '150px' : '250px')};
-    height: 30px;
-    margin-left: ${(props) => (props.ml === 2 ? '10px' : '0px')};
-  }
-  @media (min-width: 992px) and (max-width: 1299.98px) {
-    width: ${(props) => (props.domainType === 2 ? '160px' : '300px')};
-    height: 30px;
-    margin-left: ${(props) => (props.ml === 2 ? '15px' : '0px')};
-  }
-  @media (min-width: 1300px) {
-    width: ${(props) => (props.domainType === 2 ? '160px' : '440px')};
-    height: 30px;
-    margin-left: ${(props) => (props.ml === 2 ? '15px' : '0px')};
-  }
-`;
-
-const TextArea = styled(TextAreaContainer)`
-  width: 100%;
-  border: 3px solid red;
-  height: 300px;
-`;
-
-const Description = styled.div`
-  width: 100%;
-  display: flex;
-  > div {
-    font-size: 12px;
-    color: blue;
-  }
-
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    > div {
-      font-size: 10px;
-    }
-  }
-  @media (min-width: 768px) and (max-width: 991.98px) {
-    > div {
-      font-size: 11px;
-    }
-  }
-
-  @media (min-width: 992px) and (max-width: 1299.98px) {
-  }
 `;
 
 const ButtonBox = styled.div`
