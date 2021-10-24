@@ -93,6 +93,45 @@ const customStyles = {
 @inject('MyPage', 'Common', 'Auth')
 @observer
 class TuteeContent extends Component {
+  componentDidMount = async () => {
+    const { MyPage, Auth, Common } = this.props;
+    await MyPage.getTuteeInfo();
+    MyPage.registrationState =
+      MyPage.tutoringInfoAry.registration === 'OPEN' ? true : false;
+    Auth.selectedLocation = MyPage.tutoringInfoAry.region;
+    Auth.selectedSubject = MyPage.tutoringInfoAry.subject;
+    // // MyPage.cost = MyPage.tutoringInfoAry.registration
+    // console.info(MyPage.tutoringInfoAry.cost.split(' ')[1]);
+    MyPage.cost = MyPage.tutoringInfoAry.cost.split(' ')[1];
+    MyPage.costState = MyPage.tutoringInfoAry.cost.split(' ')[0];
+    // MyPage.schoolState = MyPage.tutoringInfoAry.status;
+    // MyPage.grade =
+    //   MyPage.tutoringInfoAry.school === 'UNDER_MIDDLE'
+    //     ? '유아/초등학생'
+    //     : MyPage.tutoringInfoAry.school === 'M1'
+    //     ? '중1'
+    //     : MyPage.tutoringInfoAry.school === 'M2'
+    //     ? '중2'
+    //     : MyPage.tutoringInfoAry.school === 'M3'
+    //     ? '중3'
+    //     : MyPage.tutoringInfoAry.school === 'H1'
+    //     ? '고1'
+    //     : MyPage.tutoringInfoAry.school === 'H2'
+    //     ? '고2'
+    //     : MyPage.tutoringInfoAry.school === 'H3'
+    //     ? '고3'
+    //     : MyPage.tutoringInfoAry.school === 'OVER_HIGH'
+    //     ? '성인'
+    //     : MyPage.tutoringInfoAry.school === 'EXAM_M'
+    //     ? '중학교 검정고시 준비'
+    //     : MyPage.tutoringInfoAry.school === 'EXAM_H'
+    //     ? '고등학교 검정고시 준비'
+    //     : '';
+    MyPage.grade = MyPage.tutoringInfoAry.school;
+    // MyPage.major = MyPage.tutoringInfoAry.major;
+    MyPage.detailContent = MyPage.tutoringInfoAry.detail;
+  };
+
   render() {
     const { MyPage, Auth, Common } = this.props;
     return (
@@ -249,7 +288,32 @@ class TuteeContent extends Component {
                 width={140}
                 styles={customStyles}
                 //  value={value}
-                onChange={(e) => Auth.handleChange(e, 'grade')}
+                value={{
+                  label:
+                    MyPage.grade === 'UNDER_MIDDLE'
+                      ? '유아/초등학생'
+                      : MyPage.grade === 'M1'
+                      ? '중1'
+                      : MyPage.grade === 'M2'
+                      ? '중2'
+                      : MyPage.grade === 'M3'
+                      ? '중3'
+                      : MyPage.grade === 'H1'
+                      ? '고1'
+                      : MyPage.grade === 'H2'
+                      ? '고2'
+                      : MyPage.grade === 'H3'
+                      ? '고3'
+                      : MyPage.grade === 'OVER_HIGH'
+                      ? '성인'
+                      : MyPage.grade === 'EXAM_M'
+                      ? '중학교 검정고시 준비'
+                      : MyPage.grade === 'EXAM_H'
+                      ? '고등학교 검정고시 준비'
+                      : '',
+                  value: MyPage.grade && MyPage.grade,
+                }}
+                onChange={(e) => MyPage.onChangeHandler(e, 'grade')}
                 getOptionLabel={(option) => option.label}
                 options={Auth.gradeAry}
                 //  isSearchable={false}
@@ -265,10 +329,14 @@ class TuteeContent extends Component {
               <WrapperBox>
                 <Select
                   width={140}
+                  value={{
+                    label: MyPage.costState ? MyPage.costState : '',
+                    value: MyPage.costState && MyPage.costState,
+                  }}
                   styles={
                     Common.width > 767.98 ? customStyles : mobileCustomStyles
                   }
-                  onChange={(e) => Auth.handleChange(e, 'budgetType')}
+                  onChange={(e) => MyPage.onChangeHandler(e, 'cost_state')}
                   getOptionLabel={(option) => option.label}
                   options={Auth.budgetTypeAry}
                   placeholder="선택하세요."
@@ -278,14 +346,14 @@ class TuteeContent extends Component {
                 <div>
                   <Input
                     //  width="80"
-
+                    value={MyPage.cost}
                     domainType={2}
-                    placeholder="급여(ex: 350000, 650000)"
-                    onChange={(e) => this.inputHandler(e.target, 'budget')}
-                    onFocus={(e) => (e.target.placeholder = '')}
-                    onBlur={(e) =>
-                      (e.target.placeholder = '급여(ex: 350000, 650000)')
-                    }
+                    // placeholder="급여(ex: 350000, 650000)"
+                    onChange={(e) => MyPage.onChangeHandler(e.target, 'cost')}
+                    // onFocus={(e) => (e.target.placeholder = '')}
+                    // onBlur={(e) =>
+                    //   (e.target.placeholder = '급여(ex: 350000, 650000)')
+                    // }
                   />
                   <span>원</span>
                 </div>
@@ -296,12 +364,16 @@ class TuteeContent extends Component {
           <Item>
             <Label>소개</Label>
             <ContentBox>
-              <TextArea type="studentSignup" placeholder="" />
+              <TextArea
+                type="tutor_info"
+                placeholder=""
+                value={MyPage.detailContent}
+              />
             </ContentBox>
           </Item>
         </Main>
         <ButtonBox>
-          <Button>
+          <Button onClick={() => MyPage.putTuteeInfo()}>
             <div>수정</div>
           </Button>
         </ButtonBox>
@@ -423,6 +495,7 @@ const ButtonBox = styled.div`
   align-items: center;
 `;
 const Button = styled.button`
+  cursor: pointer;
   margin-top: 60px;
   background-color: rgb(235, 114, 82);
   border: none;

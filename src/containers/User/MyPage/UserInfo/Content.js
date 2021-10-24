@@ -415,6 +415,7 @@ const ButtonBox = styled.div`
   align-items: center;
 `;
 const Button = styled.button`
+  cursor: pointer;
   margin-top: 60px;
   background-color: rgb(235, 114, 82);
   border: none;

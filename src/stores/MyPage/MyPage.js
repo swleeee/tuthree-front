@@ -18,6 +18,16 @@ class MyPage {
   @observable phoneInfo = '';
   @observable birthInfo = '';
 
+  @observable tutoringInfoAry = [];
+  @observable registrationState = false;
+  @observable cost = '';
+  @observable costState = '';
+  @observable grade = '';
+  @observable school = '';
+  @observable schoolState = '';
+  @observable major = '';
+  @observable detailContent = '';
+
   @action onChangeHandler = (e, type = '', idx = '') => {
     switch (type) {
       case 'email_info':
@@ -33,6 +43,35 @@ class MyPage {
       case 'birth_info':
         this.birthInfo = e.value;
         console.info(this.birthInfo);
+        break;
+
+      case 'school_info':
+        this.school = e.value;
+        console.info(this.school);
+        break;
+
+      case 'school_state_info':
+        this.schoolState = e.value;
+        console.info(this.schoolState);
+        break;
+
+      case 'major':
+        this.major = e.value;
+        console.info(this.major);
+        break;
+
+      case 'grade':
+        this.grade = e.value;
+        console.info(this.grade);
+        break;
+      case 'cost_state':
+        this.costState = e.value;
+        console.info(this.major);
+        break;
+
+      case 'cost':
+        this.cost = e.value;
+        console.info(this.cost);
         break;
 
       default:
@@ -83,6 +122,147 @@ class MyPage {
 
     console.info(req.data);
     await MyPageAPI.putUserInfo(req)
+      .then(async (res) => {
+        console.info(res);
+
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          // this.userInfoAry = await res.data.data;
+          // alert('회원정보 수정이 완료되었습니다');
+          // this.getUserInfo();
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.userInfoAry));
+  };
+
+  @action getTutorInfo = async () => {
+    console.info(Auth.token);
+    this.tutoringInfoAry = [];
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+
+    await MyPageAPI.getTutorInfo(req)
+      .then(async (res) => {
+        console.info(res);
+
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          this.tutoringInfoAry = await res.data.data;
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.tutoringInfoAry));
+  };
+
+  @action putTutorInfo = async () => {
+    console.info(Auth.token);
+    // const regionList = [];
+    // Auth.selected
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      data: {
+        regionL: Auth.selectedLocation,
+        subjectL: Auth.selectedSubject,
+        registration: this.registrationState ? 'OPEN' : 'CLOSE',
+        cost: this.costState + ' ' + this.cost,
+
+        school: this.school,
+        status: this.schoolState,
+        major: this.major,
+        detail: this.detailContent,
+      },
+    };
+
+    console.info(req.data);
+    await MyPageAPI.putTutorInfo(req)
+      .then(async (res) => {
+        console.info(res);
+
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          // this.userInfoAry = await res.data.data;
+          // alert('회원정보 수정이 완료되었습니다');
+          // this.getUserInfo();
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.userInfoAry));
+  };
+
+  @action getTuteeInfo = async () => {
+    console.info(Auth.token);
+    this.tutoringInfoAry = [];
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+
+    await MyPageAPI.getTuteeInfo(req)
+      .then(async (res) => {
+        console.info(res);
+
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          this.tutoringInfoAry = await res.data.data;
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.tutoringInfoAry));
+  };
+
+  @action putTuteeInfo = async () => {
+    console.info(Auth.token);
+    // const regionList = [];
+    // Auth.selected
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      data: {
+        regionL: Auth.selectedLocation,
+        subjectL: Auth.selectedSubject,
+        registration: this.registrationState ? 'OPEN' : 'CLOSE',
+        cost: this.costState + ' ' + this.cost,
+
+        school: this.grade,
+
+        detail: this.detailContent,
+      },
+    };
+
+    console.info(req.data);
+    await MyPageAPI.putTutorInfo(req)
       .then(async (res) => {
         console.info(res);
 

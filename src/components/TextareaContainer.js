@@ -5,7 +5,7 @@ import authStore from '../stores/Account/Auth';
 import AdminCommunity from '../stores/Admin/Community';
 import Community from '../stores/Community/Community';
 
-@inject('AdminCommunity', 'Community', 'Chatting', 'MyClass')
+@inject('AdminCommunity', 'Community', 'Chatting', 'MyClass', 'MyPage')
 @observer
 class TextareaContainer extends Component {
   state = {
@@ -15,7 +15,7 @@ class TextareaContainer extends Component {
     row: 1,
   };
   requestHandler = (event) => {
-    const { type, mxh, Chatting, MyClass, idx } = this.props;
+    const { type, mxh, Chatting, MyClass, idx, MyPage } = this.props;
     console.info(mxh);
     const textareaLineHeight = 17;
     const { minRows, maxRows } = this.state;
@@ -76,6 +76,16 @@ class TextareaContainer extends Component {
         MyClass.answerAry[idx].ans = event.target.value;
         console.info(MyClass.answerAry[idx].ans);
         break;
+
+      case 'tutor_info':
+        MyPage.detailContent = event.target.value;
+        console.info(MyPage.detailContent);
+        break;
+
+      // case 'tutor_info':
+      //   MyPage.detailContent = event.target.value;
+      //   console.info(MyPage.detailContent);
+      //   break;
 
       default:
         break;

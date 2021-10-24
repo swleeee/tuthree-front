@@ -9,7 +9,7 @@ class ToggleButton extends React.Component {
     const { Auth, type, MyPage } = this.props;
     switch (type) {
       case 'registration':
-        Auth.registrationState = !Auth.registrationState;
+        MyPage.registrationState = !MyPage.registrationState;
         break;
       case 'notification':
         MyPage.notificationState = !MyPage.notificationState;
@@ -26,21 +26,21 @@ class ToggleButton extends React.Component {
       <CheckBoxWrapper
         active={
           type === 'registration'
-            ? Auth.registrationState
+            ? MyPage.registrationState
             : MyPage.notificationState
         }
       >
         <CheckBox
           active={
             type === 'registration'
-              ? Auth.registrationState
+              ? MyPage.registrationState
               : MyPage.notificationState
           }
         />
         <CheckBoxLabel
           active={
             type === 'registration'
-              ? Auth.registrationState
+              ? MyPage.registrationState
               : MyPage.notificationState
           }
           onClick={() => {
