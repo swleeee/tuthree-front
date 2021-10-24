@@ -104,7 +104,7 @@ class TuteeContent extends Component {
           <Item>
             <Label>모집 상태</Label>
             <ContentBox>
-              <ToggleButton />
+              <ToggleButton type="registration" />
             </ContentBox>
           </Item>
 

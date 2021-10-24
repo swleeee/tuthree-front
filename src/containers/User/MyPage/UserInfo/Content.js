@@ -1,9 +1,95 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import SelectComponent from '../../../../components/Select';
+import ToggleButton from '../../../../components/ToggleButton';
 import { toJS } from 'mobx';
 
-@inject('MyPage')
+const mobileCustomStyles = {
+  placeholder: (defaultStyles) => {
+    return {
+      ...defaultStyles,
+      color: '#000',
+      fontSize: 12,
+      //   fontWeight: 'normal',
+    };
+  },
+  dropdownIndicator: () => ({
+    backgroundColor: '#fff',
+    color: '#000',
+    width: 16,
+    height: 16,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isSelected ? '#000000' : '#999999',
+    backgroundColor: '#fff',
+    borderRadius: 0,
+    padding: 12,
+    fontSize: 12,
+  }),
+  control: () => ({
+    fontSize: 12,
+    lineHeight: 1.2,
+    border: '1px solid #c7c7c7',
+    display: 'flex',
+    height: '100%',
+  }),
+  singleValue: (provided, state) => {
+    const opacity = state.isDisabled ? 0.5 : 1;
+
+    const transition = 'opacity 300ms';
+
+    return { ...provided, opacity, transition };
+  },
+};
+
+const customStyles = {
+  dropdownIndicator: () => ({
+    backgroundColor: '#fff',
+    color: '#000',
+    width: 30,
+    height: 30,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isSelected ? '#000000' : '#999999',
+    backgroundColor: '#fff',
+    borderRadius: 0,
+    padding: 14,
+    fontSize: 14,
+    cursor: 'pointer',
+  }),
+  control: () => ({
+    fontSize: 14,
+    lineHeight: 1.2,
+    border: '1px solid #c7c7c7',
+    display: 'flex',
+    height: '100%',
+    cursor: 'pointer',
+  }),
+  singleValue: (provided, state) => {
+    const opacity = state.isDisabled ? 0.5 : 1;
+    const transition = 'opacity 300ms';
+
+    return { ...provided, opacity, transition };
+  },
+};
+const birthAry = [];
+
+@inject('MyPage', 'Common')
 @observer
 class Content extends Component {
   constructor(props) {
@@ -38,8 +124,24 @@ class Content extends Component {
     // console.info(toJS(MyPage.profileImgUrl));
     // console.info(toJS(MyPage.profileImgAry));
   };
-  render() {
+
+  componentDidMount = async () => {
     const { MyPage } = this.props;
+    console.info('didmount');
+    await MyPage.getUserInfo();
+    for (let i = 2021; i > 1900; i--) {
+      birthAry.push({ label: i, value: i });
+    }
+    MyPage.emailInfo = MyPage.userInfoAry.email;
+    MyPage.phoneInfo = MyPage.userInfoAry.tel;
+    MyPage.birthInfo = MyPage.userInfoAry.birth;
+    MyPage.notificationState =
+      MyPage.userInfoAry.notification === 'OPEN' ? true : false;
+  };
+
+  render() {
+    const { MyPage, Common } = this.props;
+    // console.info(MyPage.emailInfo);
     return (
       <Container>
         <Header>
@@ -53,7 +155,7 @@ class Content extends Component {
                 console.log(this.file);
                 this.file.current.click();
               }}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', width: 'auto' }}
             >
               <ImgBox>
                 <img src={MyPage.profileImgUrl} />
@@ -75,36 +177,80 @@ class Content extends Component {
 
           <Item>
             <Label>이름</Label>
-            <ContentBox>홍길동</ContentBox>
+            <ContentBox>
+              {MyPage.userInfoAry && MyPage.userInfoAry.name}
+            </ContentBox>
           </Item>
 
           <Item>
             <Label>이메일</Label>
-            <ContentBox>sdfdsfksdflsdkfsd</ContentBox>
+            <ContentBox>
+              {/* {MyPage.userInfoAry && MyPage.userInfoAry.email} */}
+              <Input
+                bd={true}
+                value={MyPage.emailInfo}
+                height={40}
+                onChange={(e) => MyPage.onChangeHandler(e, 'email_info')}
+              />
+            </ContentBox>
           </Item>
 
           <Item>
             <Label>휴대폰 번호</Label>
-            <ContentBox>sdfsdlfjsdjkfsdf</ContentBox>
+            <ContentBox>
+              {/* {MyPage.userInfoAry && MyPage.userInfoAry.tel} */}
+              <Input
+                bd={true}
+                value={MyPage.phoneInfo}
+                height={40}
+                onChange={(e) => MyPage.onChangeHandler(e, 'phone_info')}
+              />
+            </ContentBox>
           </Item>
 
           <Item>
             <Label>성별</Label>
-            <ContentBox>남자</ContentBox>
+            <ContentBox>
+              {MyPage.userInfoAry && MyPage.userInfoAry.sex === 'MALE'
+                ? '남성'
+                : '여성'}
+            </ContentBox>
           </Item>
 
           <Item>
             <Label>출생년도</Label>
-            <ContentBox>1997</ContentBox>
+            <ContentBox>
+              {/* {MyPage.userInfoAry && MyPage.userInfoAry.birth}년생 */}
+              <Select
+                //  id={this.props.id}
+                //  className={this.props.className}
+                styles={
+                  Common.width > 767.98 ? customStyles : mobileCustomStyles
+                }
+                value={{
+                  label: MyPage.birthInfo ? MyPage.birthInfo : '년도',
+                  value: MyPage.birthInfo && MyPage.birthInfo,
+                }}
+                onChange={(e) => MyPage.onChangeHandler(e, 'birth_info')}
+                getOptionLabel={(option) => option.value}
+                options={birthAry}
+                //  isSearchable={false}
+                placeholder="선택하세요."
+                domainType={1}
+              />
+            </ContentBox>
           </Item>
 
           <Item>
             <Label>알림 설정</Label>
-            <ContentBox>ㄴㅇㄹㄴㅇㄹㅇㄹ</ContentBox>
+            <ContentBox>
+              {/* {MyPage.userInfoAry && MyPage.userInfoAry.notification} */}
+              <ToggleButton type="notification" />
+            </ContentBox>
           </Item>
         </Main>
         <ButtonBox>
-          <Button>
+          <Button onClick={() => MyPage.putUserInfo()}>
             <div>수정</div>
           </Button>
         </ButtonBox>
@@ -199,6 +345,7 @@ const ContentBox = styled.div`
   font-size: 16px;
   padding: 15px 25px;
   box-sizing: border-box;
+  width: 70%;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     font-size: 11px;
@@ -299,5 +446,54 @@ const Button = styled.button`
     > div {
       font-size: 15px;
     }
+  }
+`;
+
+const Input = styled.input`
+  border: ${(props) => (props.bd ? '1px solid #c7c7c7' : 'none')};
+  // padding-bottom: 18px;
+  outline: none;
+  font-size: 15px;
+  //   width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
+  padding: 0 10px;
+  height: ${(props) => (props.height ? props.height : '')}px;
+
+  ::placeholder {
+    font-size: 12px;
+    text-align: left;
+  }
+  :focus {
+  }
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 12px;
+    height: ${(props) => (props.height ? props.height : '24')}px;
+    width: ${(props) => (props.width ? props.width - 30 : '100')}px;
+    padding: 0 8px;
+    margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+    margin-right: ${(props) => (props.mr ? props.mr : '0')}px;
+    ::placeholder {
+      font-size: 10px;
+      text-align: left;
+    }
+  }
+`;
+
+const Select = styled(SelectComponent)`
+  width: ${(props) => (props.width ? props.width : '170')}px;
+  height: 30px;
+  margin-left: ${(props) => (props.ml ? props.ml : '0')}px;
+  margin-right: ${(props) => (props.mr ? props.mr : '0')}px;
+  display: ${(props) => (props.domainType === 1 ? 'block' : 'none')};
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: ${(props) => (props.width ? props.width : '170')}px;
+    height: 30px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
   }
 `;

@@ -6,17 +6,43 @@ import { inject, observer } from 'mobx-react';
 @observer
 class ToggleButton extends React.Component {
   changeHandler = () => {
-    const { Auth } = this.props;
-    Auth.registrationState = !Auth.registrationState;
+    const { Auth, type, MyPage } = this.props;
+    switch (type) {
+      case 'registration':
+        Auth.registrationState = !Auth.registrationState;
+        break;
+      case 'notification':
+        MyPage.notificationState = !MyPage.notificationState;
+        break;
+
+      default:
+        break;
+    }
   };
 
   render() {
-    const { Auth } = this.props;
+    const { Auth, type, MyPage } = this.props;
     return (
-      <CheckBoxWrapper active={Auth.registrationState}>
-        <CheckBox active={Auth.registrationState} />
+      <CheckBoxWrapper
+        active={
+          type === 'registration'
+            ? Auth.registrationState
+            : MyPage.notificationState
+        }
+      >
+        <CheckBox
+          active={
+            type === 'registration'
+              ? Auth.registrationState
+              : MyPage.notificationState
+          }
+        />
         <CheckBoxLabel
-          active={Auth.registrationState}
+          active={
+            type === 'registration'
+              ? Auth.registrationState
+              : MyPage.notificationState
+          }
           onClick={() => {
             this.changeHandler();
           }}
