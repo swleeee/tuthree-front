@@ -370,6 +370,7 @@ class Auth {
 
   /* login한 유저의 아이디와 타입 */
   @observable loggedUserId = '';
+  @observable loggedUserName = '';
   @observable loggedUserType = '';
 
   getStep = () => {
@@ -1009,9 +1010,11 @@ class Auth {
           console.info(this.token);
           this.loggedUserId = await res.data.data.id;
           this.loggedUserType = await res.data.data.grade;
+          this.loggedUserName = await res.data.data.name;
           localStorage.setItem('token', this.token);
           localStorage.setItem('userId', res.data.data.id);
           localStorage.setItem('userType', res.data.data.grade);
+          localStorage.setItem('userName', res.data.data.name);
           // setTimeout(() => {
           //   // window.location.href = '/';
           //   // window.location.replace('/');

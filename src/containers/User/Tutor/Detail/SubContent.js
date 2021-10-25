@@ -13,7 +13,7 @@ import Common from '../../../../stores/Common/Common';
 import Tutor from '../../../../stores/Matching/Tutor';
 import Matching from '../../../../stores/Matching/Matching';
 
-@inject('Auth', 'Common', 'Tutor', 'Matching')
+@inject('Auth', 'Common', 'Tutor', 'Matching', 'Chatting')
 @observer
 class SubContent extends Component {
   openModal = () => {
@@ -34,7 +34,7 @@ class SubContent extends Component {
   };
 
   render() {
-    const { Matching } = this.props;
+    const { Matching, Chatting } = this.props;
     // console.info(Matching.isCheckBookmark);
     return (
       <>
@@ -138,7 +138,8 @@ class SubContent extends Component {
               onClick={() => {
                 console.info('click');
                 // Common.modalActive = true;
-                window.location.href = '/chatting';
+                // window.location.href = '/chatting';
+                Chatting.createChatRoom();
               }}
               color="#000"
             >

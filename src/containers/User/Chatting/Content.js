@@ -5,6 +5,7 @@ import defaultImg from '../../../static/images/Common/defaultUser.png';
 import Textarea from '../../../components/TextareaContainer';
 import InfoWriting from './InfoWriting';
 import Info from './Info';
+import { toJS } from 'mobx';
 
 const userList = [
   {
@@ -187,6 +188,7 @@ class Content extends Component {
     const { Auth, Chatting } = this.props;
     console.info(Chatting.studentId);
     await Chatting.getDetailClass();
+    await Chatting.getChatUserList();
     if (Auth.loggedUserType === 'teacher') {
       await Chatting.checkInfoWriting();
     }
@@ -228,10 +230,21 @@ class Content extends Component {
             <div>Chatting</div>
           </Label>
           <UserList>
-            {userList &&
-              userList.map((item, idx) => {
+            {Chatting.chatUserAry &&
+              Chatting.chatUserAry.map((item, idx) => {
+                console.info(toJS(item));
                 return (
-                  <UserListItem>
+                  <UserListItem
+                    onClick={() => {
+                      if (Auth.loggedUserType === 'teacher') {
+                        Chatting.studentId = item.chatList.senderId;
+                      } else {
+                        Chatting.teacherId = item.chatList.senderId;
+                      }
+                      Chatting.roomId = item.roomId;
+                      Chatting.getChatList(item.roomId);
+                    }}
+                  >
                     <ImgBox width={55} height={55} mr={10}>
                       <div>
                         {/* <div>IMG</div> */}
@@ -240,10 +253,10 @@ class Content extends Component {
                     </ImgBox>
                     <UserItem>
                       <UserLabel>
-                        <UserName>{item.name}</UserName>
-                        <UserWriteDt>{item.writeDt}</UserWriteDt>
+                        <UserName>{item.chatList.senderName}</UserName>
+                        <UserWriteDt>{item.chatList.date}</UserWriteDt>
                       </UserLabel>
-                      <UserContent>{item.content}</UserContent>
+                      <UserContent>{item.chatList.chat}</UserContent>
                     </UserItem>
                   </UserListItem>
                 );
@@ -304,40 +317,55 @@ class Content extends Component {
         <ChatContainer>
           <ChatHeader>홍길동</ChatHeader>
           <ChatMain>
-            {chatList &&
-              chatList.map((item, idx) => {
+            {Chatting.chatAry &&
+              Chatting.chatAry.map((item, idx) => {
                 return (
-                  <ChatListItem type={item.type === 'me'}>
+                  <ChatListItem
+                    type={item.chatList.senderId === Auth.loggedUserId}
+                  >
                     <ImgBox
                       width={55}
                       height={55}
                       mr={10}
-                      type={item.type === 'me'}
+                      type={item.chatList.senderId === Auth.loggedUserId}
                     >
                       <div>
                         {/* <div>IMG</div> */}
                         <img src={defaultImg} />
                       </div>
                     </ImgBox>
-                    <ChatItem type={item.type === 'me'}>
-                      <ChatLabel type={item.type === 'me'}>
-                        <ChatName type={item.type === 'me'}>
-                          {item.name}
+                    <ChatItem
+                      type={item.chatList.senderId === Auth.loggedUserId}
+                    >
+                      <ChatLabel
+                        type={item.chatList.senderId === Auth.loggedUserId}
+                      >
+                        <ChatName
+                          type={item.chatList.senderId === Auth.loggedUserId}
+                        >
+                          {item.chatList.senderName}
                         </ChatName>
-                        <ChatContent type={item.type === 'me'}>
+                        <ChatContent
+                          type={item.chatList.senderId === Auth.loggedUserId}
+                        >
                           <div></div>
-                          {item.content}
+                          {item.chatList.chat}
                         </ChatContent>
                       </ChatLabel>
-                      <ChatWriteDt>{item.writeDt}</ChatWriteDt>
+                      <ChatWriteDt>{item.chatList.date}</ChatWriteDt>
                     </ChatItem>
                   </ChatListItem>
                 );
               })}
           </ChatMain>
           <ChatWritingBox>
-            <Textarea mxh={40} mih={40} placeholder={`메시지를 입력하세요`} />
-            <Button>
+            <Textarea
+              mxh={40}
+              mih={40}
+              placeholder={`메시지를 입력하세요`}
+              type="chat_msg"
+            />
+            <Button onClick={() => Chatting.sendMessage()}>
               <div>전송</div>
             </Button>
           </ChatWritingBox>

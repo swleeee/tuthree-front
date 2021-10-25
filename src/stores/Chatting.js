@@ -4,6 +4,7 @@ import Tutee from './Matching/Tutee';
 import Common from './Common/Common';
 import * as MatchingAPI from '../axios/Matching/Matching';
 import * as ClassAPI from '../axios/Managing/Class';
+import * as ChattingAPI from '../axios/Chatting/Chatting';
 
 class Chatting {
   // constructor() {
@@ -86,6 +87,11 @@ class Chatting {
   @observable studentId = '';
 
   @observable infoAry = [];
+
+  @observable chatUserAry = [];
+  @observable chatAry = [];
+  @observable roomId = '';
+  @observable chatMsg = '';
 
   @action resetTutoringInfo = () => {
     this.detailContent = '';
@@ -635,6 +641,93 @@ class Chatting {
         console.info(e);
         console.info(e.response);
       });
+  };
+
+  @action createChatRoom = async () => {
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      data: {
+        user1: Auth.loggedUserId,
+        user2:
+          Auth.loggedUserType === 'teacher' ? this.studentId : this.teacherId,
+      },
+    };
+    ChattingAPI.createChatRoom(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          // window.location.href = '/chatting';
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action getChatUserList = async () => {
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      // params: {
+      //   id: Auth.loggedUserId,
+      // },
+    };
+    await ChattingAPI.getChatUserList(req)
+      .then(async (res) => {
+        console.info(res);
+        this.chatUserAry = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.chatUserAry));
+  };
+
+  @action getChatList = async (id) => {
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      id: id,
+    };
+    await ChattingAPI.getChatList(req)
+      .then(async (res) => {
+        console.info(res);
+        this.chatAry = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.chatAry));
+  };
+
+  @action sendMessage = async (id) => {
+    console.info(Auth.loggedUserName);
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      data: {
+        room: {
+          id: this.roomId,
+        },
+        userId:
+          Auth.loggedUserType === 'teacher' ? this.studentId : this.teacherId,
+        name: Auth.loggedUserId,
+        content: this.chatMsg,
+      },
+    };
+    //
   };
 }
 

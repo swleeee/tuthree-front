@@ -82,6 +82,11 @@ class TextareaContainer extends Component {
         console.info(MyPage.detailContent);
         break;
 
+      case 'chat_msg':
+        Chatting.chatMsg = event.target.value;
+        console.info(Chatting.chatMsg);
+        break;
+
       // case 'tutor_info':
       //   MyPage.detailContent = event.target.value;
       //   console.info(MyPage.detailContent);

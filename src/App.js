@@ -56,6 +56,7 @@ class App extends React.Component {
       Auth.token = localStorage.getItem('token');
       Auth.loggedUserId = localStorage.getItem('userId');
       Auth.loggedUserType = localStorage.getItem('userType');
+      Auth.loggedUserName = localStorage.getItem('userName');
     }
     const userAgent = window.navigator.userAgent;
     console.info(userAgent);
