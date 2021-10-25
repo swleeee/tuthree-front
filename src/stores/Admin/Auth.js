@@ -1,4 +1,5 @@
 import { observable, action, makeObservable, toJS, decorate } from 'mobx';
+import * as AccountAPI from '../../axios/Account/Account';
 
 class Auth {
   // constructor() {
@@ -6,6 +7,7 @@ class Auth {
   // }
   @observable adminId = '';
   @observable adminPassword = '';
+  @observable token = '';
 
   @action onUserHandler = (e, type) => {
     switch (type) {
@@ -20,6 +22,29 @@ class Auth {
       default:
         break;
     }
+  };
+
+  @action adminLogin = () => {
+    const req = {
+      data: {
+        id: this.adminId,
+        pwd: this.adminPassword,
+      },
+    };
+    AccountAPI.adminLogin(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          alert('관리자로 로그인에 성공하였습니다');
+          window.location.href = '/admin/main';
+          this.token = res.data.headers.authorization;
+          console.info(this.token);
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.message);
+      });
   };
 }
 

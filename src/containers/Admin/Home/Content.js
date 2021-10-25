@@ -6,12 +6,11 @@ import { Link as Connection } from 'react-router-dom';
 import userImg from '../../../static/images/Admin/Login/admin-user.png';
 import passwordImg from '../../../static/images/Admin/Login/admin-password.png';
 
-import AdminAuth from '../../../stores/Admin/Auth';
-
 @inject('AdminAuth')
 @observer
 class ContentContainer extends Component {
   render() {
+    const { AdminAuth } = this.props;
     return (
       <Container>
         <Item>
@@ -44,9 +43,9 @@ class ContentContainer extends Component {
               />
             </InputItem>
           </InputBox>
-          <Link to="/admin/main">
-            <Button>로그인</Button>
-          </Link>
+          {/* <Link to="/admin/main"> */}
+          <Button onClick={() => AdminAuth.adminLogin()}>로그인</Button>
+          {/* </Link> */}
         </Item>
       </Container>
     );
