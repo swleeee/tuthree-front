@@ -3,6 +3,7 @@ import Auth from '../Account/Auth';
 import Common from '../Common/Common';
 import * as ClassAPI from '../../axios/Managing/Class';
 import * as GradingAPI from '../../axios/Managing/Grading';
+import * as ReviewAPI from '../../axios/Matching/Review';
 
 class MyClass {
   // constructor() {
@@ -65,6 +66,7 @@ class MyClass {
 
   @observable ratingPoint = 5; // 평점
   @observable reviewContent = ''; // 리뷰 내용
+  @observable reviewTutorId = ''; // 작성할 선생님 리뷰 아이디
   @observable starAry = [
     {
       id: 1,
@@ -718,13 +720,14 @@ class MyClass {
         grade: 'student',
       },
       headers: {
-        Authorization: Auth.Authorization,
+        Authorization: Auth.token,
       },
       data: {
         prob: parseInt(this.tuteeTotalQuestion),
         problem: this.answerAry,
       },
     };
+
     console.info(toJS(req.data));
     console.info(toJS(req.data.problem));
     await GradingAPI.setAnswer(req)
@@ -834,6 +837,38 @@ class MyClass {
       .then(async (res) => {
         console.info(res);
         this.myScheduleAry = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.myScheduleAry));
+  };
+
+  @action setTutorReview = async () => {
+    console.info(Auth.loggedUserId);
+    console.info(this.reviewTutorId);
+    console.info(this.reviewContent);
+    const req = {
+      params: {
+        studentId: Auth.loggedUserId,
+        teacherId: this.reviewTutorId,
+      },
+      data: {
+        star: this.ratingPoint,
+        content: this.reviewContent,
+      },
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+    console.info(req.data);
+    await ReviewAPI.setTutorReview(req)
+      .then(async (res) => {
+        console.info(res);
+        // this.myScheduleAry = await res.data.data;
+        alert('리뷰 작성이 완료되었습니다');
+        this.reviewModalActive = false;
       })
       .catch((e) => {
         console.info(e);

@@ -185,6 +185,7 @@ class Content extends Component {
                     type="teacher"
                     studentName={item.studentName}
                     teacherName={item.teacherName}
+                    teacherId={item.teacherId}
                     date={item.date}
                     subject={item.subject}
                     active={item.acitve}

@@ -16,7 +16,7 @@ class ClassCard extends Component {
       date,
       subject,
       id,
-
+      teacherId,
       MyClass,
 
       Auth,
@@ -57,6 +57,8 @@ class ClassCard extends Component {
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
+                    MyClass.reviewTutorId = '';
+                    MyClass.reviewTutorId = teacherId;
                     MyClass.reviewModalActive = true;
                   }}
                 >
