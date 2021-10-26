@@ -98,6 +98,26 @@ class MyClass {
     },
   ];
 
+  @observable myScheduleColor = [
+    '#608880',
+    '#866088',
+    '#7e8860',
+    '#d45050',
+    '#f08080',
+    '#1b5608',
+  ];
+  @observable myScheduleModalActive = false;
+  @observable myScheduleAry = [];
+  @observable myScheduleEvent = {
+    월: [],
+    화: [],
+    수: [],
+    목: [],
+    금: [],
+    토: [],
+    일: [],
+  };
+
   @action onClickNavHandler = (type) => {
     console.info(type);
     switch (type) {
@@ -797,6 +817,29 @@ class MyClass {
     console.info(idx);
     console.info(toJS(this.markingStateAry));
     console.info(toJS(this.markingStateObj));
+  };
+
+  @action getTimeTable = async () => {
+    console.info(Auth.loggedUserId);
+    const req = {
+      params: {
+        id: Auth.loggedUserId,
+      },
+
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+    };
+    await ClassAPI.getTimeTable(req)
+      .then(async (res) => {
+        console.info(res);
+        this.myScheduleAry = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.myScheduleAry));
   };
 }
 export default new MyClass();

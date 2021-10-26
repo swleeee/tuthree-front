@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import ClassCard from '../../../components/ClassCard';
 import ReviewContainer from '../../../components/Review';
+import MySchedule from './MySchedule';
 
 const dummyData = [
   {
@@ -100,13 +101,36 @@ class Content extends Component {
     MyClass.reviewModalActive = true;
   };
 
+  myScheduleOpenModal = () => {
+    const { MyClass } = this.props;
+    MyClass.myScheduleModalActive = false;
+  };
+  myScheduleCloseModal = () => {
+    const { MyClass } = this.props;
+    MyClass.myScheduleModalActive = true;
+  };
+
   render() {
     const { MyClass, Auth } = this.props;
     console.info(MyClass.reviewModalActive);
     return (
       <Container>
         <Header>
-          <Label>MyClass</Label>
+          <Section>
+            <Label>MyClass</Label>
+            <ButtonBox>
+              <Button
+                color="#fff"
+                bcolor="rgb(235, 114, 82)"
+                onClick={async () => {
+                  await MyClass.getTimeTable();
+                  MyClass.myScheduleModalActive = true;
+                }}
+              >
+                <div>시간표</div>
+              </Button>
+            </ButtonBox>
+          </Section>
           <SortingBox active={MyClass.status}>
             <span
               onClick={async () => {
@@ -176,6 +200,18 @@ class Content extends Component {
                 // width={width}
                 open={this.reviewOpenModal}
                 close={this.reviewCloseModal}
+              />
+            </div>
+          </Layer>
+        )}
+
+        {MyClass.myScheduleModalActive === true && (
+          <Layer>
+            <div>
+              <MySchedule
+                // width={width}
+                open={this.myScheduleOpenModal}
+                close={this.myScheduleCloseModal}
               />
             </div>
           </Layer>
@@ -319,9 +355,61 @@ const Layer = styled.div`
   > div {
     display: flex;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
     // height: 100vh;
-    height: 100%;
+    height: 90%;
     overflow-y: scroll !important;
+    margin-top: 30px;
   }
+`;
+
+const ButtonBox = styled.div`
+  // margin-top: 60px;
+  display: flex;
+  justify-content: center;
+`;
+
+const Button = styled.button`
+  //   width: 180px;
+  height: 40px;
+  color: ${(props) => (props.color ? props.color : '')};
+  background-color: ${(props) => (props.bcolor ? props.bcolor : '')};
+  border: ${(props) => (props.border ? props.border : 'none')};
+  margin: 0 10px;
+  //   margin-bottom: 200px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 100%;
+  > div {
+    font-size: 18px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    min-width: 50px;
+    height: 32px;
+    margin: 0 10px;
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    // width: 180px;
+    height: 36px;
+    > div {
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    // width: 180px;
+    height: 40px;
+    > div {
+      font-size: 17px;
+    }
+  }
+`;
+
+const Section = styled.div`
+  display: flex;
+  align-items: center;
 `;

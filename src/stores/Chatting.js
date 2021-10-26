@@ -667,6 +667,7 @@ class Chatting {
         console.info(e);
         console.info(e.response);
       });
+    window.location.href = '/chatting';
   };
 
   @action getChatUserList = async () => {
