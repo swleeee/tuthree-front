@@ -237,6 +237,7 @@ class Content extends Component {
                   <div
                     onClick={async () => {
                       console.info('dsfdfd');
+                      console.info(toJS(item));
                       await Tutor.getTutorDetailList(item, idx);
                     }}
                   >

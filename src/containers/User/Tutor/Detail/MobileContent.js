@@ -42,6 +42,9 @@ const reviewData = [
 @inject('Tutor', 'Matching', 'Chatting')
 @observer
 class MobileContent extends Component {
+  state = {
+    reviewTotalCount: 5,
+  };
   componentDidMount = async () => {
     const { Matching } = this.props;
     await Matching.getBookmark();
@@ -208,12 +211,30 @@ class MobileContent extends Component {
               {Tutor.tutorReviewCount !== 0 && (
                 <SubHeader>
                   <Rating>
+                    {[...Array(this.state.reviewTotalCount)].map(
+                      (item, idx) => {
+                        return (
+                          <>
+                            {idx + 1 <=
+                            Math.trunc(
+                              Tutor.tutorDetailAry.star / Tutor.tutorReviewCount
+                            ) ? (
+                              <img src={starImg} />
+                            ) : (
+                              <img src={emptyStarImg} />
+                            )}
+                          </>
+                        );
+                      }
+                    )}
+
+                    {/* <img src={starImg} />
                     <img src={starImg} />
-                    <img src={starImg} />
-                    <img src={starImg} />
-                    <img src={starImg} />
-                    <img src={emptyStarImg} />
-                    <div>{Tutor.tutorDetailAry.star} | 5.0</div>
+                    <img src={starImg} /> */}
+
+                    <div>
+                      {Tutor.tutorDetailAry.star / Tutor.tutorReviewCount} | 5.0
+                    </div>
                   </Rating>
                 </SubHeader>
               )}
@@ -290,11 +311,19 @@ class MobileContent extends Component {
                           </ReviewSubLabel>
                           <ReviewSubLabel>
                             <ReviewRating>
-                              <img src={starImg} />
-                              <img src={starImg} />
-                              <img src={starImg} />
-                              <img src={starImg} />
-                              <img src={emptyStarImg} />
+                              {[...Array(this.state.reviewTotalCount)].map(
+                                (subItem, id) => {
+                                  return (
+                                    <>
+                                      {id + 1 <= item.star ? (
+                                        <img src={starImg} />
+                                      ) : (
+                                        <img src={emptyStarImg} />
+                                      )}
+                                    </>
+                                  );
+                                }
+                              )}
                               <div>{item.star}</div>
                             </ReviewRating>
                           </ReviewSubLabel>
