@@ -36,9 +36,32 @@ class Auth {
         console.info(res);
         if (res.data.success) {
           alert('관리자로 로그인에 성공하였습니다');
+          this.token = res.headers.authorization;
+          localStorage.setItem('adminToken', res.headers.authorization);
           window.location.href = '/admin/main';
-          this.token = res.data.headers.authorization;
+
           console.info(this.token);
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.message);
+      });
+  };
+
+  @action adminLogout = () => {
+    const req = {
+      headers: {
+        Authorization: localStorage.getItem('adminToken'),
+      },
+    };
+    AccountAPI.adminLogout(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          alert('로그아웃 되었습니다');
+          localStorage.removeItem('adminToken');
+          window.location.href = '/admin';
         }
       })
       .catch((e) => {

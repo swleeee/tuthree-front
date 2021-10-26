@@ -7,7 +7,7 @@ import hamburger_ic from '../static/images/Admin/Main/menu-white.png';
 
 import { Link as Connection } from 'react-router-dom';
 
-@inject('Auth', 'Partner', 'Home', 'Common')
+@inject('AdminAuth', 'Common')
 @observer
 class MobileNav extends React.Component {
   state = {
@@ -29,6 +29,7 @@ class MobileNav extends React.Component {
   render() {
     const { is_open } = this.state;
     console.log(this.props);
+    const { AdminAuth } = this.props;
     return (
       <NavBox>
         {is_open && (
@@ -71,7 +72,11 @@ class MobileNav extends React.Component {
                   마이페이지
                 </Link> */}
 
-                <Link mobile={true} to="/admin" style={{ marginRight: '0px' }}>
+                <Link
+                  mobile={true}
+                  onClick={() => AdminAuth.adminLogout()}
+                  style={{ marginRight: '0px' }}
+                >
                   로그아웃
                 </Link>
               </ModalContent2>
@@ -292,7 +297,7 @@ const Container = styled.div`
   margin-left: auto;
 `;
 const NavBox = styled.div`
-  position: fixed;
+  // position: fixed;
   height: 54px;
   width: 100%;
   background-color: #ffffff;

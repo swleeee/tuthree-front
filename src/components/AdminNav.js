@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { Link as Connection } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 
+@inject('AdminAuth')
+@observer
 class AdminNav extends Component {
   render() {
+    const { AdminAuth } = this.props;
     return (
       <NavBox>
         <div>TuThree Admin</div>
@@ -19,7 +23,7 @@ class AdminNav extends Component {
             문의 채팅
           </Link>
         </Menu>
-        <Link to="/admin">
+        <Link onClick={() => AdminAuth.adminLogout()}>
           <Button>로그아웃</Button>
         </Link>
       </NavBox>
@@ -85,6 +89,7 @@ const Link = styled(Connection)`
 `;
 
 const Button = styled.button`
+  cursor: pointer;
   width: 80px;
   height: 30px;
   border: none;

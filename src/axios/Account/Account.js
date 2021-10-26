@@ -68,3 +68,12 @@ export function adminLogin(req) {
     data: req.data,
   });
 }
+
+export function adminLogout(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/admin/out`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
