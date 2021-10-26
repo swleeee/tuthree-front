@@ -80,7 +80,7 @@ class MyPage {
   };
 
   @action getUserInfo = async () => {
-    console.info(Auth.Authorization);
+    console.info(Auth.token);
     const req = {
       headers: {
         Authorization: Auth.token,

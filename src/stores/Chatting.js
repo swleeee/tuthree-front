@@ -443,59 +443,66 @@ class Chatting {
         console.info(toJS(this.infoAry));
         console.info(toJS(Object.keys(this.infoAry).length));
         // for(let i=0; i<)
-        for (const [key, value] of Object.entries(this.infoAry)) {
+        for await (const [key, value] of Object.entries(this.infoAry)) {
           console.info(`${key}: ${value}`);
+          console.info(key);
           console.info(toJS(value));
           console.info(toJS(value.length));
           // if (value.length) {
           //   this.weekendValueAry.push(key);
           // }
-          switch (key) {
-            case 'mon':
-              weekend = '월요일';
-              break;
-            case 'tue':
-              weekend = '화요일';
-              break;
-            case 'wed':
-              weekend = '수요일';
-              break;
-            case 'thu':
-              weekend = '목요일';
-              break;
-            case 'fri':
-              weekend = '금요일';
-              break;
-            case 'sat':
-              weekend = '토요일';
-              break;
-            case 'sim':
-              weekend = '일요일';
-              break;
-            default:
-              break;
-          }
-
-          value.map(async (item, idx) => {
-            console.info(toJS(item));
-            console.info(toJS(item.start));
-            this.weekendValueAry.push(key);
-            await this.startTimeAry.push(item.start);
-            await this.endTimeAry.push(item.end);
-
-            await this.selectedWeekTime.push(
-              `${weekend} ${item.start} ~ ${item.end}`
-            );
-          });
-
-          for (const [subKey, subValue] of Object.entries(value)) {
-            console.info(`${subKey}: ${subValue}`);
-            console.info(subKey.value);
-            if (subKey === 'start') {
-              startTime = subValue;
+          if (value.length !== 0) {
+            switch (key) {
+              case 'mon':
+                weekend = '월요일';
+                break;
+              case 'tue':
+                weekend = '화요일';
+                break;
+              case 'wed':
+                weekend = '수요일';
+                break;
+              case 'thu':
+                weekend = '목요일';
+                break;
+              case 'fri':
+                weekend = '금요일';
+                break;
+              case 'sat':
+                weekend = '토요일';
+                break;
+              case 'sun':
+                weekend = '일요일';
+                break;
+              default:
+                break;
             }
-            if (subKey === 'end') {
-              endTime = subValue;
+
+            await value.map(async (item, idx) => {
+              console.info(toJS(item));
+              console.info(toJS(item.start));
+              console.info(weekend);
+              this.weekendValueAry.push(key);
+              console.info(weekend);
+              await this.startTimeAry.push(item.start);
+              await this.endTimeAry.push(item.end);
+
+              await this.selectedWeekTime.push(
+                `${weekend} ${item.start} ~ ${item.end}`
+              );
+              console.info(weekend);
+              console.info(toJS(this.selectedWeekTime));
+            });
+
+            for (const [subKey, subValue] of Object.entries(value)) {
+              console.info(`${subKey}: ${subValue}`);
+              console.info(subKey.value);
+              if (subKey === 'start') {
+                startTime = subValue;
+              }
+              if (subKey === 'end') {
+                endTime = subValue;
+              }
             }
           }
           // await this.selectedWeekTime.push(
