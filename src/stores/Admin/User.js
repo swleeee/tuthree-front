@@ -12,26 +12,56 @@ class User {
   @observable userTotalCount = 0; // 유저 리스트 전체 개수
   @observable userTotalPage = 0; // 유저 리스트 전체 페이지 수
   @observable userCurrentPage = 1; // 유저 리스트 현재 페이지
-  @observable userCurrentSet = parseInt((this.noticeCurrentPage - 1) / 5) + 1; // 유저 리스트 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
+  @observable userCurrentSet = parseInt((this.userCurrentPage - 1) / 5) + 1; // 유저 리스트 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
   @observable userDetailList = []; // 유저 리스트 세부 페이지
+
+  @observable errorMessage = '';
+  @observable searchValue = '';
+  @observable searchFinalValue = '';
+
+  @observable filterIdx = 1;
+  @observable filterAry = [
+    { label: '선생님', value: 'teacher' },
+    { label: '학생', value: 'student' },
+    { label: '학부모', value: 'parent' },
+  ];
+
+  @observable modalActive = false;
+
+  @action onChangeHandler = (e, type = '') => {
+    switch (type) {
+      case 'user':
+        console.info(e.target.value);
+        this.searchValue = e.target.value;
+
+        break;
+      default:
+        break;
+    }
+  };
 
   @action getUserList = async (page) => {
     const req = {
       params: {
-        grade: 'teacher',
-        // userId
-        page: page ? page : 1,
+        grade: this.filterAry[this.filterIdx - 1].value,
+        userId: this.searchValue,
+        page: this.searchValue ? 0 : page ? page : 1,
       },
       headers: {
         Authorization: Auth.token,
       },
     };
+
+    if (!this.searchValue) {
+      delete req.params.userId;
+    }
     await AccountAPI.getUserList(req)
       .then(async (res) => {
         console.info(res);
         console.info(toJS(res.data.data));
         this.userList = await res.data.data.content;
         this.userListTotalCount = await res.data.data.totalElements;
+        this.userCurrentSet = parseInt((this.userCurrentPage - 1) / 5) + 1; // userlist 현재 화면에 보일 페이지들 (ex: 1 2 3 4 5 / 6 7 8 9 10 ...)
         this.userTotalPage = await Math.ceil(this.userListTotalCount / 10);
         await this.userList.map(async (item, idx) => {
           // item.push({ checked: false });
@@ -80,6 +110,8 @@ class User {
 
   /* 유저 리스트 다음 페이지로 이동하는 함수 */
   @action pageNext = async () => {
+    console.info(this.userCurrentPage);
+    console.info(this.userTotalPage);
     if (this.userCurrentPage < this.userTotalPage) {
       const nextPage = this.userCurrentPage + 1;
       this.userCurrentPage = nextPage;

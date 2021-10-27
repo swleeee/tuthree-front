@@ -1,21 +1,54 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import searchImg from '../../../../static/images/Admin/Main/search.png';
 
-import AdminUser from '../../../../stores/Admin/User';
+import Pagination from '../../../../components/Pagination';
 import checkImg from '../../../../static/images/Common/check.png';
+import DetailCard from './DetailCard';
 import { toJS } from 'mobx';
 
 @inject('AdminUser')
 @observer
 class Content extends Component {
   componentDidMount = () => {
+    const { AdminUser } = this.props;
     console.info('dm');
     AdminUser.getUserList(AdminUser.userCurrentPage);
   };
+  componentWillUnmount = () => {
+    const { AdminUser } = this.props;
+    AdminUser.searchValue = '';
+    AdminUser.errorMessage = '';
+    AdminUser.searchFinalValue = '';
+  };
+
+  openModal = () => {
+    const { AdminUser } = this.props;
+    AdminUser.modalActive = false;
+  };
+  closeModal = () => {
+    const { AdminUser } = this.props;
+    AdminUser.modalActive = true;
+  };
+
   render() {
+    const { AdminUser } = this.props;
+    console.info(AdminUser.searchValue);
     return (
       <Container>
+        {AdminUser.modalActive === true && (
+          <Layer>
+            <div>
+              <DetailCard
+                // width={width}
+                open={this.openModal}
+                close={this.closeModal}
+              />
+            </div>
+          </Layer>
+        )}
+
         <Item>
           {/* <SearchBox>
             <Input
@@ -28,33 +61,88 @@ class Content extends Component {
               <img src={searchImg} />
             </Search>
           </SearchBox> */}
+
+          <SearchBox>
+            <Input
+              placeholder="유저 아이디를 입력하세요."
+              onChange={(e) => AdminUser.onChangeHandler(e, 'user')}
+              onFocus={(e) => (e.target.placeholder = '')}
+              onBlur={(e) =>
+                (e.target.placeholder = '유저 아이디를 입력하세요.')
+              }
+            />
+            <Search
+              onClick={() => {
+                console.info('dsfdsf');
+                AdminUser.errorMessage = '';
+                if (AdminUser.searchValue === '') {
+                  AdminUser.searchFinalValue = '';
+                  AdminUser.getUserList(1);
+                } else {
+                  AdminUser.searchFinalValue = AdminUser.searchValue;
+                  AdminUser.getUserList(1);
+                }
+              }}
+            >
+              <img src={searchImg} />
+            </Search>
+          </SearchBox>
+          <SearchArea
+            active={AdminUser.searchFinalValue === ''}
+            error={AdminUser.errorMessage === ''}
+          >
+            <div>
+              "<span>{`${AdminUser.searchFinalValue}`}</span>" 로 검색한
+              결과입니다
+            </div>
+            <div>{AdminUser.errorMessage}</div>
+          </SearchArea>
           <Header>
             <Count>
               총 <span>{AdminUser.userListTotalCount}</span>개
             </Count>
-            <ButtonBox>
+            <FilterBox>
+              {AdminUser.filterAry.map((item, idx) => {
+                return (
+                  <FilterItem
+                    active={AdminUser.filterIdx - 1 === idx}
+                    onClick={() => {
+                      AdminUser.filterIdx = idx + 1;
+                      AdminUser.userCurrentPage = 1;
+                      AdminUser.getUserList(AdminUser.userCurrentPage);
+                    }}
+                  >
+                    <CheckBox active={AdminUser.filterIdx - 1 === idx}>
+                      <div></div>
+                    </CheckBox>
+                    <FilterName>{item.label}</FilterName>
+                  </FilterItem>
+                );
+              })}
+            </FilterBox>
+            {/* <ButtonBox>
               <WriteBtn
                 onClick={async () => {
-                  // AdminUser.noticeDelState = 2;
-                  // await AdminUser.delCheckedData('notice');
+                  AdminUser.noticeDelState = 2;
+                  await AdminUser.delCheckedData('notice');
                 }}
                 mr={15}
                 color="#707070"
               >
                 선택 삭제
               </WriteBtn>
-              {/* <WriteBtn onClick={() => (AdminUser.state = 2)}>글쓰기</WriteBtn> */}
-            </ButtonBox>
+              
+            </ButtonBox> */}
           </Header>
           <MainBox>
             <Line title={true}>
-              <Check>
+              {/* <Check>
                 <div></div>
-              </Check>
+              </Check> */}
               <Number>번호</Number>
               <Type>분류</Type>
-              <Title>제목</Title>
-              <Date>등록일</Date>
+              <Title>이름</Title>
+              <Date>아이디</Date>
               <Management title={true}>관리</Management>
             </Line>
 
@@ -62,40 +150,35 @@ class Content extends Component {
             {AdminUser.userList &&
               AdminUser.userList.map((item, idx) => {
                 return (
-                  <Line onClick={() => AdminUser.pushToDetail(item, idx)}>
-                    <Check active={item.checked}>
+                  <Line
+                    onClick={async () => {
+                      await AdminUser.pushToDetail(item, idx);
+                      AdminUser.modalActive = true;
+                    }}
+                  >
+                    {/* <Check active={item.checked}>
                       <div
                         onClick={(e) => {
-                          // e.stopPropagation();
-                          // AdminUser.checkDataHandler(
-                          //   'notice',
-                          //   item,
-                          //   item.id,
-                          //   idx
-                          // );
+                          e.stopPropagation();
+                          AdminUser.checkDataHandler(
+                            'notice',
+                            item,
+                            item.id,
+                            idx
+                          );
                         }}
                       >
                         <img src={checkImg} />
                       </div>
-                    </Check>
+                    </Check> */}
                     <Number>
                       {idx + 1 + 10 * (AdminUser.userCurrentPage - 1)}
                     </Number>
                     <Type>{item.grade.strType}</Type>
                     <Title>{item.name}</Title>
-                    {/* <Date>{item.writeAt}</Date> */}
+                    <Date>{item.id}</Date>
+                    {/* <Date>{item.createDate}</Date> */}
                     <Management>
-                      <CtlBtn
-                        onClick={async (e) => {
-                          e.stopPropagation();
-                          AdminUser.noticeWritingState = 1;
-                          await AdminUser.pushToDetail(item, idx, 'modify');
-                          AdminUser.state = 2;
-                          console.info(toJS(AdminUser.noticeDetailList));
-                        }}
-                      >
-                        <div>수정</div>
-                      </CtlBtn>
                       <CtlBtn
                         del={true}
                         onClick={(e) => {
@@ -172,12 +255,12 @@ class Content extends Component {
                 );
               })} */}
           </MainBox>
-          {/* <Pagination
-            type="AdminNotice"
-            currentSet={AdminUser.noticeCurrentSet}
-            currentPage={AdminUser.noticeCurrentPage}
-            totalPage={AdminUser.noticeTotalPage}
-          /> */}
+          <Pagination
+            type="AdminUser"
+            currentSet={AdminUser.userCurrentSet}
+            currentPage={AdminUser.userCurrentPage}
+            totalPage={AdminUser.userTotalPage}
+          />
         </Item>
       </Container>
     );
@@ -361,6 +444,7 @@ const MainBox = styled.div`
 `;
 
 const Line = styled.div`
+  cursor: pointer;
   width: 100%;
   height: 60px;
   display: flex;
@@ -428,18 +512,18 @@ const Type = styled.div`
 
 const Title = styled.div`
   //   border: 2px solid blue;
-  flex-grow: 6;
-  width: 20%;
+  flex-grow: 2;
+  width: 5%;
   word-break: break-all;
   white-space: break-spaces;
   @media (min-width: 0px) and (max-width: 767.98px) {
-    flex-grow: 3;
+    flex-grow: 2;
     width: 15%;
   }
 `;
 const Date = styled.div`
   //   border: 2px solid green;
-  flex-grow: 1;
+  flex-grow: 2;
   width: 3%;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
@@ -450,7 +534,7 @@ const Date = styled.div`
 
 const Management = styled.div`
   //   border: 2px solid red;
-  flex-grow: 2;
+  flex-grow: 1;
   //   display: ${(props) => (props.title ? 'block' : 'flex')};
   //   justify-content: ${(props) => (props.title ? '' : 'flex-end')};
   width: 5%;
@@ -509,5 +593,97 @@ const CtlBtn = styled.button`
     > div {
       font-size: 16px;
     }
+  }
+`;
+
+const SearchArea = styled.div`
+  width: 100%;
+  // height: 100px;
+  // border: 2px solid red;
+  // display: none;
+  margin-bottom: 30px;
+  display: ${(props) =>
+    !props.error ? 'flex' : props.active ? 'none' : 'flex'};
+  // display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > div {
+    font-size: 24px;
+    > span {
+      font-weight: bold;
+      color: #eb7252;
+    }
+  }
+  div:nth-of-type(1) {
+    display: ${(props) => (props.error ? 'block' : 'none')};
+  }
+
+  div:nth-of-type(2) {
+    display: ${(props) => (props.error ? 'none' : 'block')};
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      font-size: 17px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: 20px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      font-size: 22px;
+    }
+  }
+`;
+
+const FilterBox = styled.div`
+  display: flex;
+`;
+const FilterItem = styled.div`
+  cursor: pointer;
+  display: flex;
+  margin: 0 5px;
+`;
+const CheckBox = styled.div`
+  margin: 0 5px;
+  > div {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    background-color: ${(props) =>
+      props.active ? 'rgba(235,114,82,0.7)' : '#fff'};
+  }
+`;
+const FilterName = styled.div`
+  font-size: 15px;
+`;
+
+const Layer = styled.div`
+  // position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 399;
+  // opacity: 0.1;
+  background-color: rgba(0, 0, 0, 0.5);
+  // overflow-y: scroll !important;
+  // height: auto;
+  > div {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    // height: 100vh;
+    height: 90%;
+    overflow-y: scroll !important;
+    margin-top: 30px;
+    align-items: ${(props) => props.alignItems && 'center'};
   }
 `;
