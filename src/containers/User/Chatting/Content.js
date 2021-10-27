@@ -253,18 +253,14 @@ class Content extends Component {
         `/topic/messages.${Chatting.roomId}`,
         function (message) {
           // showMessage(decodeURI(JSON.parse(message.body).content));
-          this.showMessage(decodeURI(JSON.parse(message.body).content));
+          console.info(decodeURI(JSON.parse(message.body).content));
+          Chatting.getChatList(Chatting.roomId);
         }
       );
       // stompClient.subscribe('/user/topic/private-messages', function (message) {
       //     showMessage(JSON.parse(message.body).content);
       // });
     });
-  }
-
-  showMessage(message) {
-    // $("#messages").append("<tr><td>" + message + "</td></tr>");
-    console.info(message);
   }
 
   sendMessage() {
