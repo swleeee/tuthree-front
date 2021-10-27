@@ -77,3 +77,21 @@ export function adminLogout(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function getUserList(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/admin/userlist`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function getDetailUserList(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/user/${req.grade}/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}

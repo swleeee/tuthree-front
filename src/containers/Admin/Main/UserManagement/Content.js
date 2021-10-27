@@ -9,6 +9,10 @@ import { toJS } from 'mobx';
 @inject('AdminUser')
 @observer
 class Content extends Component {
+  componentDidMount = () => {
+    console.info('dm');
+    AdminUser.getUserList(AdminUser.userCurrentPage);
+  };
   render() {
     return (
       <Container>
@@ -26,20 +30,20 @@ class Content extends Component {
           </SearchBox> */}
           <Header>
             <Count>
-              총 <span>{AdminUser.noticeListTotalCount}</span>개
+              총 <span>{AdminUser.userListTotalCount}</span>개
             </Count>
             <ButtonBox>
               <WriteBtn
                 onClick={async () => {
-                  AdminUser.noticeDelState = 2;
-                  await AdminUser.delCheckedData('notice');
+                  // AdminUser.noticeDelState = 2;
+                  // await AdminUser.delCheckedData('notice');
                 }}
                 mr={15}
                 color="#707070"
               >
                 선택 삭제
               </WriteBtn>
-              <WriteBtn onClick={() => (AdminUser.state = 2)}>글쓰기</WriteBtn>
+              {/* <WriteBtn onClick={() => (AdminUser.state = 2)}>글쓰기</WriteBtn> */}
             </ButtonBox>
           </Header>
           <MainBox>
@@ -54,8 +58,8 @@ class Content extends Component {
               <Management title={true}>관리</Management>
             </Line>
 
-            {AdminUser.noticeList &&
-              AdminUser.noticeList.map((item, idx) => {
+            {AdminUser.userList &&
+              AdminUser.userList.map((item, idx) => {
                 return (
                   <Line onClick={() => AdminUser.pushToDetail(item, idx)}>
                     <Check active={item.checked}>

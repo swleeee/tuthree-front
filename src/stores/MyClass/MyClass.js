@@ -895,6 +895,7 @@ class MyClass {
   @action enrollmentChild = async () => {
     console.info(this.enrollmentChildId);
     console.info(this.enrollmentChildName);
+    console.info(Auth.token);
     const req = {
       data: {
         studentId: this.enrollmentChildId,
