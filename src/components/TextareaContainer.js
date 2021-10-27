@@ -16,28 +16,28 @@ class TextareaContainer extends Component {
   };
   requestHandler = (event) => {
     const { type, mxh, Chatting, MyClass, idx, MyPage } = this.props;
-    console.info(mxh);
-    const textareaLineHeight = 17;
-    const { minRows, maxRows } = this.state;
-    const previousRows = event.target.rows;
-    event.target.rows = minRows; // reset number of rows in textarea
+    // console.info(mxh);
+    // const textareaLineHeight = 17;
+    // const { minRows, maxRows } = this.state;
+    // const previousRows = event.target.rows;
+    // event.target.rows = minRows; // reset number of rows in textarea
 
-    const currentRows = ~~(event.target.scrollHeight / textareaLineHeight);
+    // const currentRows = ~~(event.target.scrollHeight / textareaLineHeight);
 
-    console.info(previousRows);
-    console.info(currentRows);
-    if (currentRows === previousRows) {
-      event.target.rows = currentRows;
-    }
+    // console.info(previousRows);
+    // console.info(currentRows);
+    // if (currentRows === previousRows) {
+    //   event.target.rows = currentRows;
+    // }
 
-    if (currentRows >= maxRows) {
-      event.target.rows = maxRows;
-      event.target.scrollTop = event.target.scrollHeight;
-    }
+    // if (currentRows >= maxRows) {
+    //   event.target.rows = maxRows;
+    //   event.target.scrollTop = event.target.scrollHeight;
+    // }
 
     this.setState({
       value: event.target.value,
-      row: currentRows < maxRows ? currentRows : maxRows,
+      // row: currentRows < maxRows ? currentRows : maxRows,
     });
 
     switch (type) {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
 import { inject, observer, Provider } from 'mobx-react';
 import styled from 'styled-components';
 import defaultImg from '../../../static/images/Common/defaultUser.png';
@@ -13,6 +13,12 @@ import { getMessaging } from 'firebase/messaging/sw';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 
+let messageBox = null;
+const today = new Date();
+let date = null;
+let year = null;
+let month = null;
+let day = null;
 // import 'firebase/compat/auth';
 // import 'firebase/compat/firestore';
 
@@ -207,6 +213,13 @@ const chatList = [
 @inject('Auth', 'Common', 'Chatting')
 @observer
 class Content extends Component {
+  constructor(props) {
+    super(props);
+    messageBox = React.createRef();
+  }
+
+  state = { today: new Date() };
+
   openModal = () => {
     const { Common } = this.props;
     Common.modalActive = false;
@@ -237,7 +250,7 @@ class Content extends Component {
     // <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.2.0/stomp.min.js"></script>
   };
 
-  connect() {
+  connect = async () => {
     const { Chatting, Auth } = this.props;
 
     console.info('connect 중 ...');
@@ -246,22 +259,24 @@ class Content extends Component {
     // stompClient = socket;
     // stompClient = new Stomp.Client
 
-    stompClient.connect({}, function (frame) {
+    await stompClient.connect({}, async (frame) => {
       console.log('Connected: ' + frame);
       // stompClient.subscribe('/topic/messages', function (message) {
-      stompClient.subscribe(
+      await stompClient.subscribe(
         `/topic/messages.${Chatting.roomId}`,
-        function (message) {
+        async (message) => {
           // showMessage(decodeURI(JSON.parse(message.body).content));
           console.info(decodeURI(JSON.parse(message.body).content));
-          Chatting.getChatList(Chatting.roomId);
+          await Chatting.getChatList(Chatting.roomId);
+          console.info(this.scrollToBottom);
+          this.scrollToBottom();
         }
       );
       // stompClient.subscribe('/user/topic/private-messages', function (message) {
       //     showMessage(JSON.parse(message.body).content);
       // });
     });
-  }
+  };
 
   sendMessage() {
     const { Chatting, Auth } = this.props;
@@ -279,6 +294,14 @@ class Content extends Component {
       })
     );
   }
+  scrollToBottom = () => {
+    // this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+    if (messageBox.current) {
+      console.info(messageBox.current.scrollTop);
+      messageBox.current.scrollTop = messageBox.current.scrollHeight;
+      console.info(messageBox.current.scrollTop);
+    }
+  };
 
   render() {
     const { Common, Auth, Chatting } = this.props;
@@ -286,6 +309,11 @@ class Content extends Component {
     console.info(Common.modalActive);
     console.info(Chatting.enrollmentState);
     console.info(Chatting.writingState);
+    year = today.getFullYear();
+    month = ('0' + (today.getMonth() + 1)).slice(-2);
+    day = ('0' + today.getDate()).slice(-2);
+    date = year + '-' + month + '-' + day;
+    console.info(date);
     return (
       <Container state={Common.modalActive}>
         {Common.modalActive === true && Common.modalState === 1 && (
@@ -328,6 +356,7 @@ class Content extends Component {
                       } else {
                         Chatting.teacherId = item.chatList.senderId;
                       }
+                      Chatting.otherName = item.chatList.name;
                       Chatting.roomId = item.roomId;
                       Chatting.getChatList(item.roomId);
                       this.connect();
@@ -341,8 +370,35 @@ class Content extends Component {
                     </ImgBox>
                     <UserItem>
                       <UserLabel>
-                        <UserName>{item.chatList.senderName}</UserName>
-                        <UserWriteDt>{item.chatList.date}</UserWriteDt>
+                        <UserName>{item.chatList.name}</UserName>
+                        <UserWriteDt>
+                          {date ===
+                          item.chatList.date.substring(
+                            0,
+                            item.chatList.date.indexOf(' ')
+                          )
+                            ? item.chatList.date.substring(
+                                item.chatList.date.indexOf(' '),
+                                item.chatList.date.lastIndexOf(':')
+                              )
+                            : item.chatList.date.substring(
+                                0,
+                                item.chatList.date.lastIndexOf(':')
+                              )}
+                          {/* {item.chatList.date.substring(
+                            0,
+                            item.chatList.date.lastIndexOf(':')
+                          )} */}
+                          {/* {item.chatList.date.substring(
+                            0,
+                            item.chatList.date.indexOf(' ')
+                          )} */}
+                          {date ===
+                            item.chatList.date.substring(
+                              0,
+                              item.chatList.date.indexOf(' ')
+                            )}
+                        </UserWriteDt>
                       </UserLabel>
                       <UserContent>{item.chatList.chat}</UserContent>
                     </UserItem>
@@ -403,44 +459,41 @@ class Content extends Component {
           </ButtonBox>
         </ChatList>
         <ChatContainer>
-          <ChatHeader>홍길동</ChatHeader>
-          <ChatMain>
+          <ChatHeader>{Chatting.otherName}</ChatHeader>
+          <ChatMain id="main" ref={messageBox}>
             {Chatting.chatAry &&
               Chatting.chatAry.map((item, idx) => {
                 return (
-                  <ChatListItem
-                    type={item.chatList.senderId === Auth.loggedUserId}
-                  >
+                  <ChatListItem type={item.senderId === Auth.loggedUserId}>
                     <ImgBox
                       width={55}
                       height={55}
                       mr={10}
-                      type={item.chatList.senderId === Auth.loggedUserId}
+                      type={item.senderId === Auth.loggedUserId}
                     >
                       <div>
                         {/* <div>IMG</div> */}
                         <img src={defaultImg} />
                       </div>
                     </ImgBox>
-                    <ChatItem
-                      type={item.chatList.senderId === Auth.loggedUserId}
-                    >
-                      <ChatLabel
-                        type={item.chatList.senderId === Auth.loggedUserId}
-                      >
-                        <ChatName
-                          type={item.chatList.senderId === Auth.loggedUserId}
-                        >
-                          {item.chatList.senderName}
+                    <ChatItem type={item.senderId === Auth.loggedUserId}>
+                      <ChatLabel type={item.senderId === Auth.loggedUserId}>
+                        <ChatName type={item.senderId === Auth.loggedUserId}>
+                          {item.senderName}
                         </ChatName>
-                        <ChatContent
-                          type={item.chatList.senderId === Auth.loggedUserId}
-                        >
+                        <ChatContent type={item.senderId === Auth.loggedUserId}>
                           <div></div>
-                          {item.chatList.chat}
+                          {item.chat}
                         </ChatContent>
                       </ChatLabel>
-                      <ChatWriteDt>{item.chatList.date}</ChatWriteDt>
+                      <ChatWriteDt type={item.senderId === Auth.loggedUserId}>
+                        {date === item.date.substring(0, item.date.indexOf(' '))
+                          ? item.date.substring(
+                              item.date.indexOf(' '),
+                              item.date.lastIndexOf(':')
+                            )
+                          : item.date.substring(0, item.date.lastIndexOf(':'))}
+                      </ChatWriteDt>
                     </ChatItem>
                   </ChatListItem>
                 );
@@ -454,9 +507,13 @@ class Content extends Component {
               type="chat_msg"
             />
             <Button
-              onClick={() => {
-                this.sendMessage();
-                Chatting.sendMessage();
+              onClick={async () => {
+                await this.sendMessage();
+                await Chatting.sendMessage();
+                // let objDiv = document.getElementById('main');
+
+                // objDiv.scrollTop = objDiv.scrollHeight;
+                this.scrollToBottom();
               }}
             >
               <div>전송</div>
@@ -606,16 +663,20 @@ const UserLabel = styled.div`
 const UserName = styled.div`
   font-size: 18px;
   font-weight: 500;
+  min-width: 100px;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     font-size: 14px;
+    min-width: 60px;
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     font-size: 16px;
+    min-width: 80px;
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
     font-size: 17px;
+    min-width: 90px;
   }
 `;
 const UserWriteDt = styled.div`
@@ -710,7 +771,7 @@ const ChatItem = styled.div`
 const ChatLabel = styled.div`
   margin-right: ${(props) => (props.type ? '0' : '15px')};
   margin-left: ${(props) => (props.type ? '15px' : '0')};
-  width: 70%;
+  // width: 70%;
 `;
 const ChatName = styled.div`
   font-size: 18px;
@@ -733,6 +794,7 @@ const ChatWriteDt = styled.div`
   align-self: flex-end;
   font-size: 13px;
   color: #999999;
+  text-align: ${(props) => (props.type ? 'right' : 'left')}
   min-width: 70px;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
@@ -785,6 +847,7 @@ const ChatWritingBox = styled.div`
   box-sizing: border-box;
 `;
 const Button = styled.button`
+  cursor: pointer;
   background-color: rgba(235, 114, 82, 0.7);
   border: none;
   display: flex;

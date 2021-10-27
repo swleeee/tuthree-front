@@ -85,6 +85,7 @@ class Chatting {
 
   @observable teacherId = '';
   @observable studentId = '';
+  @observable otherName = '';
 
   @observable infoAry = [];
 
@@ -721,7 +722,7 @@ class Chatting {
     await ChattingAPI.getChatList(req)
       .then(async (res) => {
         console.info(res);
-        this.chatAry = await res.data.data;
+        this.chatAry = await res.data.data.chatList;
       })
       .catch((e) => {
         console.info(e);
@@ -743,16 +744,17 @@ class Chatting {
         room: {
           id: this.roomId,
         },
-        userId:
-          Auth.loggedUserType === 'teacher' ? this.studentId : this.teacherId,
-        name: Auth.loggedUserId,
+        // userId:
+        //   Auth.loggedUserType === 'teacher' ? this.studentId : this.teacherId,
+        userId: Auth.loggedUserId,
+        name: Auth.loggedUserName,
         content: this.chatMsg,
       },
     };
-    ChattingAPI.sendMessage(req)
+    await ChattingAPI.sendMessage(req)
       .then(async (res) => {
         console.info(res);
-        this.getChatList(this.roomId);
+        await this.getChatList(this.roomId);
       })
       .catch((e) => {
         console.info(e);
