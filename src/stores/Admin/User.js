@@ -18,7 +18,7 @@ class User {
   @action getUserList = async (page) => {
     const req = {
       params: {
-        // grade: this.adminId,
+        grade: 'teacher',
         // userId
         page: page ? page : 1,
       },
@@ -29,8 +29,9 @@ class User {
     await AccountAPI.getUserList(req)
       .then(async (res) => {
         console.info(res);
-        this.userList = await res.data.data;
-        this.userListTotalCount = await res.data.list;
+        console.info(toJS(res.data.data));
+        this.userList = await res.data.data.content;
+        this.userListTotalCount = await res.data.data.totalElements;
         this.userTotalPage = await Math.ceil(this.userListTotalCount / 10);
         await this.userList.map(async (item, idx) => {
           // item.push({ checked: false });
@@ -42,6 +43,7 @@ class User {
         console.info(e);
         console.info(e.message);
       });
+    console.info(toJS(this.userList));
   };
 
   /* 유저 리스트 상세 페이지로 이동하는 함수 */

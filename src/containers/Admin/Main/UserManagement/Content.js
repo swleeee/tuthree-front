@@ -58,6 +58,7 @@ class Content extends Component {
               <Management title={true}>관리</Management>
             </Line>
 
+            {console.info(toJS(AdminUser.userList))}
             {AdminUser.userList &&
               AdminUser.userList.map((item, idx) => {
                 return (
@@ -65,24 +66,24 @@ class Content extends Component {
                     <Check active={item.checked}>
                       <div
                         onClick={(e) => {
-                          e.stopPropagation();
-                          AdminUser.checkDataHandler(
-                            'notice',
-                            item,
-                            item.id,
-                            idx
-                          );
+                          // e.stopPropagation();
+                          // AdminUser.checkDataHandler(
+                          //   'notice',
+                          //   item,
+                          //   item.id,
+                          //   idx
+                          // );
                         }}
                       >
                         <img src={checkImg} />
                       </div>
                     </Check>
                     <Number>
-                      {idx + 1 + 10 * (AdminUser.noticeCurrentPage - 1)}
+                      {idx + 1 + 10 * (AdminUser.userCurrentPage - 1)}
                     </Number>
-                    <Type>{item.type}</Type>
-                    <Title>{item.title}</Title>
-                    <Date>{item.writeAt}</Date>
+                    <Type>{item.grade.strType}</Type>
+                    <Title>{item.name}</Title>
+                    {/* <Date>{item.writeAt}</Date> */}
                     <Management>
                       <CtlBtn
                         onClick={async (e) => {
