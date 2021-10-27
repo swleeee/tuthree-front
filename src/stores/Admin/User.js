@@ -77,8 +77,9 @@ class User {
   };
 
   /* 유저 리스트 상세 페이지로 이동하는 함수 */
-  @action pushToDetail = async (item, idx = 0, type = '') => {
+  @action pushToDetail = async (item, grade) => {
     const req = {
+      grade: grade,
       id: item.id,
       headers: {
         Authorization: Auth.token,
@@ -95,7 +96,7 @@ class User {
         console.info(e.response);
       });
 
-    console.info(toJS(this.noticeDetailList));
+    console.info(toJS(this.userDetailList));
     // if (type !== 'modify') {
     //   this.state = 3;
     // }

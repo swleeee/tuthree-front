@@ -7,7 +7,11 @@ import { toJS } from 'mobx';
 
 @inject('Common', 'AdminUser', 'Auth')
 @observer
-class MySchedule extends Component {
+class DetailCard extends Component {
+  componentDidMount = () => {
+    const { AdminUser } = this.props;
+    console.info(toJS(AdminUser.userDetailList));
+  };
   render() {
     const { AdminUser, open, Common } = this.props;
 
@@ -63,6 +67,25 @@ class MySchedule extends Component {
                   <div>sdfsd</div>
                 </Content>
               </Section>
+
+              <Section>
+                <Label>
+                  <div>학교</div>
+                </Label>
+                <Content>
+                  <div>sdfsd</div>
+                </Content>
+              </Section>
+
+              <Section>
+                <Label>
+                  <div>증명서</div>
+                </Label>
+                <Content>
+                  <div>sdfsd</div>
+                </Content>
+              </Section>
+
               <Section>
                 <Label>
                   <div>전화번호</div>
@@ -94,29 +117,7 @@ class MySchedule extends Component {
     );
   }
 }
-// const MySchedule = () => (
-//   <div style={{ height: 700 }}>
-//     <BigCalendar
-//       events={[
-//         {
-//           'title': 'My event',
-//           'allDay': false,
-//           'start': new Date(2018, 0, 1, 10, 0), // 10.00 AM
-//           'end': new Date(2018, 0, 1, 14, 0), // 2.00 PM
-//         }
-//       ]}
-//       step={60}
-//       view='week'
-//       views={['week']}
-//       min={new Date(2008, 0, 1, 8, 0)} // 8.00 AM
-//       max={new Date(2008, 0, 1, 17, 0)} // Max will be 6.00 PM!
-//       date={new Date(2018, 0, 1)}
-//     />
-//   </div>
-// );
-
-// render(<MySchedule />, document.getElementById('root'));
-export default MySchedule;
+export default DetailCard;
 
 const ModalBox = styled.div`
   z-index: 101;

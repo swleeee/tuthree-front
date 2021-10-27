@@ -152,7 +152,7 @@ class Content extends Component {
                 return (
                   <Line
                     onClick={async () => {
-                      await AdminUser.pushToDetail(item, idx);
+                      await AdminUser.pushToDetail(item, item.grade.strType);
                       AdminUser.modalActive = true;
                     }}
                   >
