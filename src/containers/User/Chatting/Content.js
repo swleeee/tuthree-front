@@ -6,6 +6,37 @@ import Textarea from '../../../components/TextareaContainer';
 import InfoWriting from './InfoWriting';
 import Info from './Info';
 import { toJS } from 'mobx';
+import { config } from '../../../firebase-config';
+import firebase from 'firebase/compat/app';
+import { getMessaging } from 'firebase/messaging/sw';
+// import * as Stomp from '@stomp/stompjs';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+
+// import 'firebase/compat/auth';
+// import 'firebase/compat/firestore';
+
+// firebase.initializeApp(config);
+// const messaging = getMessaging(firebase.initializeApp(config));
+
+let stompClient = null;
+
+// messaging
+//   .requestPermission()
+//   .then(function () {
+//     return messaging.getToken();
+//   })
+//   .then(function (token) {
+//     console.log(token);
+//   })
+//   .catch(function (err) {
+//     console.log('fcm error : ', err);
+//   });
+
+// messaging.onMessage(function (payload) {
+//   console.log(payload.notification.title);
+//   console.log(payload.notification.body);
+// });
 
 const userList = [
   {
@@ -192,10 +223,68 @@ class Content extends Component {
     if (Auth.loggedUserType === 'teacher') {
       await Chatting.checkInfoWriting();
     }
+
+    this.connect();
+
+    // const script = document.createElement('script');
+
+    // script.src =
+    //   'https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.2.0/stomp.min.js';
+    // script.async = true;
+
+    // document.head.appendChild(script);
+
+    // <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.2.0/stomp.min.js"></script>
   };
+
+  connect() {
+    const { Chatting, Auth } = this.props;
+    var socket = new SockJS('http://3.34.125.3:8088/tuthree-websocket');
+    stompClient = Stomp.over(socket);
+    // stompClient = socket;
+    // stompClient = new Stomp.Client
+
+    stompClient.connect({}, function (frame) {
+      console.log('Connected: ' + frame);
+      // stompClient.subscribe('/topic/messages', function (message) {
+      stompClient.subscribe(
+        `/topic/messages.${Chatting.roomId}`,
+        function (message) {
+          // showMessage(decodeURI(JSON.parse(message.body).content));
+          this.showMessage(decodeURI(JSON.parse(message.body).content));
+        }
+      );
+      // stompClient.subscribe('/user/topic/private-messages', function (message) {
+      //     showMessage(JSON.parse(message.body).content);
+      // });
+    });
+  }
+
+  showMessage(message) {
+    // $("#messages").append("<tr><td>" + message + "</td></tr>");
+    console.info(message);
+  }
+
+  sendMessage() {
+    const { Chatting, Auth } = this.props;
+    console.log('sending message');
+    // stompClient.send("/ws/message", {}, JSON.stringify({'content': $("#message").val()}));
+    // stompClient.send("/ws/message", {}, JSON.stringify({'content': encodeURI($("#message").val())}));
+    stompClient.send(
+      '/ws/message',
+      {},
+      JSON.stringify({
+        room: { id: Chatting.roomId },
+        name: encodeURI(Auth.loggedUserName),
+        userId: Auth.loggedUserId,
+        content: encodeURI('hihi'),
+      })
+    );
+  }
 
   render() {
     const { Common, Auth, Chatting } = this.props;
+    console.info(config);
     console.info(Common.modalActive);
     console.info(Chatting.enrollmentState);
     console.info(Chatting.writingState);
@@ -243,6 +332,7 @@ class Content extends Component {
                       }
                       Chatting.roomId = item.roomId;
                       Chatting.getChatList(item.roomId);
+                      this.connect();
                     }}
                   >
                     <ImgBox width={55} height={55} mr={10}>
@@ -365,7 +455,12 @@ class Content extends Component {
               placeholder={`메시지를 입력하세요`}
               type="chat_msg"
             />
-            <Button onClick={() => Chatting.sendMessage()}>
+            <Button
+              onClick={() => {
+                this.sendMessage();
+                Chatting.sendMessage();
+              }}
+            >
               <div>전송</div>
             </Button>
           </ChatWritingBox>

@@ -6,6 +6,7 @@ import {
   decorate,
   reaction,
 } from 'mobx';
+import Chatting from '../Chatting';
 import * as TutorAPI from '../../axios/Matching/Tutor';
 import * as ReviewAPI from '../../axios/Matching/Review';
 
@@ -342,6 +343,7 @@ class Tutor {
       .then(async (res) => {
         console.info(res);
         this.tutorDetailAry = await res.data.data;
+        Chatting.teacherId = res.data.data.userId;
         await this.getTutorReview(res.data.data.postId);
         localStorage.setItem('otherPersonId', res.data.data.userId);
         this.state = 1;

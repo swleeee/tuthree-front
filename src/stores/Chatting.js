@@ -653,13 +653,17 @@ class Chatting {
   @action createChatRoom = async () => {
     console.info(this.studentId);
     console.info(this.teacherId);
+    console.info(Auth.loggedUserId);
+    console.info(Auth.loggedUserName);
+
     const req = {
       headers: {
         Authorization: Auth.token,
       },
       data: {
-        user1: Auth.loggedUserId,
-        user2:
+        senderId: Auth.loggedUserId,
+        senderName: Auth.loggedUserName,
+        receiverId:
           Auth.loggedUserType === 'teacher' ? this.studentId : this.teacherId,
       },
     };
@@ -667,14 +671,14 @@ class Chatting {
       .then((res) => {
         console.info(res);
         if (res.data.success) {
-          // window.location.href = '/chatting';
+          window.location.href = '/chatting';
         }
       })
       .catch((e) => {
         console.info(e);
         console.info(e.response);
       });
-    window.location.href = '/chatting';
+    // window.location.href = '/chatting';
   };
 
   @action getChatUserList = async () => {
@@ -728,6 +732,9 @@ class Chatting {
 
   @action sendMessage = async (id) => {
     console.info(Auth.loggedUserName);
+    console.info(this.studentId);
+    console.info(this.teacherId);
+    console.info(Auth.token);
     const req = {
       headers: {
         Authorization: Auth.token,
@@ -742,7 +749,15 @@ class Chatting {
         content: this.chatMsg,
       },
     };
-    //
+    ChattingAPI.sendMessage(req)
+      .then(async (res) => {
+        console.info(res);
+        this.getChatList(this.roomId);
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
   };
 }
 
