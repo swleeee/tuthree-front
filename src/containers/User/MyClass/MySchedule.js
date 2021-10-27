@@ -19,14 +19,14 @@ import style from './styles';
 import { toJS } from 'mobx';
 import MyClass from '../../../stores/MyClass/MyClass';
 
-@inject('Common', 'MyClass')
+@inject('Common', 'MyClass', 'Auth')
 @observer
 class MySchedule extends Component {
   state = {
     schedule: { 월: [], 화: [], 수: [], 목: [], 금: [], 토: [], 일: [] },
   };
   componentDidMount = async () => {
-    const { MyClass } = this.props;
+    const { MyClass, Auth } = this.props;
     console.info(style);
     console.info(this.props.Common);
 
@@ -118,17 +118,36 @@ class MySchedule extends Component {
       토: [],
       일: [],
     };
+
+    console.info(toJS(MyClass.myScheduleAry));
     MyClass.myScheduleAry &&
-      (await MyClass.myScheduleAry.map(async (item, idx) => {
-        console.info(item.schedule.thu.length);
-        if (item.schedule.mon.length !== 0) {
+      MyClass.myScheduleAry.map(async (item, idx) => {
+        console.info(toJS(item));
+        // item.schedule.mon &&
+        //   item.schedule.mon.map(async (subItem, id) => {
+        //     // console.info(`${idx}-월-${id}`);
+        //     console.info(`${item.studentName} : 월`);
+        //     await MyClass.myScheduleEvent.월.push({
+        //       id: `${idx}-월-${id}`,
+        //       //   name: `${item.studentName} - ${idx}`,
+        //       name: `${item.studentName}`,
+        //       type: 'custom',
+        //       startTime: new Date(thisWeek[0] + 'T' + subItem.start),
+        //       endTime: new Date(thisWeek[0] + 'T' + subItem.end),
+        //     });
+        //   });
+
+        if (item.schedule.mon !== undefined && item.schedule.mon.length !== 0) {
           await item.schedule.mon.map(async (subItem, id) => {
-            // console.info(`${idx}-월-${id}`);
+            // console.info('tuetuetuetuetue');
             console.info(`${item.studentName} : 월`);
             await MyClass.myScheduleEvent.월.push({
               id: `${idx}-월-${id}`,
               //   name: `${item.studentName} - ${idx}`,
-              name: `${item.studentName}`,
+              name:
+                Auth.loggedUserType === 'parent'
+                  ? `${item.studentName}`
+                  : `${item.name}`,
               type: 'custom',
               startTime: new Date(thisWeek[0] + 'T' + subItem.start),
               endTime: new Date(thisWeek[0] + 'T' + subItem.end),
@@ -136,29 +155,36 @@ class MySchedule extends Component {
           });
         }
 
-        if (item.schedule.mon.length !== 0) {
-          await item.schedule.mon.map(async (subItem, id) => {
+        if (item.schedule.tue !== undefined && item.schedule.tue.length !== 0) {
+          await item.schedule.tue.map(async (subItem, id) => {
             // console.info('tuetuetuetuetue');
             console.info(`${item.studentName} : 화`);
             await MyClass.myScheduleEvent.화.push({
               id: `${idx}-화-${id}`,
               //   name: `${item.studentName} - ${idx}`,
-              name: `${item.studentName}`,
+              name:
+                Auth.loggedUserType === 'parent'
+                  ? `${item.studentName}`
+                  : `${item.name}`,
               type: 'custom',
               startTime: new Date(thisWeek[1] + 'T' + subItem.start),
               endTime: new Date(thisWeek[1] + 'T' + subItem.end),
             });
           });
         }
-
-        console.info('===========================================');
-        if (item.schedule.wed.length !== 0) {
+        console.info(item.schedule.wed);
+        console.info(item.schedule.wed !== undefined);
+        // console.info('===========================================');
+        if (item.schedule.wed !== undefined && item.schedule.wed.length !== 0) {
           await item.schedule.wed.map(async (subItem, id) => {
             console.info(`${item.studentName} : 수`);
             await MyClass.myScheduleEvent.수.push({
               id: `${idx}-수-${id}`,
               //   name: `${item.studentName} - ${idx}`,
-              name: `${item.studentName}`,
+              name:
+                Auth.loggedUserType === 'parent'
+                  ? `${item.studentName}`
+                  : `${item.name}`,
               type: 'custom',
               startTime: new Date(thisWeek[2] + 'T' + subItem.start),
               endTime: new Date(thisWeek[2] + 'T' + subItem.end),
@@ -166,7 +192,7 @@ class MySchedule extends Component {
           });
         }
 
-        if (item.schedule.thu.length !== 0) {
+        if (item.schedule.thu !== undefined && item.schedule.thu.length !== 0) {
           await item.schedule.thu.map(async (subItem, id) => {
             // console.info('thuthuthuthuthu');
             console.info(`${item.studentName} : 목`);
@@ -174,7 +200,10 @@ class MySchedule extends Component {
             await MyClass.myScheduleEvent.목.push({
               id: `${idx}-목-${id}`,
               //   name: `${item.studentName} - ${idx}`,
-              name: `${item.studentName}`,
+              name:
+                Auth.loggedUserType === 'parent'
+                  ? `${item.studentName}`
+                  : `${item.name}`,
               type: 'custom',
               startTime: new Date(thisWeek[3] + 'T' + subItem.start),
               endTime: new Date(thisWeek[3] + 'T' + subItem.end),
@@ -182,13 +211,16 @@ class MySchedule extends Component {
           });
         }
 
-        if (item.schedule.fri.length !== 0) {
+        if (item.schedule.fri !== undefined && item.schedule.fri.length !== 0) {
           await item.schedule.fri.map(async (subItem, id) => {
             console.info(`${item.studentName} : 금`);
             await MyClass.myScheduleEvent.금.push({
               id: `${idx}-금-${id}`,
               //   name: `${item.studentName} - ${idx}`,
-              name: `${item.studentName}`,
+              name:
+                Auth.loggedUserType === 'parent'
+                  ? `${item.studentName}`
+                  : `${item.name}`,
               type: 'custom',
               startTime: new Date(thisWeek[4] + 'T' + subItem.start),
               endTime: new Date(thisWeek[4] + 'T' + subItem.end),
@@ -196,13 +228,16 @@ class MySchedule extends Component {
           });
         }
 
-        if (item.schedule.sat.length !== 0) {
+        if (item.schedule.sat !== undefined && item.schedule.sat.length !== 0) {
           await item.schedule.sat.map(async (subItem, id) => {
             console.info(`${item.studentName} : 토`);
             await MyClass.myScheduleEvent.토.push({
               id: `${idx}-토-${id}`,
               //   name: `${item.studentName} - ${idx}`,
-              name: `${item.studentName}`,
+              name:
+                Auth.loggedUserType === 'parent'
+                  ? `${item.studentName}`
+                  : `${item.name}`,
               type: 'custom',
               startTime: new Date(thisWeek[5] + 'T' + subItem.start),
               endTime: new Date(thisWeek[5] + 'T' + subItem.end),
@@ -210,13 +245,16 @@ class MySchedule extends Component {
           });
         }
 
-        if (item.schedule.sun.length !== 0) {
+        if (item.schedule.sun !== undefined && item.schedule.sun.length !== 0) {
           await item.schedule.sun.map(async (subItem, id) => {
             console.info(`${item.studentName} : 일`);
             await MyClass.myScheduleEvent.일.push({
               id: `${idx}-일-${id}`,
               //   name: `${item.studentName} - ${idx}`,
-              name: `${item.studentName}`,
+              name:
+                Auth.loggedUserType === 'parent'
+                  ? `${item.studentName}`
+                  : `${item.name}`,
               type: 'custom',
               startTime: new Date(thisWeek[6] + 'T' + subItem.start),
               endTime: new Date(thisWeek[6] + 'T' + subItem.end),
@@ -227,7 +265,7 @@ class MySchedule extends Component {
         if (MyClass.myScheduleAry.length === idx + 1) {
           this.setState({ g: 3 });
         }
-      }));
+      });
     console.info(toJS(MyClass.myScheduleEvent));
     // console.info(temp);
   };

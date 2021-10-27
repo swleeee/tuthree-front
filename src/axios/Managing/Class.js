@@ -114,7 +114,7 @@ export function getDetailReport(req) {
 export function getTimeTable(req) {
   return axios({
     method: 'GET',
-    url: `${ROOT_URL}/tutor/schedule`,
+    url: `${ROOT_URL}/users/schedule`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
   });

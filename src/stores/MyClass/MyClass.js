@@ -842,6 +842,7 @@ class MyClass {
     const req = {
       params: {
         id: Auth.loggedUserId,
+        grade: Auth.loggedUserType,
       },
 
       headers: {
