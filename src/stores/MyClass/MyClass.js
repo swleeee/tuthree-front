@@ -223,7 +223,7 @@ class MyClass {
     if (!id) {
       window.location.href = '/';
     }
-    console.info(Auth.Authorization);
+    console.info(Auth.token);
     const req = {
       params: {
         status: this.status,
@@ -909,11 +909,16 @@ class MyClass {
     await ClassAPI.enrollmentChild(req)
       .then(async (res) => {
         console.info(res);
-
-        alert(
-          '자녀 등록 신청이 완료되었습니다. 자녀가 수락할 때까지 기다려주세요.'
-        );
-        this.enrollmentModalActive = false;
+        if (res.data.success) {
+          alert(
+            '자녀 등록 신청이 완료되었습니다. 자녀가 수락할 때까지 기다려주세요.'
+          );
+          this.enrollmentModalActive = false;
+        } else {
+          alert(
+            '자녀 등록 신청을 실패하였습니다. 입력한 정보가 맞는지 다시 확인해주세요'
+          );
+        }
       })
       .catch((e) => {
         console.info(e);

@@ -5,12 +5,13 @@ import UserInfoContainer from './UserInfo';
 import TutoringInfoContainer from './TutoringInfo';
 import AltPasswordContainer from './AltPassword';
 import WithDrawalContainer from './Withdrawal';
+import EnrollmentContainer from './Enrollment';
 
-@inject('MyPage', 'Common')
+@inject('MyPage', 'Common', 'Auth')
 @observer
 class Content extends Component {
   render() {
-    const { MyPage, Common } = this.props;
+    const { MyPage, Common, Auth } = this.props;
     return (
       <Container>
         <TabBox>
@@ -26,6 +27,14 @@ class Content extends Component {
           {/* <Item onClick={() => (MyPage.state = 4)} active={MyPage.state === 4}>
             <div>알림 설정</div>
           </Item> */}
+          {Auth.loggedUserType === 'student' && (
+            <Item
+              onClick={() => (MyPage.state = 5)}
+              active={MyPage.state === 5}
+            >
+              <div>부모 등록 관리</div>
+            </Item>
+          )}
           <Item onClick={() => (MyPage.state = 4)} active={MyPage.state === 4}>
             <div>회원 탈퇴</div>
           </Item>
@@ -35,6 +44,7 @@ class Content extends Component {
           {MyPage.state === 2 && <TutoringInfoContainer />}
           {MyPage.state === 3 && <AltPasswordContainer />}
           {MyPage.state === 4 && <WithDrawalContainer />}
+          {MyPage.state === 5 && <EnrollmentContainer />}
         </MainBox>
       </Container>
     );
