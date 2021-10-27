@@ -40,6 +40,21 @@ class Tutor {
 
   @observable tutorReviewAry = [];
   @observable tutorReviewCount = 0;
+  @observable reviewSortIdx = 0;
+  @observable reviewSortAry = [
+    {
+      label: '최신순',
+      value: 'latest',
+    },
+    {
+      label: '평점 높은 순',
+      value: 'high',
+    },
+    {
+      label: '평점 낮은 순',
+      value: 'low',
+    },
+  ];
 
   @observable sortIdx = 0;
   @observable sortAry = [
@@ -372,6 +387,9 @@ class Tutor {
       // headers: {
       //   Authorization: this.Authorization,
       // },
+      params: {
+        sort: this.reviewSortAry[this.reviewSortIdx].value,
+      },
     };
 
     await ReviewAPI.getTutorReview(req)

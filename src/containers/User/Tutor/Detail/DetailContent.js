@@ -5,6 +5,7 @@ import Tutor from '../../../../stores/Matching/Tutor';
 import emptyStarImg from '../../../../static/images/Common/emptyStar.png';
 import starImg from '../../../../static/images/Common/star.png';
 import defaultImg from '../../../../static/images/Common/defaultUser.png';
+import downArrowImg from '../../../../static/images/Common/down-arrow.png';
 
 const reviewData = [
   {
@@ -38,6 +39,7 @@ const reviewData = [
 class DetailContent extends Component {
   state = {
     reviewTotalCount: 5,
+    is_open: false,
   };
   componentWillUnmount = () => {
     Tutor.tutorReviewAry = [];
@@ -72,9 +74,39 @@ class DetailContent extends Component {
                 </Count>
                 {Tutor.tutorReviewCount !== 0 && (
                   <SortingBox>
-                    <span>최신순</span>
-                    <span>높은평점순</span>
-                    <span>낮은평점순</span>
+                    <SortLabel
+                      active={this.state.is_open}
+                      onClick={() => {
+                        this.setState({ is_open: !this.state.is_open });
+                      }}
+                    >
+                      <span>
+                        {Tutor.reviewSortAry[Tutor.reviewSortIdx].label}
+                      </span>
+                      <img src={downArrowImg} />
+                    </SortLabel>
+
+                    <DropDownBox active={this.state.is_open}>
+                      {this.state.is_open &&
+                        Tutor.reviewSortAry &&
+                        Tutor.reviewSortAry.map((item, idx) => {
+                          return (
+                            <DropDownItem
+                              onClick={() => {
+                                console.info(idx);
+                                Tutor.reviewSortIdx = idx;
+                                this.setState({ is_open: false });
+                                Tutor.getTutorReview(
+                                  Tutor.tutorDetailAry.postId
+                                );
+                              }}
+                              active={idx === Tutor.sortAry.length - 1}
+                            >
+                              {item.label}
+                            </DropDownItem>
+                          );
+                        })}
+                    </DropDownBox>
                   </SortingBox>
                 )}
               </SubHeader>
@@ -346,6 +378,7 @@ const Count = styled.div`
   }
 `;
 const SortingBox = styled.div`
+position: relative;
   > span {
     border-right: 1px solid #888;
     padding 0 5px;
@@ -453,4 +486,109 @@ const ReviewContent = styled.div`
   @media (min-width: 992px) and (max-width: 1299.98px) {
     font-size: 15px;
   }
+`;
+
+const DropDownBox = styled.div`
+  z-index: 2;
+  position: absolute;
+  // top: 0;
+  display: flex;
+  flex-direction: column;
+  width: 130px;
+  // width: 100%;
+  // height: 100%;
+  // border: ${(props) => (props.active ? '1px solid #707070' : 'none')};
+  border-radius: 5px;
+  // padding: 3px 5px;
+  box-shadow: ${(props) =>
+    props.active ? '0 1px 11px 1px rgba(0, 0, 0, 0.3)' : ''};
+  // right: -60%;
+  top: 35px;
+  background-color: ${(props) => (props.active ? '#fff' : 'transparent')};
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 100px;
+    right: 3%;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 112px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 120px;
+  }
+`;
+
+const DropDownItem = styled.div`
+  cursor: pointer;
+  // border: 1px solid #000;
+  font-size: 16px;
+  // height: 15px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  border-bottom: ${(props) => (props.active ? 'none' : '1px solid #707070')};
+  &:hover {
+    background-color: rgba(235, 114, 82, 0.7);
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 14px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 15px;
+  }
+`;
+
+const SortLabel = styled.div`
+  display: flex;
+  align-items: center;
+  // position: relative;
+  cursor: pointer;
+  > img {
+    width: 24px;
+    transition: 0.3s;
+    transform: ${(props) =>
+      props.active ? 'rotate(180deg)' : 'rotate(360deg)'};
+      
+  }
+
+  > span {    
+    padding 0 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: blue;
+    font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    >img{
+      width: 18px;
+    }
+    > span {
+      font-size: 12px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    >img{
+      width: 22px;
+    }
+    > span {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    >img{
+      width: 23px;
+    }
+    > span {
+      font-size: 15px;
+    }
+  }
+
 `;
