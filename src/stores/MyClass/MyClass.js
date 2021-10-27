@@ -64,6 +64,10 @@ class MyClass {
   @observable getTuteeAnswerState = false; // 학생 사용자가 답을 잘 가져왔는지...
   @observable resultModalActive = false;
 
+  @observable enrollmentModalActive = false;
+  @observable enrollmentChildName = '';
+  @observable enrollmentChildId = '';
+
   @observable ratingPoint = 5; // 평점
   @observable reviewContent = ''; // 리뷰 내용
   @observable reviewTutorId = ''; // 작성할 선생님 리뷰 아이디
@@ -198,6 +202,17 @@ class MyClass {
       //   this.answerAry[idx].ans = e.target.value;
       //   // this.setQuestion(e.currentTarget.files[0]);
       //   break;
+
+      case 'enrollment_child_name':
+        this.enrollmentChildName = e.target.value;
+        console.info(this.enrollmentChildName);
+        break;
+
+      case 'enrollment_child_id':
+        this.enrollmentChildId = e.target.value;
+        console.info(this.enrollmentChildId);
+        break;
+
       default:
         break;
     }
@@ -875,6 +890,34 @@ class MyClass {
         console.info(e.response);
       });
     console.info(toJS(this.myScheduleAry));
+  };
+
+  @action enrollmentChild = async () => {
+    console.info(this.enrollmentChildId);
+    console.info(this.enrollmentChildName);
+    const req = {
+      data: {
+        studentId: this.enrollmentChildId,
+        studentName: this.enrollmentChildName,
+      },
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+    console.info(req.data);
+    await ClassAPI.enrollmentChild(req)
+      .then(async (res) => {
+        console.info(res);
+
+        alert(
+          '자녀 등록 신청이 완료되었습니다. 자녀가 수락할 때까지 기다려주세요.'
+        );
+        this.enrollmentModalActive = false;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
   };
 }
 export default new MyClass();

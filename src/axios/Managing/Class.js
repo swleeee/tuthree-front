@@ -119,3 +119,13 @@ export function getTimeTable(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function enrollmentChild(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/user/child`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}

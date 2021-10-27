@@ -691,7 +691,14 @@ class Chatting {
     await ChattingAPI.getChatUserList(req)
       .then(async (res) => {
         console.info(res);
-        this.chatUserAry = await res.data.data;
+
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          this.chatUserAry = await res.data.data;
+        }
       })
       .catch((e) => {
         console.info(e);

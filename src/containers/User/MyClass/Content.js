@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import ClassCard from '../../../components/ClassCard';
 import ReviewContainer from '../../../components/Review';
 import MySchedule from './MySchedule';
+import Enrollment from './Enrollment';
 
 const dummyData = [
   {
@@ -110,6 +111,15 @@ class Content extends Component {
     MyClass.myScheduleModalActive = true;
   };
 
+  enrollmentOpenModal = () => {
+    const { MyClass } = this.props;
+    MyClass.enrollmentModalActive = false;
+  };
+  enrollmentCloseModal = () => {
+    const { MyClass } = this.props;
+    MyClass.enrollmentModalActive = true;
+  };
+
   render() {
     const { MyClass, Auth } = this.props;
     console.info(MyClass.reviewModalActive);
@@ -118,37 +128,54 @@ class Content extends Component {
         <Header>
           <Section>
             <Label>MyClass</Label>
+            {Auth.loggedUserType !== 'parent' && (
+              <ButtonBox>
+                <Button
+                  color="#fff"
+                  bcolor="rgb(235, 114, 82)"
+                  onClick={async () => {
+                    await MyClass.getTimeTable();
+                    MyClass.myScheduleModalActive = true;
+                  }}
+                >
+                  <div>시간표</div>
+                </Button>
+              </ButtonBox>
+            )}
+          </Section>
+          {Auth.loggedUserType !== 'parent' ? (
+            <SortingBox active={MyClass.status}>
+              <span
+                onClick={async () => {
+                  MyClass.status = 'OPEN';
+                  await MyClass.getClass(Auth.loggedUserId);
+                }}
+              >
+                현재 수강 학생
+              </span>
+              <span
+                onClick={async () => {
+                  MyClass.status = 'CLOSE';
+                  await MyClass.getClass(Auth.loggedUserId);
+                }}
+              >
+                과거 수강 학생
+              </span>
+            </SortingBox>
+          ) : (
             <ButtonBox>
               <Button
                 color="#fff"
                 bcolor="rgb(235, 114, 82)"
                 onClick={async () => {
-                  await MyClass.getTimeTable();
-                  MyClass.myScheduleModalActive = true;
+                  // await MyClass.getTimeTable();
+                  MyClass.enrollmentModalActive = true;
                 }}
               >
-                <div>시간표</div>
+                <div>자녀 추가</div>
               </Button>
             </ButtonBox>
-          </Section>
-          <SortingBox active={MyClass.status}>
-            <span
-              onClick={async () => {
-                MyClass.status = 'OPEN';
-                await MyClass.getClass(Auth.loggedUserId);
-              }}
-            >
-              현재 수강 학생
-            </span>
-            <span
-              onClick={async () => {
-                MyClass.status = 'CLOSE';
-                await MyClass.getClass(Auth.loggedUserId);
-              }}
-            >
-              과거 수강 학생
-            </span>
-          </SortingBox>
+          )}
         </Header>
         <Main>
           {/* {dummyData.map((item, idx) => {
@@ -213,6 +240,18 @@ class Content extends Component {
                 // width={width}
                 open={this.myScheduleOpenModal}
                 close={this.myScheduleCloseModal}
+              />
+            </div>
+          </Layer>
+        )}
+
+        {MyClass.enrollmentModalActive === true && (
+          <Layer alignItems={true}>
+            <div>
+              <Enrollment
+                // width={width}
+                open={this.enrollmentOpenModal}
+                close={this.enrollmentCloseModal}
               />
             </div>
           </Layer>
@@ -361,6 +400,7 @@ const Layer = styled.div`
     height: 90%;
     overflow-y: scroll !important;
     margin-top: 30px;
+    align-items: ${(props) => props.alignItems && 'center'};
   }
 `;
 
@@ -414,3 +454,5 @@ const Section = styled.div`
   display: flex;
   align-items: center;
 `;
+
+const ChildEnrollment = styled.div``;
