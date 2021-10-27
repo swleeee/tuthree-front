@@ -45,7 +45,7 @@ class User {
       params: {
         grade: this.filterAry[this.filterIdx - 1].value,
         userId: this.searchValue,
-        page: this.searchValue ? 0 : page ? page : 1,
+        page: this.searchValue ? 0 : page - 1 ? page - 1 : 0,
       },
       headers: {
         Authorization: Auth.token,
