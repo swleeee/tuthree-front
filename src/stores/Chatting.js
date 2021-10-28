@@ -761,6 +761,27 @@ class Chatting {
         console.info(e.response);
       });
   };
+
+  @action sendFcm = async () => {
+    console.info(Auth.token);
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      data: {
+        id: Auth.loggedUserId,
+        token: Auth.notificationToken,
+      },
+    };
+    await ChattingAPI.sendFcm(req)
+      .then(async (res) => {
+        console.info(res);
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
 }
 
 export default new Chatting();

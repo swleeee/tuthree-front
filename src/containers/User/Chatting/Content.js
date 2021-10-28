@@ -7,8 +7,7 @@ import InfoWriting from './InfoWriting';
 import Info from './Info';
 import { toJS } from 'mobx';
 import { config } from '../../../firebase-config';
-import firebase from 'firebase/compat/app';
-import { getMessaging } from 'firebase/messaging/sw';
+
 // import * as Stomp from '@stomp/stompjs';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
@@ -281,6 +280,7 @@ class Content extends Component {
   sendMessage() {
     const { Chatting, Auth } = this.props;
     console.log('sending message');
+    Chatting.sendFcm();
     // stompClient.send("/ws/message", {}, JSON.stringify({'content': $("#message").val()}));
     // stompClient.send("/ws/message", {}, JSON.stringify({'content': encodeURI($("#message").val())}));
     stompClient.send(

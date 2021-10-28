@@ -38,3 +38,13 @@ export function sendMessage(req) {
     data: req.data,
   });
 }
+
+export function sendFcm(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/chat/fcm-save`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}

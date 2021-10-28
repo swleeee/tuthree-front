@@ -50,15 +50,17 @@ const Input = styled.input`
   // padding-bottom: 18px;
   outline: none;
   font-size: 15px;
-  width: 100%;
+  // width: 80%;
   box-sizing: border-box;
   display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
   padding-left: 10px;
+  width: 300px;
+  height: 60px;
   :focus {
   }
 
   @media (min-width: 1300px) {
-    width: 300px;
+    width: 80%;
     height: 60px;
   }
 `;

@@ -18,6 +18,9 @@ class Auth {
   // constructor() {
   //   makeObservable(this);
   // }
+
+  @observable notificationToken = '';
+
   @observable Authorization =
     'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzEwNTYxOCwiZXhwIjoxNjMzMTA5MjE4LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.KuHs-qPG3gL0jdJzozeAWtf1q3I-w_96YconIIwNE7s';
 
