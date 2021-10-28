@@ -98,20 +98,26 @@ const Input = styled.input`
   box-sizing: border-box;
   display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
   padding-left: 10px;
-  width: 300px;
+  width: 80%;
   height: 60px;
   :focus {
   }
 
+  @media (min-width: 0px) and (max-width: 767.98px) {
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+  }
+
   @media (min-width: 1300px) {
-    width: 80%;
-    height: 60px;
   }
 `;
 
 const Button = styled.div`
-  margin-top: 30px;
-  width: 300px;
+  // width: 300px;
+  width: 80%;
   height: 60px;
   border-radius: 3px;
   background-color: rgba(235, 114, 82, 0.7);
@@ -122,5 +128,29 @@ const Button = styled.div`
   > div {
     font-size: 20px;
     font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    // width: 180px;
+    width: 80%;
+    height: 40px;
+    > div {
+      font-size: 16px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    // width: 250px;
+    height: 50px;
+    > div {
+      font-size: 18px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    // width: 280px;
+    height: 50px;
+    > div {
+      font-size: 19px;
+    }
   }
 `;
