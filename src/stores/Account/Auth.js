@@ -1171,8 +1171,7 @@ class Auth {
   @action findPwd = async () => {
     console.info('findId');
     console.info(this.certificationType === 1 ? 'email' : 'tel');
-    console.info(this.findEmailName);
-    console.info(this.findEmail);
+
     const req = {
       type: this.certificationType === 1 ? 'email' : 'tel',
       data: {
@@ -1230,8 +1229,9 @@ class Auth {
       .then((res) => {
         console.info(res);
         if (res.data.success) {
+          // alert('')
           // this.findPwdMsg = res.data.message;
-          // this.passwordStep = 2;
+          this.passwordStep = 3;
           // Auth.passwordStep = 3;
         }
       })

@@ -12,7 +12,7 @@ class Phone extends Component {
         <ItemBox>
           <Input
             placeholder="아이디를 입력하세요."
-            onChange={(e) => Auth.handleChange(e.target, 'findPwdEmailId')}
+            onChange={(e) => Auth.handleChange(e.target, 'findPwdTelId')}
             onFocus={(e) => (e.target.placeholder = '')}
             onBlur={(e) => (e.target.placeholder = '아이디를 입력하세요.')}
           />
@@ -22,7 +22,7 @@ class Phone extends Component {
         <ItemBox>
           <Input
             placeholder="전화번호 -없이 입력하세요."
-            onChange={(e) => Auth.handleChange(e.target, 'findPwdEmail')}
+            onChange={(e) => Auth.handleChange(e.target, 'findPwdTel')}
             onFocus={(e) => (e.target.placeholder = '')}
             onBlur={(e) =>
               (e.target.placeholder = '전화번호 -없이 입력하세요.')
@@ -33,7 +33,7 @@ class Phone extends Component {
         <ItemBox>
           <Input
             placeholder="이름을 입력하세요."
-            onChange={(e) => Auth.handleChange(e.target, 'findPwdEmailName')}
+            onChange={(e) => Auth.handleChange(e.target, 'findPwdTelName')}
             onFocus={(e) => (e.target.placeholder = '')}
             onBlur={(e) => (e.target.placeholder = '이름을 입력하세요.')}
           />
@@ -41,7 +41,8 @@ class Phone extends Component {
         </ItemBox>
         <Button
           onClick={() => {
-            Auth.passwordStep = 2;
+            // Auth.passwordStep = 2;
+            Auth.findPwd();
           }}
         >
           <div>비밀번호 찾기</div>
