@@ -7,6 +7,25 @@ import userListImg from '../../../static/images/Common/userlist.png';
 import close_ic from '../../../static/images/Home/close-button.png';
 import InfoWriting from './InfoWriting';
 import Info from './Info';
+import { toJS } from 'mobx';
+import { config } from '../../../firebase-config';
+
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+
+let messageBox = null;
+const today = new Date();
+let date = null;
+let year = null;
+let month = null;
+let day = null;
+// import 'firebase/compat/auth';
+// import 'firebase/compat/firestore';
+
+// firebase.initializeApp(config);
+// const messaging = getMessaging(firebase.initializeApp(config));
+
+let stompClient = null;
 
 const userList = [
   {
@@ -177,8 +196,14 @@ const chatList = [
 @inject('Auth', 'Common', 'Chatting')
 @observer
 class Content extends Component {
+  constructor(props) {
+    super(props);
+    messageBox = React.createRef();
+  }
+
   state = {
     is_open: false,
+    today: new Date(),
   };
   menuClick = () => {
     const { is_open } = this.state;
@@ -200,14 +225,79 @@ class Content extends Component {
   };
 
   componentDidMount = async () => {
-    const { Chatting } = this.props;
+    const { Auth, Chatting } = this.props;
     console.info(Chatting.studentId);
     await Chatting.getDetailClass();
+    await Chatting.getChatUserList();
+    if (Auth.loggedUserType === 'teacher') {
+      await Chatting.checkInfoWriting();
+    }
+
+    this.connect();
+  };
+
+  connect = async () => {
+    const { Chatting, Auth } = this.props;
+
+    console.info('connect 중 ...');
+    var socket = new SockJS('http://3.34.125.3:8088/tuthree-websocket');
+    stompClient = Stomp.over(socket);
+    // stompClient = socket;
+    // stompClient = new Stomp.Client
+
+    await stompClient.connect({}, async (frame) => {
+      console.log('Connected: ' + frame);
+      // stompClient.subscribe('/topic/messages', function (message) {
+      await stompClient.subscribe(
+        `/topic/messages.${Chatting.roomId}`,
+        async (message) => {
+          // showMessage(decodeURI(JSON.parse(message.body).content));
+          console.info(decodeURI(JSON.parse(message.body).content));
+          await Chatting.getChatList(Chatting.roomId);
+          console.info(this.scrollToBottom);
+          this.scrollToBottom();
+        }
+      );
+      // stompClient.subscribe('/user/topic/private-messages', function (message) {
+      //     showMessage(JSON.parse(message.body).content);
+      // });
+    });
+  };
+
+  sendMessage() {
+    const { Chatting, Auth } = this.props;
+    console.log('sending message');
+    Chatting.sendFcm();
+    // stompClient.send("/ws/message", {}, JSON.stringify({'content': $("#message").val()}));
+    // stompClient.send("/ws/message", {}, JSON.stringify({'content': encodeURI($("#message").val())}));
+    stompClient.send(
+      '/ws/message',
+      {},
+      JSON.stringify({
+        room: { id: Chatting.roomId },
+        name: encodeURI(Auth.loggedUserName),
+        userId: Auth.loggedUserId,
+        content: encodeURI('hihi'),
+      })
+    );
+  }
+  scrollToBottom = () => {
+    // this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+    if (messageBox.current) {
+      console.info(messageBox.current.scrollTop);
+      messageBox.current.scrollTop = messageBox.current.scrollHeight;
+      console.info(messageBox.current.scrollTop);
+    }
   };
 
   render() {
     const { is_open } = this.state;
     const { Common, Auth, Chatting } = this.props;
+    year = today.getFullYear();
+    month = ('0' + (today.getMonth() + 1)).slice(-2);
+    day = ('0' + today.getDate()).slice(-2);
+    date = year + '-' + month + '-' + day;
+
     return (
       <Container state={Common.modalActive}>
         {Common.modalActive === true && Common.modalState === 1 && (
@@ -253,21 +343,62 @@ class Content extends Component {
                       <div>Chatting</div>
                     </Label> */}
                 <UserList>
-                  {userList &&
-                    userList.map((item, idx) => {
+                  {Chatting.chatUserAry &&
+                    Chatting.chatUserAry.map((item, idx) => {
+                      console.info(toJS(item));
                       return (
-                        <UserListItem>
+                        <UserListItem
+                          onClick={() => {
+                            if (Auth.loggedUserType === 'teacher') {
+                              Chatting.studentId = item.chatList.senderId;
+                            } else {
+                              Chatting.teacherId = item.chatList.senderId;
+                            }
+                            Chatting.otherName = item.chatList.name;
+                            Chatting.roomId = item.roomId;
+                            Chatting.getChatList(item.roomId);
+                            this.connect();
+                          }}
+                        >
                           <ImgBox width={55} height={55} mr={10}>
                             <div>
+                              {/* <div>IMG</div> */}
                               <img src={defaultImg} />
                             </div>
                           </ImgBox>
                           <UserItem>
                             <UserLabel>
-                              <UserName>{item.name}</UserName>
-                              <UserWriteDt>{item.writeDt}</UserWriteDt>
+                              <UserName>{item.chatList.name}</UserName>
+                              <UserWriteDt>
+                                {date ===
+                                item.chatList.date.substring(
+                                  0,
+                                  item.chatList.date.indexOf(' ')
+                                )
+                                  ? item.chatList.date.substring(
+                                      item.chatList.date.indexOf(' '),
+                                      item.chatList.date.lastIndexOf(':')
+                                    )
+                                  : item.chatList.date.substring(
+                                      0,
+                                      item.chatList.date.lastIndexOf(':')
+                                    )}
+                                {/* {item.chatList.date.substring(
+                            0,
+                            item.chatList.date.lastIndexOf(':')
+                          )} */}
+                                {/* {item.chatList.date.substring(
+                            0,
+                            item.chatList.date.indexOf(' ')
+                          )} */}
+                                {date ===
+                                  item.chatList.date.substring(
+                                    0,
+                                    item.chatList.date.indexOf(' ')
+                                  )}
+                              </UserWriteDt>
                             </UserLabel>
-                            <UserContent>{item.content}</UserContent>
+                            <UserContent>{item.chatList.chat}</UserContent>
                           </UserItem>
                         </UserListItem>
                       );
@@ -342,11 +473,11 @@ class Content extends Component {
         </ChatList> */}
         <ChatContainer>
           <ChatHeader>
-            <div>홍길동</div>
+            <div>{Chatting.otherName}</div>
             <img src={userListImg} onClick={this.menuClick} />
           </ChatHeader>
           <ChatMain>
-            {chatList &&
+            {/* {chatList &&
               chatList.map((item, idx) => {
                 return (
                   <ChatListItem type={item.type === 'me'}>
@@ -357,7 +488,7 @@ class Content extends Component {
                       type={item.type === 'me'}
                     >
                       <div>
-                        {/* <div>IMG</div> */}
+                        
                         <img src={defaultImg} />
                       </div>
                     </ImgBox>
@@ -375,11 +506,63 @@ class Content extends Component {
                     </ChatItem>
                   </ChatListItem>
                 );
+              })} */}
+
+            {Chatting.chatAry &&
+              Chatting.chatAry.map((item, idx) => {
+                return (
+                  <ChatListItem type={item.senderId === Auth.loggedUserId}>
+                    <ImgBox
+                      width={55}
+                      height={55}
+                      mr={10}
+                      type={item.senderId === Auth.loggedUserId}
+                    >
+                      <div>
+                        {/* <div>IMG</div> */}
+                        <img src={defaultImg} />
+                      </div>
+                    </ImgBox>
+                    <ChatItem type={item.senderId === Auth.loggedUserId}>
+                      <ChatLabel type={item.senderId === Auth.loggedUserId}>
+                        <ChatName type={item.senderId === Auth.loggedUserId}>
+                          {item.senderName}
+                        </ChatName>
+                        <ChatContent type={item.senderId === Auth.loggedUserId}>
+                          <div></div>
+                          {item.chat}
+                        </ChatContent>
+                      </ChatLabel>
+                      <ChatWriteDt type={item.senderId === Auth.loggedUserId}>
+                        {date === item.date.substring(0, item.date.indexOf(' '))
+                          ? item.date.substring(
+                              item.date.indexOf(' '),
+                              item.date.lastIndexOf(':')
+                            )
+                          : item.date.substring(0, item.date.lastIndexOf(':'))}
+                      </ChatWriteDt>
+                    </ChatItem>
+                  </ChatListItem>
+                );
               })}
           </ChatMain>
           <ChatWritingBox>
-            <Textarea mxh={40} mih={40} placeholder={`메시지를 입력하세요`} />
-            <Button>
+            <Textarea
+              mxh={40}
+              mih={40}
+              placeholder={`메시지를 입력하세요`}
+              type="chat_msg"
+            />
+            <Button
+              onClick={async () => {
+                await this.sendMessage();
+                await Chatting.sendMessage();
+                // let objDiv = document.getElementById('main');
+
+                // objDiv.scrollTop = objDiv.scrollHeight;
+                this.scrollToBottom();
+              }}
+            >
               <div>전송</div>
             </Button>
           </ChatWritingBox>
