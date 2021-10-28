@@ -67,6 +67,7 @@ class MyClass {
   @observable enrollmentModalActive = false;
   @observable enrollmentChildName = '';
   @observable enrollmentChildId = '';
+  @observable childClassAry = [];
 
   @observable ratingPoint = 5; // 평점
   @observable reviewContent = ''; // 리뷰 내용
@@ -919,6 +920,33 @@ class MyClass {
           alert(
             '자녀 등록 신청을 실패하였습니다. 입력한 정보가 맞는지 다시 확인해주세요'
           );
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action getChildClassList = async () => {
+    console.info(this.enrollmentChildId);
+    console.info(this.enrollmentChildName);
+    console.info(Auth.token);
+    const req = {
+      params: {
+        id: Auth.loggedUserId,
+        status: 'OPEN',
+      },
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+    console.info(req.data);
+    await ClassAPI.getChildClassList(req)
+      .then(async (res) => {
+        console.info(res);
+        if (res.data.success) {
+          // this.childClassAry =
         }
       })
       .catch((e) => {

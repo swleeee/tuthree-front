@@ -147,3 +147,12 @@ export function acceptEnrollment(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function getChildClassList(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/child`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}

@@ -91,7 +91,11 @@ const dummyData = [
 class Content extends Component {
   componentDidMount = async () => {
     const { MyClass, Auth } = this.props;
-    await MyClass.getClass(Auth.loggedUserId);
+    if (Auth.loggedUserType === 'parent') {
+      await MyClass.getChildClassList();
+    } else {
+      await MyClass.getClass(Auth.loggedUserId);
+    }
   };
   reviewOpenModal = () => {
     const { MyClass } = this.props;
@@ -193,33 +197,61 @@ class Content extends Component {
               </div>
             );
           })} */}
-          {MyClass.classAry &&
-            MyClass.classAry.map((item, idx) => {
-              return (
-                <div
-                  onClick={async () => {
-                    MyClass.state = 2;
-                    MyClass.teacherName = item.teacherName;
-                    MyClass.studentName = item.studentName;
-                    MyClass.teacherId = item.teacherId;
-                    MyClass.studentId = item.studentId;
-                    await MyClass.getCalendar();
-                  }}
-                >
-                  <ClassCard
-                    number={item.id}
-                    id={idx}
-                    type="teacher"
-                    studentName={item.studentName}
-                    teacherName={item.teacherName}
-                    teacherId={item.teacherId}
-                    date={item.date}
-                    subject={item.subject}
-                    active={item.acitve}
-                  />
-                </div>
-              );
-            })}
+          {Auth.loggedUserType === 'parent'
+            ? MyClass.childClassAry &&
+              MyClass.childClassAry.map((item, idx) => {
+                return (
+                  <div
+                    onClick={async () => {
+                      // MyClass.state = 2;
+                      // MyClass.teacherName = item.teacherName;
+                      // MyClass.studentName = item.studentName;
+                      // MyClass.teacherId = item.teacherId;
+                      // MyClass.studentId = item.studentId;
+                      // await MyClass.getCalendar();
+                    }}
+                  >
+                    <ClassCard
+                      number={item.id}
+                      id={idx}
+                      type="parent"
+                      studentName={item.studentName}
+                      teacherName={item.teacherName}
+                      teacherId={item.teacherId}
+                      date={item.date}
+                      subject={item.subject}
+                      active={item.acitve}
+                    />
+                  </div>
+                );
+              })
+            : MyClass.classAry &&
+              MyClass.classAry.map((item, idx) => {
+                return (
+                  <div
+                    onClick={async () => {
+                      MyClass.state = 2;
+                      MyClass.teacherName = item.teacherName;
+                      MyClass.studentName = item.studentName;
+                      MyClass.teacherId = item.teacherId;
+                      MyClass.studentId = item.studentId;
+                      await MyClass.getCalendar();
+                    }}
+                  >
+                    <ClassCard
+                      number={item.id}
+                      id={idx}
+                      type="teacher"
+                      studentName={item.studentName}
+                      teacherName={item.teacherName}
+                      teacherId={item.teacherId}
+                      date={item.date}
+                      subject={item.subject}
+                      active={item.acitve}
+                    />
+                  </div>
+                );
+              })}
         </Main>
         {MyClass.reviewModalActive === true && (
           <Layer>

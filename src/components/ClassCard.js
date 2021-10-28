@@ -18,101 +18,194 @@ class ClassCard extends Component {
       id,
       teacherId,
       MyClass,
-
+      type,
       Auth,
       studentName,
       teacherName,
     } = this.props;
 
     return (
-      <Container>
-        <img
-          src={moreImg}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (MyClass.moreState === -1) {
-              //   this.setState({ moreState: id });
-              MyClass.moreState = id;
-            } else {
-              if (MyClass.moreState === id) {
-                // this.setState({ moreState: -1 });
-                MyClass.moreState = -1;
-              } else {
-                // this.setState({ moreState: id });
-                MyClass.moreState = id;
-              }
-            }
-          }}
-        />
+      <>
+        {type !== 'parent' ? (
+          <Container>
+            <img
+              src={moreImg}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (MyClass.moreState === -1) {
+                  //   this.setState({ moreState: id });
+                  MyClass.moreState = id;
+                } else {
+                  if (MyClass.moreState === id) {
+                    // this.setState({ moreState: -1 });
+                    MyClass.moreState = -1;
+                  } else {
+                    // this.setState({ moreState: id });
+                    MyClass.moreState = id;
+                  }
+                }
+              }}
+            />
 
-        {MyClass.moreState === id && (
-          <Menu>
-            <div>
-              <div>
-                <Button>
-                  <div>채팅하기</div>
-                </Button>
-              </div>
-              {Auth.loggedUserType === 'student' && (
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    MyClass.reviewTutorId = '';
-                    MyClass.reviewTutorId = teacherId;
-                    MyClass.reviewModalActive = true;
-                  }}
-                >
-                  <Button>
-                    <div>리뷰작성</div>
-                  </Button>
+            {MyClass.moreState === id && (
+              <Menu>
+                <div>
+                  <div>
+                    <Button>
+                      <div>채팅하기</div>
+                    </Button>
+                  </div>
+                  {Auth.loggedUserType === 'student' && (
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        MyClass.reviewTutorId = '';
+                        MyClass.reviewTutorId = teacherId;
+                        MyClass.reviewModalActive = true;
+                      }}
+                    >
+                      <Button>
+                        <div>리뷰작성</div>
+                      </Button>
+                    </div>
+                  )}
+
+                  <div>
+                    <Button>
+                      <div>수업종료</div>
+                    </Button>
+                  </div>
                 </div>
-              )}
-
-              <div>
-                <Button>
-                  <div>수업종료</div>
-                </Button>
-              </div>
-            </div>
-          </Menu>
-        )}
-        <Img>
-          <img src={defaultImg} />
-          {/* <div>Img</div> */}
-        </Img>
-        <Content>
-          <Box>
-            {' '}
-            {Auth.loggedUserType === 'teacher' ? (
-              <Label ml={5} fw="bold" fs={18}>
-                {studentName}
-              </Label>
-            ) : (
-              <Label ml={5} fw="bold" fs={18}>
-                {teacherName}
-              </Label>
+              </Menu>
             )}
-          </Box>
+            <Img>
+              <img src={defaultImg} />
+              {/* <div>Img</div> */}
+            </Img>
+            <Content>
+              <Box>
+                {' '}
+                {Auth.loggedUserType === 'teacher' ? (
+                  <Label ml={5} fw="bold" fs={18}>
+                    {studentName}
+                  </Label>
+                ) : (
+                  <Label ml={5} fw="bold" fs={18}>
+                    {teacherName}
+                  </Label>
+                )}
+              </Box>
 
-          <Box>
-            {' '}
-            <Label ml={5} fs={14} color="#888" mb={30}>
-              {date}~
-            </Label>
-          </Box>
+              <Box>
+                {' '}
+                <Label ml={5} fs={14} color="#888" mb={30}>
+                  {date}~
+                </Label>
+              </Box>
 
-          <Label value="multiple">
-            {subject &&
-              subject.map((item, idx) => {
-                return (
-                  <MutlipleBox type="subject">
-                    <div>{item}</div>
-                  </MutlipleBox>
-                );
-              })}
-          </Label>
-        </Content>
-      </Container>
+              <Label value="multiple">
+                {subject &&
+                  subject.map((item, idx) => {
+                    return (
+                      <MutlipleBox type="subject">
+                        <div>{item}</div>
+                      </MutlipleBox>
+                    );
+                  })}
+              </Label>
+            </Content>
+          </Container>
+        ) : (
+          <Container>
+            <img
+              src={moreImg}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (MyClass.moreState === -1) {
+                  //   this.setState({ moreState: id });
+                  MyClass.moreState = id;
+                } else {
+                  if (MyClass.moreState === id) {
+                    // this.setState({ moreState: -1 });
+                    MyClass.moreState = -1;
+                  } else {
+                    // this.setState({ moreState: id });
+                    MyClass.moreState = id;
+                  }
+                }
+              }}
+            />
+
+            {MyClass.moreState === id && (
+              <Menu>
+                <div>
+                  <div>
+                    <Button>
+                      <div>채팅하기</div>
+                    </Button>
+                  </div>
+                  {Auth.loggedUserType === 'student' && (
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        MyClass.reviewTutorId = '';
+                        MyClass.reviewTutorId = teacherId;
+                        MyClass.reviewModalActive = true;
+                      }}
+                    >
+                      <Button>
+                        <div>리뷰작성</div>
+                      </Button>
+                    </div>
+                  )}
+
+                  <div>
+                    <Button>
+                      <div>수업종료</div>
+                    </Button>
+                  </div>
+                </div>
+              </Menu>
+            )}
+            <Img>
+              <img src={defaultImg} />
+              {/* <div>Img</div> */}
+            </Img>
+            <Content>
+              <Box>
+                {' '}
+                {Auth.loggedUserType === 'teacher' ? (
+                  <Label ml={5} fw="bold" fs={18}>
+                    {studentName}
+                  </Label>
+                ) : (
+                  <Label ml={5} fw="bold" fs={18}>
+                    {teacherName}
+                  </Label>
+                )}
+              </Box>
+
+              <Box>
+                {' '}
+                <Label ml={5} fs={14} color="#888" mb={30}>
+                  {date}~
+                </Label>
+              </Box>
+
+              <Label value="multiple">
+                {subject &&
+                  subject.map((item, idx) => {
+                    return (
+                      <MutlipleBox type="subject">
+                        <div>{item}</div>
+                      </MutlipleBox>
+                    );
+                  })}
+              </Label>
+            </Content>
+          </Container>
+        )}
+      </>
     );
   }
 }
