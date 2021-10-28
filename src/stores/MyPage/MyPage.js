@@ -356,5 +356,42 @@ class MyPage {
       });
     console.info(toJS(this.enrollmentList));
   };
+
+  @action acceptEnrollment = async (parentName, parentId) => {
+    console.info(Auth.token);
+
+    // console.info(this.enrollmentList.parentId);
+    console.info(Auth.loggedUserId);
+
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+      params: {
+        parentId: parentId,
+        studentId: Auth.loggedUserId,
+      },
+    };
+
+    await ClassAPI.acceptEnrollment(req)
+      .then(async (res) => {
+        console.info(res);
+
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          // this.enrollmentList = await res.data.data;
+          alert(`${parentName} 님을 부모님으로 등록하였습니다.`);
+          this.getEnrollmentList();
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    // console.info(toJS(this.enrollmentList));
+  };
 }
 export default new MyPage();

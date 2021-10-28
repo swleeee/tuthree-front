@@ -21,19 +21,47 @@ class Content extends Component {
           <div>부모 등록 관리</div>
         </Header>
         <Main>
-          {/* {MyPage.enrollmentList &&
+          {MyPage.enrollmentList &&
             MyPage.enrollmentList.map((item, idx) => {
-              return (
+              return item.status ? (
                 <Card>
-                  <Name></Name>
+                  <Name>
+                    <span>{`${item.parentName}`} </span>
+                  </Name>
+                </Card>
+              ) : (
+                <Card>
+                  <Name>
+                    <span>{item.parentName} </span>
+                    님의 부모 등록 요청이 들어왔습니다.
+                  </Name>
+
                   <ButtonBox>
-                    <Button>
+                    <Button
+                      onClick={() =>
+                        MyPage.acceptEnrollment(item.parentName, item.parentId)
+                      }
+                    >
                       <div>수락</div>
                     </Button>
                   </ButtonBox>
                 </Card>
               );
-            })} */}
+            })}
+
+          {/* <Card>
+            <Name>
+              <span>
+                {MyPage.enrollmentList && MyPage.enrollmentList.parentId}{' '}
+              </span>
+              님의 부모 등록 요청이 들어왔습니다.
+            </Name>
+            <ButtonBox>
+              <Button onClick={() => MyPage.acceptEnrollment()}>
+                <div>수락</div>
+              </Button>
+            </ButtonBox>
+          </Card> */}
 
           {/* <Item>
             <Label>기존 비밀번호</Label>
@@ -95,6 +123,7 @@ const Container = styled.div`
   flex-direction: column;
   border-top: 1px solid #888;
   height: 100%;
+  min-height: 1000px;
   @media (min-width: 0px) and (max-width: 767.98px) {
     border-top: none;
   }
@@ -132,66 +161,9 @@ const Header = styled.div`
   }
 `;
 const Main = styled.div`
+  padding: 20px 40px;
   display: flex;
   flex-direction: column;
-`;
-const Item = styled.div`
-  display: flex;
-  align-items: center;
-  border: 1px solid #888;
-  margin-top: -1px;
-`;
-const Label = styled.div`
-  padding: 10px 20px;
-  box-sizing: border-box;
-  font-size: 17px;
-  font-weight: bold;
-  border-right: 1px solid #888;
-  width: 20%;
-  background-color: rgba(235, 114, 82, 0.3);
-  height: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    font-size: 12px;
-    padding: 3px 6px;
-  }
-  @media (min-width: 768px) and (max-width: 991.98px) {
-    font-size: 14px;
-    padding: 5px 10px;
-  }
-
-  @media (min-width: 992px) and (max-width: 1299.98px) {
-    width: 25%;
-    font-size: 15px;
-    padding: 8px 16px;
-  }
-`;
-const ContentBox = styled.div`
-  display: flex;
-  font-size: 15px;
-  padding: 15px 25px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  // align-items: center;
-  width: 100%;
-
-  @media (min-width: 0px) and (max-width: 767.98px) {
-    font-size: 10px;
-    padding: 10px 8px;
-  }
-  @media (min-width: 768px) and (max-width: 991.98px) {
-    font-size: 12px;
-    padding: 6px 15px;
-  }
-
-  @media (min-width: 992px) and (max-width: 1299.98px) {
-    font-size: 14px;
-    padding: 12px 22px;
-  }
 `;
 
 const ButtonBox = styled.div`
@@ -200,7 +172,8 @@ const ButtonBox = styled.div`
   align-items: center;
 `;
 const Button = styled.button`
-  margin-top: 60px;
+  cursor: pointer;
+  margin-top: 20px;
   background-color: rgb(235, 114, 82);
   border: none;
   width: 120px;
@@ -234,42 +207,51 @@ const Button = styled.button`
   }
 `;
 
-const Input = styled.input`
-  border: none;
-  border: 1px solid #c7c7c7;
-  // padding-bottom: 18px;
-  outline: none;
-  font-size: 15px;
-  width: 100%;
+const Card = styled.div`
+  // border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.5);
+  padding: 5px;
   box-sizing: border-box;
-  display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
-  padding-left: 10px;
-  :focus {
-  }
+  width: 300px;
+
   @media (min-width: 0px) and (max-width: 767.98px) {
-    width: ${(props) => (props.domainType === 2 ? '90%' : '90%')};
-    height: 30px;
-    font-size: 12px;
-    // margin-bottom: 10px;
+    width: 80%;
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
-    width: ${(props) => (props.domainType === 2 ? '220px' : '250px')};
-    height: 34px;
-    margin-left: ${(props) => (props.ml === 2 ? '10px' : '0px')};
+    width: 250px;
   }
-  @media (min-width: 992px) and (max-width: 1299.98px) {
-    width: ${(props) => (props.domainType === 2 ? '220px' : '300px')};
-    height: 36px;
-    margin-left: ${(props) => (props.ml === 2 ? '15px' : '0px')};
-  }
-  @media (min-width: 1300px) {
-    width: ${(props) => (props.domainType === 2 ? '220px' : '440px')};
-    height: 40px;
-    margin-left: ${(props) => (props.ml === 2 ? '15px' : '0px')};
-  }
-`;
 
-const Card = styled.div`
-  border: 1px solid red;
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 280px;
+  }
 `;
-const Name = styled.div``;
+const Name = styled.div`
+  text-align: center;
+  font-size: 18px;
+
+  > span {
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 13px;
+    > span {
+      font-size: 17px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 16px;
+    > span {
+      font-size: 20px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 17px;
+    > span {
+      font-size: 21px;
+    }
+  }
+`;

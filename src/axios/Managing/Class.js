@@ -138,3 +138,12 @@ export function getEnrollmentList(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function acceptEnrollment(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/user/parent`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
