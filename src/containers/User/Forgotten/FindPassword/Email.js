@@ -15,7 +15,7 @@ class Email extends Component {
         <Input
           mb={10}
           placeholder="아이디를 입력해주세요."
-          onChange={(e) => Auth.handleChange(e.target, 'findIdEmail')}
+          onChange={(e) => Auth.handleChange(e.target, 'findPwdEmailId')}
           onFocus={(e) => (e.target.placeholder = '')}
           onBlur={(e) => (e.target.placeholder = '아이디를 입력해주세요.')}
         />
@@ -23,7 +23,7 @@ class Email extends Component {
         <Input
           mb={10}
           placeholder="이메일을 입력해주세요."
-          onChange={(e) => Auth.handleChange(e.target, 'findIdEmail')}
+          onChange={(e) => Auth.handleChange(e.target, 'findPwdEmail')}
           onFocus={(e) => (e.target.placeholder = '')}
           onBlur={(e) => (e.target.placeholder = '이메일을 입력해주세요.')}
         />
@@ -31,7 +31,7 @@ class Email extends Component {
         <Input
           mb={50}
           placeholder="이름을 입력해주세요."
-          onChange={(e) => Auth.handleChange(e.target, 'findIdEmailName')}
+          onChange={(e) => Auth.handleChange(e.target, 'findPwdEmailName')}
           onFocus={(e) => (e.target.placeholder = '')}
           onBlur={(e) => (e.target.placeholder = '이름을 입력해주세요.')}
         />

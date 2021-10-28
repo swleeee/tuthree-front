@@ -11,10 +11,10 @@ class Phone extends Component {
       <Container>
         <ItemBox>
           <Input
-            placeholder="이메일을 입력하세요."
-            onChange={(e) => Auth.handleChange(e.target, 'findIdTel')}
+            placeholder="아이디를 입력하세요."
+            onChange={(e) => Auth.handleChange(e.target, 'findPwdEmailId')}
             onFocus={(e) => (e.target.placeholder = '')}
-            onBlur={(e) => (e.target.placeholder = '이메일을 입력하세요.')}
+            onBlur={(e) => (e.target.placeholder = '아이디를 입력하세요.')}
           />
           {/* <OverlapBtn>인증번호 요청</OverlapBtn> */}
         </ItemBox>
@@ -22,7 +22,7 @@ class Phone extends Component {
         <ItemBox>
           <Input
             placeholder="전화번호 -없이 입력하세요."
-            onChange={(e) => Auth.handleChange(e.target, 'findIdTel')}
+            onChange={(e) => Auth.handleChange(e.target, 'findPwdEmail')}
             onFocus={(e) => (e.target.placeholder = '')}
             onBlur={(e) =>
               (e.target.placeholder = '전화번호 -없이 입력하세요.')
@@ -33,7 +33,7 @@ class Phone extends Component {
         <ItemBox>
           <Input
             placeholder="이름을 입력하세요."
-            onChange={(e) => Auth.handleChange(e.target, 'findIdTelName')}
+            onChange={(e) => Auth.handleChange(e.target, 'findPwdEmailName')}
             onFocus={(e) => (e.target.placeholder = '')}
             onBlur={(e) => (e.target.placeholder = '이름을 입력하세요.')}
           />

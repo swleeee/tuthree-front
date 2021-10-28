@@ -382,6 +382,14 @@ class Auth {
   @observable findTelName = '';
   @observable findEmailMsg = '';
 
+  @observable findPwdEmail = '';
+  @observable findPwdEmailName = '';
+  @observable findPwdEmailId = '';
+  @observable findPwdTel = '';
+  @observable findPwdTelName = '';
+  @observable findPwdTelId = '';
+  @observable findPwdMsg = '';
+
   getStep = () => {
     console.log(this.step);
   };
@@ -566,6 +574,33 @@ class Auth {
       case 'findIdTel':
         this.findTel = e.value;
         break;
+
+      case 'findPwdEmailName':
+        this.findPwdEmailName = e.value;
+
+        break;
+
+      case 'findPwdEmail':
+        this.findPwdEmail = e.value;
+        break;
+
+      case 'findPwdEmailId':
+        this.findPwdEmailId = e.value;
+        break;
+
+      case 'findPwdTelName':
+        this.findPwdTelName = e.value;
+
+        break;
+
+      case 'findPwdTel':
+        this.findPwdTel = e.value;
+        break;
+
+      case 'findPwdEmailId':
+        this.findPwdTelId = e.value;
+        break;
+
       default:
         break;
     }
