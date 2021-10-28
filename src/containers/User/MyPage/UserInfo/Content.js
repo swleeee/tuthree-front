@@ -117,12 +117,13 @@ class Content extends Component {
     if (ImgNotAvailable.includes(extension[extension.length - 1])) {
       MyPage.profileImgAry = e.currentTarget.files[0];
       MyPage.profileImgUrl = URL.createObjectURL(e.currentTarget.files[0]);
+      MyPage.userInfoAry.post = '';
     } else {
       alert('이미지를 업로드 해주세요.');
     }
 
     // console.info(toJS(MyPage.profileImgUrl));
-    // console.info(toJS(MyPage.profileImgAry));
+    console.info(toJS(MyPage.profileImgAry));
   };
 
   componentDidMount = async () => {
@@ -132,6 +133,14 @@ class Content extends Component {
     for (let i = 2021; i > 1900; i--) {
       birthAry.push({ label: i, value: i });
     }
+    // let blob = new Blob([MyPage.userInfoAry.post], {
+    //   type: 'application/octet-stream',
+    // });
+    // let file = new File([blob], '프로필 사진');
+
+    // console.info(blob);
+    // MyPage.profileImgAry = file;
+    // MyPage.profileImgUrl = URL.createObjectURL(file);
     MyPage.emailInfo = MyPage.userInfoAry.email;
     MyPage.phoneInfo = MyPage.userInfoAry.tel;
     MyPage.birthInfo = MyPage.userInfoAry.birth;
@@ -157,8 +166,16 @@ class Content extends Component {
               }}
               style={{ cursor: 'pointer', width: 'auto' }}
             >
+              {console.info(MyPage.userInfoAry.post)}
+              {console.info(MyPage.profileImgUrl)}
               <ImgBox>
-                <img src={MyPage.profileImgUrl} />
+                {MyPage.userInfoAry.post ? (
+                  <img
+                    src={`data:image/png;base64,${MyPage.userInfoAry.post}`}
+                  />
+                ) : (
+                  MyPage.profileImgUrl && <img src={MyPage.profileImgUrl} />
+                )}
               </ImgBox>
               <Description>
                 <div>프로필 사진 선택하기 </div>

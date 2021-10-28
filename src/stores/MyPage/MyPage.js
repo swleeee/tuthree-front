@@ -112,16 +112,20 @@ class MyPage {
 
   @action putUserInfo = async () => {
     console.info(Auth.token);
+
+    const formData = new FormData();
+
+    formData.append('email', this.emailInfo);
+    formData.append('tel', this.phoneInfo);
+    formData.append('birth', this.birthInfo);
+    formData.append('notification', this.notificationState ? 'OPEN' : 'CLOSE');
+    formData.append('file', this.profileImgAry);
+
     const req = {
       headers: {
         Authorization: Auth.token,
       },
-      data: {
-        email: this.emailInfo,
-        tel: this.phoneInfo,
-        birth: this.birthInfo,
-        notification: this.notificationState ? 'OPEN' : 'CLOSE',
-      },
+      data: formData,
     };
 
     console.info(req.data);
@@ -135,8 +139,8 @@ class MyPage {
           window.location.href = '/login';
         } else {
           // this.userInfoAry = await res.data.data;
-          // alert('회원정보 수정이 완료되었습니다');
-          // this.getUserInfo();
+          alert('회원정보 수정이 완료되었습니다');
+          this.getUserInfo();
         }
       })
       .catch((e) => {
