@@ -239,8 +239,8 @@ class MyPage {
           window.location.href = '/login';
         } else {
           // this.userInfoAry = await res.data.data;
-          // alert('회원정보 수정이 완료되었습니다');
-          // this.getUserInfo();
+          alert('회원정보 수정이 완료되었습니다');
+          this.getTutorInfo();
         }
       })
       .catch((e) => {
@@ -282,6 +282,15 @@ class MyPage {
     console.info(Auth.token);
     // const regionList = [];
     // Auth.selected
+
+    console.info(toJS(Auth.selectedLocation));
+    console.info(toJS(Auth.selectedSubject));
+    console.info(this.registrationState);
+    console.info(this.costState);
+    console.info(this.cost);
+    console.info(this.grade);
+
+    console.info(this.detailContent);
     const req = {
       headers: {
         Authorization: Auth.token,
@@ -299,7 +308,7 @@ class MyPage {
     };
 
     console.info(req.data);
-    await MyPageAPI.putTutorInfo(req)
+    await MyPageAPI.putTuteeInfo(req)
       .then(async (res) => {
         console.info(res);
 
@@ -309,8 +318,8 @@ class MyPage {
           window.location.href = '/login';
         } else {
           // this.userInfoAry = await res.data.data;
-          // alert('회원정보 수정이 완료되었습니다');
-          // this.getUserInfo();
+          alert('회원정보 수정이 완료되었습니다');
+          this.getTuteeInfo();
         }
       })
       .catch((e) => {
