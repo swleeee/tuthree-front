@@ -739,6 +739,7 @@ class Chatting {
     const req = {
       headers: {
         Authorization: Auth.token,
+        // 'Access-Control-Allow-Credentials': 'false',
       },
       data: {
         room: {

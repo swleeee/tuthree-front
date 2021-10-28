@@ -34,7 +34,7 @@ class Phone2 extends Component {
 
         <Button
           onClick={() => {
-            Auth.passwordStep = 3;
+            Auth.changePwd();
           }}
         >
           <div>비밀번호 변경</div>

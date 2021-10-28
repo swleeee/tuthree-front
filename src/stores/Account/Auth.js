@@ -391,6 +391,8 @@ class Auth {
   @observable findPwdMsg = '';
   @observable newPwd = '';
   @observable newPwdConfirm = '';
+  @observable resId = '';
+  @observable resGrade = '';
 
   getStep = () => {
     console.log(this.step);
@@ -1112,6 +1114,7 @@ class Auth {
       .catch((e) => {
         console.info(e);
         console.info(e.response);
+        alert('로그인에 실패하였습니다. 입력한 정보가 맞는지 확인하세요.');
       });
   };
 
@@ -1195,6 +1198,9 @@ class Auth {
         console.info(res);
         if (res.data.success) {
           this.findPwdMsg = res.data.message;
+
+          this.resId = res.headers.id;
+          this.resGrade = res.headers.grade;
           this.passwordStep = 2;
         }
       })
@@ -1214,6 +1220,10 @@ class Auth {
       data: {
         pwd: this.newPwd,
       },
+      headers: {
+        Id: this.resId,
+        Grade: this.resGrade,
+      },
     };
 
     AccountAPI.changePwd(req)
@@ -1222,6 +1232,7 @@ class Auth {
         if (res.data.success) {
           // this.findPwdMsg = res.data.message;
           // this.passwordStep = 2;
+          // Auth.passwordStep = 3;
         }
       })
       .catch((e) => {
