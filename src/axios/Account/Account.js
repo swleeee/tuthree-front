@@ -118,7 +118,17 @@ export function findId(req) {
 export function findPwd(req) {
   return axios({
     method: 'POST',
-    url: `${ROOT_URL}/user/findpw/${req.type}`,
+    url: `${ROOT_URL}/user/findpwd/${req.type}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
+export function changePwd(req) {
+  return axios({
+    method: 'PUT',
+    url: `${ROOT_URL}/user/changepwd`,
     params: req.params ? req.params : null,
     headers: req.headers ? req.headers : null,
     data: req.data,

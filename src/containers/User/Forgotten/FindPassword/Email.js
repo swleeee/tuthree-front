@@ -38,7 +38,8 @@ class Email extends Component {
 
         <Button
           onClick={() => {
-            Auth.passwordStep = 2;
+            // Auth.passwordStep = 2;
+            Auth.findPwd();
           }}
         >
           <div>비밀번호 찾기</div>

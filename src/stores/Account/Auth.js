@@ -389,6 +389,8 @@ class Auth {
   @observable findPwdTelName = '';
   @observable findPwdTelId = '';
   @observable findPwdMsg = '';
+  @observable newPwd = '';
+  @observable newPwdConfirm = '';
 
   getStep = () => {
     console.log(this.step);
@@ -597,8 +599,16 @@ class Auth {
         this.findPwdTel = e.value;
         break;
 
-      case 'findPwdEmailId':
+      case 'findPwdTelId':
         this.findPwdTelId = e.value;
+        break;
+
+      case 'new_password':
+        this.newPwd = e.value;
+        break;
+
+      case 'new_password_confirm':
+        this.newPwdConfirm = e.value;
         break;
 
       default:
@@ -1152,6 +1162,72 @@ class Auth {
         console.info(e);
         console.info(e.response);
         alert('아이디 찾기에 실패하였습니다. 다시 시도해주세요.');
+      });
+  };
+
+  @action findPwd = async () => {
+    console.info('findId');
+    console.info(this.certificationType === 1 ? 'email' : 'tel');
+    console.info(this.findEmailName);
+    console.info(this.findEmail);
+    const req = {
+      type: this.certificationType === 1 ? 'email' : 'tel',
+      data: {
+        id:
+          this.certificationType === 1
+            ? this.findPwdEmailId
+            : this.findPwdTelId,
+        name:
+          this.certificationType === 1
+            ? this.findPwdEmailName
+            : this.findPwdTelName,
+        email: this.findPwdEmail,
+        tel: this.findPwdTel,
+      },
+    };
+    if (this.certificationType === 1) {
+      delete req.data.tel;
+    } else {
+      delete req.data.email;
+    }
+    AccountAPI.findPwd(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          this.findPwdMsg = res.data.message;
+          this.passwordStep = 2;
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        alert('일치하는 데이터가 없습니다. 다시 시도해주세요.');
+      });
+  };
+
+  @action changePwd = async () => {
+    console.info('findId');
+    console.info(this.certificationType === 1 ? 'email' : 'tel');
+    console.info(this.findEmailName);
+    console.info(this.findEmail);
+    const req = {
+      data: {
+        pwd: this.newPwd,
+      },
+    };
+
+    AccountAPI.changePwd(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          // this.findPwdMsg = res.data.message;
+          // this.passwordStep = 2;
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        // alert('일치하는 데이터가 없습니다. 다시 시도해주세요.');
       });
   };
 }
