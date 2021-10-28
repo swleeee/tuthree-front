@@ -128,6 +128,29 @@ class User {
       await this.getUserList(this.userCurrentPage);
     }
   };
+
+  @action deleteUser = async (grade, item) => {
+    const req = {
+      grade: grade,
+      id: item,
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+
+    await AccountAPI.deleteUser(req)
+      .then(async (res) => {
+        console.info(res);
+        if (res.data.success) {
+          alert('해당 사용자를 삭제하였습니다.');
+          await this.getUserList(this.userCurrentPage);
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
 }
 
 export default new User();

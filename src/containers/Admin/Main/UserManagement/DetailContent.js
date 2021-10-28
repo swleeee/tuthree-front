@@ -4,6 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { inject, observer } from 'mobx-react';
 
 import { toJS } from 'mobx';
+import { ROOT_URL } from '../../../../axios/index';
 
 @inject('Common', 'AdminUser', 'Auth')
 @observer
@@ -11,9 +12,21 @@ class DetailContent extends Component {
   componentDidMount = () => {
     const { AdminUser } = this.props;
     console.info(toJS(AdminUser.userDetailList));
+
+    // window.URL.revokeObjectURL(url);
+    // reader.readAsBinaryString(blob);
+    // reader.readAsArrayBuffer(blob);
+    // console.info(reader);
+
+    // let file = new File([blob], '증명서');
+    // console.info(file);
+  };
+  componentWillUnmount = () => {
+    const { AdminUser } = this.props;
+    AdminUser.state = 0;
   };
   render() {
-    const { AdminUser, Common } = this.props;
+    const { AdminUser, Common, Auth } = this.props;
 
     return (
       <Container>
@@ -24,7 +37,7 @@ class DetailContent extends Component {
               <div>아이디</div>
             </Label>
             <Content>
-              <div>sdfsd</div>
+              <div>{AdminUser.userDetailList.id}</div>
             </Content>
           </Section>
           <Section>
@@ -32,7 +45,7 @@ class DetailContent extends Component {
               <div>이름</div>
             </Label>
             <Content>
-              <div>sdfsd</div>
+              <div>{AdminUser.userDetailList.name}</div>
             </Content>
           </Section>
           <Section>
@@ -40,50 +53,116 @@ class DetailContent extends Component {
               <div>이메일</div>
             </Label>
             <Content>
-              <div>sdfsd</div>
-            </Content>
-          </Section>
-          <Section>
-            <Label>
-              <div>분류</div>
-            </Label>
-            <Content>
-              <div>sdfsd</div>
+              <div>{AdminUser.userDetailList.email}</div>
             </Content>
           </Section>
 
-          <Section>
-            <Label>
-              <div>학교</div>
-            </Label>
-            <Content>
-              <div>sdfsd</div>
-            </Content>
-          </Section>
+          {AdminUser.filterIdx !== 3 && (
+            <Section>
+              <Label>
+                <div>분류</div>
+              </Label>
+              <Content>
+                <div>{AdminUser.userDetailList.grade.strType}</div>
+              </Content>
+            </Section>
+          )}
 
-          <Section>
+          {AdminUser.filterIdx === 1 && (
+            <Section>
+              <Label>
+                <div>학교</div>
+              </Label>
+              <Content>
+                <div>{AdminUser.userDetailList.school}</div>
+              </Content>
+            </Section>
+          )}
+
+          {AdminUser.filterIdx === 1 && (
+            <Section>
+              <Label>
+                <div>학과</div>
+              </Label>
+              <Content>
+                <div>{AdminUser.userDetailList.major}</div>
+              </Content>
+            </Section>
+          )}
+
+          {AdminUser.filterIdx === 2 && (
+            <Section>
+              <Label>
+                <div>학년</div>
+              </Label>
+              <Content>
+                <div>
+                  {AdminUser.userDetailList.school === 'UNDER_MIDDLE'
+                    ? '유아/초등학생'
+                    : AdminUser.userDetailList.school === 'M1'
+                    ? '중1'
+                    : AdminUser.userDetailList.school === 'M2'
+                    ? '중2'
+                    : AdminUser.userDetailList.school === 'M3'
+                    ? '중3'
+                    : AdminUser.userDetailList.school === 'H1'
+                    ? '고1'
+                    : AdminUser.userDetailList.school === 'H2'
+                    ? '고2'
+                    : AdminUser.userDetailList.school === 'H3'
+                    ? '고3'
+                    : AdminUser.userDetailList.school === 'OVER_HIGH'
+                    ? '성인'
+                    : AdminUser.userDetailList.school === 'EXAM_M'
+                    ? '중학교 검정고시 준비'
+                    : AdminUser.userDetailList.school === 'EXAM_H'
+                    ? '고등학교 검정고시 준비'
+                    : ''}
+                </div>
+              </Content>
+            </Section>
+          )}
+
+          {/* <Section>
             <Label>
               <div>증명서</div>
             </Label>
             <Content>
-              <div>sdfsd</div>
+              <div
+                onClick={() => {
+                  let blob = new Blob([AdminUser.userDetailList.authFile], {
+                    type: 'application/octet-stream',
+                  });
+                  console.info(blob);
+                  let file = new File([blob], '증명서');
+                  console.info(file);
+                  const url = window.URL.createObjectURL(file);
+                  const a = document.createElement('a');
+                  a.href = `${url}`;
+                  a.download = `${url}`;
+                  a.click();
+                  a.remove();
+                }}
+              >
+                증명서
+              </div>
             </Content>
-          </Section>
+          </Section> */}
 
-          <Section>
+          {/* <Section>
             <Label>
               <div>전화번호</div>
             </Label>
             <Content>
               <div>sdfsd</div>
             </Content>
-          </Section>
+          </Section> */}
           <Section>
             <Label>
               <div>출생년도</div>
             </Label>
             <Content>
-              <div>sdfsd</div>
+              <div>{AdminUser.userDetailList.birth}년도</div>
             </Content>
           </Section>
           <Section>
@@ -91,9 +170,71 @@ class DetailContent extends Component {
               <div>성별</div>
             </Label>
             <Content>
-              <div>sdfsd</div>
+              <div>
+                {AdminUser.userDetailList.sex === 'MALE' ? '남성' : '여성'}
+              </div>
             </Content>
           </Section>
+
+          {AdminUser.filterIdx !== 3 && (
+            <Section>
+              <Label>
+                <div>시급</div>
+              </Label>
+              <Content>
+                <div>{AdminUser.userDetailList.cost}</div>
+              </Content>
+            </Section>
+          )}
+
+          {AdminUser.filterIdx !== 3 && (
+            <Section>
+              <Label>
+                <div>지역</div>
+              </Label>
+              <Content type="region">
+                {AdminUser.userDetailList.regionL &&
+                  AdminUser.userDetailList.regionL.map((item, idx) => {
+                    return (
+                      <div>
+                        <div>{item}</div>
+                        {/* <img src={deleteImg} /> */}
+                      </div>
+                    );
+                  })}
+              </Content>
+            </Section>
+          )}
+
+          {AdminUser.filterIdx !== 3 && (
+            <Section>
+              <Label>
+                <div>과목</div>
+              </Label>
+              <Content type="subject">
+                {AdminUser.userDetailList.subjectL &&
+                  AdminUser.userDetailList.subjectL.map((item, idx) => {
+                    return (
+                      <div>
+                        <div>{item}</div>
+                        {/* <img src={deleteImg} /> */}
+                      </div>
+                    );
+                  })}
+              </Content>
+            </Section>
+          )}
+
+          {AdminUser.filterIdx !== 3 && (
+            <Section>
+              <Label>
+                <div>소개</div>
+              </Label>
+              <Content>
+                <div>{AdminUser.userDetailList.detail}</div>
+              </Content>
+            </Section>
+          )}
         </Main>
       </Container>
     );
@@ -205,25 +346,101 @@ const Section = styled.div`
   width: 100%;
   height: 100%;
   border: 1px solid #aaa;
-  height: 50px;
+  // min-height: 50px;
 `;
 const Label = styled.div`
   flex-grow: 2;
 
   width: 20%;
-  border-right: 1px solid #000;
-  height: 50px;
+
+  // min-height: 50px;
   display: flex;
   align-items: center;
   padding-left: 5px;
   box-sizing: border-box;
+  > div {
+    font-size: 16px;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    min-width: 58px;
+    > div {
+      font-size: 12px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      font-size: 15px;
+    }
+  }
 `;
 const Content = styled.div`
   flex-grow: 6;
   width: 80%;
-  height: 50px;
+  flex-wrap: wrap;
+  border-left: 1px solid #000;
+  word-break: break-all;
+  min-height: 50px;
   display: flex;
   align-items: center;
-  padding-left: 5px;
+  padding: 5px;
   box-sizing: border-box;
+
+  > div {
+    display: inline-flex;
+    align-items: center;
+    background-color: ${(props) =>
+      props.type === 'region'
+        ? '#a596c4'
+        : props.type === 'subject'
+        ? '#7eb1a8'
+        : '#fff'};
+    border-radius: 30px;
+    padding: 3px 10px;
+    box-sizing: border-box;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    // cursor: pointer;
+    font-size: 15px;
+    > div {
+      font-size: 12px;
+      margin-right: 10px;
+    }
+    > img {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > div {
+      font-size: 11px;
+      > div {
+        font-size: 10px;
+      }
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      font-size: 13px;
+      > div {
+        font-size: 11px;
+      }
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      font-size: 14px;
+      > div {
+        font-size: 11px;
+      }
+    }
+  }
 `;

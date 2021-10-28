@@ -146,14 +146,16 @@ class Content extends Component {
               <Management title={true}>관리</Management>
             </Line>
 
-            {console.info(toJS(AdminUser.userList))}
             {AdminUser.userList &&
               AdminUser.userList.map((item, idx) => {
+                console.info(item.userDel === 'CLOSE');
                 return (
                   <Line
+                    active={item.userDel === 'CLOSE'}
                     onClick={async () => {
                       await AdminUser.pushToDetail(item, item.grade.strType);
-                      AdminUser.modalActive = true;
+                      // AdminUser.modalActive = true;
+                      AdminUser.state = 1;
                     }}
                   >
                     {/* <Check active={item.checked}>
@@ -181,9 +183,10 @@ class Content extends Component {
                     <Management>
                       <CtlBtn
                         del={true}
+                        active={item.userDel === 'CLOSE'}
                         onClick={(e) => {
                           e.stopPropagation();
-                          AdminUser.delAdminNotice(item.id);
+                          AdminUser.deleteUser(item.grade.strType, item.id);
                         }}
                       >
                         <div>삭제</div>
@@ -444,6 +447,7 @@ const MainBox = styled.div`
 `;
 
 const Line = styled.div`
+  text-decoration: ${(props) => (props.active ? 'line-through' : 'initial')};
   cursor: pointer;
   width: 100%;
   height: 60px;
@@ -451,6 +455,7 @@ const Line = styled.div`
   //   border: 2px solid black;
   align-items: center;
   justify-content: center;
+  background-color: ${(props) => (props.active ? '#777' : '#fff')};
   border-bottom: ${(props) =>
     props.title ? '1px solid black' : '1px solid #aaaaaa'};
   > div {
@@ -555,6 +560,7 @@ const Management = styled.div`
 `;
 
 const CtlBtn = styled.button`
+  display: ${(props) => (props.active ? 'none' : '')};
   cursor: pointer;
   width: 80px;
   height: 35px;
@@ -647,7 +653,11 @@ const FilterBox = styled.div`
 const FilterItem = styled.div`
   cursor: pointer;
   display: flex;
+  align-items: center;
   margin: 0 5px;
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    margin: 0 3px;
+  }
 `;
 const CheckBox = styled.div`
   margin: 0 5px;
@@ -659,9 +669,41 @@ const CheckBox = styled.div`
     background-color: ${(props) =>
       props.active ? 'rgba(235,114,82,0.7)' : '#fff'};
   }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    margin: 0 3px;
+    > div {
+      width: 10px;
+      height: 10px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > div {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > div {
+      width: 15px;
+      height: 15px;
+    }
+  }
 `;
 const FilterName = styled.div`
   font-size: 15px;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    font-size: 11px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 13px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    font-size: 14px;
+  }
 `;
 
 const Layer = styled.div`
