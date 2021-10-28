@@ -8,6 +8,7 @@ import deleteImg from '../../../../static/images/Signup/delete.png';
 import LocationList from '../../../../sigungu.json';
 import SubjectList from '../../../../subject.json';
 import TextAreaContainer from '../../../../components/TextareaContainer';
+import FileUpload from '../../../../components/FileUpload';
 
 const mobileCustomStyles = {
   placeholder: (defaultStyles) => {
@@ -102,6 +103,20 @@ class TutorContent extends Component {
     Auth.selectedSubject = MyPage.tutoringInfoAry.subject;
     // MyPage.cost = MyPage.tutoringInfoAry.registration
     console.info(MyPage.tutoringInfoAry.cost.split(' ')[1]);
+    if (MyPage.certificationFileAry.length === 0) {
+      let blob = new Blob([MyPage.tutoringInfoAry.file], {
+        type: 'application/octet-stream',
+      });
+      console.info(blob);
+
+      let file = new File([blob], '증명서');
+      console.info(file);
+      // Community.communityFileAry = Community.communityDetailFileAry;
+      // Community.communityFileAry.push(file);
+
+      MyPage.certificationFileAry.push(file);
+    }
+
     MyPage.cost = MyPage.tutoringInfoAry.cost.split(' ')[1];
     MyPage.costState = MyPage.tutoringInfoAry.cost.split(' ')[0];
     MyPage.schoolState = MyPage.tutoringInfoAry.status;
@@ -309,6 +324,18 @@ class TutorContent extends Component {
                 onChange={(e) => MyPage.onChangeHandler(e.target, 'major')}
                 // onFocus={(e) => (e.target.placeholder = '')}
                 // onBlur={(e) => (e.target.placeholder = '학과')}
+              />
+            </ContentBox>
+          </Item>
+
+          <Item>
+            <Label>증명서</Label>
+            <ContentBox>
+              <FileUpload
+                file={true}
+                fileAry={MyPage.certificationFileAry}
+                type="mypage_tutor"
+                state="multi"
               />
             </ContentBox>
           </Item>

@@ -21,6 +21,8 @@ class MyPage {
   @observable birthInfo = '';
 
   @observable tutoringInfoAry = [];
+  @observable certificationFileAry = [];
+  @observable certificationName = '';
   @observable registrationState = false;
   @observable cost = '';
   @observable costState = '';
@@ -182,21 +184,48 @@ class MyPage {
     console.info(Auth.token);
     // const regionList = [];
     // Auth.selected
+
+    console.info(toJS(Auth.selectedLocation));
+    console.info(toJS(Auth.selectedSubject));
+    console.info(this.registrationState);
+    console.info(this.costState);
+    console.info(this.cost);
+    console.info(this.school);
+    console.info(this.schoolState);
+    console.info(this.major);
+    console.info(this.detailContent);
+    console.info(this.certificationFileAry[0]);
+    const formData = new FormData();
+
+    for (let i = 0; i < Auth.selectedLocation.length; i++) {
+      // console.info(this.selectedLocation[i]);
+      formData.append(`regionL`, Auth.selectedLocation[i]);
+    }
+
+    for (let i = 0; i < Auth.selectedSubject.length; i++) {
+      formData.append(`subjectL`, Auth.selectedSubject[i]);
+    }
+
+    formData.append('registration', this.registrationState ? 'OPEN' : 'CLOSE');
+
+    formData.append('cost', this.costState + ' ' + this.cost);
+    // formData.append('cost', 200000);
+    formData.append('school', this.school);
+    // formData.append('school', '가천대');
+    // formData.append('status', 'IN_SCHOOL');
+    formData.append('status', this.schoolState);
+    formData.append('major', this.major);
+    // formData.append('major', '컴퓨터공학과');
+    formData.append('detail', this.detailContent);
+    // formData.append('detail', 'dsfsdfd');
+
+    formData.append('authFile', this.certificationFileAry[0]);
+
     const req = {
       headers: {
         Authorization: Auth.token,
       },
-      data: {
-        regionL: Auth.selectedLocation,
-        subjectL: Auth.selectedSubject,
-        registration: this.registrationState ? 'OPEN' : 'CLOSE',
-        cost: this.costState + ' ' + this.cost,
-
-        school: this.school,
-        status: this.schoolState,
-        major: this.major,
-        detail: this.detailContent,
-      },
+      data: formData,
     };
 
     console.info(req.data);
