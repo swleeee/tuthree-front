@@ -7,12 +7,18 @@ import {
   Route,
   Link as Connection,
 } from 'react-router-dom';
-import Auth from '../../../../stores/Account/Auth';
 
 @inject('Auth')
 @observer
 class Completion extends Component {
+  componentWillUnmount = () => {
+    const { Auth } = this.props;
+    Auth.findEmailMsg = '';
+    Auth.findEmail = '';
+    Auth.findEmailName = '';
+  };
   render() {
+    const { Auth } = this.props;
     return (
       <>
         <Container>
@@ -23,8 +29,7 @@ class Completion extends Component {
             {/* <img src={teacherImg} /> */}
             <Content>
               <div>
-                <span>아이디 : </span>
-                sdfsdfsdfsdf
+                <span>{Auth.findEmailMsg}</span>
               </div>
             </Content>
             <ButtonBox>

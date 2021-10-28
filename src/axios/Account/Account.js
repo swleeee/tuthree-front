@@ -104,3 +104,13 @@ export function deleteUser(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function findId(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/user/findid/${req.type}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}

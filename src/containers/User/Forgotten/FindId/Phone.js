@@ -11,25 +11,27 @@ class Phone extends Component {
       <Container>
         <ItemBox>
           <Input
-            placeholder="-없이 입력하세요."
-            // onChange={this.onIdHandler}
+            placeholder="전화번호 -없이 입력하세요."
+            onChange={(e) => Auth.handleChange(e.target, 'findIdTel')}
             onFocus={(e) => (e.target.placeholder = '')}
-            onBlur={(e) => (e.target.placeholder = '-없이 입력하세요.')}
+            onBlur={(e) =>
+              (e.target.placeholder = '전화번호 -없이 입력하세요.')
+            }
           />
-          <OverlapBtn>인증번호 요청</OverlapBtn>
+          {/* <OverlapBtn>인증번호 요청</OverlapBtn> */}
         </ItemBox>
         <ItemBox>
           <Input
-            placeholder="인증번호를 입력하세요."
-            // onChange={this.onIdHandler}
+            placeholder="이름을 입력하세요."
+            onChange={(e) => Auth.handleChange(e.target, 'findIdTelName')}
             onFocus={(e) => (e.target.placeholder = '')}
-            onBlur={(e) => (e.target.placeholder = '인증번호를 입력하세요.')}
+            onBlur={(e) => (e.target.placeholder = '이름을 입력하세요.')}
           />
-          <OverlapBtn>확인</OverlapBtn>
+          {/* <OverlapBtn>확인</OverlapBtn> */}
         </ItemBox>
         <Button
           onClick={() => {
-            Auth.idStep = 2;
+            Auth.findId();
           }}
         >
           <div>아이디 찾기</div>
@@ -86,27 +88,30 @@ const OverlapBtn = styled.button`
 `;
 
 const Input = styled.input`
+  margin-bottom: ${(props) => (props.mb ? props.mb : '0')}px;
   border: none;
   border: 1px solid #c7c7c7;
   // padding-bottom: 18px;
   outline: none;
   font-size: 15px;
-  width: 100%;
+  // width: 80%;
   box-sizing: border-box;
   display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
   padding-left: 10px;
+  width: 300px;
+  height: 60px;
   :focus {
   }
 
   @media (min-width: 1300px) {
-    width: 300px;
+    width: 80%;
     height: 60px;
   }
 `;
 
 const Button = styled.div`
   margin-top: 30px;
-  width: 445px;
+  width: 300px;
   height: 60px;
   border-radius: 3px;
   background-color: rgba(235, 114, 82, 0.7);

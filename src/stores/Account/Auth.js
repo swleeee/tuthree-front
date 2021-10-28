@@ -376,6 +376,12 @@ class Auth {
   @observable loggedUserName = '';
   @observable loggedUserType = '';
 
+  @observable findEmail = '';
+  @observable findEmailName = '';
+  @observable findTel = '';
+  @observable findTelName = '';
+  @observable findEmailMsg = '';
+
   getStep = () => {
     console.log(this.step);
   };
@@ -541,6 +547,24 @@ class Auth {
         break;
       case 'grade':
         this.grade = e.value;
+        break;
+
+      case 'findIdEmailName':
+        this.findEmailName = e.value;
+
+        break;
+
+      case 'findIdEmail':
+        this.findEmail = e.value;
+        break;
+
+      case 'findIdTelName':
+        this.findTelName = e.value;
+
+        break;
+
+      case 'findIdTel':
+        this.findTel = e.value;
         break;
       default:
         break;
@@ -1059,6 +1083,40 @@ class Auth {
       .catch((e) => {
         console.info(e);
         console.info(e.response);
+      });
+  };
+
+  @action findId = async () => {
+    console.info('findId');
+    console.info(this.certificationType === 1 ? 'email' : 'tel');
+    console.info(this.findEmailName);
+    console.info(this.findEmail);
+    const req = {
+      type: this.certificationType === 1 ? 'email' : 'tel',
+      data: {
+        name:
+          this.certificationType === 1 ? this.findEmailName : this.findTelName,
+        email: this.findEmail,
+        tel: this.findTel,
+      },
+    };
+    if (this.certificationType === 1) {
+      delete req.data.tel;
+    } else {
+      delete req.data.email;
+    }
+    AccountAPI.findId(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          this.findEmailMsg = res.data.message;
+          this.idStep = 2;
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        alert('아이디 찾기에 실패하였습니다. 다시 시도해주세요.');
       });
   };
 }
