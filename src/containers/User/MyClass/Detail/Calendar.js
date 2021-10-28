@@ -7,6 +7,7 @@ import nextImg from '../../../../static/images/Common/next2.png';
 import ScheduleWriting from './Writing/ScheduleWriting';
 import SelectReport from './Select/ClassReport';
 import { toJS } from 'mobx';
+import { VIDEO_URL } from '../../../../axios';
 import moment from 'moment';
 
 // const scheduleStyle = {
@@ -383,7 +384,12 @@ class Calendar extends React.Component {
             <img onClick={this.nextMonth} src={nextImg} />
           </DateItem>
           <ButtonBox>
-            <Button width={100}>
+            <Button
+              width={100}
+              onClick={() => {
+                window.open(VIDEO_URL);
+              }}
+            >
               <div>화상강의</div>
             </Button>
 
