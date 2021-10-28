@@ -13,19 +13,27 @@ class Email extends Component {
     return (
       <Container>
         <Input
-          mb={15}
+          mb={10}
           placeholder="아이디를 입력해주세요."
-          onChange={this.onChangeHandler}
+          onChange={(e) => Auth.handleChange(e.target, 'findIdEmail')}
           onFocus={(e) => (e.target.placeholder = '')}
           onBlur={(e) => (e.target.placeholder = '아이디를 입력해주세요.')}
         />
 
         <Input
-          mb={50}
+          mb={10}
           placeholder="이메일을 입력해주세요."
-          onChange={this.onChangeHandler}
+          onChange={(e) => Auth.handleChange(e.target, 'findIdEmail')}
           onFocus={(e) => (e.target.placeholder = '')}
           onBlur={(e) => (e.target.placeholder = '이메일을 입력해주세요.')}
+        />
+
+        <Input
+          mb={50}
+          placeholder="이름을 입력해주세요."
+          onChange={(e) => Auth.handleChange(e.target, 'findIdEmailName')}
+          onFocus={(e) => (e.target.placeholder = '')}
+          onBlur={(e) => (e.target.placeholder = '이름을 입력해주세요.')}
         />
 
         <Button
@@ -59,21 +67,30 @@ const Input = styled.input`
   // padding-bottom: 18px;
   outline: none;
   font-size: 15px;
-  width: 100%;
+  // width: 80%;
   box-sizing: border-box;
   display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
   padding-left: 10px;
+  width: 80%;
+  height: 60px;
   :focus {
   }
 
+  @media (min-width: 0px) and (max-width: 767.98px) {
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+  }
+
   @media (min-width: 1300px) {
-    width: 300px;
-    height: 60px;
   }
 `;
 
 const Button = styled.div`
-  width: 300px;
+  // width: 300px;
+  width: 80%;
   height: 60px;
   border-radius: 3px;
   background-color: rgba(235, 114, 82, 0.7);
@@ -84,5 +101,29 @@ const Button = styled.div`
   > div {
     font-size: 20px;
     font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    // width: 180px;
+    width: 80%;
+    height: 40px;
+    > div {
+      font-size: 16px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    // width: 250px;
+    height: 50px;
+    > div {
+      font-size: 18px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    // width: 280px;
+    height: 50px;
+    > div {
+      font-size: 19px;
+    }
   }
 `;

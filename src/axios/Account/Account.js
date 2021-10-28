@@ -114,3 +114,13 @@ export function findId(req) {
     data: req.data,
   });
 }
+
+export function findPwd(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/user/findpw/${req.type}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
