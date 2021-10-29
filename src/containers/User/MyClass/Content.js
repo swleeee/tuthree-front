@@ -155,7 +155,9 @@ class Content extends Component {
                   await MyClass.getClass(Auth.loggedUserId);
                 }}
               >
-                현재 수강 학생
+                {Auth.loggedUserType === 'teacher'
+                  ? '현재 수강 학생'
+                  : '현재 수강 선생님'}
               </span>
               <span
                 onClick={async () => {
@@ -163,7 +165,9 @@ class Content extends Component {
                   await MyClass.getClass(Auth.loggedUserId);
                 }}
               >
-                과거 수강 학생
+                {Auth.loggedUserType === 'teacher'
+                  ? '과거 수강 학생'
+                  : '과거 수강 선생님'}
               </span>
             </SortingBox>
           ) : (

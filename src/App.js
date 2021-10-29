@@ -95,40 +95,6 @@ class App extends React.Component {
     //   'https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js';
 
     // await document.head.appendChild(script);
-
-    if (!firebase.length) {
-      firebase.initializeApp(config);
-    }
-
-    const messaging = firebase.messaging();
-
-    await messaging
-      .requestPermission()
-      .then(async () => {
-        console.log('허가!');
-        Auth.notificationToken = await messaging.getToken();
-        console.info(Auth.notificationToken);
-        return Auth.notificationToken;
-      })
-      .then(async function (token) {
-        console.log(token);
-        // 해당 onMessage는 데이터메시지로, 포그라운드인 상태에서
-        // FCM 메시지를 전송하는 경우 콘솔에 표기하도록 작성된 코드입니다.
-
-        messaging.onMessage((payload) => {
-          console.log(payload);
-        });
-      })
-      .catch(function (err) {
-        console.log('fcm에러 : ', err);
-        messaging.onMessage((payload) => {
-          console.log(payload);
-        });
-      });
-    messaging.onMessage(function (payload) {
-      console.log(payload.notification.title);
-      console.log(payload.notification.body);
-    });
   };
 
   componentWillUnmount() {
