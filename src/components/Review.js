@@ -45,9 +45,16 @@ class Review extends Component {
     // console.log(toJS(Partner.ratingPoint));
   };
 
+  componentDidMount = () => {
+    const { MyClass } = this.props;
+    console.info(MyClass.teacherId);
+  };
+
   render() {
     const { open, MyClass } = this.props;
     console.info(MyClass.ratingPoint);
+    console.info(MyClass.teacherId);
+    console.info(MyClass.reviewTutorId);
     return (
       <ModalBox
         modal={open ? 'openModal modal' : 'modal'}
@@ -102,14 +109,17 @@ class Review extends Component {
                       mih={150}
                       bd={true}
                       type="reviewWriting"
-                      value={MyClass.reportContent}
                       placeholder="리뷰 내용을 자유롭게 작성해주세요."
                     />
                   </Content>
                 </Section>
               </Main>
               <ButtonBox>
-                <Button color="#fff" bcolor="rgb(235, 114, 82)">
+                <Button
+                  color="#fff"
+                  bcolor="rgb(235, 114, 82)"
+                  onClick={() => MyClass.setTutorReview()}
+                >
                   <div>리뷰 등록</div>
                 </Button>
               </ButtonBox>

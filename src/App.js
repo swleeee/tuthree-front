@@ -16,6 +16,8 @@ import {
   Community,
   Tutor,
   Tutee,
+  Test,
+  Test2,
   Chatting,
   MyPage,
   MyClass,
@@ -35,15 +37,25 @@ import MovileNavContainer from './components/MobileNav';
 import Auth from './stores/Account/Auth';
 import IE from './components/IE';
 import CheckBrowserModal from './components/CheckBrowswerModal';
+// import { initializeApp } from 'firebase/app';
+import { config } from './firebase-config';
+import firebase from 'firebase';
+import 'firebase/auth';
+import 'firebase/firestore';
 
 // @inject('Common')
+
+// RequestPermission 첫 어플 시작 시 알림 허용 or 불허를 사용자에게 안내합니다.
+// 허용하지 않을 시 알람 메시지는 가지 않습니다.
+//허가를 요청합니다!
+
 @observer
 class App extends React.Component {
   state = {
     width: null,
     ie_user: false,
   };
-  async componentDidMount() {
+  componentDidMount = async () => {
     console.info('diddiddid');
     window.addEventListener('resize', this.updateDimensions);
     console.info(localStorage.getItem('token'));
@@ -56,6 +68,7 @@ class App extends React.Component {
       Auth.token = localStorage.getItem('token');
       Auth.loggedUserId = localStorage.getItem('userId');
       Auth.loggedUserType = localStorage.getItem('userType');
+      Auth.loggedUserName = localStorage.getItem('userName');
     }
     const userAgent = window.navigator.userAgent;
     console.info(userAgent);
@@ -74,7 +87,18 @@ class App extends React.Component {
         ie_user: true,
       });
     }
-  }
+
+    // const script = document.createElement('script');
+    // script.src = 'https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js';
+    // script.async = true;
+    // await document.head.appendChild(script);
+
+    // script.src =
+    //   'https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js';
+
+    // await document.head.appendChild(script);
+  };
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateDimensions);
   }
@@ -111,6 +135,8 @@ class App extends React.Component {
             <Route path="/community" component={Community} />
             <Route path="/tutor" component={Tutor} />
             <Route path="/tutee" component={Tutee} />
+            <Route path="/test" component={Test} />
+            <Route path="/test2" component={Test2} />
             <Route path="/chatting" component={Chatting} />
             <Route path="/mypage" component={MyPage} />
             <Route path="/myclass" component={MyClass} />

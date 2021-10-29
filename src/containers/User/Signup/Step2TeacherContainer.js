@@ -264,6 +264,7 @@ class Step2TeacherContainer extends Component {
             <div>이메일</div>
             <WrapperBox wrap={true}>
               <Input
+                width={200}
                 placeholder="이메일"
                 onChange={(e) => this.inputHandler(e.target, 'email')} // onChange={this.onIdHandler}
                 onFocus={(e) => (e.target.placeholder = '')}
@@ -293,18 +294,9 @@ class Step2TeacherContainer extends Component {
                 onFocus={(e) => (e.target.placeholder = '')}
                 onBlur={(e) => (e.target.placeholder = '직접 입력')}
               />
-            </WrapperBox>
-          </ItemBox>
-          <ItemBox>
-            <div>휴대폰 번호</div>
-            <WrapperBox>
-              <Input
-                placeholder="-없이 입력하세요."
-                onChange={(e) => this.inputHandler(e.target, 'phone')} // onChange={this.onIdHandler}
-                onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) => (e.target.placeholder = '-없이 입력하세요.')}
-              />
-              <OverlapBtn>인증번호 요청</OverlapBtn>
+              <WrapperBox>
+                <OverlapBtn>인증번호 요청</OverlapBtn>
+              </WrapperBox>
             </WrapperBox>
           </ItemBox>
           <ItemBox>
@@ -321,6 +313,16 @@ class Step2TeacherContainer extends Component {
               <OverlapBtn>확인</OverlapBtn>
             </WrapperBox>
           </ItemBox>
+          <ItemBox>
+            <div>휴대폰 번호</div>
+            <Input
+              placeholder="-없이 입력하세요."
+              onChange={(e) => this.inputHandler(e.target, 'phone')} // onChange={this.onIdHandler}
+              onFocus={(e) => (e.target.placeholder = '')}
+              onBlur={(e) => (e.target.placeholder = '-없이 입력하세요.')}
+            />
+          </ItemBox>
+
           <ItemBox>
             <div>성별</div>
             <Radiobox
@@ -358,6 +360,7 @@ class Step2TeacherContainer extends Component {
               options={birthAry}
               //  isSearchable={false}
               placeholder="선택하세요."
+              width={145}
               domainType={1}
             />
           </ItemBox>
@@ -538,7 +541,7 @@ const Input = styled.input`
     margin-left: ${(props) => (props.domainType === 2 ? '15px' : '0px')};
   }
   @media (min-width: 1300px) {
-    width: ${(props) => (props.domainType === 2 ? '145px' : '440px')};
+    width: ${(props) => (props.width ? props.width : '440')}px;
     height: 60px;
     margin-left: ${(props) => (props.domainType === 2 ? '15px' : '0px')};
   }

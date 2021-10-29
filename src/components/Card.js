@@ -23,7 +23,7 @@ class Card extends Component {
       post,
     } = this.props;
     // console.info(toJS(subject));
-    console.info(post);
+    // console.info(post);
     return (
       <Container>
         <Img post={post}>

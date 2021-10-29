@@ -3,6 +3,7 @@ import Auth from '../Account/Auth';
 import Common from '../Common/Common';
 import * as ClassAPI from '../../axios/Managing/Class';
 import * as GradingAPI from '../../axios/Managing/Grading';
+import * as ReviewAPI from '../../axios/Matching/Review';
 
 class MyClass {
   // constructor() {
@@ -63,8 +64,14 @@ class MyClass {
   @observable getTuteeAnswerState = false; // 학생 사용자가 답을 잘 가져왔는지...
   @observable resultModalActive = false;
 
+  @observable enrollmentModalActive = false;
+  @observable enrollmentChildName = '';
+  @observable enrollmentChildId = '';
+  @observable childClassAry = [];
+
   @observable ratingPoint = 5; // 평점
   @observable reviewContent = ''; // 리뷰 내용
+  @observable reviewTutorId = ''; // 작성할 선생님 리뷰 아이디
   @observable starAry = [
     {
       id: 1,
@@ -97,6 +104,26 @@ class MyClass {
       content2: '만족도 5점을 주셨네요, 어떤점이 좋았나요?',
     },
   ];
+
+  @observable myScheduleColor = [
+    '#608880',
+    '#866088',
+    '#7e8860',
+    '#d45050',
+    '#f08080',
+    '#1b5608',
+  ];
+  @observable myScheduleModalActive = false;
+  @observable myScheduleAry = [];
+  @observable myScheduleEvent = {
+    월: [],
+    화: [],
+    수: [],
+    목: [],
+    금: [],
+    토: [],
+    일: [],
+  };
 
   @action onClickNavHandler = (type) => {
     console.info(type);
@@ -176,6 +203,17 @@ class MyClass {
       //   this.answerAry[idx].ans = e.target.value;
       //   // this.setQuestion(e.currentTarget.files[0]);
       //   break;
+
+      case 'enrollment_child_name':
+        this.enrollmentChildName = e.target.value;
+        console.info(this.enrollmentChildName);
+        break;
+
+      case 'enrollment_child_id':
+        this.enrollmentChildId = e.target.value;
+        console.info(this.enrollmentChildId);
+        break;
+
       default:
         break;
     }
@@ -186,7 +224,7 @@ class MyClass {
     if (!id) {
       window.location.href = '/';
     }
-    console.info(Auth.Authorization);
+    console.info(Auth.token);
     const req = {
       params: {
         status: this.status,
@@ -698,13 +736,14 @@ class MyClass {
         grade: 'student',
       },
       headers: {
-        Authorization: Auth.Authorization,
+        Authorization: Auth.token,
       },
       data: {
         prob: parseInt(this.tuteeTotalQuestion),
         problem: this.answerAry,
       },
     };
+
     console.info(toJS(req.data));
     console.info(toJS(req.data.problem));
     await GradingAPI.setAnswer(req)
@@ -797,6 +836,123 @@ class MyClass {
     console.info(idx);
     console.info(toJS(this.markingStateAry));
     console.info(toJS(this.markingStateObj));
+  };
+
+  @action getTimeTable = async () => {
+    console.info(Auth.loggedUserId);
+    const req = {
+      params: {
+        id: Auth.loggedUserId,
+        grade: Auth.loggedUserType,
+      },
+
+      headers: {
+        Authorization: Auth.Authorization,
+      },
+    };
+    await ClassAPI.getTimeTable(req)
+      .then(async (res) => {
+        console.info(res);
+        this.myScheduleAry = await res.data.data;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.myScheduleAry));
+  };
+
+  @action setTutorReview = async () => {
+    console.info(Auth.loggedUserId);
+    console.info(this.reviewTutorId);
+    console.info(this.reviewContent);
+    const req = {
+      params: {
+        studentId: Auth.loggedUserId,
+        teacherId: this.reviewTutorId,
+      },
+      data: {
+        star: this.ratingPoint,
+        content: this.reviewContent,
+      },
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+    console.info(req.data);
+    await ReviewAPI.setTutorReview(req)
+      .then(async (res) => {
+        console.info(res);
+        // this.myScheduleAry = await res.data.data;
+        alert('리뷰 작성이 완료되었습니다');
+        this.reviewModalActive = false;
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    console.info(toJS(this.myScheduleAry));
+  };
+
+  @action enrollmentChild = async () => {
+    console.info(this.enrollmentChildId);
+    console.info(this.enrollmentChildName);
+    console.info(Auth.token);
+    const req = {
+      data: {
+        studentId: this.enrollmentChildId,
+        studentName: this.enrollmentChildName,
+      },
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+    console.info(req.data);
+    await ClassAPI.enrollmentChild(req)
+      .then(async (res) => {
+        console.info(res);
+        if (res.data.success) {
+          alert(
+            '자녀 등록 신청이 완료되었습니다. 자녀가 수락할 때까지 기다려주세요.'
+          );
+          this.enrollmentModalActive = false;
+        } else {
+          alert(
+            '자녀 등록 신청을 실패하였습니다. 입력한 정보가 맞는지 다시 확인해주세요'
+          );
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action getChildClassList = async () => {
+    console.info(this.enrollmentChildId);
+    console.info(this.enrollmentChildName);
+    console.info(Auth.token);
+    const req = {
+      params: {
+        id: Auth.loggedUserId,
+        status: 'OPEN',
+      },
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+    console.info(req.data);
+    await ClassAPI.getChildClassList(req)
+      .then(async (res) => {
+        console.info(res);
+        if (res.data.success) {
+          // this.childClassAry =
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
   };
 }
 export default new MyClass();

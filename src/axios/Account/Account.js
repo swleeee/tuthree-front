@@ -58,3 +58,79 @@ export function logout(req) {
     // headers: req.headers ? req.headers : null,
   });
 }
+
+export function adminLogin(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/admin/in`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
+export function adminLogout(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/admin/out`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function getUserList(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/admin/userlist`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function getDetailUserList(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/user/${req.grade}/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function deleteUser(req) {
+  return axios({
+    method: 'DELETE',
+    url: `${ROOT_URL}/user/${req.grade}/${req.id}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function findId(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/user/findid/${req.type}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
+export function findPwd(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/user/findpwd/${req.type}`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
+export function changePwd(req) {
+  return axios({
+    method: 'PUT',
+    url: `${ROOT_URL}/user/changepwd`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}

@@ -232,7 +232,7 @@ class Content extends Component {
                     <Card
                       type="tutee"
                       name={item.name}
-                      gender={item.gender}
+                      gender={item.sex}
                       rating={item.star}
                       school={`${item.school} ${item.major}`}
                       subject={item.subject}

@@ -3,6 +3,8 @@ import Common from './Common/Common';
 import Community from './Community/Community';
 import Tutor from './Matching/Tutor';
 import Tutee from './Matching/Tutee';
+import Test from './Matching/Test';
+import Test2 from './Test2';
 import Chatting from './Chatting';
 import Matching from './Matching/Matching';
 import MyPage from './MyPage/MyPage';
@@ -17,6 +19,7 @@ export default {
   Community,
   Tutor,
   Tutee,
+  Test,
   Chatting,
   Matching,
   MyPage,
@@ -24,4 +27,5 @@ export default {
   AdminAuth,
   AdminUser,
   AdminCommunity,
+  Test2,
 };

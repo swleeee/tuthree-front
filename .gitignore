@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# 특정 파일만 ignore
+/src/firebase-config.js
+src/axios/index.js

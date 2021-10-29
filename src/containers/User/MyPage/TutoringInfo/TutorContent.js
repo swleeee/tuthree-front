@@ -8,6 +8,7 @@ import deleteImg from '../../../../static/images/Signup/delete.png';
 import LocationList from '../../../../sigungu.json';
 import SubjectList from '../../../../subject.json';
 import TextAreaContainer from '../../../../components/TextareaContainer';
+import FileUpload from '../../../../components/FileUpload';
 
 const mobileCustomStyles = {
   placeholder: (defaultStyles) => {
@@ -93,6 +94,36 @@ const customStyles = {
 @inject('MyPage', 'Common', 'Auth')
 @observer
 class TutorContent extends Component {
+  componentDidMount = async () => {
+    const { MyPage, Auth, Common } = this.props;
+    await MyPage.getTutorInfo();
+    MyPage.registrationState =
+      MyPage.tutoringInfoAry.registration === 'OPEN' ? true : false;
+    Auth.selectedLocation = MyPage.tutoringInfoAry.region;
+    Auth.selectedSubject = MyPage.tutoringInfoAry.subject;
+    // MyPage.cost = MyPage.tutoringInfoAry.registration
+    console.info(MyPage.tutoringInfoAry.cost.split(' ')[1]);
+    if (MyPage.certificationFileAry.length === 0) {
+      let blob = new Blob([MyPage.tutoringInfoAry.file], {
+        type: 'application/octet-stream',
+      });
+      console.info(blob);
+
+      let file = new File([blob], '증명서');
+      console.info(file);
+      // Community.communityFileAry = Community.communityDetailFileAry;
+      // Community.communityFileAry.push(file);
+
+      MyPage.certificationFileAry.push(file);
+    }
+
+    MyPage.cost = MyPage.tutoringInfoAry.cost.split(' ')[1];
+    MyPage.costState = MyPage.tutoringInfoAry.cost.split(' ')[0];
+    MyPage.schoolState = MyPage.tutoringInfoAry.status;
+    MyPage.school = MyPage.tutoringInfoAry.school;
+    MyPage.major = MyPage.tutoringInfoAry.major;
+    MyPage.detailContent = MyPage.tutoringInfoAry.detail;
+  };
   render() {
     const { MyPage, Auth, Common } = this.props;
     return (
@@ -104,7 +135,7 @@ class TutorContent extends Component {
           <Item>
             <Label>모집 상태</Label>
             <ContentBox>
-              <ToggleButton />
+              <ToggleButton type="registration" />
             </ContentBox>
           </Item>
 
@@ -245,17 +276,34 @@ class TutorContent extends Component {
             <ContentBox>
               <WrapperBox>
                 <Input
-                  placeholder="학교"
-                  onChange={(e) => this.inputHandler(e.target, 'school')}
-                  onFocus={(e) => (e.target.placeholder = '')}
-                  onBlur={(e) => (e.target.placeholder = '학교')}
+                  // placeholder="학교"
+                  value={MyPage.school}
+                  onChange={(e) =>
+                    MyPage.onChangeHandler(e.target, 'school_info')
+                  }
+                  // onFocus={(e) => (e.target.placeholder = '')}
+                  // onBlur={(e) => (e.target.placeholder = '학교')}
                 />
                 <Select
                   width={140}
                   styles={
                     Common.width > 767.98 ? customStyles : mobileCustomStyles
                   }
-                  onChange={(e) => Auth.handleChange(e, 'schoolState')}
+                  value={{
+                    label: MyPage.schoolState
+                      ? MyPage.schoolState === 'IN_SCHOOL'
+                        ? '재학상태'
+                        : MyPage.schoolState === 'GRADUATE'
+                        ? '졸업상태'
+                        : MyPage.schoolState === 'ABSENCE_OF_SCHOOL'
+                        ? '휴학상태'
+                        : ''
+                      : '재적상태',
+                    value: MyPage.schoolState && MyPage.schoolState,
+                  }}
+                  onChange={(e) =>
+                    MyPage.onChangeHandler(e, 'school_state_info')
+                  }
                   getOptionLabel={(option) => option.label}
                   options={Auth.stateSchoolAry}
                   placeholder="선택하세요."
@@ -271,10 +319,23 @@ class TutorContent extends Component {
             <ContentBox>
               {' '}
               <Input
-                placeholder="학과"
-                onChange={(e) => this.inputHandler(e.target, 'major')}
-                onFocus={(e) => (e.target.placeholder = '')}
-                onBlur={(e) => (e.target.placeholder = '학과')}
+                // placeholder="학과"
+                value={MyPage.major}
+                onChange={(e) => MyPage.onChangeHandler(e.target, 'major')}
+                // onFocus={(e) => (e.target.placeholder = '')}
+                // onBlur={(e) => (e.target.placeholder = '학과')}
+              />
+            </ContentBox>
+          </Item>
+
+          <Item>
+            <Label>증명서</Label>
+            <ContentBox>
+              <FileUpload
+                file={true}
+                fileAry={MyPage.certificationFileAry}
+                type="mypage_tutor"
+                state="multi"
               />
             </ContentBox>
           </Item>
@@ -285,10 +346,14 @@ class TutorContent extends Component {
               <WrapperBox>
                 <Select
                   width={140}
+                  value={{
+                    label: MyPage.costState ? MyPage.costState : '',
+                    value: MyPage.costState && MyPage.costState,
+                  }}
                   styles={
                     Common.width > 767.98 ? customStyles : mobileCustomStyles
                   }
-                  onChange={(e) => Auth.handleChange(e, 'budgetType')}
+                  onChange={(e) => MyPage.onChangeHandler(e, 'cost_state')}
                   getOptionLabel={(option) => option.label}
                   options={Auth.budgetTypeAry}
                   placeholder="선택하세요."
@@ -298,14 +363,14 @@ class TutorContent extends Component {
                 <div>
                   <Input
                     //  width="80"
-
+                    value={MyPage.cost}
                     domainType={2}
-                    placeholder="급여(ex: 350000, 650000)"
-                    onChange={(e) => this.inputHandler(e.target, 'budget')}
-                    onFocus={(e) => (e.target.placeholder = '')}
-                    onBlur={(e) =>
-                      (e.target.placeholder = '급여(ex: 350000, 650000)')
-                    }
+                    // placeholder="급여(ex: 350000, 650000)"
+                    onChange={(e) => MyPage.onChangeHandler(e.target, 'cost')}
+                    // onFocus={(e) => (e.target.placeholder = '')}
+                    // onBlur={(e) =>
+                    //   (e.target.placeholder = '급여(ex: 350000, 650000)')
+                    // }
                   />
                   <span>원</span>
                 </div>
@@ -316,12 +381,16 @@ class TutorContent extends Component {
           <Item>
             <Label>소개</Label>
             <ContentBox>
-              <TextArea type="teacherSignup" placeholder="" />
+              <TextArea
+                type="tutor_info"
+                placeholder=""
+                value={MyPage.detailContent}
+              />
             </ContentBox>
           </Item>
         </Main>
         <ButtonBox>
-          <Button>
+          <Button onClick={() => MyPage.putTutorInfo()}>
             <div>수정</div>
           </Button>
         </ButtonBox>
@@ -443,6 +512,7 @@ const ButtonBox = styled.div`
   align-items: center;
 `;
 const Button = styled.button`
+  cursor: pointer;
   margin-top: 60px;
   background-color: rgb(235, 114, 82);
   border: none;

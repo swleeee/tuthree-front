@@ -39,7 +39,7 @@ const reviewData = [
   },
 ];
 
-@inject('Tutee', 'Matching')
+@inject('Tutee', 'Matching', 'Chatting')
 @observer
 class MobileContent extends Component {
   componentDidMount = async () => {
@@ -53,7 +53,7 @@ class MobileContent extends Component {
     Matching.isCheckBookmark = false;
   };
   render() {
-    const { Tutee, Matching } = this.props;
+    const { Tutee, Matching, Chatting } = this.props;
     return (
       <Container>
         <Number>
@@ -179,7 +179,8 @@ class MobileContent extends Component {
               onClick={() => {
                 console.info('click');
                 // Common.modalActive = true;
-                window.location.href = '/chatting';
+                // window.location.href = '/chatting';
+                Chatting.createChatRoom();
               }}
             >
               <img src={communicationImg} />

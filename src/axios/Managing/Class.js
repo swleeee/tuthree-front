@@ -110,3 +110,49 @@ export function getDetailReport(req) {
     headers: req.headers ? req.headers : null,
   });
 }
+
+export function getTimeTable(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/users/schedule`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function enrollmentChild(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/user/child`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
+
+export function getEnrollmentList(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/user/parent`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function acceptEnrollment(req) {
+  return axios({
+    method: 'POST',
+    url: `${ROOT_URL}/user/parent`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
+
+export function getChildClassList(req) {
+  return axios({
+    method: 'GET',
+    url: `${ROOT_URL}/room/child`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}

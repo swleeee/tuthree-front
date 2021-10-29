@@ -469,19 +469,24 @@ class Community {
     console.info(this.communityCurrentPage);
     console.info(this.communityTotalPage);
 
+    console.info(encodeURIComponent(this.communitySearchValue));
+    console.info(decodeURIComponent(this.communitySearchValue));
+    console.info(this.communitySearchFinalValue);
     console.info('search');
     console.info(id);
     const req = {
       params: {
         keyword: id
-          ? this.communitySearchValue
-          : this.communitySearchFinalValue,
+          ? decodeURIComponent(this.communitySearchValue)
+          : decodeURIComponent(this.communitySearchFinalValue),
         page: id ? id : this.communityCurrentPage,
       },
       headers: {
         Authorization: this.Authorization,
       },
     };
+
+    console.info(req.params.keyword);
 
     await CommunityAPI.searchCommunity(req)
       .then(async (res) => {

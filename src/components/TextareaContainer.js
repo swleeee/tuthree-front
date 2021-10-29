@@ -5,7 +5,7 @@ import authStore from '../stores/Account/Auth';
 import AdminCommunity from '../stores/Admin/Community';
 import Community from '../stores/Community/Community';
 
-@inject('AdminCommunity', 'Community', 'Chatting', 'MyClass')
+@inject('AdminCommunity', 'Community', 'Chatting', 'MyClass', 'MyPage')
 @observer
 class TextareaContainer extends Component {
   state = {
@@ -15,29 +15,29 @@ class TextareaContainer extends Component {
     row: 1,
   };
   requestHandler = (event) => {
-    const { type, mxh, Chatting, MyClass, idx } = this.props;
-    console.info(mxh);
-    const textareaLineHeight = 17;
-    const { minRows, maxRows } = this.state;
-    const previousRows = event.target.rows;
-    event.target.rows = minRows; // reset number of rows in textarea
+    const { type, mxh, Chatting, MyClass, idx, MyPage } = this.props;
+    // console.info(mxh);
+    // const textareaLineHeight = 17;
+    // const { minRows, maxRows } = this.state;
+    // const previousRows = event.target.rows;
+    // event.target.rows = minRows; // reset number of rows in textarea
 
-    const currentRows = ~~(event.target.scrollHeight / textareaLineHeight);
+    // const currentRows = ~~(event.target.scrollHeight / textareaLineHeight);
 
-    console.info(previousRows);
-    console.info(currentRows);
-    if (currentRows === previousRows) {
-      event.target.rows = currentRows;
-    }
+    // console.info(previousRows);
+    // console.info(currentRows);
+    // if (currentRows === previousRows) {
+    //   event.target.rows = currentRows;
+    // }
 
-    if (currentRows >= maxRows) {
-      event.target.rows = maxRows;
-      event.target.scrollTop = event.target.scrollHeight;
-    }
+    // if (currentRows >= maxRows) {
+    //   event.target.rows = maxRows;
+    //   event.target.scrollTop = event.target.scrollHeight;
+    // }
 
     this.setState({
       value: event.target.value,
-      row: currentRows < maxRows ? currentRows : maxRows,
+      // row: currentRows < maxRows ? currentRows : maxRows,
     });
 
     switch (type) {
@@ -76,6 +76,21 @@ class TextareaContainer extends Component {
         MyClass.answerAry[idx].ans = event.target.value;
         console.info(MyClass.answerAry[idx].ans);
         break;
+
+      case 'tutor_info':
+        MyPage.detailContent = event.target.value;
+        console.info(MyPage.detailContent);
+        break;
+
+      case 'chat_msg':
+        Chatting.chatMsg = event.target.value;
+        console.info(Chatting.chatMsg);
+        break;
+
+      // case 'tutor_info':
+      //   MyPage.detailContent = event.target.value;
+      //   console.info(MyPage.detailContent);
+      //   break;
 
       default:
         break;

@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { registerServiceWorker } from './register-sw';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'react-app-polyfill/ie9';
 import 'react-app-polyfill/stable';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+
+registerServiceWorker();
 
 ReactDOM.render(
   <React.StrictMode>

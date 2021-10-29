@@ -11,7 +11,7 @@ import Common from '../../../../stores/Common/Common';
 import bookMarkWhiteImg from '../../../../static/images/Common/bookmarkWhite.png';
 import bookMarkDarkImg from '../../../../static/images/Common/bookmarkDark.png';
 
-@inject('Auth', 'Common', 'Tutee', 'Matching')
+@inject('Auth', 'Common', 'Tutee', 'Matching', 'Chatting')
 @observer
 class SubContent extends Component {
   openModal = () => {
@@ -33,7 +33,7 @@ class SubContent extends Component {
   };
 
   render() {
-    const { Tutee, Matching } = this.props;
+    const { Tutee, Matching, Chatting } = this.props;
     return (
       <>
         <Container width={Common.width}>
@@ -137,7 +137,8 @@ class SubContent extends Component {
               onClick={() => {
                 console.info('click');
                 // Common.modalActive = true;
-                window.location.href = '/chatting';
+                // window.location.href = '/chatting';
+                Chatting.createChatRoom();
               }}
               color="#000"
             >

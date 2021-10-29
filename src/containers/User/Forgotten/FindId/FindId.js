@@ -72,6 +72,10 @@ const MainBox = styled.div`
   display: flex;
   width: 100%;
   height: 800px;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    flex-direction: column;
+  }
 `;
 const MainContent = styled.div`
   width: 100%;
@@ -89,6 +93,19 @@ const TabBox = styled.div`
   align-itmes: center;
   padding: 17px 25px;
   box-sizing: border-box;
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 100%;
+    flex-direction: row;
+    height: 160px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 200px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 250px;
+  }
 `;
 const Tab = styled.div`
   width: 250px;
@@ -102,6 +119,18 @@ const Tab = styled.div`
   border-radius: 5px;
   box-shadow: ${(props) =>
     props.active ? '0 4px 20px 1px rgba(0, 0, 0, 0.3)' : ''};
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    width: 45%;
+    height: 120px;
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 150px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    width: 200px;
+  }
 `;
 
 const Item = styled.div`
@@ -120,5 +149,35 @@ const Item = styled.div`
     font-size: 18px;
     font-weight: bold;
     color: ${(props) => (props.active ? '#ffffff' : '#000000')};
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    > img {
+      width: 32px;
+      height: 32px;
+    }
+    > div {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    > img {
+      width: 40px;
+      height: 40px;
+    }
+    > div {
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    > img {
+      width: 44px;
+      height: 44px;
+    }
+
+    > div {
+      font-size: 17px;
+    }
   }
 `;

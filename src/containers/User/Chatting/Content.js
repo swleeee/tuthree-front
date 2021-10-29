@@ -1,10 +1,47 @@
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
 import { inject, observer, Provider } from 'mobx-react';
 import styled from 'styled-components';
 import defaultImg from '../../../static/images/Common/defaultUser.png';
 import Textarea from '../../../components/TextareaContainer';
 import InfoWriting from './InfoWriting';
 import Info from './Info';
+import { toJS } from 'mobx';
+import { config } from '../../../firebase-config';
+
+// import * as Stomp from '@stomp/stompjs';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+
+let messageBox = null;
+const today = new Date();
+let date = null;
+let year = null;
+let month = null;
+let day = null;
+// import 'firebase/compat/auth';
+// import 'firebase/compat/firestore';
+
+// firebase.initializeApp(config);
+// const messaging = getMessaging(firebase.initializeApp(config));
+
+let stompClient = null;
+
+// messaging
+//   .requestPermission()
+//   .then(function () {
+//     return messaging.getToken();
+//   })
+//   .then(function (token) {
+//     console.log(token);
+//   })
+//   .catch(function (err) {
+//     console.log('fcm error : ', err);
+//   });
+
+// messaging.onMessage(function (payload) {
+//   console.log(payload.notification.title);
+//   console.log(payload.notification.body);
+// });
 
 const userList = [
   {
@@ -175,6 +212,13 @@ const chatList = [
 @inject('Auth', 'Common', 'Chatting')
 @observer
 class Content extends Component {
+  constructor(props) {
+    super(props);
+    messageBox = React.createRef();
+  }
+
+  state = { today: new Date() };
+
   openModal = () => {
     const { Common } = this.props;
     Common.modalActive = false;
@@ -187,16 +231,89 @@ class Content extends Component {
     const { Auth, Chatting } = this.props;
     console.info(Chatting.studentId);
     await Chatting.getDetailClass();
+    await Chatting.getChatUserList();
     if (Auth.loggedUserType === 'teacher') {
       await Chatting.checkInfoWriting();
+    }
+
+    this.connect();
+
+    // const script = document.createElement('script');
+
+    // script.src =
+    //   'https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.2.0/stomp.min.js';
+    // script.async = true;
+
+    // document.head.appendChild(script);
+
+    // <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.2.0/stomp.min.js"></script>
+  };
+
+  connect = async () => {
+    const { Chatting, Auth } = this.props;
+
+    console.info('connect 중 ...');
+    var socket = new SockJS('http://3.34.125.3:8088/tuthree-websocket');
+    stompClient = Stomp.over(socket);
+    // stompClient = socket;
+    // stompClient = new Stomp.Client
+
+    await stompClient.connect({}, async (frame) => {
+      console.log('Connected: ' + frame);
+      // stompClient.subscribe('/topic/messages', function (message) {
+      await stompClient.subscribe(
+        `/topic/messages.${Chatting.roomId}`,
+        async (message) => {
+          // showMessage(decodeURI(JSON.parse(message.body).content));
+          console.info(decodeURI(JSON.parse(message.body).content));
+          await Chatting.getChatList(Chatting.roomId);
+          console.info(this.scrollToBottom);
+          this.scrollToBottom();
+        }
+      );
+      // stompClient.subscribe('/user/topic/private-messages', function (message) {
+      //     showMessage(JSON.parse(message.body).content);
+      // });
+    });
+  };
+
+  sendMessage() {
+    const { Chatting, Auth } = this.props;
+    console.log('sending message');
+    Chatting.sendFcm();
+    // stompClient.send("/ws/message", {}, JSON.stringify({'content': $("#message").val()}));
+    // stompClient.send("/ws/message", {}, JSON.stringify({'content': encodeURI($("#message").val())}));
+    stompClient.send(
+      '/ws/message',
+      {},
+      JSON.stringify({
+        room: { id: Chatting.roomId },
+        name: encodeURI(Auth.loggedUserName),
+        userId: Auth.loggedUserId,
+        content: encodeURI('hihi'),
+      })
+    );
+  }
+  scrollToBottom = () => {
+    // this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+    if (messageBox.current) {
+      console.info(messageBox.current.scrollTop);
+      messageBox.current.scrollTop = messageBox.current.scrollHeight;
+      console.info(messageBox.current.scrollTop);
     }
   };
 
   render() {
     const { Common, Auth, Chatting } = this.props;
+    console.info(config);
     console.info(Common.modalActive);
     console.info(Chatting.enrollmentState);
     console.info(Chatting.writingState);
+    year = today.getFullYear();
+    month = ('0' + (today.getMonth() + 1)).slice(-2);
+    day = ('0' + today.getDate()).slice(-2);
+    date = year + '-' + month + '-' + day;
+    console.info(date);
     return (
       <Container state={Common.modalActive}>
         {Common.modalActive === true && Common.modalState === 1 && (
@@ -228,10 +345,23 @@ class Content extends Component {
             <div>Chatting</div>
           </Label>
           <UserList>
-            {userList &&
-              userList.map((item, idx) => {
+            {Chatting.chatUserAry &&
+              Chatting.chatUserAry.map((item, idx) => {
+                console.info(toJS(item));
                 return (
-                  <UserListItem>
+                  <UserListItem
+                    onClick={() => {
+                      if (Auth.loggedUserType === 'teacher') {
+                        Chatting.studentId = item.chatList.senderId;
+                      } else {
+                        Chatting.teacherId = item.chatList.senderId;
+                      }
+                      Chatting.otherName = item.chatList.name;
+                      Chatting.roomId = item.roomId;
+                      Chatting.getChatList(item.roomId);
+                      this.connect();
+                    }}
+                  >
                     <ImgBox width={55} height={55} mr={10}>
                       <div>
                         {/* <div>IMG</div> */}
@@ -240,10 +370,37 @@ class Content extends Component {
                     </ImgBox>
                     <UserItem>
                       <UserLabel>
-                        <UserName>{item.name}</UserName>
-                        <UserWriteDt>{item.writeDt}</UserWriteDt>
+                        <UserName>{item.chatList.name}</UserName>
+                        <UserWriteDt>
+                          {date ===
+                          item.chatList.date.substring(
+                            0,
+                            item.chatList.date.indexOf(' ')
+                          )
+                            ? item.chatList.date.substring(
+                                item.chatList.date.indexOf(' '),
+                                item.chatList.date.lastIndexOf(':')
+                              )
+                            : item.chatList.date.substring(
+                                0,
+                                item.chatList.date.lastIndexOf(':')
+                              )}
+                          {/* {item.chatList.date.substring(
+                            0,
+                            item.chatList.date.lastIndexOf(':')
+                          )} */}
+                          {/* {item.chatList.date.substring(
+                            0,
+                            item.chatList.date.indexOf(' ')
+                          )} */}
+                          {date ===
+                            item.chatList.date.substring(
+                              0,
+                              item.chatList.date.indexOf(' ')
+                            )}
+                        </UserWriteDt>
                       </UserLabel>
-                      <UserContent>{item.content}</UserContent>
+                      <UserContent>{item.chatList.chat}</UserContent>
                     </UserItem>
                   </UserListItem>
                 );
@@ -302,42 +459,63 @@ class Content extends Component {
           </ButtonBox>
         </ChatList>
         <ChatContainer>
-          <ChatHeader>홍길동</ChatHeader>
-          <ChatMain>
-            {chatList &&
-              chatList.map((item, idx) => {
+          <ChatHeader>{Chatting.otherName}</ChatHeader>
+          <ChatMain id="main" ref={messageBox}>
+            {Chatting.chatAry &&
+              Chatting.chatAry.map((item, idx) => {
                 return (
-                  <ChatListItem type={item.type === 'me'}>
+                  <ChatListItem type={item.senderId === Auth.loggedUserId}>
                     <ImgBox
                       width={55}
                       height={55}
                       mr={10}
-                      type={item.type === 'me'}
+                      type={item.senderId === Auth.loggedUserId}
                     >
                       <div>
                         {/* <div>IMG</div> */}
                         <img src={defaultImg} />
                       </div>
                     </ImgBox>
-                    <ChatItem type={item.type === 'me'}>
-                      <ChatLabel type={item.type === 'me'}>
-                        <ChatName type={item.type === 'me'}>
-                          {item.name}
+                    <ChatItem type={item.senderId === Auth.loggedUserId}>
+                      <ChatLabel type={item.senderId === Auth.loggedUserId}>
+                        <ChatName type={item.senderId === Auth.loggedUserId}>
+                          {item.senderName}
                         </ChatName>
-                        <ChatContent type={item.type === 'me'}>
+                        <ChatContent type={item.senderId === Auth.loggedUserId}>
                           <div></div>
-                          {item.content}
+                          {item.chat}
                         </ChatContent>
                       </ChatLabel>
-                      <ChatWriteDt>{item.writeDt}</ChatWriteDt>
+                      <ChatWriteDt type={item.senderId === Auth.loggedUserId}>
+                        {date === item.date.substring(0, item.date.indexOf(' '))
+                          ? item.date.substring(
+                              item.date.indexOf(' '),
+                              item.date.lastIndexOf(':')
+                            )
+                          : item.date.substring(0, item.date.lastIndexOf(':'))}
+                      </ChatWriteDt>
                     </ChatItem>
                   </ChatListItem>
                 );
               })}
           </ChatMain>
           <ChatWritingBox>
-            <Textarea mxh={40} mih={40} placeholder={`메시지를 입력하세요`} />
-            <Button>
+            <Textarea
+              mxh={40}
+              mih={40}
+              placeholder={`메시지를 입력하세요`}
+              type="chat_msg"
+            />
+            <Button
+              onClick={async () => {
+                await this.sendMessage();
+                await Chatting.sendMessage();
+                // let objDiv = document.getElementById('main');
+
+                // objDiv.scrollTop = objDiv.scrollHeight;
+                this.scrollToBottom();
+              }}
+            >
               <div>전송</div>
             </Button>
           </ChatWritingBox>
@@ -485,16 +663,20 @@ const UserLabel = styled.div`
 const UserName = styled.div`
   font-size: 18px;
   font-weight: 500;
+  min-width: 100px;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     font-size: 14px;
+    min-width: 60px;
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     font-size: 16px;
+    min-width: 80px;
   }
 
   @media (min-width: 992px) and (max-width: 1299.98px) {
     font-size: 17px;
+    min-width: 90px;
   }
 `;
 const UserWriteDt = styled.div`
@@ -589,7 +771,7 @@ const ChatItem = styled.div`
 const ChatLabel = styled.div`
   margin-right: ${(props) => (props.type ? '0' : '15px')};
   margin-left: ${(props) => (props.type ? '15px' : '0')};
-  width: 70%;
+  // width: 70%;
 `;
 const ChatName = styled.div`
   font-size: 18px;
@@ -612,6 +794,7 @@ const ChatWriteDt = styled.div`
   align-self: flex-end;
   font-size: 13px;
   color: #999999;
+  text-align: ${(props) => (props.type ? 'right' : 'left')}
   min-width: 70px;
 
   @media (min-width: 0px) and (max-width: 767.98px) {
@@ -664,6 +847,7 @@ const ChatWritingBox = styled.div`
   box-sizing: border-box;
 `;
 const Button = styled.button`
+  cursor: pointer;
   background-color: rgba(235, 114, 82, 0.7);
   border: none;
   display: flex;

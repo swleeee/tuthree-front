@@ -237,13 +237,14 @@ class Content extends Component {
                   <div
                     onClick={async () => {
                       console.info('dsfdfd');
+                      console.info(toJS(item));
                       await Tutor.getTutorDetailList(item, idx);
                     }}
                   >
                     <Card
                       type="tutor"
                       name={item.name}
-                      gender={item.gender}
+                      gender={item.sex}
                       rating={item.star}
                       school={`${item.school} ${item.major}`}
                       subject={item.subject}

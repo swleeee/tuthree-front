@@ -11,7 +11,7 @@ import deleteButtonImg from '../static/images/Signup/delete.png';
 import Auth from '../stores/Account/Auth';
 import Community from '../stores/Community/Community';
 
-@inject('Auth', 'Community')
+@inject('Auth', 'Community', 'MyPage')
 @observer
 class InputComponent extends React.Component {
   constructor(props) {
@@ -42,7 +42,7 @@ class InputComponent extends React.Component {
   };
 
   onChangeFile = (e) => {
-    const { type, fileAry } = this.props;
+    const { type, fileAry, MyPage } = this.props;
     console.info(e);
     console.info(e.currentTarget.files[0]);
     switch (type) {
@@ -85,28 +85,26 @@ class InputComponent extends React.Component {
 
           Community.communityFileAry.push(e.currentTarget.files[0]);
           console.info(toJS(Community.communityFileAry));
-          //   for (var item in e.currentTarget.files) {
-          //     console.log(item);
-          //     if (typeof e.currentTarget.files[item] === "object") {
-          //       Auth.fileAry.push(e.currentTarget.files[item]);
-          //     } else {
-          //       break;
-          //     }
-          //   }
 
           Community.communityFileName = e.currentTarget.files[0].name;
-          // this.setState({ checkFileUpload: true });
-          //   this.setState({
-          //     ...this.state,
-          //     file: e.currentTarget.files[0],
-          //     fileName: fileName,
-          //     checkFileUpload: true,
-          //   });
-          //   const formData = new FormData();
-          //   const files = e.target.files;
-          //   Request.setCommonFile(e.currentTarget.files[0]);
-          //   console.log(toJS(ManufactureProcess.openFileArray));
-          // }
+        }
+        break;
+
+      case 'mypage_tutor':
+        if (e && e.currentTarget.files[0]) {
+          console.log(e.currentTarget.files[0]);
+
+          if (MyPage.certificationFileAry.length === 0) {
+            if (MyPage.tutoringInfoAry.file) {
+              MyPage.tutoringInfoAry.file = '';
+            }
+            MyPage.certificationFileAry.push(e.currentTarget.files[0]);
+            console.info(toJS(MyPage.certificationFileAry));
+
+            MyPage.certificationName = e.currentTarget.files[0].name;
+          } else {
+            alert('증명서는 하나의 파일만 업로드 할 수 있습니다.');
+          }
         }
         break;
 
@@ -138,6 +136,7 @@ class InputComponent extends React.Component {
       type,
       fileAry,
       state,
+      MyPage,
       ...props
     } = this.props;
 
@@ -188,11 +187,20 @@ class InputComponent extends React.Component {
                         }}
                       >
                         <span>
-                          <span>
-                            {!item.name
-                              ? decodeURI(item.file.split('/').pop())
-                              : item.name}
-                          </span>
+                          {type !== 'mypage_tutor' ? (
+                            <span>
+                              {!item.name
+                                ? decodeURI(item.file.split('/').pop())
+                                : item.name}
+                            </span>
+                          ) : MyPage.tutoringInfoAry.file ? (
+                            <span>증명서</span>
+                          ) : !item.name ? (
+                            decodeURI(item.file.split('/').pop())
+                          ) : (
+                            item.name
+                          )}
+
                           <DeleteFile
                             src={deleteButtonImg}
                             style={{

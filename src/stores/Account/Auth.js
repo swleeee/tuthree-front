@@ -18,6 +18,9 @@ class Auth {
   // constructor() {
   //   makeObservable(this);
   // }
+
+  @observable notificationToken = '';
+
   @observable Authorization =
     'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmcmVzaF90b2tlbiIsImlhdCI6MTYzMzEwNTYxOCwiZXhwIjoxNjMzMTA5MjE4LCJ1c2VySWQiOiJhZG1pbjEiLCJHcmFkZSI6ImFkbWluIn0.KuHs-qPG3gL0jdJzozeAWtf1q3I-w_96YconIIwNE7s';
 
@@ -370,7 +373,26 @@ class Auth {
 
   /* login한 유저의 아이디와 타입 */
   @observable loggedUserId = '';
+  @observable loggedUserName = '';
   @observable loggedUserType = '';
+
+  @observable findEmail = '';
+  @observable findEmailName = '';
+  @observable findTel = '';
+  @observable findTelName = '';
+  @observable findEmailMsg = '';
+
+  @observable findPwdEmail = '';
+  @observable findPwdEmailName = '';
+  @observable findPwdEmailId = '';
+  @observable findPwdTel = '';
+  @observable findPwdTelName = '';
+  @observable findPwdTelId = '';
+  @observable findPwdMsg = '';
+  @observable newPwd = '';
+  @observable newPwdConfirm = '';
+  @observable resId = '';
+  @observable resGrade = '';
 
   getStep = () => {
     console.log(this.step);
@@ -538,6 +560,59 @@ class Auth {
       case 'grade':
         this.grade = e.value;
         break;
+
+      case 'findIdEmailName':
+        this.findEmailName = e.value;
+
+        break;
+
+      case 'findIdEmail':
+        this.findEmail = e.value;
+        break;
+
+      case 'findIdTelName':
+        this.findTelName = e.value;
+
+        break;
+
+      case 'findIdTel':
+        this.findTel = e.value;
+        break;
+
+      case 'findPwdEmailName':
+        this.findPwdEmailName = e.value;
+
+        break;
+
+      case 'findPwdEmail':
+        this.findPwdEmail = e.value;
+        break;
+
+      case 'findPwdEmailId':
+        this.findPwdEmailId = e.value;
+        break;
+
+      case 'findPwdTelName':
+        this.findPwdTelName = e.value;
+
+        break;
+
+      case 'findPwdTel':
+        this.findPwdTel = e.value;
+        break;
+
+      case 'findPwdTelId':
+        this.findPwdTelId = e.value;
+        break;
+
+      case 'new_password':
+        this.newPwd = e.value;
+        break;
+
+      case 'new_password_confirm':
+        this.newPwdConfirm = e.value;
+        break;
+
       default:
         break;
     }
@@ -1009,9 +1084,11 @@ class Auth {
           console.info(this.token);
           this.loggedUserId = await res.data.data.id;
           this.loggedUserType = await res.data.data.grade;
+          this.loggedUserName = await res.data.data.name;
           localStorage.setItem('token', this.token);
           localStorage.setItem('userId', res.data.data.id);
           localStorage.setItem('userType', res.data.data.grade);
+          localStorage.setItem('userName', res.data.data.name);
           // setTimeout(() => {
           //   // window.location.href = '/';
           //   // window.location.replace('/');
@@ -1037,6 +1114,7 @@ class Auth {
       .catch((e) => {
         console.info(e);
         console.info(e.response);
+        alert('로그인에 실패하였습니다. 입력한 정보가 맞는지 확인하세요.');
       });
   };
 
@@ -1053,6 +1131,114 @@ class Auth {
       .catch((e) => {
         console.info(e);
         console.info(e.response);
+      });
+  };
+
+  @action findId = async () => {
+    console.info('findId');
+    console.info(this.certificationType === 1 ? 'email' : 'tel');
+    console.info(this.findEmailName);
+    console.info(this.findEmail);
+    const req = {
+      type: this.certificationType === 1 ? 'email' : 'tel',
+      data: {
+        name:
+          this.certificationType === 1 ? this.findEmailName : this.findTelName,
+        email: this.findEmail,
+        tel: this.findTel,
+      },
+    };
+    if (this.certificationType === 1) {
+      delete req.data.tel;
+    } else {
+      delete req.data.email;
+    }
+    AccountAPI.findId(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          this.findEmailMsg = res.data.message;
+          this.idStep = 2;
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        alert('아이디 찾기에 실패하였습니다. 다시 시도해주세요.');
+      });
+  };
+
+  @action findPwd = async () => {
+    console.info('findId');
+    console.info(this.certificationType === 1 ? 'email' : 'tel');
+
+    const req = {
+      type: this.certificationType === 1 ? 'email' : 'tel',
+      data: {
+        id:
+          this.certificationType === 1
+            ? this.findPwdEmailId
+            : this.findPwdTelId,
+        name:
+          this.certificationType === 1
+            ? this.findPwdEmailName
+            : this.findPwdTelName,
+        email: this.findPwdEmail,
+        tel: this.findPwdTel,
+      },
+    };
+    if (this.certificationType === 1) {
+      delete req.data.tel;
+    } else {
+      delete req.data.email;
+    }
+    AccountAPI.findPwd(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          this.findPwdMsg = res.data.message;
+
+          this.resId = res.headers.id;
+          this.resGrade = res.headers.grade;
+          this.passwordStep = 2;
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        alert('일치하는 데이터가 없습니다. 다시 시도해주세요.');
+      });
+  };
+
+  @action changePwd = async () => {
+    console.info('findId');
+    console.info(this.certificationType === 1 ? 'email' : 'tel');
+    console.info(this.findEmailName);
+    console.info(this.findEmail);
+    const req = {
+      data: {
+        pwd: this.newPwd,
+      },
+      headers: {
+        Id: this.resId,
+        Grade: this.resGrade,
+      },
+    };
+
+    AccountAPI.changePwd(req)
+      .then((res) => {
+        console.info(res);
+        if (res.data.success) {
+          // alert('')
+          // this.findPwdMsg = res.data.message;
+          this.passwordStep = 3;
+          // Auth.passwordStep = 3;
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+        // alert('일치하는 데이터가 없습니다. 다시 시도해주세요.');
       });
   };
 }

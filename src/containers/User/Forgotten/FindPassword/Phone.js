@@ -12,33 +12,37 @@ class Phone extends Component {
         <ItemBox>
           <Input
             placeholder="아이디를 입력하세요."
-            // onChange={this.onIdHandler}
-            width={445}
+            onChange={(e) => Auth.handleChange(e.target, 'findPwdTelId')}
             onFocus={(e) => (e.target.placeholder = '')}
             onBlur={(e) => (e.target.placeholder = '아이디를 입력하세요.')}
           />
+          {/* <OverlapBtn>인증번호 요청</OverlapBtn> */}
+        </ItemBox>
+
+        <ItemBox>
+          <Input
+            placeholder="전화번호 -없이 입력하세요."
+            onChange={(e) => Auth.handleChange(e.target, 'findPwdTel')}
+            onFocus={(e) => (e.target.placeholder = '')}
+            onBlur={(e) =>
+              (e.target.placeholder = '전화번호 -없이 입력하세요.')
+            }
+          />
+          {/* <OverlapBtn>인증번호 요청</OverlapBtn> */}
         </ItemBox>
         <ItemBox>
           <Input
-            placeholder="-없이 입력하세요."
-            // onChange={this.onIdHandler}
+            placeholder="이름을 입력하세요."
+            onChange={(e) => Auth.handleChange(e.target, 'findPwdTelName')}
             onFocus={(e) => (e.target.placeholder = '')}
-            onBlur={(e) => (e.target.placeholder = '-없이 입력하세요.')}
+            onBlur={(e) => (e.target.placeholder = '이름을 입력하세요.')}
           />
-          <OverlapBtn>인증번호 요청</OverlapBtn>
-        </ItemBox>
-        <ItemBox>
-          <Input
-            placeholder="인증번호를 입력하세요."
-            // onChange={this.onIdHandler}
-            onFocus={(e) => (e.target.placeholder = '')}
-            onBlur={(e) => (e.target.placeholder = '인증번호를 입력하세요.')}
-          />
-          <OverlapBtn>확인</OverlapBtn>
+          {/* <OverlapBtn>확인</OverlapBtn> */}
         </ItemBox>
         <Button
           onClick={() => {
-            Auth.passwordStep = 2;
+            // Auth.passwordStep = 2;
+            Auth.findPwd();
           }}
         >
           <div>비밀번호 찾기</div>
@@ -95,27 +99,36 @@ const OverlapBtn = styled.button`
 `;
 
 const Input = styled.input`
+  margin-bottom: ${(props) => (props.mb ? props.mb : '0')}px;
   border: none;
   border: 1px solid #c7c7c7;
   // padding-bottom: 18px;
   outline: none;
   font-size: 15px;
-  width: 100%;
+  // width: 80%;
   box-sizing: border-box;
   display: ${(props) => (props.domainType === 1 ? 'none' : 'block')};
   padding-left: 10px;
+  width: 80%;
+  height: 60px;
   :focus {
   }
 
+  @media (min-width: 0px) and (max-width: 767.98px) {
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+  }
+
   @media (min-width: 1300px) {
-    width: ${(props) => (props.width ? props.width : '300')}px;
-    height: 60px;
   }
 `;
 
 const Button = styled.div`
-  margin-top: 30px;
-  width: 445px;
+  // width: 300px;
+  width: 80%;
   height: 60px;
   border-radius: 3px;
   background-color: rgba(235, 114, 82, 0.7);
@@ -126,5 +139,29 @@ const Button = styled.div`
   > div {
     font-size: 20px;
     font-weight: bold;
+  }
+
+  @media (min-width: 0px) and (max-width: 767.98px) {
+    // width: 180px;
+    width: 80%;
+    height: 40px;
+    > div {
+      font-size: 16px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    // width: 250px;
+    height: 50px;
+    > div {
+      font-size: 18px;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1299.98px) {
+    // width: 280px;
+    height: 50px;
+    > div {
+      font-size: 19px;
+    }
   }
 `;
