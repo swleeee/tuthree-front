@@ -736,6 +736,7 @@ class Chatting {
     console.info(this.studentId);
     console.info(this.teacherId);
     console.info(Auth.token);
+    console.info(this.chatMsg);
     const req = {
       headers: {
         Authorization: Auth.token,
