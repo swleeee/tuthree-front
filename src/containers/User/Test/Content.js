@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Filter from '../../../components/Filter';
 import Card from '../../../components/Card';
 import { inject, observer, Provider } from 'mobx-react';
+import Test from '../../../stores/Matching/Test';
 import Pagination from '../../../components/Pagination';
 import { toJS } from 'mobx';
 import downArrowImg from '../../../static/images/Common/down-arrow.png';
@@ -142,27 +143,26 @@ const dummyData = [
   },
 ];
 
-@inject('Tutee')
+@inject('Test')
 @observer
 class Content extends Component {
   state = {
     is_open: false,
   };
-
   componentDidMount = () => {
-    const { Tutee } = this.props;
-    Tutee.getTuteeList(Tutee.tuteeCurrentPage);
+    Test.getTutorList(Test.tutorCurrentPage);
+    console.info(toJS(Test.sortAry[Test.sortIdx]));
   };
   render() {
-    const { Tutee } = this.props;
+    console.info('tutorlendering');
     return (
       <Container>
-        <Name>학생 찾기</Name>
-        <Filter type="tutee" />
+        <Name>과외 선생님 찾기</Name>
+        <Filter type="tutor" />
         <MainBox>
           <Header>
             <Count>
-              <span>{Tutee.tuteeTotalCount}명</span>의 학생이 있습니다.
+              <span>{Test.tutorTotalCount}명</span>의 선생님이 있습니다.
             </Count>
             <SortingBox>
               <SortLabel
@@ -171,23 +171,33 @@ class Content extends Component {
                   this.setState({ is_open: !this.state.is_open });
                 }}
               >
-                <span>{Tutee.sortAry[Tutee.sortIdx].label}</span>
+                <span>{Test.sortAry[Test.sortIdx].label}</span>
                 <img src={downArrowImg} />
               </SortLabel>
 
+              {/* <img src={downArrowImg} style={{ transform: 'rotate(180deg)' }} /> */}
+              {/* <img src={upArrowImg} /> */}
+
+              {/* <span>최신순</span>
+              <span>오래된순</span>
+              <span>급여높은순</span>
+              <span>급여낮은순</span>
+              <span>별점높은순</span>
+              <span>별점낮은순</span> */}
+
               <DropDownBox active={this.state.is_open}>
                 {this.state.is_open &&
-                  Tutee.sortAry &&
-                  Tutee.sortAry.map((item, idx) => {
+                  Test.sortAry &&
+                  Test.sortAry.map((item, idx) => {
                     return (
                       <DropDownItem
                         onClick={() => {
                           console.info(idx);
-                          Tutee.sortIdx = idx;
+                          Test.sortIdx = idx;
                           this.setState({ is_open: false });
-                          Tutee.getTuteeList();
+                          Test.getTutorList();
                         }}
-                        active={idx === Tutee.sortAry.length - 1}
+                        active={idx === Test.sortAry.length - 1}
                       >
                         {item.label}
                       </DropDownItem>
@@ -196,13 +206,14 @@ class Content extends Component {
               </DropDownBox>
             </SortingBox>
           </Header>
+
           <CardContainer>
             {/* {dummyData.map((item, idx) => {
               return (
                 <div
                   onClick={async () => {
                     console.info('dsfdfd');
-                    await Tutee.pushToDetail(item, idx);
+                    await Tutor.pushToDetail(item, idx);
                   }}
                 >
                   <Card
@@ -220,19 +231,20 @@ class Content extends Component {
               );
             })} */}
 
-            {Tutee.tuteeList &&
-              Tutee.tuteeList.map((item, idx) => {
+            {Test.tutorList &&
+              Test.tutorList.map((item, idx) => {
                 return (
                   <div
                     onClick={async () => {
                       console.info('dsfdfd');
-                      await Tutee.getTuteeDetailList(item, idx);
+                      console.info(toJS(item));
+                      // await Test.getTutorDetailList(item, idx);
                     }}
                   >
                     <Card
-                      type="tutee"
+                      type="tutor"
                       name={item.name}
-                      gender={item.sex}
+                      gender={item.gender}
                       rating={item.star}
                       school={`${item.school} ${item.major}`}
                       subject={item.subject}
@@ -247,10 +259,10 @@ class Content extends Component {
           </CardContainer>
         </MainBox>
         <Pagination
-          type="Tutee"
-          currentSet={Tutee.tuteeCurrentSet}
-          currentPage={Tutee.tuteeCurrentPage}
-          totalPage={Tutee.tuteeTotalPage}
+          type="Tutor"
+          currentSet={Test.tutorCurrentSet}
+          currentPage={Test.tutorCurrentPage}
+          totalPage={Test.tutorTotalPage}
         />
       </Container>
     );
@@ -312,32 +324,13 @@ const CardContainer = styled.div`
   flex-wrap: wrap;
   // justify-content: space-between;
   width: 100%;
+
   @media (min-width: 0px) and (max-width: 767.98px) {
     justify-content: center;
   }
   @media (min-width: 768px) and (max-width: 991.98px) {
     justify-content: space-between;
   }
-
-  // &:after {
-  //   height: 0;
-  //   width: 50%;
-  //   // -, 48, 21
-  //   content: '';
-  // }
-
-  // @media (min-width: 0px) and (max-width: 767.98px) {
-  //   justify-content: center;
-  // }
-
-  // @media (min-width: 1300px) {
-  //   &:after {
-  //     height: 0;
-  //     width: 50%;
-  //     // -, 48, 21
-  //     content: '';
-  //   }
-  // }
 `;
 
 const SortingBox = styled.div`
@@ -355,6 +348,7 @@ const Count = styled.div`
 `;
 
 const DropDownBox = styled.div`
+  z-index: 2;
   position: absolute;
   // top: 0;
   display: flex;
