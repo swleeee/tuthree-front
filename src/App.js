@@ -37,11 +37,6 @@ import MovileNavContainer from './components/MobileNav';
 import Auth from './stores/Account/Auth';
 import IE from './components/IE';
 import CheckBrowserModal from './components/CheckBrowswerModal';
-// import { initializeApp } from 'firebase/app';
-import { config } from './firebase-config';
-import firebase from 'firebase';
-import 'firebase/auth';
-import 'firebase/firestore';
 
 // @inject('Common')
 
