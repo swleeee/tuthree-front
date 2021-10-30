@@ -266,7 +266,8 @@ class Content extends Component {
         async (message) => {
           // showMessage(decodeURI(JSON.parse(message.body).content));
           console.info(decodeURI(JSON.parse(message.body).content));
-          await Test2.getChatList(Test2.roomId);
+          // await Test2.getChatList(Test2.roomId);
+          await Test2.getChatUserList();
           console.info(this.scrollToBottom);
           this.scrollToBottom();
         }
@@ -290,7 +291,7 @@ class Content extends Component {
         room: { id: Test2.roomId },
         name: encodeURI(Auth.loggedUserName),
         userId: Auth.loggedUserId,
-        content: encodeURI('hihi'),
+        content: encodeURI(Test2.chatMsg),
       })
     );
   }
