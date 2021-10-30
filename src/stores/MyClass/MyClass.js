@@ -358,6 +358,7 @@ class MyClass {
     console.info(this.studentId);
     console.info(this.teacherId);
     console.info(this.selectedDate);
+    this.scheduleDetailAry = [];
 
     const req = {
       params: {
@@ -521,7 +522,7 @@ class MyClass {
         console.info(e.response);
       });
     console.info(toJS(this.reportDetailAry));
-    if (this.reportDetailAry) {
+    if (this.reportDetailAry.length !== 0) {
       // if (this.reportDetailAry.length !== 0) {
       console.info('aaaaaaaaaaaaaaaaaaaa');
       this.reportWritingState = 2;

@@ -632,6 +632,7 @@ const ButtonBox = styled.div`
   justify-content: flex-end;
 `;
 const Button = styled.button`
+  cursor: pointer;
   width: ${(props) => (props.width ? props.width : '120')}px;
   height: 36px;
   background-color: rgba(235, 114, 82, 1);
