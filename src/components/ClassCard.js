@@ -17,6 +17,7 @@ class ClassCard extends Component {
       subject,
       id,
       teacherId,
+      studentId,
       MyClass,
       type,
       Auth,
@@ -71,7 +72,14 @@ class ClassCard extends Component {
                   )}
 
                   <div>
-                    <Button>
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        console.info('end');
+                        MyClass.endClass(teacherId, studentId);
+                      }}
+                    >
                       <div>수업종료</div>
                     </Button>
                   </div>
@@ -158,12 +166,13 @@ class ClassCard extends Component {
                       </Button>
                     </div>
                   )}
-
-                  <div>
-                    <Button>
-                      <div>수업종료</div>
-                    </Button>
-                  </div>
+                  {Auth.loggedUserType !== 'parent' && (
+                    <div>
+                      <Button>
+                        <div>수업종료</div>
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </Menu>
             )}

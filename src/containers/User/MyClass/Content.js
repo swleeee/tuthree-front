@@ -240,13 +240,15 @@ class Content extends Component {
               MyClass.classAry.map((item, idx) => {
                 return (
                   <div
-                    onClick={async () => {
-                      MyClass.state = 2;
-                      MyClass.teacherName = item.teacherName;
-                      MyClass.studentName = item.studentName;
-                      MyClass.teacherId = item.teacherId;
-                      MyClass.studentId = item.studentId;
-                      await MyClass.getCalendar();
+                    onClick={async (e) => {
+                      // e.stopPropagation();
+                      console.info('card');
+                      // MyClass.state = 2;
+                      // MyClass.teacherName = item.teacherName;
+                      // MyClass.studentName = item.studentName;
+                      // MyClass.teacherId = item.teacherId;
+                      // MyClass.studentId = item.studentId;
+                      // await MyClass.getCalendar();
                     }}
                   >
                     <ClassCard
@@ -256,6 +258,7 @@ class Content extends Component {
                       studentName={item.studentName}
                       teacherName={item.teacherName}
                       teacherId={item.teacherId}
+                      studentId={item.studentId}
                       date={item.date}
                       subject={item.subject}
                       active={item.acitve}
@@ -404,6 +407,7 @@ const SortingBox = styled.div`
     padding 0 5px;
     box-sizing: border-box;
     font-size: 15px;
+    cursor: pointer;
   }
   @media (min-width: 0px) and (max-width: 767.98px) {
     > span {

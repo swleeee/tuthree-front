@@ -226,6 +226,7 @@ class MyClass {
 
   @action getClass = async (id) => {
     console.info(id);
+    this.classAry = [];
     if (!id) {
       window.location.href = '/';
     }
@@ -970,6 +971,36 @@ class MyClass {
         if (res.data.success) {
           this.childClassAry = await res.data.data;
         }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+  };
+
+  @action endClass = async (teacherId, studentId) => {
+    console.info(teacherId);
+    console.info(studentId);
+    console.info(Auth.token);
+    const req = {
+      params: {
+        teacherId: teacherId,
+        studentId: studentId,
+      },
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+
+    await ClassAPI.endClass(req)
+      .then(async (res) => {
+        console.info(res);
+        alert('수업이 종료되었습니다');
+        await this.getClass(Auth.loggedUserId);
+        this.moreState = -1;
+        // if (res.data.success) {
+
+        // }
       })
       .catch((e) => {
         console.info(e);
