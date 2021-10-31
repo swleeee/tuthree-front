@@ -45,6 +45,7 @@ class MyClass {
   @observable selectedReportDate = '';
   @observable selectModalActive = false;
 
+  @observable today = '';
   @observable totalQuestion = 0;
   @observable questionTotalList = [];
   @observable questionAry = [];
@@ -53,6 +54,9 @@ class MyClass {
   @observable isExistAnswer = false;
   @observable tuteeTotalQuestion = 0;
   @observable answerAry = [];
+  @observable answerDueDateObj = {};
+  @observable answerDueDate = '';
+  @observable answerDueDateMoment = '';
   @observable tuteeAnswerModalActive = false;
   @observable markingTotalQuestion = 0;
   @observable markingResultTotalObj = {};
@@ -550,6 +554,7 @@ class MyClass {
     console.info(this.teacherId);
     this.markingStateAry = [];
     this.markingStateObj = {};
+    this.answerDueDateObj = {};
     this.getTuteeAnswerState = false;
     const req = {
       params: {
@@ -646,6 +651,17 @@ class MyClass {
     console.info(this.totalQuestion);
     console.info(toJS(this.questionAry));
     console.info(this.questionPostId);
+    console.info(this.answerDueDate);
+
+    if (!this.answerDueDate) {
+      alert('마감일을 선택해주세요.');
+      return;
+    }
+    if (!this.totalQuestion) {
+      alert('총 문제수를 입력해주세요.');
+      return;
+    }
+
     let answerAry = [];
     this.questionAry &&
       this.questionAry.map((item, idx) => {
@@ -666,6 +682,7 @@ class MyClass {
       },
       data: {
         prob: parseInt(this.totalQuestion),
+        dueDate: this.answerDueDate,
         problem: this.questionAry,
       },
     };
@@ -706,6 +723,9 @@ class MyClass {
         isExist = true;
         if (res.data.success) {
           this.tuteeTotalQuestion = res.data.data.prob;
+          // this.answerDueDateObj.push({ [id]: res.data.data.dueDate });
+          this.answerDueDateObj[id] = res.data.data.dueDate;
+          // this.markingTotalScoreObj[idx] = this.markingCorrect;
           this.answerAry = await res.data.data.problem;
           this.answerAry.map((item, idx) => {
             item.ans = '';
@@ -784,7 +804,7 @@ class MyClass {
     const req = {
       id: id,
       headers: {
-        Authorization: Auth.Authorization,
+        Authorization: Auth.token,
       },
     };
     console.info(req);
