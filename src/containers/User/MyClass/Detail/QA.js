@@ -326,6 +326,66 @@ class Content extends Component {
                           </div>
                         )}
                       </Answer>
+                    ) : Auth.loggedUserType === 'parent' ? (
+                      date < MyClass.answerDueDateObj[item.id] ? (
+                        <Answer
+                          type="main"
+                          state={item.checked}
+                          user={Auth.loggedUserType}
+                          active={
+                            (MyClass.questionTotalList.length + 1) % 2 === 1
+                              ? MyClass.questionTotalList.length >= idx + 2
+                              : MyClass.questionTotalList.length === idx + 1
+                          }
+                        >
+                          {console.info(
+                            '=========================================='
+                          )}
+                          {console.info(toJS(MyClass.markingStateAry[idx]))}
+                          {MyClass.markingStateObj[idx] ? (
+                            <div
+                              style={{
+                                backgroundColor: 'rgba(255,0,0,0.6)',
+                                color: '#fff',
+                              }}
+                            >
+                              {' '}
+                              <div>제출완료</div>
+                            </div>
+                          ) : item.checked ? (
+                            <div
+                              onClick={async () => {
+                                // MyClass.questionPostId = item.id;
+                                // console.info(toJS(item));
+                                // await MyClass.getAnswer(item.id);
+                                // MyClass.tuteeAnswerModalActive = true;
+                              }}
+                              style={{
+                                backgroundColor: 'rgba(0,85,255,0.6)',
+                                color: '#000',
+                                cursor: 'initial',
+                              }}
+                            >
+                              <div>답안제출</div>
+                            </div>
+                          ) : (
+                            <div>
+                              <div>미입력</div>
+                            </div>
+                          )}
+                        </Answer>
+                      ) : (
+                        <Answer type="main" state={true}>
+                          <div
+                            style={{
+                              display: 'block',
+                              backgroundColor: 'rgba(255,0,0,1)',
+                            }}
+                          >
+                            <div>제출만료</div>
+                          </div>
+                        </Answer>
+                      )
                     ) : date < MyClass.answerDueDateObj[item.id] ? (
                       <Answer
                         type="main"

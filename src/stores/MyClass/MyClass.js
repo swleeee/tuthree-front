@@ -28,6 +28,7 @@ class MyClass {
   @observable studentName = '';
   @observable teacherId = '';
   @observable studentId = '';
+  @observable parentState = 1;
 
   @observable scheduleValue = '';
   @observable scheduleAry = [];
@@ -967,7 +968,7 @@ class MyClass {
       .then(async (res) => {
         console.info(res);
         if (res.data.success) {
-          // this.childClassAry =
+          this.childClassAry = await res.data.data;
         }
       })
       .catch((e) => {

@@ -5,6 +5,7 @@ import ClassCard from '../../../components/ClassCard';
 import ReviewContainer from '../../../components/Review';
 import MySchedule from './MySchedule';
 import Enrollment from './Enrollment';
+import { toJS } from 'mobx';
 
 const dummyData = [
   {
@@ -201,18 +202,24 @@ class Content extends Component {
               </div>
             );
           })} */}
+          {console.info(Auth.loggedUserType)}
           {Auth.loggedUserType === 'parent'
             ? MyClass.childClassAry &&
               MyClass.childClassAry.map((item, idx) => {
+                {
+                  console.info(toJS(item));
+                }
                 return (
                   <div
                     onClick={async () => {
-                      // MyClass.state = 2;
-                      // MyClass.teacherName = item.teacherName;
-                      // MyClass.studentName = item.studentName;
-                      // MyClass.teacherId = item.teacherId;
-                      // MyClass.studentId = item.studentId;
-                      // await MyClass.getCalendar();
+                      MyClass.state = 2;
+                      // await MyClass.getClass(item.studentId);
+                      MyClass.teacherName = item.teacherName;
+                      MyClass.studentName = item.studentName;
+                      MyClass.teacherId = item.teacherId;
+                      MyClass.studentId = item.studentId;
+                      await MyClass.getCalendar();
+                      // MyClass.parentState = 2;
                     }}
                   >
                     <ClassCard
