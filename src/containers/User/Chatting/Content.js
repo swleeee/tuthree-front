@@ -377,6 +377,7 @@ class Content extends Component {
                       }
                       Chatting.otherName = item.chatList.name;
                       Chatting.roomId = item.roomId;
+
                       await Chatting.getDetailClass();
                       if (Auth.loggedUserType === 'teacher') {
                         await Chatting.checkInfoWriting();
@@ -429,7 +430,7 @@ class Content extends Component {
                 );
               })}
           </UserList>
-          {localStorage.getItem('otherPersonId') && (
+          {localStorage.getItem('otherPersonId') !== 'tuthree10' && (
             <ButtonBox>
               {Auth.loggedUserType === 'teacher' &&
                 Chatting.writingState === 1 && (

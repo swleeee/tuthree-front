@@ -426,7 +426,7 @@ class Content extends Component {
                       );
                     })}
                 </UserList>
-                {localStorage.getItem('otherPersonId') && (
+                {localStorage.getItem('otherPersonId') !== 'tuthree10' && (
                   <ButtonBox>
                     {Auth.loggedUserType === 'teacher' &&
                       Chatting.writingState === 1 && (
