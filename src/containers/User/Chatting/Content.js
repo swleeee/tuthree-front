@@ -273,6 +273,7 @@ class Content extends Component {
         async (message) => {
           // showMessage(decodeURI(JSON.parse(message.body).content));
           console.info(decodeURI(JSON.parse(message.body).content));
+          await Chatting.getChatUserList();
           await Chatting.getChatList(Chatting.roomId);
           console.info(this.scrollToBottom);
           this.scrollToBottom();
