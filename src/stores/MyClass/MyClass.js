@@ -865,6 +865,7 @@ class MyClass {
 
   @action getTimeTable = async () => {
     console.info(Auth.loggedUserId);
+    this.myScheduleAry = [];
     const req = {
       params: {
         id: Auth.loggedUserId,
@@ -878,7 +879,17 @@ class MyClass {
     await ClassAPI.getTimeTable(req)
       .then(async (res) => {
         console.info(res);
-        this.myScheduleAry = await res.data.data;
+        if (Auth.loggedUserType !== 'parent') {
+          this.myScheduleAry = await res.data.data;
+        } else {
+          res.data.data &&
+            res.data.data.map(async (item, idx) => {
+              console.info(item);
+              if (item.list.length !== 0) {
+                await this.myScheduleAry.push(item);
+              }
+            });
+        }
       })
       .catch((e) => {
         console.info(e);

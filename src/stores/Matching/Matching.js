@@ -43,14 +43,15 @@ class Matching {
 
   @action getBookmark = async () => {
     this.bookmarkAry = [];
+    console.info(Auth.loggedUserId);
     const req = {
       params: {
         // userId: 'lZmooJ8Ydd',
         userId: Auth.loggedUserId,
       },
-      //   headers: {
-      //     Authorization: this.Authorization,
-      //   },
+      headers: {
+        Authorization: Auth.token,
+      },
     };
     await MatchingAPI.getBookmark(req)
       .then((res) => {
@@ -76,6 +77,7 @@ class Matching {
       this.bookmarkAry[0] &&
       this.bookmarkAry[0].map((item, idx) => {
         console.info(toJS(item));
+        console.info(userId);
         // console.info(item.indexOf('test112'));
         // if (item.user2 === 'test112') {
         if (item.user2 === userId) {
