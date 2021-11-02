@@ -356,10 +356,12 @@ class Content extends Component {
           <UserList>
             {Chatting.chatUserAry &&
               Chatting.chatUserAry.map((item, idx) => {
-                console.info(toJS(item));
+                // console.info(toJS(item));
                 return (
                   <UserListItem
                     onClick={async () => {
+                      console.info(toJS(item));
+                      Chatting.registrationState = '';
                       localStorage.removeItem('otherPersonId');
                       Chatting.enrollmentState = 1;
                       if (Auth.loggedUserType === 'teacher') {
@@ -377,6 +379,7 @@ class Content extends Component {
                       }
                       Chatting.otherName = item.chatList.name;
                       Chatting.roomId = item.roomId;
+                      Chatting.registrationState = item.chatList.registration;
 
                       await Chatting.getDetailClass();
                       if (Auth.loggedUserType === 'teacher') {
@@ -432,8 +435,20 @@ class Content extends Component {
           </UserList>
           {localStorage.getItem('otherPersonId') !== 'tuthree10' && (
             <ButtonBox>
+              {Chatting.registrationState === 'CLOSE' && (
+                <CtlBtn
+                  style={{
+                    backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                    opacity: '0.7',
+                    // color: '#fff',
+                  }}
+                >
+                  <div>모집마감</div>
+                </CtlBtn>
+              )}
               {Auth.loggedUserType === 'teacher' &&
-                Chatting.writingState === 1 && (
+                Chatting.writingState === 1 &&
+                Chatting.registrationState === 'OPEN' && (
                   <CtlBtn
                     state={Chatting.enrollmentState === 1}
                     onClick={() => {
@@ -448,7 +463,8 @@ class Content extends Component {
                   </CtlBtn>
                 )}
               {Auth.loggedUserType === 'teacher' &&
-                Chatting.writingState === 2 && (
+                Chatting.writingState === 2 &&
+                Chatting.registrationState === 'OPEN' && (
                   <CtlBtn
                     state={Chatting.enrollmentState === 1}
                     onClick={async () => {
@@ -468,21 +484,22 @@ class Content extends Component {
                   </CtlBtn>
                 )}
 
-              {Auth.loggedUserType === 'student' && (
-                <CtlBtn
-                  state={Chatting.enrollmentState === 1}
-                  onClick={async () => {
-                    if (Chatting.enrollmentState === 1) {
-                      await Chatting.getTutoringInfo();
-                      window.scrollTo(0, 0);
-                      // Common.modalActive = true;
-                      // Common.modalState = 2;
-                    }
-                  }}
-                >
-                  <div>과외 정보 조회하기</div>
-                </CtlBtn>
-              )}
+              {Auth.loggedUserType === 'student' &&
+                Chatting.registrationState === 'OPEN' && (
+                  <CtlBtn
+                    state={Chatting.enrollmentState === 1}
+                    onClick={async () => {
+                      if (Chatting.enrollmentState === 1) {
+                        await Chatting.getTutoringInfo();
+                        window.scrollTo(0, 0);
+                        // Common.modalActive = true;
+                        // Common.modalState = 2;
+                      }
+                    }}
+                  >
+                    <div>과외 정보 조회하기</div>
+                  </CtlBtn>
+                )}
             </ButtonBox>
           )}
         </ChatList>
