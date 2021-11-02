@@ -446,5 +446,34 @@ class MyPage {
       });
     // console.info(toJS(this.enrollmentList));
   };
+
+  @action withDrawal = async () => {
+    const req = {
+      headers: {
+        Authorization: Auth.token,
+      },
+    };
+
+    await MyPageAPI.withDrawal(req)
+      .then(async (res) => {
+        console.info(res);
+
+        if (res.data.statusCode === 401) {
+          alert('로그인이 만료되었습니다');
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else {
+          // alert('회원탈퇴를 완료했습니다.');
+
+          localStorage.removeItem('token');
+          // window.location.href = '/';
+        }
+      })
+      .catch((e) => {
+        console.info(e);
+        console.info(e.response);
+      });
+    // console.info(toJS(this.enrollmentList));
+  };
 }
 export default new MyPage();

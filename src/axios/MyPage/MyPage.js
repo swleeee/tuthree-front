@@ -67,3 +67,12 @@ export function alterPassword(req) {
     data: req.data,
   });
 }
+
+export function withDrawal(req) {
+  return axios({
+    method: 'DELETE',
+    url: `${ROOT_URL}/user/quit`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+  });
+}
