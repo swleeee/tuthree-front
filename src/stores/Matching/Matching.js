@@ -29,6 +29,7 @@ class Matching {
       //     Authorization: this.Authorization,
       //   },
     };
+    console.info(req.params);
     await MatchingAPI.setBookmark(req)
       .then(async (res) => {
         console.info(res);
@@ -80,8 +81,8 @@ class Matching {
         console.info(userId);
         // console.info(item.indexOf('test112'));
         // if (item.user2 === 'test112') {
-        if (item.user2 === userId) {
-          this.bookmarkId = item.id;
+        if (item.object.id === userId) {
+          this.bookmarkId = item.bookmarkId;
           this.isCheckBookmark = true;
           return true;
         }
