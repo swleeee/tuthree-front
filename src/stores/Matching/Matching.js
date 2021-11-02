@@ -46,24 +46,25 @@ class Matching {
     this.bookmarkAry = [];
     console.info(Auth.loggedUserId);
     const req = {
-      params: {
-        // userId: 'lZmooJ8Ydd',
-        userId: Auth.loggedUserId,
-      },
+      // params: {
+      //   // userId: 'lZmooJ8Ydd',
+      //   userId: Auth.loggedUserId,
+      // },
       headers: {
         Authorization: Auth.token,
       },
     };
     await MatchingAPI.getBookmark(req)
-      .then((res) => {
+      .then(async (res) => {
         console.info(res);
-        this.bookmarkAry.push(res.data.data);
-        console.info(toJS(this.bookmarkAry));
+        await this.bookmarkAry.push(res.data.data);
+        //  this.bookmarkAry = await res.data.data;
       })
       .catch((e) => {
         console.info(e);
         console.info(e.response);
       });
+    console.info(toJS(this.bookmarkAry));
   };
 
   @action checkBookmark = (type) => {
