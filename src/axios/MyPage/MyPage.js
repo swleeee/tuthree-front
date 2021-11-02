@@ -57,3 +57,13 @@ export function putTuteeInfo(req) {
     data: req.data,
   });
 }
+
+export function alterPassword(req) {
+  return axios({
+    method: 'PUT',
+    url: `${ROOT_URL}/user/changepw`,
+    params: req.params ? req.params : null,
+    headers: req.headers ? req.headers : null,
+    data: req.data,
+  });
+}
