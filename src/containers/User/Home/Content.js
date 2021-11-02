@@ -187,7 +187,7 @@ const Img = styled.img`
   height: ${(props) => (props.service === 'one' ? '65%' : '100%')};
   object-fit: cover;
   background-color: ${(props) => (props.background ? props.background : '')};
-  filter: blur(3px);
+  filter: ${(props) => (props.service === 'one' ? 'blur(3px)' : 'none')};
 
   @media (min-width: 0px) and (max-width: 767.98px) {
     height: 50%;
