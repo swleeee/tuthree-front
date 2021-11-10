@@ -258,13 +258,12 @@ class Content extends Component {
             </ContentBox>
           </Item>
 
-          <Item>
+          {/* <Item>
             <Label>알림 설정</Label>
             <ContentBox>
-              {/* {MyPage.userInfoAry && MyPage.userInfoAry.notification} */}
               <ToggleButton type="notification" />
             </ContentBox>
-          </Item>
+          </Item> */}
         </Main>
         <ButtonBox>
           <Button onClick={() => MyPage.putUserInfo()}>
