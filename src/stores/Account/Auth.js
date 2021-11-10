@@ -1160,9 +1160,12 @@ class Auth {
       .then((res) => {
         console.info(res);
         alert('로그아웃 되었습니다.');
-        // this.loggedUserId = '';
-        // this.loggedUserType = '';
+        this.loggedUserId = '';
+        this.loggedUserType = '';
         localStorage.removeItem('token');
+        localStorage.removeItem('userType');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userId');
         window.location.href = '/';
       })
       .catch((e) => {
