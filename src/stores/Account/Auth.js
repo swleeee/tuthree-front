@@ -1020,6 +1020,18 @@ class Auth {
   };
 
   @action checkId = async (id) => {
+    console.info(typeof id);
+    console.info(id.length);
+    console.info(typeof id.length);
+
+    if (id.length < 6 || id.length > 12) {
+      console.info('a');
+      alert('아이디를 6-12자 이내로 작성해주세요.');
+      this.idErrorMessage = '* 아이디를 6-12자 이내로 작성해주세요.';
+      this.checkSignupId = true;
+      return;
+    }
+
     console.info(id);
     const req = {
       id: id,
