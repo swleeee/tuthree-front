@@ -4,6 +4,7 @@ import { inject, observer, Provider } from 'mobx-react';
 import Tutor from '../../../../stores/Matching/Tutor';
 import emptyStarImg from '../../../../static/images/Common/emptyStar.png';
 import starImg from '../../../../static/images/Common/star.png';
+import halfStarImg from '../../../../static/images/Common/halfstar.png';
 import viewImg from '../../../../static/images/Common/visibility.png';
 import communicationImg from '../../../../static/images/Common/communication.png';
 import maleImg from '../../../../static/images/Common/male.png';
@@ -222,6 +223,9 @@ class MobileContent extends Component {
                             {idx + 1 <=
                             Math.trunc(Tutor.tutorDetailAry.star) ? (
                               <img src={starImg} />
+                            ) : Math.trunc(Tutor.tutorDetailAry.star) === idx &&
+                              (Tutor.tutorDetailAry.star * 10) % 10 >= 5 ? (
+                              <img src={halfStarImg} />
                             ) : (
                               <img src={emptyStarImg} />
                             )}

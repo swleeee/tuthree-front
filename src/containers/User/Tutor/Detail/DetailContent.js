@@ -4,6 +4,7 @@ import { inject, observer, Provider } from 'mobx-react';
 import Tutor from '../../../../stores/Matching/Tutor';
 import emptyStarImg from '../../../../static/images/Common/emptyStar.png';
 import starImg from '../../../../static/images/Common/star.png';
+import halfStarImg from '../../../../static/images/Common/halfstar.png';
 import defaultImg from '../../../../static/images/Common/defaultUser.png';
 import downArrowImg from '../../../../static/images/Common/down-arrow.png';
 
@@ -113,13 +114,30 @@ class DetailContent extends Component {
               {Tutor.tutorReviewCount !== 0 && (
                 <SubHeader>
                   <Rating>
+                    {console.info('bbbbbb')}
+                    {console.info(Tutor.tutorDetailAry.star)}
+                    {console.info((Tutor.tutorDetailAry.star * 10) % 10 > 5)}
                     {[...Array(this.state.reviewTotalCount)].map(
                       (item, idx) => {
                         return (
                           <>
+                            {console.info('ccccc')}
+                            {console.info(
+                              Math.trunc(Tutor.tutorDetailAry.star) === idx &&
+                                (Tutor.tutorDetailAry.star * 10) % 10 >= 5
+                            )}
+                            {/* {console.info(
+                              Math.trunc(Tutor.tutorDetailAry.star) === idx + 1
+                            )}*/}
+                            {console.info(
+                              (Tutor.tutorDetailAry.star * 10) % 10
+                            )}
                             {idx + 1 <=
                             Math.trunc(Tutor.tutorDetailAry.star) ? (
                               <img src={starImg} />
+                            ) : Math.trunc(Tutor.tutorDetailAry.star) === idx &&
+                              (Tutor.tutorDetailAry.star * 10) % 10 >= 5 ? (
+                              <img src={halfStarImg} />
                             ) : (
                               <img src={emptyStarImg} />
                             )}
